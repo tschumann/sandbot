@@ -38,11 +38,22 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 
 // define constants used to identify the MOD we are playing...
 
-#define VALVE_DLL      1
-#define TFC_DLL        2
-#define CSTRIKE_DLL    3
-#define GEARBOX_DLL    4
-#define FRONTLINE_DLL  5
+#define VALVE_DLL		1
+#define BSHIFT_DLL		2
+#define GEARBOX_DLL		3
+#define DECAY_DLL		4
+#define CSTRIKE_DLL		5
+#define CZERO_DLL		6
+#define CZEROR_DLL		7
+#define DOD_DLL			8
+#define TFC_DLL			9
+#define REWOLF_DLL		10
+
+#define HUNGER_DLL		20
+#define NS_DLL			21
+#define SHIP_DLL		22
+
+#define FRONTLINE_DLL	100
 
 
 // define some function prototypes...

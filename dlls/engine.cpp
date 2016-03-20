@@ -1260,15 +1260,15 @@ int pfnGetTimesTutorMessageShown(int mid)
 void pfnProcessTutorMessageDecayBuffer(int *buffer, int bufferLength)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnProcessTutorMessageDecayBuffer:\n"); fclose(fp); }
-   (*g_engfuncs.pfnProcessTutorMessageDecayBuffer)(buffer, bufferLength);
+   (*g_engfuncs.ProcessTutorMessageDecayBuffer)(buffer, bufferLength);
 }
 void pfnConstructTutorMessageDecayBuffer(int *buffer, int bufferLength)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnConstructTutorMessageDecayBuffer:\n"); fclose(fp); }
-   (*g_engfuncs.pfnConstructTutorMessageDecayBuffer)(buffer, bufferLength);
+   (*g_engfuncs.ConstructTutorMessageDecayBuffer)(buffer, bufferLength);
 }
 void pfnResetTutorMessageDecayData( void )
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnResetTutorMessageDecayData:\n"); fclose(fp); }
-   (*g_engfuncs.pfnResetTutorMessageDecayData)();
+   (*g_engfuncs.ResetTutorMessageDecayData)();
 }

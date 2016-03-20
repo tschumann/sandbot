@@ -66,312 +66,301 @@ void DLLEXPORT GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t
 extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
 #endif
 {
-   int pos;
-   unsigned char *filebuf;
-   int filesize;
-   FILE *filep;
-   char game_dir[256];
-   char mod_name[32];
+	int pos;
+	char game_dir[256];
+	char mod_name[32];
 
-   // get the engine functions from the engine...
+	// get the engine functions from the engine...
+	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
 
-   // test if we're running Steam or not and shorten the engine functions table if we aren't
-   if ((access("valve/steam.inf", 0) != -1) || (access("FileSystem_Steam.dll", 0) != -1))
-	   memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t)); // steam
-   else
-      memcpy(&g_engfuncs, pengfuncsFromEngine, 144 * sizeof(uint32)); // non-steam
+	gpGlobals = pGlobals;
 
-   gpGlobals = pGlobals;
+	// find the directory name of the currently running MOD...
+	GET_GAME_DIR(game_dir);
 
-   // find the directory name of the currently running MOD...
-   GET_GAME_DIR (game_dir);
+	pos = strlen(game_dir) - 1;
 
-   pos = strlen(game_dir) - 1;
+	// skip any eventual trailing slashes
+	while ((pos) && (game_dir[pos] == '/'))
+		pos--;
 
-   // skip any eventual trailing slashes
-   while ((pos) && (game_dir[pos] == '/'))
-      pos--;
+	// scan backwards till first directory separator...
+	while ((pos) && (game_dir[pos] != '/'))
+		pos--;
 
-   // scan backwards till first directory separator...
-   while ((pos) && (game_dir[pos] != '/'))
-      pos--;
+	if (pos > 0)
+		pos++; // found one ? skip it
 
-   if (pos > 0)
-      pos++; // found one ? skip it
+	strcpy(mod_name, &game_dir[pos]);
 
-   strcpy(mod_name, &game_dir[pos]);
-
-   if (strcmpi(mod_name, "valve") == 0)
-   {
-      mod_id = VALVE_DLL;
+	if (strcmpi(mod_name, "valve") == 0)
+	{
+		mod_id = VALVE_DLL;
 
 #ifndef __linux__
-      // test if the game DLL file is NOT available outside of the Steam/PAK cache
-      if (access("valve/dlls/hl.dll", 0) == -1)
-      {
-         filebuf = LOAD_FILE_FOR_ME ("dlls/hl.dll", &filesize);
-         filep = fopen ("valve/dlls/hl.dll", "wb");
-         if (filep != NULL)
-         {
-            fwrite (filebuf, 1, filesize, filep); // if in cache, then extract it
-            fclose (filep);
-         }
-      }
-      h_Library = LoadLibrary("valve/dlls/hl.dll"); // and load the library
+		h_Library = LoadLibrary("valve/dlls/hl.dll"); // and load the library
 #else
-      h_Library = dlopen("valve/dlls/hl_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("valve/dlls/hl_i386.so", RTLD_NOW); // and load the library
 #endif
-   }
-   else if (strcmpi(mod_name, "tfc") == 0)
-   {
-      mod_id = TFC_DLL;
-#ifndef __linux__
-      // test if the game DLL file is NOT available outside of the Steam/PAK cache
-      if (access("tfc/dlls/tfc.dll", 0) == -1)
-      {
-         filebuf = LOAD_FILE_FOR_ME ("dlls/tfc.dll", &filesize);
-         filep = fopen ("tfc/dlls/tfc.dll", "wb");
-         if (filep != NULL)
-         {
-            fwrite (filebuf, 1, filesize, filep); // if in cache, then extract it
-            fclose (filep);
-         }
-      }
-      h_Library = LoadLibrary("tfc/dlls/tfc.dll");
-#else
-      h_Library = dlopen("tfc/dlls/tfc_i386.so", RTLD_NOW);
-#endif
-   }
-   else if (strcmpi(mod_name, "cstrike") == 0)
-   {
-      mod_id = CSTRIKE_DLL;
-#ifndef __linux__
-      // test if the game DLL file is NOT available outside of the Steam/PAK cache
-      if (access("cstrike/dlls/mp.dll", 0) == -1)
-      {
-         filebuf = LOAD_FILE_FOR_ME ("dlls/mp.dll", &filesize);
-         filep = fopen ("cstrike/dlls/mp.dll", "wb");
-         if (filep != NULL)
-         {
-            fwrite (filebuf, 1, filesize, filep); // if in cache, then extract it
-            fclose (filep);
-         }
-      }
-      h_Library = LoadLibrary("cstrike/dlls/mp.dll");
-#else
-      h_Library = dlopen("cstrike/dlls/cs_i386.so", RTLD_NOW);
-#endif
-   }
-   else if (strcmpi(mod_name, "gearbox") == 0)
-   {
-      mod_id = GEARBOX_DLL;
-#ifndef __linux__
-      // test if the game DLL file is NOT available outside of the Steam/PAK cache
-      if (access("gearbox/dlls/opfor.dll", 0) == -1)
-      {
-         filebuf = LOAD_FILE_FOR_ME ("dlls/opfor.dll", &filesize);
-         filep = fopen ("gearbox/dlls/opfor.dll", "wb");
-         if (filep != NULL)
-         {
-            fwrite (filebuf, 1, filesize, filep); // if in cache, then extract it
-            fclose (filep);
-         }
-      }
-      h_Library = LoadLibrary("gearbox/dlls/opfor.dll");
-#else
-      h_Library = dlopen("gearbox/dlls/opfor_i386.so", RTLD_NOW);
-#endif
-   }
-   else if (strcmpi(mod_name, "frontline") == 0)
-   {
-      mod_id = FRONTLINE_DLL;
-#ifndef __linux__
-      // test if the game DLL file is NOT available outside of the Steam/PAK cache
-      if (access("frontline/dlls/frontline.dll", 0) == -1)
-      {
-         filebuf = LOAD_FILE_FOR_ME ("dlls/frontline.dll", &filesize);
-         filep = fopen ("frontline/dlls/frontline.dll", "wb");
-         if (filep != NULL)
-         {
-            fwrite (filebuf, 1, filesize, filep); // if in cache, then extract it
-            fclose (filep);
-         }
-      }
-      h_Library = LoadLibrary("frontline/dlls/frontline.dll");
-#else
-      h_Library = dlopen("frontline/dlls/front_i386.so", RTLD_NOW);
-#endif
-   }
+	}
+	else if (strcmpi(mod_name, "bshift") == 0)
+	{
+		mod_id = BSHIFT_DLL;
 
-   if (h_Library == NULL)
-   {
-      // Directory error or Unsupported MOD!
+#ifndef __linux__
+		h_Library = LoadLibrary("bshift/dlls/bshift.dll"); // and load the library
+#else
+		h_Library = dlopen("bshift/dlls/bshift_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "gearbox") == 0)
+	{
+		mod_id = GEARBOX_DLL;
 
+#ifndef __linux__
+		h_Library = LoadLibrary("gearbox/dlls/opfor.dll"); // and load the library
+#else
+		h_Library = dlopen("gearbox/dlls/opfor_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "decay") == 0)
+	{
+		mod_id = DECAY_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("decay/dlls/decay.dll"); // and load the library
+#else
+		h_Library = dlopen("decay/dlls/decay_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "cstrike") == 0)
+	{
+		mod_id = CSTRIKE_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("cstrike/dlls/mp.dll"); // and load the library
+#else
+		h_Library = dlopen("cstrike/dlls/cs_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "czero") == 0)
+	{
+		mod_id = CZERO_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("czero/dlls/mp.dll"); // and load the library
+#else
+		h_Library = dlopen("czero/dlls/cs_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "czeror") == 0)
+	{
+		mod_id = CZEROR_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("czeror/dlls/cz.dll"); // and load the library
+#else
+		h_Library = dlopen("czeror/dlls/cz_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "dod") == 0)
+	{
+		mod_id = DOD_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("dod/dlls/dod.dll"); // and load the library
+#else
+		h_Library = dlopen("dod/dlls/dod_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "tfc") == 0)
+	{
+		mod_id = TFC_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("tfc/dlls/tfc.dll"); // and load the library
+#else
+		h_Library = dlopen("tfc/dlls/tfc_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(mod_name, "rewolf") == 0)
+	{
+		mod_id = REWOLF_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("rewolf/dlls/gunman.dll"); // and load the library
+#else
+		h_Library = NULL;
+#endif
+	}
+
+	if (h_Library == NULL)
+	{
+		// Directory error or Unsupported MOD!
 		ALERT( at_error, "HPB_bot - MOD dll not found (or unsupported MOD)!" );
-   }
+	}
 
+	// and now we need to pass engine functions table to the game DLL (in fact it's our own
+	// functions we are passing here, but the game DLL won't notice)...
 
-   // and now we need to pass engine functions table to the game DLL (in fact it's our own
-   // functions we are passing here, but the game DLL won't notice)...
+	pengfuncsFromEngine->pfnPrecacheModel = pfnPrecacheModel;
+	pengfuncsFromEngine->pfnPrecacheSound = pfnPrecacheSound;
+	pengfuncsFromEngine->pfnSetModel = pfnSetModel;
+	pengfuncsFromEngine->pfnModelIndex = pfnModelIndex;
+	pengfuncsFromEngine->pfnModelFrames = pfnModelFrames;
+	pengfuncsFromEngine->pfnSetSize = pfnSetSize;
+	pengfuncsFromEngine->pfnChangeLevel = pfnChangeLevel;
+	pengfuncsFromEngine->pfnGetSpawnParms = pfnGetSpawnParms;
+	pengfuncsFromEngine->pfnSaveSpawnParms = pfnSaveSpawnParms;
+	pengfuncsFromEngine->pfnVecToYaw = pfnVecToYaw;
+	pengfuncsFromEngine->pfnVecToAngles = pfnVecToAngles;
+	pengfuncsFromEngine->pfnMoveToOrigin = pfnMoveToOrigin;
+	pengfuncsFromEngine->pfnChangeYaw = pfnChangeYaw;
+	pengfuncsFromEngine->pfnChangePitch = pfnChangePitch;
+	pengfuncsFromEngine->pfnFindEntityByString = pfnFindEntityByString;
+	pengfuncsFromEngine->pfnGetEntityIllum = pfnGetEntityIllum;
+	pengfuncsFromEngine->pfnFindEntityInSphere = pfnFindEntityInSphere;
+	pengfuncsFromEngine->pfnFindClientInPVS = pfnFindClientInPVS;
+	pengfuncsFromEngine->pfnEntitiesInPVS = pfnEntitiesInPVS;
+	pengfuncsFromEngine->pfnMakeVectors = pfnMakeVectors;
+	pengfuncsFromEngine->pfnAngleVectors = pfnAngleVectors;
+	pengfuncsFromEngine->pfnCreateEntity = pfnCreateEntity;
+	pengfuncsFromEngine->pfnRemoveEntity = pfnRemoveEntity;
+	pengfuncsFromEngine->pfnCreateNamedEntity = pfnCreateNamedEntity;
+	pengfuncsFromEngine->pfnMakeStatic = pfnMakeStatic;
+	pengfuncsFromEngine->pfnEntIsOnFloor = pfnEntIsOnFloor;
+	pengfuncsFromEngine->pfnDropToFloor = pfnDropToFloor;
+	pengfuncsFromEngine->pfnWalkMove = pfnWalkMove;
+	pengfuncsFromEngine->pfnSetOrigin = pfnSetOrigin;
+	pengfuncsFromEngine->pfnEmitSound = pfnEmitSound;
+	pengfuncsFromEngine->pfnEmitAmbientSound = pfnEmitAmbientSound;
+	pengfuncsFromEngine->pfnTraceLine = pfnTraceLine;
+	pengfuncsFromEngine->pfnTraceToss = pfnTraceToss;
+	pengfuncsFromEngine->pfnTraceMonsterHull = pfnTraceMonsterHull;
+	pengfuncsFromEngine->pfnTraceHull = pfnTraceHull;
+	pengfuncsFromEngine->pfnTraceModel = pfnTraceModel;
+	pengfuncsFromEngine->pfnTraceTexture = pfnTraceTexture;
+	pengfuncsFromEngine->pfnTraceSphere = pfnTraceSphere;
+	pengfuncsFromEngine->pfnGetAimVector = pfnGetAimVector;
+	pengfuncsFromEngine->pfnServerCommand = pfnServerCommand;
+	pengfuncsFromEngine->pfnServerExecute = pfnServerExecute;
+	pengfuncsFromEngine->pfnClientCommand = pfnClientCommand;
+	pengfuncsFromEngine->pfnParticleEffect = pfnParticleEffect;
+	pengfuncsFromEngine->pfnLightStyle = pfnLightStyle;
+	pengfuncsFromEngine->pfnDecalIndex = pfnDecalIndex;
+	pengfuncsFromEngine->pfnPointContents = pfnPointContents;
+	pengfuncsFromEngine->pfnMessageBegin = pfnMessageBegin;
+	pengfuncsFromEngine->pfnMessageEnd = pfnMessageEnd;
+	pengfuncsFromEngine->pfnWriteByte = pfnWriteByte;
+	pengfuncsFromEngine->pfnWriteChar = pfnWriteChar;
+	pengfuncsFromEngine->pfnWriteShort = pfnWriteShort;
+	pengfuncsFromEngine->pfnWriteLong = pfnWriteLong;
+	pengfuncsFromEngine->pfnWriteAngle = pfnWriteAngle;
+	pengfuncsFromEngine->pfnWriteCoord = pfnWriteCoord;
+	pengfuncsFromEngine->pfnWriteString = pfnWriteString;
+	pengfuncsFromEngine->pfnWriteEntity = pfnWriteEntity;
+	pengfuncsFromEngine->pfnCVarRegister = pfnCVarRegister;
+	pengfuncsFromEngine->pfnCVarGetFloat = pfnCVarGetFloat;
+	pengfuncsFromEngine->pfnCVarGetString = pfnCVarGetString;
+	pengfuncsFromEngine->pfnCVarSetFloat = pfnCVarSetFloat;
+	pengfuncsFromEngine->pfnCVarSetString = pfnCVarSetString;
+	pengfuncsFromEngine->pfnPvAllocEntPrivateData = pfnPvAllocEntPrivateData;
+	pengfuncsFromEngine->pfnPvEntPrivateData = pfnPvEntPrivateData;
+	pengfuncsFromEngine->pfnFreeEntPrivateData = pfnFreeEntPrivateData;
+	pengfuncsFromEngine->pfnSzFromIndex = pfnSzFromIndex;
+	pengfuncsFromEngine->pfnAllocString = pfnAllocString;
+	pengfuncsFromEngine->pfnGetVarsOfEnt = pfnGetVarsOfEnt;
+	pengfuncsFromEngine->pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
+	pengfuncsFromEngine->pfnEntOffsetOfPEntity = pfnEntOffsetOfPEntity;
+	pengfuncsFromEngine->pfnIndexOfEdict = pfnIndexOfEdict;
+	pengfuncsFromEngine->pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
+	pengfuncsFromEngine->pfnFindEntityByVars = pfnFindEntityByVars;
+	pengfuncsFromEngine->pfnGetModelPtr = pfnGetModelPtr;
+	pengfuncsFromEngine->pfnRegUserMsg = pfnRegUserMsg;
+	pengfuncsFromEngine->pfnAnimationAutomove = pfnAnimationAutomove;
+	pengfuncsFromEngine->pfnGetBonePosition = pfnGetBonePosition;
+	pengfuncsFromEngine->pfnFunctionFromName = pfnFunctionFromName;
+	pengfuncsFromEngine->pfnNameForFunction = pfnNameForFunction;
+	pengfuncsFromEngine->pfnClientPrintf = pfnClientPrintf;
+	pengfuncsFromEngine->pfnServerPrint = pfnServerPrint;
+	pengfuncsFromEngine->pfnCmd_Args = Cmd_Args;
+	pengfuncsFromEngine->pfnCmd_Argv = Cmd_Argv;
+	pengfuncsFromEngine->pfnCmd_Argc = Cmd_Argc;
+	pengfuncsFromEngine->pfnGetAttachment = pfnGetAttachment;
+	pengfuncsFromEngine->pfnCRC32_Init = pfnCRC32_Init;
+	pengfuncsFromEngine->pfnCRC32_ProcessBuffer = pfnCRC32_ProcessBuffer;
+	pengfuncsFromEngine->pfnCRC32_ProcessByte = pfnCRC32_ProcessByte;
+	pengfuncsFromEngine->pfnCRC32_Final = pfnCRC32_Final;
+	pengfuncsFromEngine->pfnRandomLong = pfnRandomLong;
+	pengfuncsFromEngine->pfnRandomFloat = pfnRandomFloat;
+	pengfuncsFromEngine->pfnSetView = pfnSetView;
+	pengfuncsFromEngine->pfnTime = pfnTime;
+	pengfuncsFromEngine->pfnCrosshairAngle = pfnCrosshairAngle;
+	pengfuncsFromEngine->pfnLoadFileForMe = pfnLoadFileForMe;
+	pengfuncsFromEngine->pfnFreeFile = pfnFreeFile;
+	pengfuncsFromEngine->pfnEndSection = pfnEndSection;
+	pengfuncsFromEngine->pfnCompareFileTime = pfnCompareFileTime;
+	pengfuncsFromEngine->pfnGetGameDir = pfnGetGameDir;
+	pengfuncsFromEngine->pfnCvar_RegisterVariable = pfnCvar_RegisterVariable;
+	pengfuncsFromEngine->pfnFadeClientVolume = pfnFadeClientVolume;
+	pengfuncsFromEngine->pfnSetClientMaxspeed = pfnSetClientMaxspeed;
+	pengfuncsFromEngine->pfnCreateFakeClient = pfnCreateFakeClient;
+	pengfuncsFromEngine->pfnRunPlayerMove = pfnRunPlayerMove;
+	pengfuncsFromEngine->pfnNumberOfEntities = pfnNumberOfEntities;
+	pengfuncsFromEngine->pfnGetInfoKeyBuffer = pfnGetInfoKeyBuffer;
+	pengfuncsFromEngine->pfnInfoKeyValue = pfnInfoKeyValue;
+	pengfuncsFromEngine->pfnSetKeyValue = pfnSetKeyValue;
+	pengfuncsFromEngine->pfnSetClientKeyValue = pfnSetClientKeyValue;
+	pengfuncsFromEngine->pfnIsMapValid = pfnIsMapValid;
+	pengfuncsFromEngine->pfnStaticDecal = pfnStaticDecal;
+	pengfuncsFromEngine->pfnPrecacheGeneric = pfnPrecacheGeneric;
+	pengfuncsFromEngine->pfnGetPlayerUserId = pfnGetPlayerUserId;
+	pengfuncsFromEngine->pfnBuildSoundMsg = pfnBuildSoundMsg;
+	pengfuncsFromEngine->pfnIsDedicatedServer = pfnIsDedicatedServer;
+	pengfuncsFromEngine->pfnCVarGetPointer = pfnCVarGetPointer;
+	pengfuncsFromEngine->pfnGetPlayerWONId = pfnGetPlayerWONId;
+	pengfuncsFromEngine->pfnInfo_RemoveKey = pfnInfo_RemoveKey;
+	pengfuncsFromEngine->pfnGetPhysicsKeyValue = pfnGetPhysicsKeyValue;
+	pengfuncsFromEngine->pfnSetPhysicsKeyValue = pfnSetPhysicsKeyValue;
+	pengfuncsFromEngine->pfnGetPhysicsInfoString = pfnGetPhysicsInfoString;
+	pengfuncsFromEngine->pfnPrecacheEvent = pfnPrecacheEvent;
+	pengfuncsFromEngine->pfnPlaybackEvent = pfnPlaybackEvent;
+	pengfuncsFromEngine->pfnSetFatPVS = pfnSetFatPVS;
+	pengfuncsFromEngine->pfnSetFatPAS = pfnSetFatPAS;
+	pengfuncsFromEngine->pfnCheckVisibility = pfnCheckVisibility;
+	pengfuncsFromEngine->pfnDeltaSetField = pfnDeltaSetField;
+	pengfuncsFromEngine->pfnDeltaUnsetField = pfnDeltaUnsetField;
+	pengfuncsFromEngine->pfnDeltaAddEncoder = pfnDeltaAddEncoder;
+	pengfuncsFromEngine->pfnGetCurrentPlayer = pfnGetCurrentPlayer;
+	pengfuncsFromEngine->pfnCanSkipPlayer = pfnCanSkipPlayer;
+	pengfuncsFromEngine->pfnDeltaFindField = pfnDeltaFindField;
+	pengfuncsFromEngine->pfnDeltaSetFieldByIndex = pfnDeltaSetFieldByIndex;
+	pengfuncsFromEngine->pfnDeltaUnsetFieldByIndex = pfnDeltaUnsetFieldByIndex;
+	pengfuncsFromEngine->pfnSetGroupMask = pfnSetGroupMask;
+	pengfuncsFromEngine->pfnCreateInstancedBaseline = pfnCreateInstancedBaseline;
+	pengfuncsFromEngine->pfnCvar_DirectSet = pfnCvar_DirectSet;
+	pengfuncsFromEngine->pfnForceUnmodified = pfnForceUnmodified;
+	pengfuncsFromEngine->pfnGetPlayerStats = pfnGetPlayerStats;
+	pengfuncsFromEngine->pfnAddServerCommand = pfnAddServerCommand;
+	pengfuncsFromEngine->pfnVoice_GetClientListening = pfnVoice_GetClientListening;
+	pengfuncsFromEngine->pfnVoice_SetClientListening = pfnVoice_SetClientListening;
+	pengfuncsFromEngine->pfnGetPlayerAuthId = pfnGetPlayerAuthId; 
+	pengfuncsFromEngine->pfnSequenceGet = pfnSequenceGet;
+	pengfuncsFromEngine->pfnSequencePickSentence = pfnSequencePickSentence;
+	pengfuncsFromEngine->pfnGetFileSize = pfnGetFileSize;
+	pengfuncsFromEngine->pfnGetApproxWavePlayLen = pfnGetApproxWavePlayLen;
+	pengfuncsFromEngine->pfnIsCareerMatch = pfnIsCareerMatch;
+	pengfuncsFromEngine->pfnGetLocalizedStringLength = pfnGetLocalizedStringLength;
+	pengfuncsFromEngine->pfnRegisterTutorMessageShown = pfnRegisterTutorMessageShown;
+	pengfuncsFromEngine->pfnGetTimesTutorMessageShown = pfnGetTimesTutorMessageShown;
+	pengfuncsFromEngine->ProcessTutorMessageDecayBuffer = pfnProcessTutorMessageDecayBuffer;
+	pengfuncsFromEngine->ConstructTutorMessageDecayBuffer = pfnConstructTutorMessageDecayBuffer;
+	pengfuncsFromEngine->ResetTutorMessageDecayData = pfnResetTutorMessageDecayData;
 
-   pengfuncsFromEngine->pfnPrecacheModel = pfnPrecacheModel;
-   pengfuncsFromEngine->pfnPrecacheSound = pfnPrecacheSound;
-   pengfuncsFromEngine->pfnSetModel = pfnSetModel;
-   pengfuncsFromEngine->pfnModelIndex = pfnModelIndex;
-   pengfuncsFromEngine->pfnModelFrames = pfnModelFrames;
-   pengfuncsFromEngine->pfnSetSize = pfnSetSize;
-   pengfuncsFromEngine->pfnChangeLevel = pfnChangeLevel;
-   pengfuncsFromEngine->pfnGetSpawnParms = pfnGetSpawnParms;
-   pengfuncsFromEngine->pfnSaveSpawnParms = pfnSaveSpawnParms;
-   pengfuncsFromEngine->pfnVecToYaw = pfnVecToYaw;
-   pengfuncsFromEngine->pfnVecToAngles = pfnVecToAngles;
-   pengfuncsFromEngine->pfnMoveToOrigin = pfnMoveToOrigin;
-   pengfuncsFromEngine->pfnChangeYaw = pfnChangeYaw;
-   pengfuncsFromEngine->pfnChangePitch = pfnChangePitch;
-   pengfuncsFromEngine->pfnFindEntityByString = pfnFindEntityByString;
-   pengfuncsFromEngine->pfnGetEntityIllum = pfnGetEntityIllum;
-   pengfuncsFromEngine->pfnFindEntityInSphere = pfnFindEntityInSphere;
-   pengfuncsFromEngine->pfnFindClientInPVS = pfnFindClientInPVS;
-   pengfuncsFromEngine->pfnEntitiesInPVS = pfnEntitiesInPVS;
-   pengfuncsFromEngine->pfnMakeVectors = pfnMakeVectors;
-   pengfuncsFromEngine->pfnAngleVectors = pfnAngleVectors;
-   pengfuncsFromEngine->pfnCreateEntity = pfnCreateEntity;
-   pengfuncsFromEngine->pfnRemoveEntity = pfnRemoveEntity;
-   pengfuncsFromEngine->pfnCreateNamedEntity = pfnCreateNamedEntity;
-   pengfuncsFromEngine->pfnMakeStatic = pfnMakeStatic;
-   pengfuncsFromEngine->pfnEntIsOnFloor = pfnEntIsOnFloor;
-   pengfuncsFromEngine->pfnDropToFloor = pfnDropToFloor;
-   pengfuncsFromEngine->pfnWalkMove = pfnWalkMove;
-   pengfuncsFromEngine->pfnSetOrigin = pfnSetOrigin;
-   pengfuncsFromEngine->pfnEmitSound = pfnEmitSound;
-   pengfuncsFromEngine->pfnEmitAmbientSound = pfnEmitAmbientSound;
-   pengfuncsFromEngine->pfnTraceLine = pfnTraceLine;
-   pengfuncsFromEngine->pfnTraceToss = pfnTraceToss;
-   pengfuncsFromEngine->pfnTraceMonsterHull = pfnTraceMonsterHull;
-   pengfuncsFromEngine->pfnTraceHull = pfnTraceHull;
-   pengfuncsFromEngine->pfnTraceModel = pfnTraceModel;
-   pengfuncsFromEngine->pfnTraceTexture = pfnTraceTexture;
-   pengfuncsFromEngine->pfnTraceSphere = pfnTraceSphere;
-   pengfuncsFromEngine->pfnGetAimVector = pfnGetAimVector;
-   pengfuncsFromEngine->pfnServerCommand = pfnServerCommand;
-   pengfuncsFromEngine->pfnServerExecute = pfnServerExecute;
-   pengfuncsFromEngine->pfnClientCommand = pfnClientCommand;
-   pengfuncsFromEngine->pfnParticleEffect = pfnParticleEffect;
-   pengfuncsFromEngine->pfnLightStyle = pfnLightStyle;
-   pengfuncsFromEngine->pfnDecalIndex = pfnDecalIndex;
-   pengfuncsFromEngine->pfnPointContents = pfnPointContents;
-   pengfuncsFromEngine->pfnMessageBegin = pfnMessageBegin;
-   pengfuncsFromEngine->pfnMessageEnd = pfnMessageEnd;
-   pengfuncsFromEngine->pfnWriteByte = pfnWriteByte;
-   pengfuncsFromEngine->pfnWriteChar = pfnWriteChar;
-   pengfuncsFromEngine->pfnWriteShort = pfnWriteShort;
-   pengfuncsFromEngine->pfnWriteLong = pfnWriteLong;
-   pengfuncsFromEngine->pfnWriteAngle = pfnWriteAngle;
-   pengfuncsFromEngine->pfnWriteCoord = pfnWriteCoord;
-   pengfuncsFromEngine->pfnWriteString = pfnWriteString;
-   pengfuncsFromEngine->pfnWriteEntity = pfnWriteEntity;
-   pengfuncsFromEngine->pfnCVarRegister = pfnCVarRegister;
-   pengfuncsFromEngine->pfnCVarGetFloat = pfnCVarGetFloat;
-   pengfuncsFromEngine->pfnCVarGetString = pfnCVarGetString;
-   pengfuncsFromEngine->pfnCVarSetFloat = pfnCVarSetFloat;
-   pengfuncsFromEngine->pfnCVarSetString = pfnCVarSetString;
-   pengfuncsFromEngine->pfnPvAllocEntPrivateData = pfnPvAllocEntPrivateData;
-   pengfuncsFromEngine->pfnPvEntPrivateData = pfnPvEntPrivateData;
-   pengfuncsFromEngine->pfnFreeEntPrivateData = pfnFreeEntPrivateData;
-   pengfuncsFromEngine->pfnSzFromIndex = pfnSzFromIndex;
-   pengfuncsFromEngine->pfnAllocString = pfnAllocString;
-   pengfuncsFromEngine->pfnGetVarsOfEnt = pfnGetVarsOfEnt;
-   pengfuncsFromEngine->pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
-   pengfuncsFromEngine->pfnEntOffsetOfPEntity = pfnEntOffsetOfPEntity;
-   pengfuncsFromEngine->pfnIndexOfEdict = pfnIndexOfEdict;
-   pengfuncsFromEngine->pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
-   pengfuncsFromEngine->pfnFindEntityByVars = pfnFindEntityByVars;
-   pengfuncsFromEngine->pfnGetModelPtr = pfnGetModelPtr;
-   pengfuncsFromEngine->pfnRegUserMsg = pfnRegUserMsg;
-   pengfuncsFromEngine->pfnAnimationAutomove = pfnAnimationAutomove;
-   pengfuncsFromEngine->pfnGetBonePosition = pfnGetBonePosition;
-   pengfuncsFromEngine->pfnFunctionFromName = pfnFunctionFromName;
-   pengfuncsFromEngine->pfnNameForFunction = pfnNameForFunction;
-   pengfuncsFromEngine->pfnClientPrintf = pfnClientPrintf;
-   pengfuncsFromEngine->pfnServerPrint = pfnServerPrint;
-   pengfuncsFromEngine->pfnCmd_Args = Cmd_Args;
-   pengfuncsFromEngine->pfnCmd_Argv = Cmd_Argv;
-   pengfuncsFromEngine->pfnCmd_Argc = Cmd_Argc;
-   pengfuncsFromEngine->pfnGetAttachment = pfnGetAttachment;
-   pengfuncsFromEngine->pfnCRC32_Init = pfnCRC32_Init;
-   pengfuncsFromEngine->pfnCRC32_ProcessBuffer = pfnCRC32_ProcessBuffer;
-   pengfuncsFromEngine->pfnCRC32_ProcessByte = pfnCRC32_ProcessByte;
-   pengfuncsFromEngine->pfnCRC32_Final = pfnCRC32_Final;
-   pengfuncsFromEngine->pfnRandomLong = pfnRandomLong;
-   pengfuncsFromEngine->pfnRandomFloat = pfnRandomFloat;
-   pengfuncsFromEngine->pfnSetView = pfnSetView;
-   pengfuncsFromEngine->pfnTime = pfnTime;
-   pengfuncsFromEngine->pfnCrosshairAngle = pfnCrosshairAngle;
-   pengfuncsFromEngine->pfnLoadFileForMe = pfnLoadFileForMe;
-   pengfuncsFromEngine->pfnFreeFile = pfnFreeFile;
-   pengfuncsFromEngine->pfnEndSection = pfnEndSection;
-   pengfuncsFromEngine->pfnCompareFileTime = pfnCompareFileTime;
-   pengfuncsFromEngine->pfnGetGameDir = pfnGetGameDir;
-   pengfuncsFromEngine->pfnCvar_RegisterVariable = pfnCvar_RegisterVariable;
-   pengfuncsFromEngine->pfnFadeClientVolume = pfnFadeClientVolume;
-   pengfuncsFromEngine->pfnSetClientMaxspeed = pfnSetClientMaxspeed;
-   pengfuncsFromEngine->pfnCreateFakeClient = pfnCreateFakeClient;
-   pengfuncsFromEngine->pfnRunPlayerMove = pfnRunPlayerMove;
-   pengfuncsFromEngine->pfnNumberOfEntities = pfnNumberOfEntities;
-   pengfuncsFromEngine->pfnGetInfoKeyBuffer = pfnGetInfoKeyBuffer;
-   pengfuncsFromEngine->pfnInfoKeyValue = pfnInfoKeyValue;
-   pengfuncsFromEngine->pfnSetKeyValue = pfnSetKeyValue;
-   pengfuncsFromEngine->pfnSetClientKeyValue = pfnSetClientKeyValue;
-   pengfuncsFromEngine->pfnIsMapValid = pfnIsMapValid;
-   pengfuncsFromEngine->pfnStaticDecal = pfnStaticDecal;
-   pengfuncsFromEngine->pfnPrecacheGeneric = pfnPrecacheGeneric;
-   pengfuncsFromEngine->pfnGetPlayerUserId = pfnGetPlayerUserId;
-   pengfuncsFromEngine->pfnBuildSoundMsg = pfnBuildSoundMsg;
-   pengfuncsFromEngine->pfnIsDedicatedServer = pfnIsDedicatedServer;
-   pengfuncsFromEngine->pfnCVarGetPointer = pfnCVarGetPointer;
-   pengfuncsFromEngine->pfnGetPlayerWONId = pfnGetPlayerWONId;
-   pengfuncsFromEngine->pfnInfo_RemoveKey = pfnInfo_RemoveKey;
-   pengfuncsFromEngine->pfnGetPhysicsKeyValue = pfnGetPhysicsKeyValue;
-   pengfuncsFromEngine->pfnSetPhysicsKeyValue = pfnSetPhysicsKeyValue;
-   pengfuncsFromEngine->pfnGetPhysicsInfoString = pfnGetPhysicsInfoString;
-   pengfuncsFromEngine->pfnPrecacheEvent = pfnPrecacheEvent;
-   pengfuncsFromEngine->pfnPlaybackEvent = pfnPlaybackEvent;
-   pengfuncsFromEngine->pfnSetFatPVS = pfnSetFatPVS;
-   pengfuncsFromEngine->pfnSetFatPAS = pfnSetFatPAS;
-   pengfuncsFromEngine->pfnCheckVisibility = pfnCheckVisibility;
-   pengfuncsFromEngine->pfnDeltaSetField = pfnDeltaSetField;
-   pengfuncsFromEngine->pfnDeltaUnsetField = pfnDeltaUnsetField;
-   pengfuncsFromEngine->pfnDeltaAddEncoder = pfnDeltaAddEncoder;
-   pengfuncsFromEngine->pfnGetCurrentPlayer = pfnGetCurrentPlayer;
-   pengfuncsFromEngine->pfnCanSkipPlayer = pfnCanSkipPlayer;
-   pengfuncsFromEngine->pfnDeltaFindField = pfnDeltaFindField;
-   pengfuncsFromEngine->pfnDeltaSetFieldByIndex = pfnDeltaSetFieldByIndex;
-   pengfuncsFromEngine->pfnDeltaUnsetFieldByIndex = pfnDeltaUnsetFieldByIndex;
-   pengfuncsFromEngine->pfnSetGroupMask = pfnSetGroupMask;
-   pengfuncsFromEngine->pfnCreateInstancedBaseline = pfnCreateInstancedBaseline;
-   pengfuncsFromEngine->pfnCvar_DirectSet = pfnCvar_DirectSet;
-   pengfuncsFromEngine->pfnForceUnmodified = pfnForceUnmodified;
-   pengfuncsFromEngine->pfnGetPlayerStats = pfnGetPlayerStats;
-   pengfuncsFromEngine->pfnAddServerCommand = pfnAddServerCommand;
-   pengfuncsFromEngine->pfnVoice_GetClientListening = pfnVoice_GetClientListening;
-   pengfuncsFromEngine->pfnVoice_SetClientListening = pfnVoice_SetClientListening;
-   pengfuncsFromEngine->pfnGetPlayerAuthId = pfnGetPlayerAuthId; 
-   pengfuncsFromEngine->pfnSequenceGet = pfnSequenceGet;
-   pengfuncsFromEngine->pfnSequencePickSentence = pfnSequencePickSentence;
-   pengfuncsFromEngine->pfnGetFileSize = pfnGetFileSize;
-   pengfuncsFromEngine->pfnGetApproxWavePlayLen = pfnGetApproxWavePlayLen;
-   pengfuncsFromEngine->pfnIsCareerMatch = pfnIsCareerMatch;
-   pengfuncsFromEngine->pfnGetLocalizedStringLength = pfnGetLocalizedStringLength;
-   pengfuncsFromEngine->pfnRegisterTutorMessageShown = pfnRegisterTutorMessageShown;
-   pengfuncsFromEngine->pfnGetTimesTutorMessageShown = pfnGetTimesTutorMessageShown;
-   pengfuncsFromEngine->pfnProcessTutorMessageDecayBuffer = pfnProcessTutorMessageDecayBuffer;
-   pengfuncsFromEngine->pfnConstructTutorMessageDecayBuffer = pfnConstructTutorMessageDecayBuffer;
-   pengfuncsFromEngine->pfnResetTutorMessageDecayData = pfnResetTutorMessageDecayData;
+	// give the engine functions to the other DLL...
+	(*(GIVEFNPTRSTODLL) GetProcAddress (h_Library, "GiveFnptrsToDll")) (pengfuncsFromEngine, pGlobals);
 
-   // give the engine functions to the other DLL...
-   (*(GIVEFNPTRSTODLL) GetProcAddress (h_Library, "GiveFnptrsToDll")) (pengfuncsFromEngine, pGlobals);
-
-   return; // finished, interfacing from gamedll to engine complete
+	return; // finished, interfacing from gamedll to engine complete
 }
 
 
