@@ -57,7 +57,7 @@ extern void *h_Library;
         static LINK_ENTITY_FUNC otherClassName = NULL; \
         static int skip = 0; \
 		if( skip ) { return; } \
-		if( otherClassName == NULL ) { otherClassName = (LINK_ENTITY_FUNC)GetProcAddress( hLibrary, #mapClassName ); } \
+		if( otherClassName == NULL ) { otherClassName = (LINK_ENTITY_FUNC)GetProcAddress( h_Library, #mapClassName ); } \
         if( otherClassName == NULL ) { skip = 1; return; } \
         (*otherClassName)( pev ); }
 
@@ -602,17 +602,17 @@ LINK_ENTITY_TO_FUNC(weather_genie);
 LINK_ENTITY_TO_FUNC(weather_litnode);
 
 // Condition Zero Deleted Scenes
-LINK_ENTITY_TO_FUNC(ammo_338magnum);
-LINK_ENTITY_TO_FUNC(ammo_357sig);
-LINK_ENTITY_TO_FUNC(ammo_45acp)
-LINK_ENTITY_TO_FUNC(ammo_50ae);
-LINK_ENTITY_TO_FUNC(ammo_556nato);
-LINK_ENTITY_TO_FUNC(ammo_556natobox);
-LINK_ENTITY_TO_FUNC(ammo_57mm);
+// LINK_ENTITY_TO_FUNC(ammo_338magnum);
+// LINK_ENTITY_TO_FUNC(ammo_357sig);
+// LINK_ENTITY_TO_FUNC(ammo_45acp)
+// LINK_ENTITY_TO_FUNC(ammo_50ae);
+// LINK_ENTITY_TO_FUNC(ammo_556nato);
+// LINK_ENTITY_TO_FUNC(ammo_556natobox);
+// LINK_ENTITY_TO_FUNC(ammo_57mm);
 LINK_ENTITY_TO_FUNC(ammo_66mm);
-LINK_ENTITY_TO_FUNC(ammo_762nato);
+// LINK_ENTITY_TO_FUNC(ammo_762nato);
 LINK_ENTITY_TO_FUNC(ammo_762natobox);
-LINK_ENTITY_TO_FUNC(ammo_9mm);
+// LINK_ENTITY_TO_FUNC(ammo_9mm);
 LINK_ENTITY_TO_FUNC(ammo_bomb);
 LINK_ENTITY_TO_FUNC(ammo_generic);
 LINK_ENTITY_TO_FUNC(ammo_lawsclip);
@@ -622,17 +622,17 @@ LINK_ENTITY_TO_FUNC(env_fog);
 LINK_ENTITY_TO_FUNC(env_liveammoshooter);
 LINK_ENTITY_TO_FUNC(env_missionfailure);
 LINK_ENTITY_TO_FUNC(env_particle);
-LINK_ENTITY_TO_FUNC(env_rain);
+// LINK_ENTITY_TO_FUNC(env_rain);
 LINK_ENTITY_TO_FUNC(env_randomweather);
-LINK_ENTITY_TO_FUNC(env_snow);
+// LINK_ENTITY_TO_FUNC(env_snow);
 LINK_ENTITY_TO_FUNC(func_model_brush);
-LINK_ENTITY_TO_FUNC(func_rain);
-LINK_ENTITY_TO_FUNC(func_snow);
-LINK_ENTITY_TO_FUNC(hostage_entity);
+// LINK_ENTITY_TO_FUNC(func_rain);
+// LINK_ENTITY_TO_FUNC(func_snow);
+// LINK_ENTITY_TO_FUNC(hostage_entity);
 LINK_ENTITY_TO_FUNC(info_camera);
-LINK_ENTITY_TO_FUNC(info_hostage_rescue);
+// LINK_ENTITY_TO_FUNC(info_hostage_rescue);
 LINK_ENTITY_TO_FUNC(item_armor);
-LINK_ENTITY_TO_FUNC(item_generic);
+// LINK_ENTITY_TO_FUNC(item_generic);
 LINK_ENTITY_TO_FUNC(item_healthkitold);
 LINK_ENTITY_TO_FUNC(item_worldmap);
 LINK_ENTITY_TO_FUNC(laws_rocket);
@@ -860,44 +860,85 @@ LINK_ENTITY_TO_FUNC(trigger_sequence);
 LINK_ENTITY_TO_FUNC(trigger_stealth);
 LINK_ENTITY_TO_FUNC(trigger_usetool);
 LINK_ENTITY_TO_FUNC(trigger_zipline);
-LINK_ENTITY_TO_FUNC(weapon_ak47);
-LINK_ENTITY_TO_FUNC(weapon_aug);
-LINK_ENTITY_TO_FUNC(weapon_awp);
+// LINK_ENTITY_TO_FUNC(weapon_ak47);
+// LINK_ENTITY_TO_FUNC(weapon_aug);
+// LINK_ENTITY_TO_FUNC(weapon_awp);
 LINK_ENTITY_TO_FUNC(weapon_blowtorch);
 LINK_ENTITY_TO_FUNC(weapon_briefcase);
-LINK_ENTITY_TO_FUNC(weapon_c4);
+// LINK_ENTITY_TO_FUNC(weapon_c4);
 LINK_ENTITY_TO_FUNC(weapon_camera);
-LINK_ENTITY_TO_FUNC(weapon_deagle);
+// LINK_ENTITY_TO_FUNC(weapon_deagle);
 LINK_ENTITY_TO_FUNC(weapon_effectspoint);
-LINK_ENTITY_TO_FUNC(weapon_elite);
-LINK_ENTITY_TO_FUNC(weapon_famas);
+// LINK_ENTITY_TO_FUNC(weapon_elite);
+// LINK_ENTITY_TO_FUNC(weapon_famas);
 LINK_ENTITY_TO_FUNC(weapon_fiberopticcamera);
-LINK_ENTITY_TO_FUNC(weapon_fiveseven);
-LINK_ENTITY_TO_FUNC(weapon_flashbang);
-LINK_ENTITY_TO_FUNC(weapon_g3sg1);
-LINK_ENTITY_TO_FUNC(weapon_galil);
-LINK_ENTITY_TO_FUNC(weapon_glock18);
-LINK_ENTITY_TO_FUNC(weapon_hegrenade);
-LINK_ENTITY_TO_FUNC(weapon_knife);
+// LINK_ENTITY_TO_FUNC(weapon_fiveseven);
+// LINK_ENTITY_TO_FUNC(weapon_flashbang);
+// LINK_ENTITY_TO_FUNC(weapon_g3sg1);
+// LINK_ENTITY_TO_FUNC(weapon_galil);
+// LINK_ENTITY_TO_FUNC(weapon_glock18);
+// LINK_ENTITY_TO_FUNC(weapon_hegrenade);
+// LINK_ENTITY_TO_FUNC(weapon_knife);
 LINK_ENTITY_TO_FUNC(weapon_laws);
-LINK_ENTITY_TO_FUNC(weapon_m249);
-LINK_ENTITY_TO_FUNC(weapon_m3);
-LINK_ENTITY_TO_FUNC(weapon_m4a1);
+// LINK_ENTITY_TO_FUNC(weapon_m249);
+// LINK_ENTITY_TO_FUNC(weapon_m3);
+// LINK_ENTITY_TO_FUNC(weapon_m4a1);
 LINK_ENTITY_TO_FUNC(weapon_m60);
-LINK_ENTITY_TO_FUNC(weapon_mac10);
+// LINK_ENTITY_TO_FUNC(weapon_mac10);
 LINK_ENTITY_TO_FUNC(weapon_medkit);
-LINK_ENTITY_TO_FUNC(weapon_mp5navy);
-LINK_ENTITY_TO_FUNC(weapon_p228);
-LINK_ENTITY_TO_FUNC(weapon_p90);
+// LINK_ENTITY_TO_FUNC(weapon_mp5navy);
+// LINK_ENTITY_TO_FUNC(weapon_p228);
+// LINK_ENTITY_TO_FUNC(weapon_p90);
 LINK_ENTITY_TO_FUNC(weapon_radio);
 LINK_ENTITY_TO_FUNC(weapon_radiocontrolledbomb);
-LINK_ENTITY_TO_FUNC(weapon_scout);
-LINK_ENTITY_TO_FUNC(weapon_sg550);
-LINK_ENTITY_TO_FUNC(weapon_sg552);
+// LINK_ENTITY_TO_FUNC(weapon_scout);
+// LINK_ENTITY_TO_FUNC(weapon_sg550);
+// LINK_ENTITY_TO_FUNC(weapon_sg552);
 LINK_ENTITY_TO_FUNC(weapon_shieldgun);
-LINK_ENTITY_TO_FUNC(weapon_smokegrenade);
-LINK_ENTITY_TO_FUNC(weapon_tmp);
-LINK_ENTITY_TO_FUNC(weapon_ump45);
-LINK_ENTITY_TO_FUNC(weapon_usp);
-LINK_ENTITY_TO_FUNC(weapon_xm1014);
+// LINK_ENTITY_TO_FUNC(weapon_smokegrenade);
+// LINK_ENTITY_TO_FUNC(weapon_tmp);
+// LINK_ENTITY_TO_FUNC(weapon_ump45);
+// LINK_ENTITY_TO_FUNC(weapon_usp);
+// LINK_ENTITY_TO_FUNC(weapon_xm1014);
 LINK_ENTITY_TO_FUNC(weapon_zipline);
+
+// Hammer's .rmf format only supports entities with names of 32 characters or less
+// Condition Zero Deleted Scenes was developed with Radiant so this limit wasn't
+// observed - remap the long entity names to shorter entity names
+
+// possibly already remapped in cz.dll?
+// REMAP_ENTITY_TO_FUNC(monster_ct_repel, monster_counter_terrorist_repel);
+// REMAP_ENTITY_TO_FUNC(monster_ct_spetznaz, monster_counter_terrorist_spetsnaz);
+// REMAP_ENTITY_TO_FUNC(monster_t_arctic_assaultrifle, monster_terrorist_arctic_assaultrifle);
+// REMAP_ENTITY_TO_FUNC(monster_t_arctic_grenader, monster_terrorist_arctic_grenader);
+// REMAP_ENTITY_TO_FUNC(monster_t_arctic_machinegun, monster_terrorist_arctic_machinegun);
+// REMAP_ENTITY_TO_FUNC(monster_t_arctic_pistol, monster_terrorist_arctic_pistol);
+// REMAP_ENTITY_TO_FUNC(monster_t_arctic_shotgun, monster_terrorist_arctic_shotgun);
+// REMAP_ENTITY_TO_FUNC(monster_t_arctic_sniperrifle, monster_terrorist_arctic_sniperrifle);
+
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_pistol, monster_terrorist_russian_pistol);
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_shotgun, monster_terrorist_russian_shotgun);
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_sniperrifle, monster_terrorist_russian_sniperrifle);
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_machinegun, monster_terrorist_russian_machinegun);
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_melee, monster_terrorist_russian_melee);
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_grenader, monster_terrorist_russian_grenader);
+// REMAP_ENTITY_TO_FUNC(monster_t_russian_assaultrifle, monster_terrorist_russian_assaultrifle);
+// REMAP_ENTITY_TO_FUNC(monster_t_jungle_sniperrifle, monster_terrorist_jungle_sniperrifle);
+// REMAP_ENTITY_TO_FUNC(monster_t_jungle_pistol, monster_terrorist_jungle_pistol);
+// REMAP_ENTITY_TO_FUNC(monster_t_jungle_shotgun, monster_terrorist_jungle_shotgun);
+// REMAP_ENTITY_TO_FUNC(monster_t_jungle_machinegun, monster_terrorist_jungle_machinegun);
+// REMAP_ENTITY_TO_FUNC(monster_t_jungle_grenader, monster_terrorist_jungle_grenader);
+// REMAP_ENTITY_TO_FUNC(monster_t_jungle_assaultrifle, monster_terrorist_jungle_assaultrifle);
+// REMAP_ENTITY_TO_FUNC(monster_t_desert_pistol, monster_terrorist_desert_pistol);
+// REMAP_ENTITY_TO_FUNC(monster_t_desert_shotgun, monster_terrorist_desert_shotgun);
+// REMAP_ENTITY_TO_FUNC(monster_t_desert_machinegun, monster_terrorist_desert_machinegun);
+// REMAP_ENTITY_TO_FUNC(monster_t_desert_sniperrifle, monster_terrorist_desert_sniperrifle);
+// REMAP_ENTITY_TO_FUNC(monster_t_desert_grenader, monster_terrorist_desert_grenader);
+// REMAP_ENTITY_TO_FUNC(monster_t_desert_assaultrifle, monster_terrorist_desert_assaultrifle);
+
+REMAP_ENTITY_TO_FUNC(monster_ct_spetsnaz_ar, monster_ct_spetsnaz_assaultrifle);
+REMAP_ENTITY_TO_FUNC(monster_ct_spetsnaz_sniper, monster_ct_spetsnaz_sniperrifle);
+REMAP_ENTITY_TO_FUNC(monster_t_arctic_kamikaze, monster_terrorist_arctic_kamikaze);
+REMAP_ENTITY_TO_FUNC(monster_t_desert_kamikaze, monster_terrorist_desert_kamikaze);
+REMAP_ENTITY_TO_FUNC(monster_t_jungle_kamikaze, monster_terrorist_jungle_kamikaze);
+REMAP_ENTITY_TO_FUNC(monster_t_russian_kamikaze, monster_terrorist_russian_kamikaze);

@@ -1,4 +1,6 @@
 
+dlls/Debug/*
+
 *.ncb
 *.suo
 *.user
