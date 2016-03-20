@@ -1,0 +1,37 @@
+#
+# HPB_bot makefile for MingW32 (egcs-2.91.66)
+#
+# created: 12/16/2000 botman (botman@mailandnews.com)
+#
+
+# the following specifies the path to your MOD...
+MOD_DIR = D:\Half-Life\tfc
+
+CPP = gcc
+
+CPPFLAGS = -march=pentium -O2 -w -I../engine -I../common -I../pm_shared
+
+OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
+	dll.o engine.o h_export.o linkfunc.o util.o waypoint.o
+
+HPB_bot.dll:	${OBJ} HPB_bot_ming.def
+	dllwrap -s --def HPB_bot_ming.def --driver-name gcc -o HPB_bot.dll \
+		${OBJ}
+	copy HPB_bot.dll ${MOD_DIR}\dlls\HPB_bot.dll /Y
+
+HPB_bot_ming.def:	${OBJ}
+	dllwrap -s --output-def HPB_bot_ming.def --driver-name gcc -o HPB_bot.dll \
+		${OBJ}
+	type GiveFnpt.dat >> HPB_bot_ming.def
+
+clean:
+	-del *.o
+	-del *_ming.def
+	-del *.dll	
+
+%.o:	%.cpp
+	${CPP} ${CPPFLAGS} -c $< -o $@
+
+%.o:	%.c
+	${CPP} ${CPPFLAGS} -c $< -o $@
+

@@ -14,7 +14,11 @@
 ****/
 #ifndef ENGINECALLBACK_H
 #define ENGINECALLBACK_H
+#ifdef _WIN32
+#ifndef __MINGW32__
 #pragma once
+#endif /* not __MINGW32__ */
+#endif
 
 #include "event_flags.h"
 
@@ -69,33 +73,14 @@ extern enginefuncs_t g_engfuncs;
 #define RANDOM_FLOAT	(*g_engfuncs.pfnRandomFloat)
 #define GETPLAYERAUTHID	(*g_engfuncs.pfnGetPlayerAuthId)
 
-inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL )
-{
+inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL ) {
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ed);
 }
-
 #define MESSAGE_END		(*g_engfuncs.pfnMessageEnd)
 #define WRITE_BYTE		(*g_engfuncs.pfnWriteByte)
 #define WRITE_CHAR		(*g_engfuncs.pfnWriteChar)
 #define WRITE_SHORT		(*g_engfuncs.pfnWriteShort)
 #define WRITE_LONG		(*g_engfuncs.pfnWriteLong)
-
-inline void WRITE_FLOAT( float flValue )
-{
-	union
-	{
-		byte    b[4];
-		float   f;
-	} dat;
-
-	dat.f = flValue;
-	
-	WRITE_BYTE( dat.b[0] );
-	WRITE_BYTE( dat.b[1] );
-	WRITE_BYTE( dat.b[2] );
-	WRITE_BYTE( dat.b[3] );
-}
-
 #define WRITE_ANGLE		(*g_engfuncs.pfnWriteAngle)
 #define WRITE_COORD		(*g_engfuncs.pfnWriteCoord)
 #define WRITE_STRING	(*g_engfuncs.pfnWriteString)
@@ -109,13 +94,10 @@ inline void WRITE_FLOAT( float flValue )
 #define ALERT			(*g_engfuncs.pfnAlertMessage)
 #define ENGINE_FPRINTF	(*g_engfuncs.pfnEngineFprintf)
 #define ALLOC_PRIVATE	(*g_engfuncs.pfnPvAllocEntPrivateData)
-
 inline void *GET_PRIVATE( edict_t *pent )
 {
-	if( pent )
-	{
+	if ( pent )
 		return pent->pvPrivateData;
-	}
 	return NULL;
 }
 
@@ -176,11 +158,5 @@ inline void *GET_PRIVATE( edict_t *pent )
 #define ENGINE_FORCE_UNMODIFIED	( *g_engfuncs.pfnForceUnmodified )
 
 #define PLAYER_CNX_STATS		( *g_engfuncs.pfnGetPlayerStats )
-
-// bot
-#define CREATE_FAKE_CLIENT		( *g_engfuncs.pfnCreateFakeClient )
-#define GET_INFOBUFFER			( *g_engfuncs.pfnGetInfoKeyBuffer )
-#define GET_INFO_KEY_VALUE		( *g_engfuncs.pfnInfoKeyValue )
-#define SET_CLIENT_KEY_VALUE	( *g_engfuncs.pfnSetClientKeyValue )
 
 #endif		//ENGINECALLBACK_H

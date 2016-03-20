@@ -1,0 +1,42 @@
+#
+# HPB_bot makefile for Borland C++ 5.5
+#
+# created: 12/16/2000 botman (botman@mailandnews.com)
+#
+
+CPP = bcc32 -w- -4
+
+# uncomment the next line to turn on debugging information
+#DEBUG = -v
+
+# the following specifies the path to your MOD...
+MOD_DIR = D:\Half-Life\tfc
+
+INCLUDES = -I..\engine -I..\common -I..\pm_shared
+
+OBJ = bot.obj bot_client.obj bot_combat.obj bot_navigate.obj \
+	bot_start.obj dll.obj engine.obj h_export.obj util.obj \
+        waypoint.obj
+
+
+HPB_bot.dll:	${OBJ} linkfunc.obj
+	ilink32 -c -aa -q -Gn -Tpd -m ${DEBUG} c0d32.obj ${OBJ} \
+	linkfunc.obj, $@, HPB_bot.map, import32.lib cw32mt.lib, \
+	HPB_bot_borland.def
+	copy HPB_bot.dll ${MOD_DIR}\dlls\HPB_bot.dll /Y
+
+linkfunc.obj:	linkfunc.cpp
+	${CPP} ${DEBUG} ${INCLUDES} -u- -o$@ -c linkfunc.cpp
+
+clean:
+	-del *.obj
+	-del *.dll
+	-del *.map
+	-del *.tds
+
+.cpp.obj:
+	${CPP} ${DEBUG} ${INCLUDES} -o$@ -c $<
+
+.c.obj:
+	${CPP} ${DEBUG} ${INCLUDES} -o$@ -c $<
+

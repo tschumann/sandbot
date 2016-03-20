@@ -1,0 +1,5 @@
+LIBRARY hl
+EXPORTS
+ GetEntityAPI = _GetEntityAPI
+ GetNewDLLFunctions = _GetNewDLLFunctions
+

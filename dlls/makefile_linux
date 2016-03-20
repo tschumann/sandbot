@@ -1,0 +1,32 @@
+#
+# HPB_bot makefile for Linux
+#
+# created: 12/16/2000 botman (botman@mailandnews.com)
+#
+
+# the following specifies the path to your MOD...
+MOD_DIR = /usr/hlds_l/tfc
+
+CPP = gcc
+
+BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
+
+CPPFLAGS = ${BASEFLAGS} -m486 -O2 -w -I../engine -I../common -I../pm_shared
+
+OBJ = bot.o bot_client.o bot_combat.o bot_naviagte.o bot_start.o \
+	dll.o engine.o h_export.o linkfunc.o util.o waypoint.o
+
+HPB_bot_i486.so: ${OBJ}
+	${CPP} -fPIC -shared -o $@ ${OBJ} -ldl
+	cp -f HPB_bot_i486.so ${MOD_DIR}/dlls
+
+clean:
+	-rm -f *.o
+	-rm -f *.so	
+
+%.o:	%.cpp
+	${CPP} ${CPPFLAGS} -c $< -o $@
+
+%.o:	%.c
+	${CPP} ${CPPFLAGS} -c $< -o $@
+

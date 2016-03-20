@@ -9,18 +9,47 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
+#include "studio.h"
 
-extern HINSTANCE hLibrary;
+#include "bot.h"
+
+#ifdef __BORLANDC__
+extern HINSTANCE _h_Library;
+#elif _WIN32
+extern HINSTANCE h_Library;
+#else
+extern void *h_Library;
+#endif
+
+#ifdef __BORLANDC__
 
 #define LINK_ENTITY_TO_FUNC(mapClassName) \
-	extern "C" EXPORT void mapClassName( entvars_t *pev ); \
-	void mapClassName( entvars_t *pev ) { \
-        static LINK_ENTITY_FUNC otherClassName = NULL; \
-        static int skip = 0; \
-		if( skip ) { return; } \
-		if( otherClassName == NULL ) { otherClassName = (LINK_ENTITY_FUNC)GetProcAddress( hLibrary, #mapClassName ); } \
-        if( otherClassName == NULL ) { skip = 1; return; } \
-        (*otherClassName)( pev ); }
+ extern "C" EXPORT void mapClassName( entvars_t *pev ); \
+ void mapClassName( entvars_t *pev ) { \
+      static LINK_ENTITY_FUNC otherClassName = NULL; \
+      static int skip_this = 0; \
+      if (skip_this) return; \
+      if (otherClassName == NULL) \
+         otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(_h_Library, #mapClassName); \
+      if (otherClassName == NULL) { \
+         skip_this = 1; return; \
+      } \
+      (*otherClassName)(pev); }
+
+#else
+
+#define LINK_ENTITY_TO_FUNC(mapClassName) \
+ extern "C" EXPORT void mapClassName( entvars_t *pev ); \
+ void mapClassName( entvars_t *pev ) { \
+      static LINK_ENTITY_FUNC otherClassName = NULL; \
+      static int skip_this = 0; \
+      if (skip_this) return; \
+      if (otherClassName == NULL) \
+         otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, #mapClassName); \
+      if (otherClassName == NULL) { \
+         skip_this = 1; return; \
+      } \
+      (*otherClassName)(pev); }
 
 #define REMAP_ENTITY_TO_FUNC(remapClassName,mapClassName) \
 	extern "C" EXPORT void remapClassName( entvars_t *pev ); \
@@ -31,6 +60,9 @@ extern HINSTANCE hLibrary;
 		if( otherClassName == NULL ) { otherClassName = (LINK_ENTITY_FUNC)GetProcAddress( hLibrary, #mapClassName ); } \
         if( otherClassName == NULL ) { skip = 1; return; } \
         (*otherClassName)( pev ); }
+
+#endif
+
 
 // entities for Valve's hl.dll and Standard SDK...
 LINK_ENTITY_TO_FUNC(aiscripted_sequence);
@@ -278,6 +310,298 @@ LINK_ENTITY_TO_FUNC(xen_spore_small);
 LINK_ENTITY_TO_FUNC(xen_tree);
 LINK_ENTITY_TO_FUNC(xen_ttrigger);
 
+// additional entities for Team Fortress 1.5
+LINK_ENTITY_TO_FUNC(building_dispenser);
+LINK_ENTITY_TO_FUNC(building_sentrygun);
+LINK_ENTITY_TO_FUNC(building_sentrygun_base);
+LINK_ENTITY_TO_FUNC(building_teleporter);
+LINK_ENTITY_TO_FUNC(detpack);
+LINK_ENTITY_TO_FUNC(dispenser_refill_timer);
+LINK_ENTITY_TO_FUNC(func_nobuild);
+LINK_ENTITY_TO_FUNC(func_nogrenades);
+LINK_ENTITY_TO_FUNC(ghost);
+LINK_ENTITY_TO_FUNC(i_p_t);
+LINK_ENTITY_TO_FUNC(i_t_g);
+LINK_ENTITY_TO_FUNC(i_t_t);
+LINK_ENTITY_TO_FUNC(info_areadef);
+LINK_ENTITY_TO_FUNC(info_player_teamspawn);
+LINK_ENTITY_TO_FUNC(info_tf_teamcheck);
+LINK_ENTITY_TO_FUNC(info_tf_teamset);
+LINK_ENTITY_TO_FUNC(info_tfdetect);
+LINK_ENTITY_TO_FUNC(info_tfgoal);
+LINK_ENTITY_TO_FUNC(info_tfgoal_timer);
+LINK_ENTITY_TO_FUNC(item_armor1);
+LINK_ENTITY_TO_FUNC(item_armor2);
+LINK_ENTITY_TO_FUNC(item_armor3);
+LINK_ENTITY_TO_FUNC(item_artifact_envirosuit);
+LINK_ENTITY_TO_FUNC(item_artifact_invisibility);
+LINK_ENTITY_TO_FUNC(item_artifact_invulnerability);
+LINK_ENTITY_TO_FUNC(item_artifact_super_damage);
+LINK_ENTITY_TO_FUNC(item_cells);
+LINK_ENTITY_TO_FUNC(item_health);
+LINK_ENTITY_TO_FUNC(item_rockets);
+LINK_ENTITY_TO_FUNC(item_shells);
+LINK_ENTITY_TO_FUNC(item_spikes);
+LINK_ENTITY_TO_FUNC(item_tfgoal);
+LINK_ENTITY_TO_FUNC(teledeath);
+LINK_ENTITY_TO_FUNC(tf_ammo_rpgclip);
+LINK_ENTITY_TO_FUNC(tf_flame);
+LINK_ENTITY_TO_FUNC(tf_flamethrower_burst);
+LINK_ENTITY_TO_FUNC(tf_gl_grenade);
+LINK_ENTITY_TO_FUNC(tf_ic_rocket);
+LINK_ENTITY_TO_FUNC(tf_nailgun_nail);
+LINK_ENTITY_TO_FUNC(tf_rpg_rocket);
+LINK_ENTITY_TO_FUNC(tf_weapon_ac);
+LINK_ENTITY_TO_FUNC(tf_weapon_autorifle);
+LINK_ENTITY_TO_FUNC(tf_weapon_axe);
+LINK_ENTITY_TO_FUNC(tf_weapon_caltrop);
+LINK_ENTITY_TO_FUNC(tf_weapon_caltropgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_concussiongrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_empgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_flamethrower);
+LINK_ENTITY_TO_FUNC(tf_weapon_gasgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_genericprimedgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_gl);
+LINK_ENTITY_TO_FUNC(tf_weapon_ic);
+LINK_ENTITY_TO_FUNC(tf_weapon_knife);
+LINK_ENTITY_TO_FUNC(tf_weapon_medikit);
+LINK_ENTITY_TO_FUNC(tf_weapon_mirvbomblet);
+LINK_ENTITY_TO_FUNC(tf_weapon_mirvgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_nailgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_napalmgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_ng);
+LINK_ENTITY_TO_FUNC(tf_weapon_normalgrenade);
+LINK_ENTITY_TO_FUNC(tf_weapon_pl);
+LINK_ENTITY_TO_FUNC(tf_weapon_railgun);
+LINK_ENTITY_TO_FUNC(tf_weapon_rpg);
+LINK_ENTITY_TO_FUNC(tf_weapon_shotgun);
+LINK_ENTITY_TO_FUNC(tf_weapon_sniperrifle);
+LINK_ENTITY_TO_FUNC(tf_weapon_spanner);
+LINK_ENTITY_TO_FUNC(tf_weapon_superng);
+LINK_ENTITY_TO_FUNC(tf_weapon_supershotgun);
+LINK_ENTITY_TO_FUNC(tf_weapon_tranq);
+LINK_ENTITY_TO_FUNC(timer);
+
+// additional entities for Counter-Strike
+LINK_ENTITY_TO_FUNC(DelayedUse);
+LINK_ENTITY_TO_FUNC(CountTeamPlayers);
+LINK_ENTITY_TO_FUNC(CountTeams);
+LINK_ENTITY_TO_FUNC(ammo_338magnum);
+LINK_ENTITY_TO_FUNC(ammo_357sig);
+LINK_ENTITY_TO_FUNC(ammo_45acp);
+LINK_ENTITY_TO_FUNC(ammo_50ae);
+LINK_ENTITY_TO_FUNC(ammo_556nato);
+LINK_ENTITY_TO_FUNC(ammo_556natobox);
+LINK_ENTITY_TO_FUNC(ammo_57mm);
+LINK_ENTITY_TO_FUNC(ammo_762nato);
+LINK_ENTITY_TO_FUNC(ammo_9mm);
+LINK_ENTITY_TO_FUNC(armoury_entity);
+LINK_ENTITY_TO_FUNC(env_bombglow);
+LINK_ENTITY_TO_FUNC(env_rain);
+LINK_ENTITY_TO_FUNC(env_snow);
+LINK_ENTITY_TO_FUNC(func_bomb_target);
+LINK_ENTITY_TO_FUNC(func_buyzone);
+LINK_ENTITY_TO_FUNC(func_escapezone);
+LINK_ENTITY_TO_FUNC(func_grencatch);
+LINK_ENTITY_TO_FUNC(func_hostage_rescue);
+LINK_ENTITY_TO_FUNC(func_rain);
+LINK_ENTITY_TO_FUNC(func_snow);
+LINK_ENTITY_TO_FUNC(func_vehicle);
+LINK_ENTITY_TO_FUNC(func_vehiclecontrols);
+LINK_ENTITY_TO_FUNC(func_vip_safetyzone);
+LINK_ENTITY_TO_FUNC(func_weaponcheck);
+LINK_ENTITY_TO_FUNC(g_flTimeLimit);
+LINK_ENTITY_TO_FUNC(hostage_entity);
+LINK_ENTITY_TO_FUNC(info_bomb_target);
+LINK_ENTITY_TO_FUNC(info_hostage_rescue);
+LINK_ENTITY_TO_FUNC(info_map_parameters);
+LINK_ENTITY_TO_FUNC(info_vip_start);
+LINK_ENTITY_TO_FUNC(item_assaultsuit);
+LINK_ENTITY_TO_FUNC(item_kevlar);
+LINK_ENTITY_TO_FUNC(item_thighpack);
+LINK_ENTITY_TO_FUNC(weapon_ak47);
+LINK_ENTITY_TO_FUNC(weapon_aug);
+LINK_ENTITY_TO_FUNC(weapon_awp);
+LINK_ENTITY_TO_FUNC(weapon_c4);
+LINK_ENTITY_TO_FUNC(weapon_deagle);
+LINK_ENTITY_TO_FUNC(weapon_elite);
+LINK_ENTITY_TO_FUNC(weapon_famas);
+LINK_ENTITY_TO_FUNC(weapon_fiveseven);
+LINK_ENTITY_TO_FUNC(weapon_flashbang);
+LINK_ENTITY_TO_FUNC(weapon_galil);
+LINK_ENTITY_TO_FUNC(weapon_g3sg1);
+LINK_ENTITY_TO_FUNC(weapon_glock18);
+LINK_ENTITY_TO_FUNC(weapon_hegrenade);
+LINK_ENTITY_TO_FUNC(weapon_knife);
+LINK_ENTITY_TO_FUNC(weapon_m249);
+LINK_ENTITY_TO_FUNC(weapon_m3);
+LINK_ENTITY_TO_FUNC(weapon_m4a1);
+LINK_ENTITY_TO_FUNC(weapon_mac10);
+LINK_ENTITY_TO_FUNC(weapon_mp5navy);
+LINK_ENTITY_TO_FUNC(weapon_p228);
+LINK_ENTITY_TO_FUNC(weapon_p90);
+LINK_ENTITY_TO_FUNC(weapon_scout);
+LINK_ENTITY_TO_FUNC(weapon_sg550);
+LINK_ENTITY_TO_FUNC(weapon_sg552);
+LINK_ENTITY_TO_FUNC(weapon_shield);
+LINK_ENTITY_TO_FUNC(weapon_smokegrenade);
+LINK_ENTITY_TO_FUNC(weapon_tmp);
+LINK_ENTITY_TO_FUNC(weapon_ump45);
+LINK_ENTITY_TO_FUNC(weapon_usp);
+LINK_ENTITY_TO_FUNC(weapon_xm1014);
+
+// additional entities for Opposing Force
+LINK_ENTITY_TO_FUNC(ammo_556);
+LINK_ENTITY_TO_FUNC(ammo_762);
+LINK_ENTITY_TO_FUNC(ammo_eagleclip);
+LINK_ENTITY_TO_FUNC(ammo_spore);
+LINK_ENTITY_TO_FUNC(charged_bolt);
+LINK_ENTITY_TO_FUNC(ctf_hudicon);
+LINK_ENTITY_TO_FUNC(displacer_ball);
+LINK_ENTITY_TO_FUNC(eagle_laser);
+LINK_ENTITY_TO_FUNC(env_blowercannon);
+LINK_ENTITY_TO_FUNC(env_electrified_wire);
+LINK_ENTITY_TO_FUNC(env_genewormcloud);
+LINK_ENTITY_TO_FUNC(env_genewormspawn);
+LINK_ENTITY_TO_FUNC(env_rope);
+LINK_ENTITY_TO_FUNC(env_spritetrain);
+LINK_ENTITY_TO_FUNC(func_op4mortarcontroller);
+LINK_ENTITY_TO_FUNC(func_tank_of);
+LINK_ENTITY_TO_FUNC(func_tankcontrols_of);
+LINK_ENTITY_TO_FUNC(func_tanklaser_of);
+LINK_ENTITY_TO_FUNC(func_tankmortar_of);
+LINK_ENTITY_TO_FUNC(func_tankrocket_of);
+LINK_ENTITY_TO_FUNC(gonomeguts);
+LINK_ENTITY_TO_FUNC(grapple_tip);
+LINK_ENTITY_TO_FUNC(hvr_blkop_rocket);
+LINK_ENTITY_TO_FUNC(info_ctfdetect);
+LINK_ENTITY_TO_FUNC(info_ctfspawn);
+LINK_ENTITY_TO_FUNC(info_ctfspawn_powerup);
+LINK_ENTITY_TO_FUNC(info_displacer_earth_target);
+LINK_ENTITY_TO_FUNC(info_displacer_xen_target);
+LINK_ENTITY_TO_FUNC(info_pitworm);
+LINK_ENTITY_TO_FUNC(info_pitworm_steam_lock);
+LINK_ENTITY_TO_FUNC(item_ctfaccelerator);
+LINK_ENTITY_TO_FUNC(item_ctfbackpack);
+LINK_ENTITY_TO_FUNC(item_ctfbase);
+LINK_ENTITY_TO_FUNC(item_ctfflag);
+LINK_ENTITY_TO_FUNC(item_ctflongjump);
+LINK_ENTITY_TO_FUNC(item_ctfportablehev);
+LINK_ENTITY_TO_FUNC(item_ctfregeneration);
+LINK_ENTITY_TO_FUNC(item_generic);
+LINK_ENTITY_TO_FUNC(item_nuclearbomb);
+LINK_ENTITY_TO_FUNC(item_nuclearbombbutton);
+LINK_ENTITY_TO_FUNC(item_nuclearbombtimer);
+LINK_ENTITY_TO_FUNC(item_vest);
+LINK_ENTITY_TO_FUNC(monster_ShockTrooper_dead);
+LINK_ENTITY_TO_FUNC(monster_alien_babyvoltigore);
+LINK_ENTITY_TO_FUNC(monster_alien_slave_dead);
+LINK_ENTITY_TO_FUNC(monster_alien_voltigore);
+LINK_ENTITY_TO_FUNC(monster_assassin_repel);
+LINK_ENTITY_TO_FUNC(monster_blkop_apache);
+LINK_ENTITY_TO_FUNC(monster_blkop_osprey);
+LINK_ENTITY_TO_FUNC(monster_cleansuit_scientist);
+LINK_ENTITY_TO_FUNC(monster_cleansuit_scientist_dead);
+LINK_ENTITY_TO_FUNC(monster_drillsergeant);
+LINK_ENTITY_TO_FUNC(monster_fgrunt_repel);
+LINK_ENTITY_TO_FUNC(monster_geneworm);
+LINK_ENTITY_TO_FUNC(monster_gonome);
+LINK_ENTITY_TO_FUNC(monster_gonome_dead);
+LINK_ENTITY_TO_FUNC(monster_grunt_ally_repel);
+LINK_ENTITY_TO_FUNC(monster_hfgrunt_dead);
+LINK_ENTITY_TO_FUNC(monster_houndeye_dead);
+LINK_ENTITY_TO_FUNC(monster_human_friendly_grunt);
+LINK_ENTITY_TO_FUNC(monster_human_grunt_ally);
+LINK_ENTITY_TO_FUNC(monster_human_grunt_ally_dead);
+LINK_ENTITY_TO_FUNC(monster_human_medic_ally);
+LINK_ENTITY_TO_FUNC(monster_human_torch_ally);
+LINK_ENTITY_TO_FUNC(monster_male_assassin);
+LINK_ENTITY_TO_FUNC(monster_massassin_dead);
+LINK_ENTITY_TO_FUNC(monster_medic_ally_repel);
+LINK_ENTITY_TO_FUNC(monster_op4loader);
+LINK_ENTITY_TO_FUNC(monster_otis);
+LINK_ENTITY_TO_FUNC(monster_otis_dead);
+LINK_ENTITY_TO_FUNC(monster_penguin);
+LINK_ENTITY_TO_FUNC(monster_pitdrone);
+LINK_ENTITY_TO_FUNC(monster_pitworm);
+LINK_ENTITY_TO_FUNC(monster_pitworm_up);
+LINK_ENTITY_TO_FUNC(monster_recruit);
+LINK_ENTITY_TO_FUNC(monster_shockroach);
+LINK_ENTITY_TO_FUNC(monster_shocktrooper);
+LINK_ENTITY_TO_FUNC(monster_shocktrooper_repel);
+LINK_ENTITY_TO_FUNC(monster_sitting_cleansuit_scientist);
+LINK_ENTITY_TO_FUNC(monster_skeleton_dead);
+LINK_ENTITY_TO_FUNC(monster_torch_ally_repel);
+LINK_ENTITY_TO_FUNC(monster_zombie_barney);
+LINK_ENTITY_TO_FUNC(monster_zombie_soldier);
+LINK_ENTITY_TO_FUNC(monster_zombie_soldier_dead);
+LINK_ENTITY_TO_FUNC(mortar_shell);
+LINK_ENTITY_TO_FUNC(op4mortar);
+LINK_ENTITY_TO_FUNC(pitdronespike);
+LINK_ENTITY_TO_FUNC(pitworm_gib);
+LINK_ENTITY_TO_FUNC(pitworm_gibshooter);
+LINK_ENTITY_TO_FUNC(rope_sample);
+LINK_ENTITY_TO_FUNC(rope_segment);
+LINK_ENTITY_TO_FUNC(shock_beam);
+LINK_ENTITY_TO_FUNC(spore);
+LINK_ENTITY_TO_FUNC(trigger_ctfgeneric);
+LINK_ENTITY_TO_FUNC(trigger_geneworm_hit);
+LINK_ENTITY_TO_FUNC(trigger_kill_nogib);
+LINK_ENTITY_TO_FUNC(trigger_playerfreeze);
+LINK_ENTITY_TO_FUNC(trigger_xen_return);
+LINK_ENTITY_TO_FUNC(weapon_displacer);
+LINK_ENTITY_TO_FUNC(weapon_eagle);
+LINK_ENTITY_TO_FUNC(weapon_grapple);
+LINK_ENTITY_TO_FUNC(weapon_penguin);
+LINK_ENTITY_TO_FUNC(weapon_pipewrench);
+LINK_ENTITY_TO_FUNC(weapon_shockrifle);
+LINK_ENTITY_TO_FUNC(weapon_shockroach);
+LINK_ENTITY_TO_FUNC(weapon_sniperrifle);
+LINK_ENTITY_TO_FUNC(weapon_sporelauncher);
+
+// additional entities for FrontLineForce
+LINK_ENTITY_TO_FUNC(ammo_ak105);
+LINK_ENTITY_TO_FUNC(ammo_ak5);
+LINK_ENTITY_TO_FUNC(ammo_beretta);
+LINK_ENTITY_TO_FUNC(ammo_famas);
+LINK_ENTITY_TO_FUNC(ammo_hk21);
+LINK_ENTITY_TO_FUNC(ammo_m4);
+LINK_ENTITY_TO_FUNC(ammo_mac10);
+LINK_ENTITY_TO_FUNC(ammo_mag58);
+LINK_ENTITY_TO_FUNC(ammo_mk23);
+LINK_ENTITY_TO_FUNC(ammo_mp5a2);
+LINK_ENTITY_TO_FUNC(ammo_mp5sd);
+LINK_ENTITY_TO_FUNC(ammo_msg90);
+LINK_ENTITY_TO_FUNC(ammo_rs202m2);
+LINK_ENTITY_TO_FUNC(ammo_sako);
+LINK_ENTITY_TO_FUNC(ammo_spas12);
+LINK_ENTITY_TO_FUNC(ammo_ump45);
+LINK_ENTITY_TO_FUNC(capture_point);
+LINK_ENTITY_TO_FUNC(info_frontline);
+LINK_ENTITY_TO_FUNC(info_player_attacker);
+LINK_ENTITY_TO_FUNC(info_player_defender);
+LINK_ENTITY_TO_FUNC(info_player_observer);
+LINK_ENTITY_TO_FUNC(item_capkey);
+LINK_ENTITY_TO_FUNC(player_flame);
+LINK_ENTITY_TO_FUNC(secondary_point);
+LINK_ENTITY_TO_FUNC(target_win);
+LINK_ENTITY_TO_FUNC(weapon_ak105);
+LINK_ENTITY_TO_FUNC(weapon_ak5);
+LINK_ENTITY_TO_FUNC(weapon_beretta);
+LINK_ENTITY_TO_FUNC(weapon_hk21);
+LINK_ENTITY_TO_FUNC(weapon_m4);
+LINK_ENTITY_TO_FUNC(weapon_mag58);
+LINK_ENTITY_TO_FUNC(weapon_mk23);
+LINK_ENTITY_TO_FUNC(weapon_mp5a2);
+LINK_ENTITY_TO_FUNC(weapon_mp5sd);
+LINK_ENTITY_TO_FUNC(weapon_msg90);
+LINK_ENTITY_TO_FUNC(weapon_rs202m2);
+LINK_ENTITY_TO_FUNC(weapon_sako);
+LINK_ENTITY_TO_FUNC(weapon_spas12);
+LINK_ENTITY_TO_FUNC(weather_genie);
+LINK_ENTITY_TO_FUNC(weather_litnode);
+
+// Condition Zero Deleted Scenes
 LINK_ENTITY_TO_FUNC(ammo_338magnum);
 LINK_ENTITY_TO_FUNC(ammo_357sig);
 LINK_ENTITY_TO_FUNC(ammo_45acp)
@@ -577,41 +901,3 @@ LINK_ENTITY_TO_FUNC(weapon_ump45);
 LINK_ENTITY_TO_FUNC(weapon_usp);
 LINK_ENTITY_TO_FUNC(weapon_xm1014);
 LINK_ENTITY_TO_FUNC(weapon_zipline);
-
-// probably already aliased in cz.dll
-// REMAP_ENTITY_TO_FUNC(monster_ct_repel, monster_counter_terrorist_repel);
-// REMAP_ENTITY_TO_FUNC(monster_ct_spetznaz, monster_counter_terrorist_spetsnaz);
-
-REMAP_ENTITY_TO_FUNC(monster_ct_spetsnaz_ar, monster_ct_spetsnaz_assaultrifle);
-REMAP_ENTITY_TO_FUNC(monster_ct_spetsnaz_sniper, monster_ct_spetsnaz_sniperrifle);
-#if 0
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_assaultrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_grenader);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_kamikaze);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_machinegun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_pistol);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_shotgun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_arctic_sniperrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_assaultrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_grenader);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_kamikaze);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_machinegun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_pistol);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_shotgun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_desert_sniperrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_assaultrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_grenader);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_kamikaze);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_machinegun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_pistol);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_shotgun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_jungle_sniperrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_assaultrifle);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_grenader);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_kamikaze);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_machinegun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_melee);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_pistol);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_shotgun);
-REMAP_ENTITY_TO_FUNC( ,monster_terrorist_russian_sniperrifle);
-#endif
