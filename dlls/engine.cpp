@@ -746,124 +746,120 @@ void* pfnGetModelPtr(edict_t* pEdict)
 }
 int pfnRegUserMsg(const char *pszName, int iSize)
 {
-   int msg;
+	int msg = (*g_engfuncs.pfnRegUserMsg)(pszName, iSize);
 
-   msg = (*g_engfuncs.pfnRegUserMsg)(pszName, iSize);
+	UTIL_LogPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d", pszName, iSize, msg);
 
-   if (gpGlobals->deathmatch)
-   {
-#ifdef _DEBUG
-      fp=fopen("bot.txt","a"); fprintf(fp,"pfnRegUserMsg: pszName=%s msg=%d\n",pszName,msg); fclose(fp);
-#endif
+	if (gpGlobals->deathmatch)
+	{
+		if (mod_id == VALVE_DLL)
+		{
+			if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
+		else if (mod_id == TFC_DLL)
+		{
+			if (strcmp(pszName, "VGUIMenu") == 0)
+				message_VGUI = msg;
+			else if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
+		else if (mod_id == CSTRIKE_DLL)
+		{
+			if (strcmp(pszName, "VGUIMenu") == 0)
+				message_VGUI = msg;
+			else if (strcmp(pszName, "ShowMenu") == 0)
+				message_ShowMenu = msg;
+			else if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "Money") == 0)
+				message_Money = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+			else if (strcmp(pszName, "HLTV") == 0)
+				message_HLTV = msg;
+		}
+		else if (mod_id == GEARBOX_DLL)
+		{
+			if (strcmp(pszName, "VGUIMenu") == 0)
+				message_VGUI = msg;
+			else if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
+		else if (mod_id == FRONTLINE_DLL)
+		{
+			if (strcmp(pszName, "VGUIMenu") == 0)
+				message_VGUI = msg;
+			else if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "TextMsg") == 0)
+				message_TextMsg = msg;
+			else if (strcmp(pszName, "WarmUp") == 0)
+				message_WarmUp = msg;
+			else if (strcmp(pszName, "WinMessage") == 0)
+				message_WinMessage = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
+	}
 
-      if (mod_id == VALVE_DLL)
-      {
-         if (strcmp(pszName, "WeaponList") == 0)
-            message_WeaponList = msg;
-         else if (strcmp(pszName, "CurWeapon") == 0)
-            message_CurWeapon = msg;
-         else if (strcmp(pszName, "AmmoX") == 0)
-            message_AmmoX = msg;
-         else if (strcmp(pszName, "AmmoPickup") == 0)
-            message_AmmoPickup = msg;
-         else if (strcmp(pszName, "Damage") == 0)
-            message_Damage = msg;
-         else if (strcmp(pszName, "DeathMsg") == 0)
-            message_DeathMsg = msg;
-         else if (strcmp(pszName, "ScreenFade") == 0)
-            message_ScreenFade = msg;
-      }
-      else if (mod_id == TFC_DLL)
-      {
-         if (strcmp(pszName, "VGUIMenu") == 0)
-            message_VGUI = msg;
-         else if (strcmp(pszName, "WeaponList") == 0)
-            message_WeaponList = msg;
-         else if (strcmp(pszName, "CurWeapon") == 0)
-            message_CurWeapon = msg;
-         else if (strcmp(pszName, "AmmoX") == 0)
-            message_AmmoX = msg;
-         else if (strcmp(pszName, "AmmoPickup") == 0)
-            message_AmmoPickup = msg;
-         else if (strcmp(pszName, "Damage") == 0)
-            message_Damage = msg;
-         else if (strcmp(pszName, "DeathMsg") == 0)
-            message_DeathMsg = msg;
-         else if (strcmp(pszName, "ScreenFade") == 0)
-            message_ScreenFade = msg;
-      }
-      else if (mod_id == CSTRIKE_DLL)
-      {
-         if (strcmp(pszName, "VGUIMenu") == 0)
-            message_VGUI = msg;
-         else if (strcmp(pszName, "ShowMenu") == 0)
-            message_ShowMenu = msg;
-         else if (strcmp(pszName, "WeaponList") == 0)
-            message_WeaponList = msg;
-         else if (strcmp(pszName, "CurWeapon") == 0)
-            message_CurWeapon = msg;
-         else if (strcmp(pszName, "AmmoX") == 0)
-            message_AmmoX = msg;
-         else if (strcmp(pszName, "AmmoPickup") == 0)
-            message_AmmoPickup = msg;
-         else if (strcmp(pszName, "Damage") == 0)
-            message_Damage = msg;
-         else if (strcmp(pszName, "Money") == 0)
-            message_Money = msg;
-         else if (strcmp(pszName, "DeathMsg") == 0)
-            message_DeathMsg = msg;
-         else if (strcmp(pszName, "ScreenFade") == 0)
-            message_ScreenFade = msg;
-         else if (strcmp(pszName, "HLTV") == 0)
-            message_HLTV = msg;
-      }
-      else if (mod_id == GEARBOX_DLL)
-      {
-         if (strcmp(pszName, "VGUIMenu") == 0)
-            message_VGUI = msg;
-         else if (strcmp(pszName, "WeaponList") == 0)
-            message_WeaponList = msg;
-         else if (strcmp(pszName, "CurWeapon") == 0)
-            message_CurWeapon = msg;
-         else if (strcmp(pszName, "AmmoX") == 0)
-            message_AmmoX = msg;
-         else if (strcmp(pszName, "AmmoPickup") == 0)
-            message_AmmoPickup = msg;
-         else if (strcmp(pszName, "Damage") == 0)
-            message_Damage = msg;
-         else if (strcmp(pszName, "DeathMsg") == 0)
-            message_DeathMsg = msg;
-         else if (strcmp(pszName, "ScreenFade") == 0)
-            message_ScreenFade = msg;
-      }
-      else if (mod_id == FRONTLINE_DLL)
-      {
-         if (strcmp(pszName, "VGUIMenu") == 0)
-            message_VGUI = msg;
-         else if (strcmp(pszName, "WeaponList") == 0)
-            message_WeaponList = msg;
-         else if (strcmp(pszName, "CurWeapon") == 0)
-            message_CurWeapon = msg;
-         else if (strcmp(pszName, "AmmoX") == 0)
-            message_AmmoX = msg;
-         else if (strcmp(pszName, "AmmoPickup") == 0)
-            message_AmmoPickup = msg;
-         else if (strcmp(pszName, "Damage") == 0)
-            message_Damage = msg;
-         else if (strcmp(pszName, "DeathMsg") == 0)
-            message_DeathMsg = msg;
-         else if (strcmp(pszName, "TextMsg") == 0)
-            message_TextMsg = msg;
-         else if (strcmp(pszName, "WarmUp") == 0)
-            message_WarmUp = msg;
-         else if (strcmp(pszName, "WinMessage") == 0)
-            message_WinMessage = msg;
-         else if (strcmp(pszName, "ScreenFade") == 0)
-            message_ScreenFade = msg;
-      }
-   }
-
-   return msg;
+	return msg;
 }
 void pfnAnimationAutomove(const edict_t* pEdict, float flTime)
 {
@@ -1036,8 +1032,7 @@ void pfnSetClientKeyValue(int clientIndex, char *infobuffer, char *key, char *va
 }
 int pfnIsMapValid(char *filename)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnIsMapValid:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnIsMapValid)(filename);
+	return (*g_engfuncs.pfnIsMapValid)(filename);
 }
 void pfnStaticDecal( const float *origin, int decalIndex, int entityIndex, int modelIndex )
 {
@@ -1061,8 +1056,7 @@ void pfnBuildSoundMsg(edict_t *entity, int channel, const char *sample, /*int*/f
 }
 int pfnIsDedicatedServer(void)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnIsDedicatedServer:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnIsDedicatedServer)();
+	return (*g_engfuncs.pfnIsDedicatedServer)();
 }
 cvar_t* pfnCVarGetPointer(const char *szVarName)
 {
