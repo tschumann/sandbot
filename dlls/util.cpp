@@ -598,14 +598,14 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 //=========================================================
 void UTIL_LogPrintf( char *fmt, ... )
 {
-   va_list        argptr;
-   static char    string[1024];
-   
-   va_start ( argptr, fmt );
-   vsprintf ( string, fmt, argptr );
-   va_end   ( argptr );
+	va_list        argptr;
+	static char    string[1024];
 
-   // Print to server console
-   ALERT( at_logged, "%s", string );
+	va_start ( argptr, fmt );
+	vsprintf ( string, fmt, argptr );
+	va_end   ( argptr );
+
+	// Print to server console
+	ALERT( at_logged, "%s", string );
 }
 

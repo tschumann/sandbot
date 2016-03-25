@@ -19,13 +19,9 @@
 #include <io.h>
 
 #ifndef __linux__
-
 HINSTANCE h_Library = NULL;
-
 #else
-
-void *h_Library = NULL;
-
+void* h_Library = NULL;
 #endif
 
 enginefuncs_t g_engfuncs;
@@ -42,16 +38,18 @@ extern int mod_id;
 
 #ifndef __linux__
 
-// Required DLL entry point
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+// required DLL entry point
+BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 {
-   if (fdwReason == DLL_PROCESS_DETACH)
-   {
-      if (h_Library)
-         FreeLibrary(h_Library);
-   }
+	if( fdwReason == DLL_PROCESS_DETACH )
+	{
+		if( h_Library )
+		{
+		FreeLibrary(h_Library);
+		}
+	}
 
-   return TRUE;
+	return TRUE;
 }
 
 #endif
@@ -74,6 +72,8 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
 
 	gpGlobals = pGlobals;
+
+	// TODO: is all of the below needed?
 
 	// find the directory name of the currently running MOD...
 	GET_GAME_DIR(game_dir);
@@ -194,10 +194,9 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 	}
 
-	if (h_Library == NULL)
+	if( h_Library == NULL )
 	{
-		// Directory error or Unsupported MOD!
-		ALERT( at_error, "HPB_bot - MOD dll not found (or unsupported MOD)!" );
+		ALERT( at_error, "Library not found or not supported!" );
 	}
 
 	// and now we need to pass engine functions table to the game DLL (in fact it's our own

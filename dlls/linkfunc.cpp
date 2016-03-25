@@ -310,7 +310,7 @@ LINK_ENTITY_TO_FUNC(xen_spore_small);
 LINK_ENTITY_TO_FUNC(xen_tree);
 LINK_ENTITY_TO_FUNC(xen_ttrigger);
 
-// additional entities for Team Fortress 1.5
+// additional entities for Team Fortress Classic
 LINK_ENTITY_TO_FUNC(building_dispenser);
 LINK_ENTITY_TO_FUNC(building_sentrygun);
 LINK_ENTITY_TO_FUNC(building_sentrygun_base);

@@ -664,29 +664,25 @@ void pfnCVarSetString(const char *szVarName, const char *szValue)
 }
 void pfnEngineFprintf( void *pfile, char *szFmt, ... )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEngineFprintf:\n"); fclose(fp); }
+	va_list argptr;
+	static char string[1024];
 
-   va_list argptr;
-   static char string[1024];
+	va_start (argptr, szFmt);
+	vsprintf (string, szFmt, argptr);
+	va_end (argptr);
 
-   va_start (argptr, szFmt);
-   vsprintf (string, szFmt, argptr);
-   va_end (argptr);
-
-   (*g_engfuncs.pfnEngineFprintf) (pfile, string);
+	(*g_engfuncs.pfnEngineFprintf)(pfile, string);
 }
 void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnAlertMessage:\n"); fclose(fp); }
+	va_list argptr;
+	static char string[1024];
 
-   va_list argptr;
-   static char string[1024];
+	va_start (argptr, szFmt);
+	vsprintf (string, szFmt, argptr);
+	va_end (argptr);
 
-   va_start (argptr, szFmt);
-   vsprintf (string, szFmt, argptr);
-   va_end (argptr);
-
-   (*g_engfuncs.pfnAlertMessage)(atype, string);
+	(*g_engfuncs.pfnAlertMessage)(atype, string);
 }
 void* pfnPvAllocEntPrivateData(edict_t *pEdict, int32 cb)
 {
