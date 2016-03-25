@@ -64,36 +64,18 @@ void DLLEXPORT GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t
 extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
 #endif
 {
-	int pos;
 	char game_dir[256];
-	char mod_name[32];
 
 	// get the engine functions from the engine...
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
-
+	// get the globals from the engine
 	gpGlobals = pGlobals;
 
-	// TODO: is all of the below needed?
-
-	// find the directory name of the currently running MOD...
+	// find the directory name of the currently running mod
+	// this returns just the mod directory's name: http://metamod.org/engine_notes.html#GetGameDir
 	GET_GAME_DIR(game_dir);
 
-	pos = strlen(game_dir) - 1;
-
-	// skip any eventual trailing slashes
-	while ((pos) && (game_dir[pos] == '/'))
-		pos--;
-
-	// scan backwards till first directory separator...
-	while ((pos) && (game_dir[pos] != '/'))
-		pos--;
-
-	if (pos > 0)
-		pos++; // found one ? skip it
-
-	strcpy(mod_name, &game_dir[pos]);
-
-	if (strcmpi(mod_name, "valve") == 0)
+	if (strcmpi(game_dir, "valve") == 0)
 	{
 		mod_id = VALVE_DLL;
 
@@ -103,7 +85,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("valve/dlls/hl_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "bshift") == 0)
+	else if (strcmpi(game_dir, "bshift") == 0)
 	{
 		mod_id = BSHIFT_DLL;
 
@@ -113,7 +95,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("bshift/dlls/bshift_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "gearbox") == 0)
+	else if (strcmpi(game_dir, "gearbox") == 0)
 	{
 		mod_id = GEARBOX_DLL;
 
@@ -123,7 +105,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("gearbox/dlls/opfor_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "decay") == 0)
+	else if (strcmpi(game_dir, "decay") == 0)
 	{
 		mod_id = DECAY_DLL;
 
@@ -133,7 +115,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("decay/dlls/decay_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "cstrike") == 0)
+	else if (strcmpi(game_dir, "cstrike") == 0)
 	{
 		mod_id = CSTRIKE_DLL;
 
@@ -143,7 +125,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("cstrike/dlls/cs_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "czero") == 0)
+	else if (strcmpi(game_dir, "czero") == 0)
 	{
 		mod_id = CZERO_DLL;
 
@@ -153,7 +135,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("czero/dlls/cs_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "czeror") == 0)
+	else if (strcmpi(game_dir, "czeror") == 0)
 	{
 		mod_id = CZEROR_DLL;
 
@@ -163,7 +145,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("czeror/dlls/cz_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "dod") == 0)
+	else if (strcmpi(game_dir, "dod") == 0)
 	{
 		mod_id = DOD_DLL;
 
@@ -173,7 +155,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("dod/dlls/dod_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "tfc") == 0)
+	else if (strcmpi(game_dir, "tfc") == 0)
 	{
 		mod_id = TFC_DLL;
 
@@ -183,7 +165,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = dlopen("tfc/dlls/tfc_i386.so", RTLD_NOW); // and load the library
 #endif
 	}
-	else if (strcmpi(mod_name, "rewolf") == 0)
+	else if (strcmpi(game_dir, "rewolf") == 0)
 	{
 		mod_id = REWOLF_DLL;
 
