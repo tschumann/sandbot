@@ -175,6 +175,36 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		h_Library = NULL;
 #endif
 	}
+	else if (strcmpi(game_dir, "hunger") == 0)
+	{
+		mod_id = HUNGER_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("hunger/dlls/hunger.dll"); // and load the library
+#else
+		h_Library = NULL;
+#endif
+	}
+	else if (strcmpi(game_dir, "ns") == 0)
+	{
+		mod_id = HUNGER_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("ns/dlls/ns.dll"); // and load the library
+#else
+		h_Library = dlopen("ns/dlls/ns_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
+	else if (strcmpi(game_dir, "ship") == 0)
+	{
+		mod_id = HUNGER_DLL;
+
+#ifndef __linux__
+		h_Library = LoadLibrary("ship/dlls/ship.dll"); // and load the library
+#else
+		h_Library = dlopen("ship/dlls/ship_i386.so", RTLD_NOW); // and load the library
+#endif
+	}
 
 	if( h_Library == NULL )
 	{
