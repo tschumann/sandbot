@@ -461,15 +461,18 @@ bot_fire_delay_t frontline_fire_delay[] = {
 
 void BotCheckTeamplay(void)
 {
-   // is this TFC or Counter-Strike or OpFor teamplay or FrontLineForce?
-   if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
-       ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
-       (mod_id == FRONTLINE_DLL))
-      is_team_play = 1.0;
-   else
-      is_team_play = CVAR_GET_FLOAT("mp_teamplay");  // teamplay enabled?
+	// is this a teamplay mod
+	if( ((mod_id == GEARBOX_DLL) && pent_info_ctfdetect) || (mod_id == DECAY_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == CZERO_DLL) || (mod_id == DOD_DLL) || (mod_id == TFC_DLL) || (mod_id == NS_DLL) || (mod_id == FRONTLINE_DLL))
+	{
+		is_team_play = 1.0;
+	}
+	// otherwise fall back on the mp_teamplay cvar
+	else
+	{
+		is_team_play = CVAR_GET_FLOAT("mp_teamplay");  // teamplay enabled?
+	}
 
-   checked_teamplay = TRUE;
+	checked_teamplay = TRUE;
 }
 
 
