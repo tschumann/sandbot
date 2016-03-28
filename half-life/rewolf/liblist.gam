@@ -1,0 +1,11 @@
+// Gunman Game .dll Listing File
+// Load order is determined by file order.
+game "Gunman Chronicles"
+url_info "www.gunmanchronicles.com"
+version "Beta"
+svonly "0"
+cldll "1"
+startmap "city1a"
+hlversion "1000"
+nomodels "0"  // Don't show models in browser as we haven't changed it yet
+gamedll "dlls\gunman.dll"
