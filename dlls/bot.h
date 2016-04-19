@@ -57,8 +57,7 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 
 
 // define some function prototypes...
-BOOL ClientConnect( edict_t *pEntity, const char *pszName,
-                    const char *pszAddress, char szRejectReason[ 128 ] );
+BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128] );
 void ClientPutInServer( edict_t *pEntity );
 void ClientCommand( edict_t *pEntity );
 

@@ -28,9 +28,6 @@ enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
 char g_argv[1024];
 
-static FILE *fp;
-
-
 extern DLL_FUNCTIONS other_gFunctionTable;
 
 extern int mod_id;
@@ -90,9 +87,9 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		mod_id = BSHIFT_DLL;
 
 #ifndef __linux__
-		h_Library = LoadLibrary("bshift/dlls/bshift.dll"); // and load the library
+		h_Library = LoadLibrary("bshift/dlls/hl.dll"); // and load the library
 #else
-		h_Library = dlopen("bshift/dlls/bshift_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("bshift/dlls/bshift.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "gearbox") == 0)
@@ -102,7 +99,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("gearbox/dlls/opfor.dll"); // and load the library
 #else
-		h_Library = dlopen("gearbox/dlls/opfor_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("gearbox/dlls/opfor.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "decay") == 0)
@@ -122,7 +119,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("cstrike/dlls/mp.dll"); // and load the library
 #else
-		h_Library = dlopen("cstrike/dlls/cs_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("cstrike/dlls/cs.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "czero") == 0)
@@ -132,7 +129,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("czero/dlls/mp.dll"); // and load the library
 #else
-		h_Library = dlopen("czero/dlls/cs_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("czero/dlls/cs.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "czeror") == 0)
@@ -142,7 +139,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("czeror/dlls/cz.dll"); // and load the library
 #else
-		h_Library = dlopen("czeror/dlls/cz_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("czeror/dlls/cz.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "dod") == 0)
@@ -152,7 +149,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("dod/dlls/dod.dll"); // and load the library
 #else
-		h_Library = dlopen("dod/dlls/dod_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("dod/dlls/dod.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "tfc") == 0)
@@ -162,7 +159,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("tfc/dlls/tfc.dll"); // and load the library
 #else
-		h_Library = dlopen("tfc/dlls/tfc_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("tfc/dlls/tfc.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "rewolf") == 0)

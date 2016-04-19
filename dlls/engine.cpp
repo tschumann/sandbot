@@ -162,8 +162,7 @@ edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszF
 }
 int pfnGetEntityIllum(edict_t* pEnt)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetEntityIllum:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnGetEntityIllum)(pEnt);
+	return (*g_engfuncs.pfnGetEntityIllum)(pEnt);
 }
 edict_t* pfnFindEntityInSphere(edict_t *pEdictStartSearchAfter, const float *org, float rad)
 {
@@ -221,13 +220,11 @@ void pfnMakeStatic(edict_t *ent)
 }
 int pfnEntIsOnFloor(edict_t *e)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEntIsOnFloor:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnEntIsOnFloor)(e);
+	return (*g_engfuncs.pfnEntIsOnFloor)(e);
 }
 int pfnDropToFloor(edict_t* e)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDropToFloor:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnDropToFloor)(e);
+	return (*g_engfuncs.pfnDropToFloor)(e);
 }
 int pfnWalkMove(edict_t *ent, float yaw, float dist, int iMode)
 {
@@ -251,43 +248,35 @@ void pfnEmitAmbientSound(edict_t *entity, float *pos, const char *samp, float vo
 }
 void pfnTraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *pentToSkip, TraceResult *ptr)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceLine:\n"); fclose(fp); }
-   (*g_engfuncs.pfnTraceLine)(v1, v2, fNoMonsters, pentToSkip, ptr);
+	(*g_engfuncs.pfnTraceLine)(v1, v2, fNoMonsters, pentToSkip, ptr);
 }
 void pfnTraceToss(edict_t* pent, edict_t* pentToIgnore, TraceResult *ptr)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceToss:\n"); fclose(fp); }
-   (*g_engfuncs.pfnTraceToss)(pent, pentToIgnore, ptr);
+	(*g_engfuncs.pfnTraceToss)(pent, pentToIgnore, ptr);
 }
 int pfnTraceMonsterHull(edict_t *pEdict, const float *v1, const float *v2, int fNoMonsters, edict_t *pentToSkip, TraceResult *ptr)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceMonsterHull:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnTraceMonsterHull)(pEdict, v1, v2, fNoMonsters, pentToSkip, ptr);
+	return (*g_engfuncs.pfnTraceMonsterHull)(pEdict, v1, v2, fNoMonsters, pentToSkip, ptr);
 }
 void pfnTraceHull(const float *v1, const float *v2, int fNoMonsters, int hullNumber, edict_t *pentToSkip, TraceResult *ptr)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceHull:\n"); fclose(fp); }
-   (*g_engfuncs.pfnTraceHull)(v1, v2, fNoMonsters, hullNumber, pentToSkip, ptr);
+	(*g_engfuncs.pfnTraceHull)(v1, v2, fNoMonsters, hullNumber, pentToSkip, ptr);
 }
 void pfnTraceModel(const float *v1, const float *v2, int hullNumber, edict_t *pent, TraceResult *ptr)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceModel:\n"); fclose(fp); }
-   (*g_engfuncs.pfnTraceModel)(v1, v2, hullNumber, pent, ptr);
+	(*g_engfuncs.pfnTraceModel)(v1, v2, hullNumber, pent, ptr);
 }
 const char *pfnTraceTexture(edict_t *pTextureEntity, const float *v1, const float *v2 )
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceTexture:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnTraceTexture)(pTextureEntity, v1, v2);
+	return (*g_engfuncs.pfnTraceTexture)(pTextureEntity, v1, v2);
 }
 void pfnTraceSphere(const float *v1, const float *v2, int fNoMonsters, float radius, edict_t *pentToSkip, TraceResult *ptr)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTraceSphere:\n"); fclose(fp); }
-   (*g_engfuncs.pfnTraceSphere)(v1, v2, fNoMonsters, radius, pentToSkip, ptr);
+	(*g_engfuncs.pfnTraceSphere)(v1, v2, fNoMonsters, radius, pentToSkip, ptr);
 }
 void pfnGetAimVector(edict_t* ent, float speed, float *rgflReturn)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetAimVector:\n"); fclose(fp); }
-   (*g_engfuncs.pfnGetAimVector)(ent, speed, rgflReturn);
+	(*g_engfuncs.pfnGetAimVector)(ent, speed, rgflReturn);
 }
 void pfnServerCommand(char* str)
 {
