@@ -177,7 +177,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		mod_id = HUNGER_DLL;
 
 #ifndef __linux__
-		h_Library = LoadLibrary("hunger/dlls/hunger.dll"); // and load the library
+		h_Library = LoadLibrary("hunger/dlls/einar.dll"); // and load the library
 #else
 		h_Library = NULL;
 #endif
