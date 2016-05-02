@@ -1,7 +1,7 @@
 //
-// HPB_bot - botman's High Ping Bastard bot
+// gbot - The GoldSource bot
 //
-// (http://planethalflife.com/botman/)
+// <no site>
 //
 // waypoint.h
 //
@@ -15,6 +15,8 @@
 
 #define REACHABLE_RANGE 400.0
 
+#define MINIMUM_DISTANCE	9999.0
+
 // defines for waypoint flags field (32 bits are available)
 #define W_FL_TEAM        ((1<<0) + (1<<1))  /* allow for 4 teams (0-3) */
 #define W_FL_TEAM_SPECIFIC (1<<2)  /* waypoint only for specified team */
@@ -27,16 +29,24 @@
 #define W_FL_AMMO        (1<<9)  /* ammo location */
 #define W_FL_SNIPER      (1<<10) /* sniper waypoint (a good sniper spot) */
 
-#define W_FL_TFC_FLAG    (1<<11) /* flag position (or hostage or president) */
-#define W_FL_FLF_CAP     (1<<11) /* Front Line Force capture point */
+#define W_FL_PRONE			(1<<11) /* go prone (laying down) */
+#define W_FL_AIMING			(1<<12) /* aiming waypoint */
 
-#define W_FL_TFC_FLAG_GOAL (1<<12) /* flag return position (or rescue zone) */
-#define W_FL_FLF_DEFEND  (1<<12) /* Front Line Force defend point */
+#define W_FL_TFC_FLAG		(1<<13) /* flag position (or hostage or president) */
+#define W_FL_TFC_BASE		(1<<14) /* flag return position (or rescue zone) */
 
-#define W_FL_PRONE       (1<<13) /* go prone (laying down) */
-#define W_FL_AIMING      (1<<14) /* aiming waypoint */
+#define W_FL_TFC_SENTRYGUN	(1<<15)
+#define W_FL_TFC_DISPENSER	(1<<16)
 
-#define W_FL_DELETED     (1<<31) /* used by waypoint allocation code */
+#define W_FL_CSTRIKE_HOSTAGE	W_FL_TFC_FLAG	// Counter-Strike hostage
+#define W_FL_CSTRIKE_RESCUE		W_FL_TFC_BASE	// Counter-Strike hostage rescue zone
+
+#define W_FL_NS_HIVE		(1<<17)		// Natural Selection hive
+#define W_FL_NS_CONSOLE		(1<<18)		// Natural Selection command console
+
+#define W_FL_JUMP			(1<<30)
+
+#define W_FL_DELETED		(1<<31) /* used by waypoint allocation code */
 
 
 #define WAYPOINT_VERSION 4
@@ -47,8 +57,8 @@ typedef struct {
    int  waypoint_file_version;
    int  waypoint_file_flags;  // not currently used
    int  number_of_waypoints;
-   char mapname[32];  // name of map for these waypoints
-} WAYPOINT_HDR;
+   char szMapname[32];  // name of map for these waypoints
+} wptheader;
 
 
 // define the structure for waypoints...
@@ -56,8 +66,6 @@ typedef struct {
    int    flags;    // button, lift, flag, health, ammo, etc.
    Vector origin;   // location
 } WAYPOINT;
-
-
 
 #define WAYPOINT_UNREACHABLE   USHRT_MAX
 #define WAYPOINT_MAX_DISTANCE (USHRT_MAX-1)
@@ -78,7 +86,7 @@ typedef struct path {
 // waypoint function prototypes...
 void WaypointInit(void);
 int  WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int team);
-int  WaypointFindNearest(edict_t *pEntity, float distance, int team);
+int  WaypointFindNearest( edict_t *pEntity, float distance, int team );
 int  WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team);
 int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags);
 int  WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags);
@@ -100,5 +108,10 @@ void WaypointFloyds(short *shortest_path, short *from_to);
 void WaypointRouteInit(void);
 unsigned short WaypointRouteFromTo(int src, int dest, int team);
 int  WaypointDistanceFromTo(int src, int dest, int team);
+
+int  WaypointFindNearest( bot_t *pBot, float distance, int team );
+int  WaypointFindNearest( Vector v_src, bot_t *pBot, float range, int team );
+
+int WaypointFindNext( bot_t *pBot, float range, int team );
 
 #endif // WAYPOINT_H

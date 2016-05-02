@@ -1,6 +1,6 @@
 /***
 *
-*	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
+*	Copyright (c) 1999, Valve LLC. All rights reserved.
 *	
 *	This product contains software technology licensed from Id 
 *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
@@ -39,7 +39,7 @@
 #ifdef _WIN32
 #define DLLEXPORT __stdcall
 #else
-#define DLLEXPORT  __attribute__ ((visibility("default")))
+#define DLLEXPORT /* */
 #endif
 
 typedef enum
@@ -269,8 +269,8 @@ typedef struct enginefuncs_s
 	// PSV: Added for CZ training map
 //	const char *(*pfnKeyNameForBinding)		( const char* pBinding );
 	
-	void*	(*pfnSequenceGet)			( const char* fileName, const char* entryName );
-	void*	(*pfnSequencePickSentence)	( const char* groupName, int pickMethod, int *picked );
+	sequenceEntry_s*	(*pfnSequenceGet)			( const char* fileName, const char* entryName );
+	sequenceEntry_s*	(*pfnSequencePickSentence)	( const char* groupName, int pickMethod, int *picked );
 
 	// LH: Give access to filesize via filesystem
 	int			(*pfnGetFileSize)			( char *filename );
@@ -287,12 +287,13 @@ typedef struct enginefuncs_s
 	// destroyed and recreated.
 	void (*pfnRegisterTutorMessageShown)(int mid);
 	int (*pfnGetTimesTutorMessageShown)(int mid);
-	void (*ProcessTutorMessageDecayBuffer)(int *buffer, int bufferLength);
-	void (*ConstructTutorMessageDecayBuffer)(int *buffer, int bufferLength);
-	void (*ResetTutorMessageDecayData)( void );
-
+	void (*pfnProcessTutorMessageDecayBuffer)(int *buffer, int bufferLength);
+	void (*pfnConstructTutorMessageDecayBuffer)(int *buffer, int bufferLength);
+	void (*pfnResetTutorMessageDecayData)( void );
+	
 	void (*pfnQueryClientCvarValue)( const edict_t *player, const char *cvarName );
 	void (*pfnQueryClientCvarValue2)( const edict_t *player, const char *cvarName, int requestID );
+
 	int (*pfnCheckParm)( const char *pchCmdLineToken, char **ppnext );
 } enginefuncs_t;
 
@@ -392,7 +393,8 @@ typedef enum _fieldtypes
 	FIELD_TYPECOUNT,		// MUST BE LAST
 } FIELDTYPE;
 
-#if !defined(offsetof)  && !defined(GNUC)
+#ifndef offsetof
+#undef offsetof
 #define offsetof(s,m)	(size_t)&(((s *)0)->m)
 #endif
 
@@ -415,7 +417,10 @@ typedef struct
 	short			flags;
 } TYPEDESCRIPTION;
 
+#ifdef	ARRAYSIZE
+#undef	ARRAYSIZE
 #define ARRAYSIZE(p)		(sizeof(p)/sizeof(p[0]))
+#endif
 
 typedef struct 
 {
@@ -456,7 +461,7 @@ typedef struct
 	void			(*pfnParmsNewLevel)		( void );
 	void			(*pfnParmsChangeLevel)	( void );
 
-	 // Returns string describing current .dll.  E.g., TeamFotrress 2, Half-Life
+	 // Returns string describing current .dll.  E.g., Team Fortress 2, Half-Life
 	const char     *(*pfnGetGameDescription)( void );     
 
 	// Notify dll about a player customization.
@@ -516,8 +521,9 @@ typedef struct
 	void			(*pfnOnFreeEntPrivateData)(edict_t *pEnt);
 	void			(*pfnGameShutdown)(void);
 	int				(*pfnShouldCollide)( edict_t *pentTouched, edict_t *pentOther );
-	void			(*pfnCvarValue)( const edict_t *pEnt, const char *value );
-	void			(*pfnCvarValue2)( const edict_t *pEnt, int requestID, const char *cvarName, const char *value );
+	
+	void            (*pfnCvarValue)( const edict_t *pEnt, const char *value );
+	void            (*pfnCvarValue2)( const edict_t *pEnt, int requestID, const char *cvarName, const char *value );
 } NEW_DLL_FUNCTIONS;
 typedef int	(*NEW_DLL_FUNCTIONS_FN)( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion );
 

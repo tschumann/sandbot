@@ -1,7 +1,7 @@
 //
-// HPB_bot - botman's High Ping Bastard bot
+// gbot - The GoldSource bot
 //
-// (http://planethalflife.com/botman/)
+// <no site>
 //
 // engine.h
 //
@@ -129,44 +129,53 @@ int pfnIsDedicatedServer( void );
 cvar_t *pfnCVarGetPointer( const char *szVarName );
 unsigned int pfnGetPlayerWONId( edict_t *e );
 
-void pfnInfo_RemoveKey( char *s, const char *key );
-const char *pfnGetPhysicsKeyValue( const edict_t *pClient, const char *key );
-void pfnSetPhysicsKeyValue( const edict_t *pClient, const char *key, const char *value );
-const char *pfnGetPhysicsInfoString( const edict_t *pClient );
-unsigned short pfnPrecacheEvent( int type, const char*psz );
-void pfnPlaybackEvent( int flags, const edict_t *pInvoker, unsigned short eventindex, float delay, float *origin, float *angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
-unsigned char *pfnSetFatPVS( float *org );
-unsigned char *pfnSetFatPAS( float *org );
-int pfnCheckVisibility ( const edict_t *entity, unsigned char *pset );
-void pfnDeltaSetField( struct delta_s *pFields, const char *fieldname );
-void pfnDeltaUnsetField( struct delta_s *pFields, const char *fieldname );
-void pfnDeltaAddEncoder( char *name, void (*conditionalencode)( struct delta_s *pFields, const unsigned char *from, const unsigned char *to ) );
-int pfnGetCurrentPlayer( void );
-int pfnCanSkipPlayer( const edict_t *player );
-int pfnDeltaFindField( struct delta_s *pFields, const char *fieldname );
-void pfnDeltaSetFieldByIndex( struct delta_s *pFields, int fieldNumber );
-void pfnDeltaUnsetFieldByIndex( struct delta_s *pFields, int fieldNumber );
-void pfnSetGroupMask( int mask, int op );
-int pfnCreateInstancedBaseline( int classname, struct entity_state_s *baseline );
-void pfnCvar_DirectSet( struct cvar_s *var, char *value );
-void pfnForceUnmodified( FORCE_TYPE type, float *mins, float *maxs, const char *filename );
-void pfnGetPlayerStats( const edict_t *pClient, int *ping, int *packet_loss );
+// SDK 2.0
+void	pfnInfo_RemoveKey( char *s, const char *key );
+const char		*pfnGetPhysicsKeyValue( const edict_t *pClient, const char *key );
+void	pfnSetPhysicsKeyValue( const edict_t *pClient, const char *key, const char *value );
+const char		*pfnGetPhysicsInfoString( const edict_t *pClient );
+unsigned short	pfnPrecacheEvent( int type, const char*psz );
+void	pfnPlaybackEvent( int flags, const edict_t *pInvoker, unsigned short eventindex, float delay, float *origin, float *angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
+unsigned char	*pfnSetFatPVS( float *org );
+unsigned char	*pfnSetFatPAS( float *org );
+int		pfnCheckVisibility ( const edict_t *entity, unsigned char *pset );
+void	pfnDeltaSetField( struct delta_s *pFields, const char *fieldname );
+void	pfnDeltaUnsetField( struct delta_s *pFields, const char *fieldname );
+void	pfnDeltaAddEncoder( char *name, void (*conditionalencode)( struct delta_s *pFields, const unsigned char *from, const unsigned char *to ) );
+int		pfnGetCurrentPlayer( void );
+int		pfnCanSkipPlayer( const edict_t *player );
+int		pfnDeltaFindField( struct delta_s *pFields, const char *fieldname );
+void	pfnDeltaSetFieldByIndex( struct delta_s *pFields, int fieldNumber );
+void	pfnDeltaUnsetFieldByIndex( struct delta_s *pFields, int fieldNumber );
+void	pfnSetGroupMask( int mask, int op );
+int		pfnCreateInstancedBaseline( int classname, struct entity_state_s *baseline );
+void	pfnCvar_DirectSet( struct cvar_s *var, char *value );
+void	pfnForceUnmodified( FORCE_TYPE type, float *mins, float *maxs, const char *filename );
+void	pfnGetPlayerStats( const edict_t *pClient, int *ping, int *packet_loss );
 
-void pfnAddServerCommand( char *cmd_name, void (*function) (void) );
-qboolean pfnVoice_GetClientListening(int iReceiver, int iSender);
-qboolean pfnVoice_SetClientListening(int iReceiver, int iSender, qboolean bListen);
-const char *pfnGetPlayerAuthId( edict_t *e );
-void* pfnSequenceGet( const char* fileName, const char* entryName );
-void* pfnSequencePickSentence( const char* groupName, int pickMethod, int *picked );
-int pfnGetFileSize( char *filename );
-unsigned int pfnGetApproxWavePlayLen(const char *filepath);
-int pfnIsCareerMatch( void );
-int pfnGetLocalizedStringLength(const char *label);
-void pfnRegisterTutorMessageShown(int mid);
-int pfnGetTimesTutorMessageShown(int mid);
-void pfnProcessTutorMessageDecayBuffer(int *buffer, int bufferLength);
-void pfnConstructTutorMessageDecayBuffer(int *buffer, int bufferLength);
-void pfnResetTutorMessageDecayData( void );
+// SDK 2.3
+void	pfnAddServerCommand( char *cmd_name, void (*function)(void) );
+qboolean	pfnVoice_GetClientListening(int iReceiver, int iSender);
+qboolean	pfnVoice_SetClientListening(int iReceiver, int iSender, qboolean bListen);
+const char	*pfnGetPlayerAuthId( edict_t *e );
+sequenceEntry_s*	pfnSequenceGet( const char* fileName, const char* entryName );
+sequenceEntry_s*	pfnSequencePickSentence( const char* groupName, int pickMethod, int *picked );
+int		pfnGetFileSize( char *filename );
+unsigned int		pfnGetApproxWavePlayLen(const char *filepath);
+int		pfnIsCareerMatch( void );
+int		pfnGetLocalizedStringLength(const char *label);
+void	pfnRegisterTutorMessageShown(int mid);
+int		pfnGetTimesTutorMessageShown(int mid);
+void	pfnProcessTutorMessageDecayBuffer(int *buffer, int bufferLength);
+void	pfnConstructTutorMessageDecayBuffer(int *buffer, int bufferLength);
+void	pfnResetTutorMessageDecayData( void );
+
+// New DLL Functions
+void	OnFreeEntPrivateData( edict_t *pEnt );
+void	GameShutdown( void );
+int		ShouldCollide( edict_t *pentTouched, edict_t *pentOther );
+void	CvarValue( const edict_t *pEnt, const char *value );
+void	CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const char *value );
 
 #endif // ENGINE_H
 

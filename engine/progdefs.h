@@ -60,7 +60,7 @@ typedef struct
 typedef struct entvars_s
 {
 	string_t	classname;
-	string_t	globalname;
+	string_t	globalname;	// 8
 
 	vec3_t		origin;
 	vec3_t		oldorigin;
@@ -74,12 +74,13 @@ typedef struct entvars_s
 	vec3_t		avelocity;		// angle velocity (degrees per second)
 	vec3_t		punchangle;		// auto-decaying view angle adjustment
 	vec3_t		v_angle;		// Viewing angle (player only)
+								// 128
 
 	// For parametric entities
 	vec3_t		endpos;
 	vec3_t		startpos;
 	float		impacttime;
-	float		starttime;
+	float		starttime;		// 160
 
 	int			fixangle;		// 0:nothing, 1:force view angles, 2:add avelocity
 	float		idealpitch;
@@ -88,7 +89,7 @@ typedef struct entvars_s
 	float		yaw_speed;
 
 	int			modelindex;
-	string_t	model;
+	string_t	model;			// 188
 
 	int			viewmodel;		// player's viewmodel
 	int			weaponmodel;	// what other players see
@@ -98,6 +99,7 @@ typedef struct entvars_s
 	vec3_t		mins;		// local BB min
 	vec3_t		maxs;		// local BB max
 	vec3_t		size;		// maxs - mins
+							// 256
 
 	float		ltime;
 	float		nextthink;
@@ -107,12 +109,12 @@ typedef struct entvars_s
 
 	int			skin;			
 	int			body;			// sub-model selection for studiomodels
-	int 		effects;
+	int 		effects;		// 284
 	
 	float		gravity;		// % of "normal" gravity
 	float		friction;		// inverse elasticity of MOVETYPE_BOUNCE
 	
-	int			light_level;
+	int			light_level;	// 296
 
 	int			sequence;		// animation sequence
 	int			gaitsequence;	// movement animation sequence for player (0 for none)

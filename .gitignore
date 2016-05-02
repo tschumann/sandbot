@@ -1,5 +1,6 @@
 
 dlls/Debug/*
+dlls/Release/*
 
 *.ncb
 *.suo

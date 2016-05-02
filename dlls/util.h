@@ -23,6 +23,9 @@
 #ifndef ENGINECALLBACK_H
 #include "enginecallback.h"
 #endif
+
+#include "bot.h"
+
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent );  // implementation later in this file
 
 extern globalvars_t				*gpGlobals;
@@ -539,3 +542,14 @@ int UTIL_SharedRandomLong( unsigned int seed, int low, int high );
 float UTIL_SharedRandomFloat( unsigned int seed, float low, float high );
 
 float UTIL_WeaponTimeBase( void );
+
+Vector UTIL_GetOrigin( edict_t *pEdict );
+
+// Natural Selection
+bool UTIL_IsBuilt( edict_t *pent );
+bool UTIL_IsCombat();
+float UTIL_GetResources( edict_t *player );
+float UTIL_GetExperience( edict_t *player );
+int UTIL_GetPoints( edict_t *player );
+BOOL UTIL_IsEvolved( const bot_t *pBot );
+bool UTIL_CanEvolve( const bot_t *pBot );

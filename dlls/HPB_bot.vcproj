@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="HPB_bot"
-	ProjectGUID="{21B87DAD-4AA5-4BB7-A1EA-40BC1DEBB6F3}"
+	ProjectGUID="{A8AB9DAD-0780-4029-83E4-83C0BD912B8B}"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -49,7 +49,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\dlls,..\engine,..\common,..\pm_shared,..\"
-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;VALVE_DLL"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;VALVE_DLL;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -74,18 +74,18 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Release/HPB_bot.dll"
+				OutputFile=".\Release/gbot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ModuleDefinitionFile=".\HPB_bot.def"
+				ModuleDefinitionFile=".\gbot.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Release/HPB_bot.pdb"
+				ProgramDatabaseFile=".\Release/gbot.pdb"
 				GenerateMapFile="true"
-				MapFileName=".\Release/HPB_bot.map"
+				MapFileName=".\Release/gbot.map"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Release/HPB_bot.lib"
+				ImportLibrary=".\Release/gbot.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -146,7 +146,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\dlls,..\engine,..\common,..\pm_shared,..\"
-				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;VALVE_DLL"
+				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;VALVE_DLL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\Debug/HPB_bot.pch"
@@ -172,16 +172,16 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Debug/HPB_bot.dll"
+				OutputFile=".\Debug/gbot.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				ModuleDefinitionFile=".\HPB_bot.def"
+				ModuleDefinitionFile=".\gbot.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/HPB_bot.pdb"
+				ProgramDatabaseFile=".\Debug/gbot.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Debug/HPB_bot.lib"
+				ImportLibrary=".\Debug/gbot.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -468,11 +468,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\bot_client.h"
+				>
+			</File>
+			<File
 				RelativePath="bot_func.h"
 				>
 			</File>
 			<File
+				RelativePath=".\bot_weapons.h"
+				>
+			</File>
+			<File
 				RelativePath="cdll_dll.h"
+				>
+			</File>
+			<File
+				RelativePath=".\engine.h"
 				>
 			</File>
 			<File
@@ -484,7 +496,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\util.h"
+				>
+			</File>
+			<File
 				RelativePath="vector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\waypoint.h"
 				>
 			</File>
 		</Filter>
