@@ -6,7 +6,17 @@ Description: A deathmatch bot for Gunman Chronicles and They Hunger (under the h
 Requirements: Half-Life (Steam version).
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
+== Usage ==
+
+addbot		Add a bot to the server
+bot_skill	Bot skill cvar (1, 2 or 3)
+
 == Changelog ==
+
+v0.2 (??/??/??)
+- Added some documenation.
+- Added some waypoints for Natural Selection (probably not worth doing any yourself - there are likely to be breaking changes).
+- Added missing asset to Gunman Chronicles (to stop it crashing when +developer 2 is specified).
 
 v0.1 (2/05/16)
 - Initial release (after more than 5 years of being untouched and unreleased).
