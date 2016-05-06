@@ -472,6 +472,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\bot_weapons.h"
+				>
+			</File>
+			<File
 				RelativePath="cdll_dll.h"
 				>
 			</File>
