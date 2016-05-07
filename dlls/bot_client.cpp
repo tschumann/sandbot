@@ -179,28 +179,103 @@ void BotClient_Valve_WeaponList(void *p, int bot_index)
    }
 }
 
-void BotClient_TFC_WeaponList(void *p, int bot_index)
+void BotClient_Gearbox_WeaponList(void *p, int bot_index)
 {
-   // this is just like the Valve Weapon List message
-   BotClient_Valve_WeaponList(p, bot_index);
+	// this is just like the Valve Weapon List message
+	BotClient_Valve_WeaponList(p, bot_index);
 }
 
 void BotClient_CS_WeaponList(void *p, int bot_index)
 {
-   // this is just like the Valve Weapon List message
-   BotClient_Valve_WeaponList(p, bot_index);
+	// this is just like the Valve Weapon List message
+	BotClient_Valve_WeaponList(p, bot_index);
 }
 
-void BotClient_Gearbox_WeaponList(void *p, int bot_index)
+void BotClient_TFC_WeaponList(void *p, int bot_index)
 {
-   // this is just like the Valve Weapon List message
-   BotClient_Valve_WeaponList(p, bot_index);
+	// this is just like the Valve Weapon List message
+	BotClient_Valve_WeaponList(p, bot_index);
 }
 
 void BotClient_FLF_WeaponList(void *p, int bot_index)
 {
-   // this is just like the Valve Weapon List message
-   BotClient_Valve_WeaponList(p, bot_index);
+	// this is just like the Valve Weapon List message
+	BotClient_Valve_WeaponList(p, bot_index);
+}
+
+void BotClient_Gunman_WeaponList( void *p, int bot_index )
+{
+	static int state = 0;	// current state machine state
+	static bot_weapon_t bot_weapon;
+
+	// TODO: this might be better as a switch statement
+	if (state == 0)
+	{
+		state++;
+		strcpy(bot_weapon.szClassname, (char *)p);
+	}
+	else if (state == 1)
+	{
+		state++;
+		bot_weapon.iAmmo1 = *(int *)p;  // ammo index 1
+	}
+	else if (state == 2)
+	{
+		state++;
+		bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
+	}
+	else if (state == 3)
+	{
+		state++;
+		bot_weapon.iAmmo2 = *(int *)p;  // ammo index 2
+	}
+	else if (state == 4)
+	{
+		state++;
+		bot_weapon.iAmmo2Max = *(int *)p;  // max ammo2
+	}
+	else if (state == 5)
+	{
+		state++;
+		bot_weapon.iSlot = *(int *)p;  // slot for this weapon
+	}
+	else if (state == 6)
+	{
+		state++;
+		bot_weapon.iPosition = *(int *)p;  // position in slot
+	}
+	else if (state == 7)
+	{
+		state++;
+		bot_weapon.iId = *(int *)p;  // weapon ID
+	}
+	else if (state == 8)
+	{
+		state++;
+		bot_weapon.iFlags = *(int *)p;  // flags for weapon (WTF???)
+	}
+	else if (state == 9)
+	{
+		state++;
+		strcpy(bot_weapon.szParentClass, (char *)p);
+	}
+	else if (state == 10)
+	{
+		state++;
+		bot_weapon.iUnknown[0] = *(int *)p;
+	}
+	else if (state == 11)
+	{
+		state++;
+		bot_weapon.iUnknown[1] = *(int *)p;
+	}
+	else if (state == 12)
+	{
+		state = 0;
+		bot_weapon.iUnknown[2] = *(int *)p;
+
+		weapon_defs[bot_weapon.iId] = bot_weapon;
+	}
 }
 
 

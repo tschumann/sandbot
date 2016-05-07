@@ -49,13 +49,11 @@ static FILE *fp;
 
 int pfnPrecacheModel(char* s)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPrecacheModel: %s\n",s); fclose(fp); }
-   return (*g_engfuncs.pfnPrecacheModel)(s);
+	return (*g_engfuncs.pfnPrecacheModel)(s);
 }
 int pfnPrecacheSound(char* s)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPrecacheSound: %s\n",s); fclose(fp); }
-   return (*g_engfuncs.pfnPrecacheSound)(s);
+	return (*g_engfuncs.pfnPrecacheSound)(s);
 }
 void pfnSetModel(edict_t *e, const char *m)
 {
@@ -79,24 +77,22 @@ void pfnSetSize(edict_t *e, const float *rgflMin, const float *rgflMax)
 }
 void pfnChangeLevel(char* s1, char* s2)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnChangeLevel:\n"); fclose(fp); }
+	// kick any bot off of the server after time/frag limit...
+	for (int index = 0; index < 32; index++)
+	{
+		if (bots[index].is_used)	// is this slot used?
+		{
+			char cmd[40];
 
-   // kick any bot off of the server after time/frag limit...
-   for (int index = 0; index < 32; index++)
-   {
-      if (bots[index].is_used)  // is this slot used?
-      {
-         char cmd[40];
+			sprintf(cmd, "kick \"%s\"\n", bots[index].name);
 
-         sprintf(cmd, "kick \"%s\"\n", bots[index].name);
+			bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
 
-         bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
+			SERVER_COMMAND(cmd);	// kick the bot using (kick "name")
+		}
+	}
 
-         SERVER_COMMAND(cmd);  // kick the bot using (kick "name")
-      }
-   }
-
-   (*g_engfuncs.pfnChangeLevel)(s1, s2);
+	(*g_engfuncs.pfnChangeLevel)(s1, s2);
 }
 void pfnGetSpawnParms(edict_t *ent)
 {
