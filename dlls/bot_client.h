@@ -16,6 +16,7 @@ void BotClient_Valve_WeaponList(void *p, int bot_index);
 void BotClient_TFC_WeaponList(void *p, int bot_index);
 void BotClient_CS_WeaponList(void *p, int bot_index);
 void BotClient_Gearbox_WeaponList(void *p, int bot_index);
+void BotClient_Gunman_WeaponList(void *p, int bot_index);
 void BotClient_FLF_WeaponList(void *p, int bot_index);
 
 void BotClient_Valve_CurrentWeapon(void *p, int bot_index);

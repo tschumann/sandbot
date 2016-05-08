@@ -203,7 +203,7 @@ void BotClient_FLF_WeaponList(void *p, int bot_index)
 	BotClient_Valve_WeaponList(p, bot_index);
 }
 
-void BotClient_Gunman_WeaponList( void *p, int bot_index )
+void BotClient_Gunman_WeaponList(void *p, int bot_index)
 {
 	static int state = 0;	// current state machine state
 	static bot_weapon_t bot_weapon;

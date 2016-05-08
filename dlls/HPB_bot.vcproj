@@ -468,6 +468,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\bot_client.h"
+				>
+			</File>
+			<File
 				RelativePath="bot_func.h"
 				>
 			</File>

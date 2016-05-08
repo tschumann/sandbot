@@ -396,6 +396,21 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
                else if (msg_type == message_ScreenFade)
                   botMsgFunction = BotClient_Gearbox_ScreenFade;
             }
+			else if (mod_id == REWOLF_DLL)
+            {
+               if (msg_type == message_WeaponList)
+                  botMsgFunction = BotClient_Gunman_WeaponList;
+               else if (msg_type == message_CurWeapon)
+                  botMsgFunction = BotClient_Valve_CurrentWeapon;
+               else if (msg_type == message_AmmoX)
+                  botMsgFunction = BotClient_Valve_AmmoX;
+               else if (msg_type == message_AmmoPickup)
+                  botMsgFunction = BotClient_Valve_AmmoPickup;
+               else if (msg_type == message_Damage)
+                  botMsgFunction = BotClient_Valve_Damage;
+               else if (msg_type == message_ScreenFade)
+                  botMsgFunction = BotClient_Valve_ScreenFade;
+            }
             else if (mod_id == FRONTLINE_DLL)
             {
                if (msg_type == message_VGUI)
