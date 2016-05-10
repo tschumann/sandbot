@@ -15,7 +15,6 @@ bot_skill	Bot skill cvar (1, 2 or 3)
 
 v0.2 (??/??/??)
 - Added some documenation.
-- Added some waypoints for Natural Selection (probably not worth doing any yourself - there are likely to be breaking changes).
 - Added missing asset to Gunman Chronicles (to stop it crashing when +developer 2 is specified).
 
 v0.1 (2/05/16)
