@@ -57,23 +57,19 @@ int pfnPrecacheSound(char* s)
 }
 void pfnSetModel(edict_t *e, const char *m)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetModel: edict=%x %s\n",e,m); fclose(fp); }
-   (*g_engfuncs.pfnSetModel)(e, m);
+	(*g_engfuncs.pfnSetModel)(e, m);
 }
 int pfnModelIndex(const char *m)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnModelIndex: %s\n",m); fclose(fp); }
-   return (*g_engfuncs.pfnModelIndex)(m);
+	return (*g_engfuncs.pfnModelIndex)(m);
 }
 int pfnModelFrames(int modelIndex)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnModelFrames:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnModelFrames)(modelIndex);
+	return (*g_engfuncs.pfnModelFrames)(modelIndex);
 }
 void pfnSetSize(edict_t *e, const float *rgflMin, const float *rgflMax)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetSize: %x\n",e); fclose(fp); }
-   (*g_engfuncs.pfnSetSize)(e, rgflMin, rgflMax);
+	(*g_engfuncs.pfnSetSize)(e, rgflMin, rgflMax);
 }
 void pfnChangeLevel(char* s1, char* s2)
 {
@@ -96,38 +92,31 @@ void pfnChangeLevel(char* s1, char* s2)
 }
 void pfnGetSpawnParms(edict_t *ent)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetSpawnParms:\n"); fclose(fp); }
-   (*g_engfuncs.pfnGetSpawnParms)(ent);
+	(*g_engfuncs.pfnGetSpawnParms)(ent);
 }
 void pfnSaveSpawnParms(edict_t *ent)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSaveSpawnParms:\n"); fclose(fp); }
-   (*g_engfuncs.pfnSaveSpawnParms)(ent);
+	(*g_engfuncs.pfnSaveSpawnParms)(ent);
 }
 float pfnVecToYaw(const float *rgflVector)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnVecToYaw:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnVecToYaw)(rgflVector);
+	return (*g_engfuncs.pfnVecToYaw)(rgflVector);
 }
 void pfnVecToAngles(const float *rgflVectorIn, float *rgflVectorOut)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnVecToAngles:\n"); fclose(fp); }
-   (*g_engfuncs.pfnVecToAngles)(rgflVectorIn, rgflVectorOut);
+	(*g_engfuncs.pfnVecToAngles)(rgflVectorIn, rgflVectorOut);
 }
 void pfnMoveToOrigin(edict_t *ent, const float *pflGoal, float dist, int iMoveType)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnMoveToOrigin:\n"); fclose(fp); }
-   (*g_engfuncs.pfnMoveToOrigin)(ent, pflGoal, dist, iMoveType);
+	(*g_engfuncs.pfnMoveToOrigin)(ent, pflGoal, dist, iMoveType);
 }
 void pfnChangeYaw(edict_t* ent)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnChangeYaw:\n"); fclose(fp); }
-   (*g_engfuncs.pfnChangeYaw)(ent);
+	(*g_engfuncs.pfnChangeYaw)(ent);
 }
 void pfnChangePitch(edict_t* ent)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnChangePitch:\n"); fclose(fp); }
-   (*g_engfuncs.pfnChangePitch)(ent);
+	(*g_engfuncs.pfnChangePitch)(ent);
 }
 edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszField, const char *pszValue)
 {
@@ -211,8 +200,7 @@ edict_t* pfnCreateNamedEntity(int className)
 }
 void pfnMakeStatic(edict_t *ent)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnMakeStatic:\n"); fclose(fp); }
-   (*g_engfuncs.pfnMakeStatic)(ent);
+	(*g_engfuncs.pfnMakeStatic)(ent);
 }
 int pfnEntIsOnFloor(edict_t *e)
 {
@@ -224,13 +212,11 @@ int pfnDropToFloor(edict_t* e)
 }
 int pfnWalkMove(edict_t *ent, float yaw, float dist, int iMode)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWalkMove:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnWalkMove)(ent, yaw, dist, iMode);
+	return (*g_engfuncs.pfnWalkMove)(ent, yaw, dist, iMode);
 }
 void pfnSetOrigin(edict_t *e, const float *rgflOrigin)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetOrigin:\n"); fclose(fp); }
-   (*g_engfuncs.pfnSetOrigin)(e, rgflOrigin);
+	(*g_engfuncs.pfnSetOrigin)(e, rgflOrigin);
 }
 void pfnEmitSound(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch)
 {
@@ -299,13 +285,11 @@ void pfnLightStyle(int style, char* val)
 }
 int pfnDecalIndex(const char *name)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDecalIndex:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnDecalIndex)(name);
+	return (*g_engfuncs.pfnDecalIndex)(name);
 }
 int pfnPointContents(const float *rgflVector)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPointContents:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnPointContents)(rgflVector);
+	return (*g_engfuncs.pfnPointContents)(rgflVector);
 }
 void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
 {
@@ -609,16 +593,18 @@ void pfnWriteCoord(float flValue)
 }
 void pfnWriteString(const char *sz)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteString: %s\n",sz); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogPrintf("pfnWriteString: sz=%s", sz);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-         (*botMsgFunction)((void *)sz, botMsgIndex);
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)sz, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteString)(sz);
+	(*g_engfuncs.pfnWriteString)(sz);
 }
 void pfnWriteEntity(int iValue)
 {
@@ -679,63 +665,51 @@ void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 }
 void* pfnPvAllocEntPrivateData(edict_t *pEdict, int32 cb)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPvAllocEntPrivateData:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnPvAllocEntPrivateData)(pEdict, cb);
+	return (*g_engfuncs.pfnPvAllocEntPrivateData)(pEdict, cb);
 }
 void* pfnPvEntPrivateData(edict_t *pEdict)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPvEntPrivateData:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnPvEntPrivateData)(pEdict);
+	return (*g_engfuncs.pfnPvEntPrivateData)(pEdict);
 }
 void pfnFreeEntPrivateData(edict_t *pEdict)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFreeEntPrivateData:\n"); fclose(fp); }
-   (*g_engfuncs.pfnFreeEntPrivateData)(pEdict);
+	(*g_engfuncs.pfnFreeEntPrivateData)(pEdict);
 }
 const char* pfnSzFromIndex(int iString)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSzFromIndex:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnSzFromIndex)(iString);
+	return (*g_engfuncs.pfnSzFromIndex)(iString);
 }
 int pfnAllocString(const char *szValue)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnAllocString:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnAllocString)(szValue);
+	return (*g_engfuncs.pfnAllocString)(szValue);
 }
 entvars_t* pfnGetVarsOfEnt(edict_t *pEdict)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetVarsOfEnt:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnGetVarsOfEnt)(pEdict);
+	return (*g_engfuncs.pfnGetVarsOfEnt)(pEdict);
 }
 edict_t* pfnPEntityOfEntOffset(int iEntOffset)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPEntityOfEntOffset:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnPEntityOfEntOffset)(iEntOffset);
+	return (*g_engfuncs.pfnPEntityOfEntOffset)(iEntOffset);
 }
 int pfnEntOffsetOfPEntity(const edict_t *pEdict)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEntOffsetOfPEntity: %x\n",pEdict); fclose(fp); }
-   return (*g_engfuncs.pfnEntOffsetOfPEntity)(pEdict);
+	return (*g_engfuncs.pfnEntOffsetOfPEntity)(pEdict);
 }
 int pfnIndexOfEdict(const edict_t *pEdict)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnIndexOfEdict: %x\n",pEdict); fclose(fp); }
-   return (*g_engfuncs.pfnIndexOfEdict)(pEdict);
+	return (*g_engfuncs.pfnIndexOfEdict)(pEdict);
 }
 edict_t* pfnPEntityOfEntIndex(int iEntIndex)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPEntityOfEntIndex:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnPEntityOfEntIndex)(iEntIndex);
+	return (*g_engfuncs.pfnPEntityOfEntIndex)(iEntIndex);
 }
 edict_t* pfnFindEntityByVars(entvars_t* pvars)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFindEntityByVars:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnFindEntityByVars)(pvars);
+	return (*g_engfuncs.pfnFindEntityByVars)(pvars);
 }
 void* pfnGetModelPtr(edict_t* pEdict)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetModelPtr: %x\n",pEdict); fclose(fp); }
-   return (*g_engfuncs.pfnGetModelPtr)(pEdict);
+	return (*g_engfuncs.pfnGetModelPtr)(pEdict);
 }
 int pfnRegUserMsg(const char *pszName, int iSize)
 {
@@ -825,6 +799,40 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 			else if (strcmp(pszName, "ScreenFade") == 0)
 				message_ScreenFade = msg;
 		}
+		else if( mod_id == REWOLF_DLL )
+		{
+			if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
+		if( mod_id == HUNGER_DLL )
+		{
+			if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
 		else if( mod_id == FRONTLINE_DLL )
 		{
 			if (strcmp(pszName, "VGUIMenu") == 0)
@@ -856,23 +864,19 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 }
 void pfnAnimationAutomove(const edict_t* pEdict, float flTime)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnAnimationAutomove:\n"); fclose(fp); }
-   (*g_engfuncs.pfnAnimationAutomove)(pEdict, flTime);
+	(*g_engfuncs.pfnAnimationAutomove)(pEdict, flTime);
 }
 void pfnGetBonePosition(const edict_t* pEdict, int iBone, float *rgflOrigin, float *rgflAngles )
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetBonePosition:\n"); fclose(fp); }
-   (*g_engfuncs.pfnGetBonePosition)(pEdict, iBone, rgflOrigin, rgflAngles);
+	(*g_engfuncs.pfnGetBonePosition)(pEdict, iBone, rgflOrigin, rgflAngles);
 }
 uint32 pfnFunctionFromName( const char *pName )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFunctionFromName:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnFunctionFromName)(pName);
+	return (*g_engfuncs.pfnFunctionFromName)(pName);
 }
 const char *pfnNameForFunction( uint32 function )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnNameForFunction:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnNameForFunction)(function);
+	return (*g_engfuncs.pfnNameForFunction)(function);
 }
 void pfnClientPrintf( edict_t* pEdict, PRINT_TYPE ptype, const char *szMsg )
 {
@@ -886,8 +890,7 @@ void pfnServerPrint( const char *szMsg )
 }
 void pfnGetAttachment(const edict_t *pEdict, int iAttachment, float *rgflOrigin, float *rgflAngles )
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetAttachment:\n"); fclose(fp); }
-   (*g_engfuncs.pfnGetAttachment)(pEdict, iAttachment, rgflOrigin, rgflAngles);
+	(*g_engfuncs.pfnGetAttachment)(pEdict, iAttachment, rgflOrigin, rgflAngles);
 }
 void pfnCRC32_Init(CRC32_t *pulCRC)
 {
@@ -915,18 +918,15 @@ float pfnRandomFloat(float flLow, float flHigh)
 }
 void pfnSetView(const edict_t *pClient, const edict_t *pViewent )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetView:\n"); fclose(fp); }
-   (*g_engfuncs.pfnSetView)(pClient, pViewent);
+	(*g_engfuncs.pfnSetView)(pClient, pViewent);
 }
 float pfnTime( void )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnTime:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnTime)();
+	return (*g_engfuncs.pfnTime)();
 }
 void pfnCrosshairAngle(const edict_t *pClient, float pitch, float yaw)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCrosshairAngle:\n"); fclose(fp); }
-   (*g_engfuncs.pfnCrosshairAngle)(pClient, pitch, yaw);
+	(*g_engfuncs.pfnCrosshairAngle)(pClient, pitch, yaw);
 }
 byte *pfnLoadFileForMe(char *filename, int *pLength)
 {
@@ -940,8 +940,7 @@ void pfnFreeFile(void *buffer)
 }
 void pfnEndSection(const char *pszSectionName)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEndSection:\n"); fclose(fp); }
-   (*g_engfuncs.pfnEndSection)(pszSectionName);
+	(*g_engfuncs.pfnEndSection)(pszSectionName);
 }
 int pfnCompareFileTime(char *filename1, char *filename2, int *iCompare)
 {
@@ -950,8 +949,7 @@ int pfnCompareFileTime(char *filename1, char *filename2, int *iCompare)
 }
 void pfnGetGameDir(char *szGetGameDir)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetGameDir:\n"); fclose(fp); }
-   (*g_engfuncs.pfnGetGameDir)(szGetGameDir);
+	(*g_engfuncs.pfnGetGameDir)(szGetGameDir);
 }
 void pfnCvar_RegisterVariable(cvar_t *variable)
 {
@@ -984,8 +982,7 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 }
 edict_t * pfnCreateFakeClient(const char *netname)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCreateFakeClient:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnCreateFakeClient)(netname);
+	return (*g_engfuncs.pfnCreateFakeClient)(netname);
 }
 void pfnRunPlayerMove(edict_t *fakeclient, const float *viewangles, float forwardmove, float sidemove, float upmove, unsigned short buttons, byte impulse, byte msec )
 {
@@ -1216,8 +1213,7 @@ unsigned int pfnGetApproxWavePlayLen(const char *filepath)
 }
 int pfnIsCareerMatch( void )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnIsCareerMatch:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnIsCareerMatch)();
+	return (*g_engfuncs.pfnIsCareerMatch)();
 }
 int pfnGetLocalizedStringLength(const char *label)
 {
@@ -1226,26 +1222,21 @@ int pfnGetLocalizedStringLength(const char *label)
 }
 void pfnRegisterTutorMessageShown(int mid)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnRegisterTutorMessageShown:\n"); fclose(fp); }
-   (*g_engfuncs.pfnRegisterTutorMessageShown)(mid);
+	(*g_engfuncs.pfnRegisterTutorMessageShown)(mid);
 }
 int pfnGetTimesTutorMessageShown(int mid)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetTimesTutorMessageShown:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnGetTimesTutorMessageShown)(mid);
+	return (*g_engfuncs.pfnGetTimesTutorMessageShown)(mid);
 }
 void pfnProcessTutorMessageDecayBuffer(int *buffer, int bufferLength)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnProcessTutorMessageDecayBuffer:\n"); fclose(fp); }
-   (*g_engfuncs.ProcessTutorMessageDecayBuffer)(buffer, bufferLength);
+	(*g_engfuncs.ProcessTutorMessageDecayBuffer)(buffer, bufferLength);
 }
 void pfnConstructTutorMessageDecayBuffer(int *buffer, int bufferLength)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnConstructTutorMessageDecayBuffer:\n"); fclose(fp); }
-   (*g_engfuncs.ConstructTutorMessageDecayBuffer)(buffer, bufferLength);
+	(*g_engfuncs.ConstructTutorMessageDecayBuffer)(buffer, bufferLength);
 }
 void pfnResetTutorMessageDecayData( void )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnResetTutorMessageDecayData:\n"); fclose(fp); }
-   (*g_engfuncs.ResetTutorMessageDecayData)();
+	(*g_engfuncs.ResetTutorMessageDecayData)();
 }
