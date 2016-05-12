@@ -50,44 +50,9 @@ typedef struct
 	// int iSecondaryAmmoIndex;
 } bot_weapon_select_t;
 
-#if 0
-typedef struct
-{
-   int iId;  // the weapon ID value
-   char  weapon_name[64];  // name of the weapon when selecting it
-   int   skill_level;   // bot skill must be less than or equal to this value
-   float primary_min_distance;   // 0 = no minimum
-   float primary_max_distance;   // 9999 = no maximum
-   float secondary_min_distance; // 0 = no minimum
-   float secondary_max_distance; // 9999 = no maximum
-   int   use_percent;   // times out of 100 to use this weapon when available
-   bool  can_use_underwater;     // can use this weapon underwater
-   int   primary_fire_percent;   // times out of 100 to use primary fire
-   int   min_primary_ammo;       // minimum ammout of primary ammo needed to fire
-   int   min_secondary_ammo;     // minimum ammout of seconday ammo needed to fire
-   bool  primary_fire_hold;      // hold down primary fire button to use?
-   bool  secondary_fire_hold;    // hold down secondary fire button to use?
-   bool  primary_fire_charge;    // charge weapon using primary fire?
-   bool  secondary_fire_charge;  // charge weapon using secondary fire?
-   float primary_charge_delay;   // time to charge weapon
-   float secondary_charge_delay; // time to charge weapon
-} bot_weapon_select_t;
-#endif
-
-typedef struct
-{
-   int iId;
-   float primary_base_delay;
-   float primary_min_delay[5];
-   float primary_max_delay[5];
-   float secondary_base_delay;
-   float secondary_min_delay[5];
-   float secondary_max_delay[5];
-} bot_fire_delay_t;
-
-
 // weapons are stored in priority order, most desired weapon should be at
 // the start of the array and least desired should be at the end
+// presumably the no ammo ones are at the top so they can always be selected
 
 bot_weapon_select_t valve_weapon_select[] = {
     {VALVE_WEAPON_CROWBAR, "weapon_crowbar", 0.3, 0.0,
@@ -140,6 +105,71 @@ bot_weapon_select_t valve_weapon_select[] = {
 	FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
     /* terminator */
     {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
+};
+
+bot_weapon_select_t gearbox_weapon_select[] = {
+	{GEARBOX_WEAPON_PIPEWRENCH, "weapon_pipewrench", 0.5, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_KNIFE, "weapon_knife", 0.4, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_CROWBAR, "weapon_crowbar", 0.3, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_DISPLACER, "weapon_displacer", 5.0, 0.0,
+	 100.0, 1000.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_SPORELAUNCHER, "weapon_sporelauncher", 0.5, 0.0,
+	 500.0, 1000.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_SHOCKRIFLE, "weapon_shockrifle", 0.1, 0.0,
+	 50.0, 800.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_SNIPERRIFLE, "weapon_sniperrifle", 1.5, 0.0,
+	 50.0, 1500.0, 0.0, 0.0,
+	 100, FALSE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_HANDGRENADE, "weapon_handgrenade", 0.1, 0.0,
+	 250.0, 750.0, 0.0, 0.0,
+	 30, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_SNARK, "weapon_snark", 0.1, 0.0,
+	 150.0, 500.0, 0.0, 0.0,
+	 50, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_EGON, "weapon_egon", 0.0, 0.0,
+	 0.0, 9999.0, 0.0, 0.0,
+	 100, FALSE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_GAUSS, "weapon_gauss", 0.2, 1.0,
+	 0.0, 9999.0, 0.0, 9999.0,
+	 100, FALSE, 80, 1, 10, FALSE, FALSE, FALSE, TRUE, 0.0, 0.8},
+	{GEARBOX_WEAPON_M249, "weapon_m249", 0.1, 0.0,
+	 0.0, 400.0, 0.0, 0.0,
+	 100, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_SHOTGUN, "weapon_shotgun", 0.75, 1.5,
+	 30.0, 150.0, 30.0, 150.0,
+	 100, FALSE, 70, 1, 2, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_EAGLE, "weapon_eagle", 0.25, 0.0,
+	 0.0, 1200.0, 0.0, 0.0,
+	 100, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_PYTHON, "weapon_357", 0.75, 0.0,
+	 30.0, 700.0, 0.0, 0.0,
+	 100, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_HORNETGUN, "weapon_hornetgun", 0.25, 0.0,
+	 30.0, 1000.0, 30.0, 1000.0,
+	 100, TRUE, 50, 1, 4, FALSE, TRUE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_MP5, "weapon_9mmAR", 0.1, 1.0,
+	 0.0, 250.0, 300.0, 600.0,
+	 100, FALSE, 90, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_CROSSBOW, "weapon_crossbow", 0.75, 0.0,
+	 100.0, 1000.0, 0.0, 0.0,
+	 100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_RPG, "weapon_rpg", 1.5, 0.0,
+	 300.0, 9999.0, 0.0, 0.0,
+	 100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{GEARBOX_WEAPON_GLOCK, "weapon_9mmhandgun", 0.3, 0.2,
+	 0.0, 1200.0, 0.0, 1200.0,
+	 100, TRUE, 70, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	/* terminator */
+	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
 bot_weapon_select_t cs_weapon_select[] = {
@@ -213,51 +243,6 @@ bot_weapon_select_t tfc_weapon_select[] = {
 	 100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 	/* terminator */
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
-};
-
-bot_weapon_select_t gearbox_weapon_select[] = {
-   {GEARBOX_WEAPON_PIPEWRENCH, "weapon_pipewrench", 3, 0.0, 50.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_KNIFE, "weapon_knife", 4, 0.0, 50.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_CROWBAR, "weapon_crowbar", 2, 0.0, 50.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_DISPLACER, "weapon_displacer", 5, 100.0, 1000.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_SPORELAUNCHER, "weapon_sporelauncher", 5, 500.0, 1000.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_SHOCKRIFLE, "weapon_shockrifle", 5, 50.0, 800.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_SNIPERRIFLE, "weapon_sniperrifle", 5, 50.0, 1500.0, 0.0, 0.0,
-    100, FALSE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_HANDGRENADE, "weapon_handgrenade", 5, 250.0, 750.0, 0.0, 0.0,
-    30, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_SNARK, "weapon_snark", 5, 150.0, 500.0, 0.0, 0.0,
-    50, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_EGON, "weapon_egon", 5, 0.0, 9999.0, 0.0, 0.0,
-    100, FALSE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_GAUSS, "weapon_gauss", 5, 0.0, 9999.0, 0.0, 9999.0,
-    100, FALSE, 80, 1, 10, FALSE, FALSE, FALSE, TRUE, 0.0, 0.8},
-   {GEARBOX_WEAPON_M249, "weapon_m249", 5, 0.0, 400.0, 0.0, 0.0,
-    100, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_SHOTGUN, "weapon_shotgun", 5, 30.0, 150.0, 30.0, 150.0,
-    100, FALSE, 70, 1, 2, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_EAGLE, "weapon_eagle", 5, 0.0, 1200.0, 0.0, 0.0,
-    100, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_PYTHON, "weapon_357", 5, 30.0, 700.0, 0.0, 0.0,
-    100, FALSE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_HORNETGUN, "weapon_hornetgun", 5, 30.0, 1000.0, 30.0, 1000.0,
-    100, TRUE, 50, 1, 4, FALSE, TRUE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_MP5, "weapon_9mmAR", 5, 0.0, 250.0, 300.0, 600.0,
-    100, FALSE, 90, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_CROSSBOW, "weapon_crossbow", 5, 100.0, 1000.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_RPG, "weapon_rpg", 5, 300.0, 9999.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {GEARBOX_WEAPON_GLOCK, "weapon_9mmhandgun", 5, 0.0, 1200.0, 0.0, 1200.0,
-    100, TRUE, 70, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   /* terminator */
-   {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
 bot_weapon_select_t gunman_weapon_select[] = {
@@ -461,161 +446,54 @@ bot_weapon_select_t hunger_weapon_select[] = {
 };
 
 bot_weapon_select_t frontline_weapon_select[] = {
-   {FLF_WEAPON_HEGRENADE, "weapon_hegrenade", 3, 200.0, 1000.0, 0.0, 0.0,
+   {FLF_WEAPON_HEGRENADE, "weapon_hegrenade", 0.3, 0.0,
+   200.0, 1000.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_FLASHBANG, "weapon_flashbang", 3, 100.0, 800.0, 0.0, 0.0,
+   {FLF_WEAPON_FLASHBANG, "weapon_flashbang", 0.3, 0.0,
+   100.0, 800.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-//   {FLF_WEAPON_KNIFE, "weapon_knife", 3, 0.0, 60.0, 0.0, 0.0,
-//    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_HK21, "weapon_hk21", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_KNIFE, "weapon_knife", 0.3, 0.2,
+   0.0, 60.0, 0.0, 0.0,
+    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {FLF_WEAPON_HK21, "weapon_hk21", 0.0, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_UMP45, "weapon_ump45", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_UMP45, "weapon_ump45", 0.0, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_FAMAS, "weapon_famas", 5, 0.0, 500.0, 0.0, 0.0,
+   {FLF_WEAPON_FAMAS, "weapon_famas", 0.0, 0.0,
+   0.0, 500.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MSG90, "weapon_msg90", 5, 0.0, 2500.0, 0.0, 0.0,
+   {FLF_WEAPON_MSG90, "weapon_msg90", 1.2, 0.0,
+   0.0, 2500.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MP5A2, "weapon_mp5a2", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_MP5A2, "weapon_mp5a2", 0.0, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_AK5, "weapon_ak5", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_AK5, "weapon_ak5", 0.0, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MP5SD, "weapon_mp5sd", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_MP5SD, "weapon_mp5sd", 0.0, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_M4, "weapon_m4", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_M4, "weapon_m4", 0.0, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_SPAS12, "weapon_spas12", 5, 0.0, 900.0, 0.0, 0.0,
+   {FLF_WEAPON_SPAS12, "weapon_spas12", 0.9, 0.0,
+   0.0, 900.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MAC10, "weapon_mac10", 5, 0.0, 500.0, 0.0, 0.0,
+   {FLF_WEAPON_MAC10, "weapon_mac10", 0.0, 0.0,
+   0.0, 500.0, 0.0, 0.0,
     100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_BERETTA, "weapon_beretta", 5, 0.0, 1200.0, 0.0, 1200.0,
+   {FLF_WEAPON_BERETTA, "weapon_beretta", 0.4, 0.0,
+   0.0, 1200.0, 0.0, 1200.0,
     100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MK23, "weapon_mk23", 5, 0.0, 1200.0, 0.0, 1200.0,
+   {FLF_WEAPON_MK23, "weapon_mk23", 0.4, 0.0,
+   0.0, 1200.0, 0.0, 1200.0,
     100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
    /* terminator */
    {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
-
-
-// weapon firing delay based on skill (min and max delay for each weapon)
-// THESE MUST MATCH THE SAME ORDER AS THE WEAPON SELECT ARRAY!!!
-
-bot_fire_delay_t gearbox_fire_delay[] = {
-   {GEARBOX_WEAPON_PIPEWRENCH,
-    0.5, {0.0, 0.2, 0.3, 0.4, 0.6}, {0.1, 0.3, 0.5, 0.7, 1.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_KNIFE,
-    0.4, {0.0, 0.2, 0.3, 0.4, 0.6}, {0.1, 0.3, 0.5, 0.7, 1.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_CROWBAR,
-    0.3, {0.0, 0.2, 0.3, 0.4, 0.6}, {0.1, 0.3, 0.5, 0.7, 1.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_DISPLACER,
-    5.0, {0.0, 0.5, 0.8, 1.6, 2.5}, {0.3, 0.8, 1.4, 2.2, 3.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_SPORELAUNCHER,
-    0.5, {0.0, 0.2, 0.3, 0.4, 0.6}, {0.1, 0.3, 0.5, 0.7, 1.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_SHOCKRIFLE,
-    0.1, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_SNIPERRIFLE,
-    1.5, {0.0, 0.2, 0.4, 0.6, 0.8}, {0.25, 0.5, 0.8, 1.2, 2.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_HANDGRENADE,
-    0.1, {1.0, 2.0, 3.0, 4.0, 5.0}, {3.0, 4.0, 5.0, 6.0, 7.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_SNARK,
-    0.1, {0.0, 0.1, 0.2, 0.4, 0.6}, {0.1, 0.2, 0.5, 0.7, 1.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_EGON,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_GAUSS,
-    0.2, {0.0, 0.2, 0.3, 0.5, 1.0}, {0.1, 0.3, 0.5, 0.8, 1.2},
-    1.0, {0.2, 0.3, 0.5, 0.8, 1.2}, {0.5, 0.7, 1.0, 1.5, 2.0}},
-   {GEARBOX_WEAPON_M249,
-    0.1, {0.0, 0.1, 0.25, 0.4, 0.5}, {0.1, 0.3, 0.45, 0.65, 0.8},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_SHOTGUN,
-    0.75, {0.0, 0.2, 0.4, 0.6, 0.8}, {0.25, 0.5, 0.8, 1.2, 2.0},
-    1.5, {0.0, 0.2, 0.4, 0.6, 0.8}, {0.25, 0.5, 0.8, 1.2, 2.0}},
-   {GEARBOX_WEAPON_EAGLE,
-    0.25, {0.0, 0.1, 0.2, 0.3, 0.5}, {0.1, 0.25, 0.4, 0.7, 1.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_PYTHON,
-    0.75, {0.0, 0.2, 0.4, 1.0, 1.5}, {0.25, 0.5, 0.8, 1.3, 2.2},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_HORNETGUN,
-    0.25, {0.0, 0.25, 0.4, 0.6, 1.0}, {0.1, 0.4, 0.7, 1.0, 1.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_MP5,
-    0.1, {0.0, 0.1, 0.25, 0.4, 0.5}, {0.1, 0.3, 0.45, 0.65, 0.8},
-    1.0, {0.0, 0.4, 0.7, 1.0, 1.4}, {0.3, 0.7, 1.0, 1.6, 2.0}},
-   {GEARBOX_WEAPON_CROSSBOW,
-    0.75, {0.0, 0.2, 0.5, 0.8, 1.0}, {0.25, 0.4, 0.7, 1.0, 1.3},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_RPG,
-    1.5, {1.0, 2.0, 3.0, 4.0, 5.0}, {3.0, 4.0, 5.0, 6.0, 7.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {GEARBOX_WEAPON_GLOCK,
-    0.3, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.2, {0.0, 0.0, 0.1, 0.1, 0.2}, {0.1, 0.1, 0.2, 0.2, 0.4}},
-   /* terminator */
-   {0, 0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-       0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}}
-};
-
-bot_fire_delay_t frontline_fire_delay[] = {
-   {FLF_WEAPON_HEGRENADE,
-    0.3, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_FLASHBANG,
-    0.3, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-//   {FLF_WEAPON_KNIFE,
-//    0.3, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-//    0.2, {0.0, 0.0, 0.1, 0.1, 0.2}, {0.1, 0.1, 0.2, 0.2, 0.4}},
-   {FLF_WEAPON_HK21,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_UMP45,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_FAMAS,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_MSG90,
-    1.2, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_MP5A2,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_AK5,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_MP5SD,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_M4,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_SPAS12,
-    0.9, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_MAC10,
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_BERETTA,
-    0.4, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   {FLF_WEAPON_MK23,
-    0.4, {0.0, 0.1, 0.2, 0.3, 0.4}, {0.1, 0.2, 0.3, 0.4, 0.5},
-    0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}},
-   /* terminator */
-   {0, 0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0},
-       0.0, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}}
-};
-
 
 
 void BotCheckTeamplay(void)
@@ -950,7 +828,6 @@ Vector BotBodyTarget( edict_t *pBotEnemy, bot_t *pBot )
 bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 {
    bot_weapon_select_t *pSelect = NULL;
-   bot_fire_delay_t *pDelay = NULL;
    int select_index;
    int iId;
    bool use_primary;
@@ -977,12 +854,22 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
    else if (mod_id == GEARBOX_DLL)
    {
       pSelect = &gearbox_weapon_select[0];
-      pDelay = &gearbox_fire_delay[0];
+   }
+   else if (mod_id == REWOLF_DLL)
+   {
+      pSelect = &gunman_weapon_select[0];
+   }
+   else if (mod_id == NS_DLL)
+   {
+      pSelect = &ns_weapon_select[0];
+   }
+   else if (mod_id == HUNGER_DLL)
+   {
+      pSelect = &hunger_weapon_select[0];
    }
    else if (mod_id == FRONTLINE_DLL)
    {
       pSelect = &frontline_weapon_select[0];
-      pDelay = &frontline_fire_delay[0];
    }
 
    if (pSelect)
@@ -1152,15 +1039,6 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          if (pBot->current_weapon.iId != iId)
             UTIL_SelectItem(pEdict, pSelect[select_index].weapon_name);
 
-         if (pDelay[select_index].iId != iId)
-         {
-            char msg[80];
-            sprintf(msg, "fire_delay mismatch for weapon id=%d\n",iId);
-            ALERT(at_console, msg);
-
-            return FALSE;
-         }
-
          if (mod_id == TFC_DLL)
          {
             if (iId == TF_WEAPON_SNIPERRIFLE)
@@ -1209,15 +1087,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                   pBot->f_shoot_time = gpGlobals->time;  // don't let button up
                else
                {
-                  int skill = pBot->bot_skill;
-                  float base_delay, min_delay, max_delay;
-
-                  base_delay = pDelay[select_index].primary_base_delay;
-                  min_delay = pDelay[select_index].primary_min_delay[skill];
-                  max_delay = pDelay[select_index].primary_max_delay[skill];
-
-                  pBot->f_shoot_time = gpGlobals->time + base_delay +
-                     RANDOM_FLOAT(min_delay, max_delay);
+                  pBot->f_shoot_time = gpGlobals->time + pSelect[select_index].fPrimaryRate;
                }
             }
          }
@@ -1242,15 +1112,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                   pBot->f_shoot_time = gpGlobals->time;  // don't let button up
                else
                {
-                  int skill = pBot->bot_skill;
-                  float base_delay, min_delay, max_delay;
-
-                  base_delay = pDelay[select_index].secondary_base_delay;
-                  min_delay = pDelay[select_index].secondary_min_delay[skill];
-                  max_delay = pDelay[select_index].secondary_max_delay[skill];
-
-                  pBot->f_shoot_time = gpGlobals->time + base_delay +
-                     RANDOM_FLOAT(min_delay, max_delay);
+                  pBot->f_shoot_time = gpGlobals->time + pSelect[select_index].fSecondaryRate;
                }
             }
          }
