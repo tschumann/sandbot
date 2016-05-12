@@ -448,6 +448,21 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
             if (msg_type == message_DeathMsg)
                botMsgFunction = BotClient_Gearbox_DeathMsg;
          }
+		 else if (mod_id == REWOLF_DLL)
+         {
+            if (msg_type == message_DeathMsg)
+               botMsgFunction = BotClient_Gunman_DeathMsg;
+         }
+		 else if (mod_id == NS_DLL)
+         {
+            if (msg_type == message_DeathMsg)
+               botMsgFunction = BotClient_NS_DeathMsg;
+         }
+		 else if (mod_id == HUNGER_DLL)
+         {
+            if (msg_type == message_DeathMsg)
+               botMsgFunction = BotClient_Hunger_DeathMsg;
+         }
          else if (mod_id == FRONTLINE_DLL)
          {
             if (msg_type == message_DeathMsg)
@@ -497,22 +512,26 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 
    (*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ed);
 }
+
 void pfnMessageEnd(void)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnMessageEnd:\n"); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogPrintf("pfnMessageEnd");
 
-      if (botMsgEndFunction)
-         (*botMsgEndFunction)(NULL, botMsgIndex);  // NULL indicated msg end
+		if( botMsgEndFunction )
+		{
+			(*botMsgEndFunction)(NULL, botMsgIndex);  // NULL indicated msg end
+		}
 
-      // clear out the bot message function pointers...
-      botMsgFunction = NULL;
-      botMsgEndFunction = NULL;
-   }
+		// clear out the bot message function pointers
+		botMsgFunction = NULL;
+		botMsgEndFunction = NULL;
+	}
 
-   (*g_engfuncs.pfnMessageEnd)();
+	(*g_engfuncs.pfnMessageEnd)();
 }
+
 void pfnWriteByte(int iValue)
 {
    if (gpGlobals->deathmatch)
@@ -521,11 +540,14 @@ void pfnWriteByte(int iValue)
 
       // if this message is for a bot, call the client message function...
       if (botMsgFunction)
+	  {
          (*botMsgFunction)((void *)&iValue, botMsgIndex);
+	  }
    }
 
    (*g_engfuncs.pfnWriteByte)(iValue);
 }
+
 void pfnWriteChar(int iValue)
 {
    if (gpGlobals->deathmatch)
@@ -534,11 +556,14 @@ void pfnWriteChar(int iValue)
 
       // if this message is for a bot, call the client message function...
       if (botMsgFunction)
+	  {
          (*botMsgFunction)((void *)&iValue, botMsgIndex);
+	  }
    }
 
    (*g_engfuncs.pfnWriteChar)(iValue);
 }
+
 void pfnWriteShort(int iValue)
 {
    if (gpGlobals->deathmatch)
@@ -547,11 +572,14 @@ void pfnWriteShort(int iValue)
 
       // if this message is for a bot, call the client message function...
       if (botMsgFunction)
+	  {
          (*botMsgFunction)((void *)&iValue, botMsgIndex);
+	  }
    }
 
    (*g_engfuncs.pfnWriteShort)(iValue);
 }
+
 void pfnWriteLong(int iValue)
 {
    if (gpGlobals->deathmatch)
@@ -560,37 +588,46 @@ void pfnWriteLong(int iValue)
 
       // if this message is for a bot, call the client message function...
       if (botMsgFunction)
+	  {
          (*botMsgFunction)((void *)&iValue, botMsgIndex);
+	  }
    }
 
    (*g_engfuncs.pfnWriteLong)(iValue);
 }
+
 void pfnWriteAngle(float flValue)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteAngle: %f\n",flValue); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogPrintf("pfnWriteAngle: flValue=%f", flValue);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-         (*botMsgFunction)((void *)&flValue, botMsgIndex);
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)&flValue, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteAngle)(flValue);
+	(*g_engfuncs.pfnWriteAngle)(flValue);
 }
+
 void pfnWriteCoord(float flValue)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteCoord: %f\n",flValue); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogPrintf("pfnWriteCoord: flValue=%f", flValue);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-         (*botMsgFunction)((void *)&flValue, botMsgIndex);
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)&flValue, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteCoord)(flValue);
+	(*g_engfuncs.pfnWriteCoord)(flValue);
 }
+
 void pfnWriteString(const char *sz)
 {
 	if( gpGlobals->deathmatch )
@@ -606,6 +643,7 @@ void pfnWriteString(const char *sz)
 
 	(*g_engfuncs.pfnWriteString)(sz);
 }
+
 void pfnWriteEntity(int iValue)
 {
 	if( gpGlobals->deathmatch )
@@ -621,6 +659,7 @@ void pfnWriteEntity(int iValue)
 
 	(*g_engfuncs.pfnWriteEntity)(iValue);
 }
+
 void pfnCVarRegister(cvar_t *pCvar)
 {
 	(*g_engfuncs.pfnCVarRegister)(pCvar);
