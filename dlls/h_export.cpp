@@ -16,7 +16,11 @@
 #include "engine.h"
 #include "dll.h"
 
+#ifndef __linux__
+#include <io.h>
+#else
 #include <sys/io.h>
+#endif
 
 #ifndef __linux__
 HINSTANCE h_Library = NULL;
