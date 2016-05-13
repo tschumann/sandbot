@@ -30,6 +30,8 @@
 #include "bot.h"
 #include "bot_func.h"
 
+#include <cctype>
+
 
 extern int mod_id;
 extern bot_t bots[32];

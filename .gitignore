@@ -5,3 +5,8 @@ dlls/Release/*
 *.ncb
 *.suo
 *.user
+
+*.o
+*.so
+
+*~

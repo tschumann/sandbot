@@ -16,6 +16,7 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+#include <cctype>
 #include <sys/types.h>
 #include <sys/stat.h>
 

@@ -9,6 +9,7 @@
 #include <io.h>
 #endif
 #include <fcntl.h>
+#include <unistd.h>
 #include <sys/stat.h>
 
 #include "extdll.h"
