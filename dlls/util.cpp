@@ -611,3 +611,24 @@ void UTIL_LogPrintf( char *fmt, ... )
 	ALERT( at_logged, "%s", string );
 }
 
+//=========================================================
+// UTIL_DevPrintf - Prints a logged message to console.
+// Preceded by LOG: ( timestamp ) < message >
+//=========================================================
+void UTIL_DevPrintf( char *fmt, ... )
+{
+	extern int debug_engine;
+
+	if (debug_engine)
+    {
+		va_list        argptr;
+		static char    string[1024];
+
+		va_start ( argptr, fmt );
+		vsprintf ( string, fmt, argptr );
+		va_end   ( argptr );
+
+		// Print to server console
+		ALERT( at_logged, "%s\n", string );
+	}
+}

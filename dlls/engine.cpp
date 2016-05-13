@@ -262,18 +262,18 @@ void pfnGetAimVector(edict_t* ent, float speed, float *rgflReturn)
 }
 void pfnServerCommand(char* str)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnServerCommand: %s\n",str); fclose(fp); }
-   (*g_engfuncs.pfnServerCommand)(str);
+	UTIL_DevPrintf("pfnServerCommand: str=%s", str);
+	(*g_engfuncs.pfnServerCommand)(str);
 }
 void pfnServerExecute(void)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnServerExecute:\n"); fclose(fp); }
-   (*g_engfuncs.pfnServerExecute)();
+	UTIL_DevPrintf("pfnServerExecute");
+	(*g_engfuncs.pfnServerExecute)();
 }
 void pfnClientCommand(edict_t* pEdict, char* szFmt, ...)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnClientCommand=%s\n",szFmt); fclose(fp); }
-   return;
+	// TODO: this doesn't actually call anything but it seems to work?
+	UTIL_DevPrintf("pfnClientCommand: szFmt=%s", szFmt);
 }
 void pfnParticleEffect(const float *org, const float *dir, float color, float count)
 {
@@ -517,7 +517,7 @@ void pfnMessageEnd(void)
 {
 	if( gpGlobals->deathmatch )
 	{
-		UTIL_LogPrintf("pfnMessageEnd");
+		UTIL_DevPrintf("pfnMessageEnd");
 
 		if( botMsgEndFunction )
 		{
@@ -600,7 +600,7 @@ void pfnWriteAngle(float flValue)
 {
 	if( gpGlobals->deathmatch )
 	{
-		UTIL_LogPrintf("pfnWriteAngle: flValue=%f", flValue);
+		UTIL_DevPrintf("pfnWriteAngle: flValue=%f", flValue);
 
 		// if this message is for a bot, call the client message function...
 		if( botMsgFunction )
@@ -616,7 +616,7 @@ void pfnWriteCoord(float flValue)
 {
 	if( gpGlobals->deathmatch )
 	{
-		UTIL_LogPrintf("pfnWriteCoord: flValue=%f", flValue);
+		UTIL_DevPrintf("pfnWriteCoord: flValue=%f", flValue);
 
 		// if this message is for a bot, call the client message function...
 		if( botMsgFunction )
@@ -632,7 +632,7 @@ void pfnWriteString(const char *sz)
 {
 	if( gpGlobals->deathmatch )
 	{
-		UTIL_LogPrintf("pfnWriteString: sz=%s", sz);
+		UTIL_DevPrintf("pfnWriteString: sz=%s", sz);
 
 		// if this message is for a bot, call the client message function...
 		if( botMsgFunction )
@@ -648,7 +648,7 @@ void pfnWriteEntity(int iValue)
 {
 	if( gpGlobals->deathmatch )
 	{
-		UTIL_LogPrintf("pfnWriteEntity: iValue=%d", iValue);
+		UTIL_DevPrintf("pfnWriteEntity: iValue=%d", iValue);
 
 		// if this message is for a bot, call the client message function...
 		if( botMsgFunction )
@@ -754,7 +754,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 {
 	int msg = (*g_engfuncs.pfnRegUserMsg)(pszName, iSize);
 
-	UTIL_LogPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d", pszName, iSize, msg);
+	UTIL_DevPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d", pszName, iSize, msg);
 
 	if( gpGlobals->deathmatch )
 	{
