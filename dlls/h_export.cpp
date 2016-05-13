@@ -83,7 +83,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #ifndef __linux__
 		h_Library = LoadLibrary("valve/dlls/hl.dll"); // and load the library
 #else
-		h_Library = dlopen("valve/dlls/hl_i386.so", RTLD_NOW); // and load the library
+		h_Library = dlopen("valve/dlls/hl.so", RTLD_NOW); // and load the library
 #endif
 	}
 	else if (strcmpi(game_dir, "bshift") == 0)
