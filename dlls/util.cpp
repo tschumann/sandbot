@@ -570,8 +570,20 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
    else if (mod_id == CSTRIKE_DLL)
       strcpy(filename, "cstrike/");
 
+   else if (mod_id == DOD_DLL)
+      strcpy(filename, "dod/");
+
    else if (mod_id == GEARBOX_DLL)
       strcpy(filename, "gearbox/");
+
+   else if (mod_id == REWOLF_DLL)
+      strcpy(filename, "rewolf/");
+
+   else if (mod_id == NS_DLL)
+      strcpy(filename, "ns/");
+
+   else if (mod_id == HUNGER_DLL)
+      strcpy(filename, "hunger/");
 
    else if (mod_id == FRONTLINE_DLL)
       strcpy(filename, "frontline/");

@@ -385,15 +385,30 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
                if (msg_type == message_WeaponList)
                   botMsgFunction = BotClient_Gunman_WeaponList;
                else if (msg_type == message_CurWeapon)
-                  botMsgFunction = BotClient_Valve_CurrentWeapon;
+                  botMsgFunction = BotClient_Gunman_CurrentWeapon;
                else if (msg_type == message_AmmoX)
-                  botMsgFunction = BotClient_Valve_AmmoX;
+                  botMsgFunction = BotClient_Gunman_AmmoX;
                else if (msg_type == message_AmmoPickup)
-                  botMsgFunction = BotClient_Valve_AmmoPickup;
+                  botMsgFunction = BotClient_Gunman_AmmoPickup;
                else if (msg_type == message_Damage)
-                  botMsgFunction = BotClient_Valve_Damage;
+                  botMsgFunction = BotClient_Gunman_Damage;
                else if (msg_type == message_ScreenFade)
-                  botMsgFunction = BotClient_Valve_ScreenFade;
+                  botMsgFunction = BotClient_Gunman_ScreenFade;
+            }
+			else if (mod_id == HUNGER_DLL)
+            {
+               if (msg_type == message_WeaponList)
+                  botMsgFunction = BotClient_Hunger_WeaponList;
+               else if (msg_type == message_CurWeapon)
+                  botMsgFunction = BotClient_Hunger_CurrentWeapon;
+               else if (msg_type == message_AmmoX)
+                  botMsgFunction = BotClient_Hunger_AmmoX;
+               else if (msg_type == message_AmmoPickup)
+                  botMsgFunction = BotClient_Hunger_AmmoPickup;
+               else if (msg_type == message_Damage)
+                  botMsgFunction = BotClient_Hunger_Damage;
+               else if (msg_type == message_ScreenFade)
+                  botMsgFunction = BotClient_Hunger_ScreenFade;
             }
             else if (mod_id == FRONTLINE_DLL)
             {
@@ -475,6 +490,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
       }
       else
       {
+		  // TODO: still needed?
          // Steam makes the WeaponList message be sent differently
 
          botMsgFunction = NULL;  // no msg function until known otherwise
@@ -501,6 +517,21 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
          {
             if (msg_type == message_WeaponList)
                botMsgFunction = BotClient_Gearbox_WeaponList;
+         }
+		 else if (mod_id == REWOLF_DLL)
+         {
+            if (msg_type == message_WeaponList)
+               botMsgFunction = BotClient_Gunman_WeaponList;
+         }
+		 else if (mod_id == NS_DLL)
+         {
+            if (msg_type == message_WeaponList)
+               botMsgFunction = BotClient_NS_WeaponList;
+         }
+		 else if (mod_id == HUNGER_DLL)
+         {
+            if (msg_type == message_WeaponList)
+               botMsgFunction = BotClient_Hunger_WeaponList;
          }
          else if (mod_id == FRONTLINE_DLL)
          {
@@ -839,6 +870,23 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 				message_ScreenFade = msg;
 		}
 		else if( mod_id == REWOLF_DLL )
+		{
+			if (strcmp(pszName, "WeaponList") == 0)
+				message_WeaponList = msg;
+			else if (strcmp(pszName, "CurWeapon") == 0)
+				message_CurWeapon = msg;
+			else if (strcmp(pszName, "AmmoX") == 0)
+				message_AmmoX = msg;
+			else if (strcmp(pszName, "AmmoPickup") == 0)
+				message_AmmoPickup = msg;
+			else if (strcmp(pszName, "Damage") == 0)
+				message_Damage = msg;
+			else if (strcmp(pszName, "DeathMsg") == 0)
+				message_DeathMsg = msg;
+			else if (strcmp(pszName, "ScreenFade") == 0)
+				message_ScreenFade = msg;
+		}
+		else if( mod_id == NS_DLL )
 		{
 			if (strcmp(pszName, "WeaponList") == 0)
 				message_WeaponList = msg;

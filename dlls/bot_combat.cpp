@@ -748,7 +748,8 @@ edict_t *BotFindEnemy( bot_t *pBot )
    {
       pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
 
-      if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL))
+	  // TODO: is this check needed for all mods where players reload? check where else IN_RELOAD is set
+      if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
       {
          pEdict->v.button |= IN_RELOAD;  // press reload button
       }

@@ -591,7 +591,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
       clientIndex = ENTINDEX( BotEnt );
 
 
-      if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL))
+      if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", c_skin );
       else // other mods
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "gina" );

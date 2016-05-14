@@ -1144,7 +1144,7 @@ void StartFrame( void )
 
             // respawn 1 bot then wait a while (otherwise engine crashes)
             if ((mod_id == VALVE_DLL) ||
-                ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)))
+                ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
             {
                char c_skill[2];
 
