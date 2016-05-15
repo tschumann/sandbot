@@ -561,49 +561,78 @@ void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, 
 
 void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 {
-   if (mod_id == VALVE_DLL)
-      strcpy(filename, "valve/");
+	if (mod_id == VALVE_DLL)
+	{
+		strcpy(filename, "valve/");
+	}
+	else if (mod_id == BSHIFT_DLL)
+	{
+		strcpy(filename, "bshift/");
+	}
+	else if (mod_id == GEARBOX_DLL)
+	{
+		strcpy(filename, "gearbox/");
+	}
+	else if (mod_id == DECAY_DLL)
+	{
+		strcpy(filename, "decay/");
+	}
+	else if (mod_id == CSTRIKE_DLL)
+	{
+		strcpy(filename, "cstrike/");
+	}
+	else if (mod_id == CZERO_DLL)
+	{
+		strcpy(filename, "czero/");
+	}
+	else if (mod_id == CZEROR_DLL)
+	{
+		strcpy(filename, "czeror/");
+	}
+	else if (mod_id == DOD_DLL)
+	{
+		strcpy(filename, "dod/");
+	}
+	else if (mod_id == TFC_DLL)
+	{
+		strcpy(filename, "tfc/");
+	}
+	else if (mod_id == REWOLF_DLL)
+	{
+		strcpy(filename, "rewolf/");
+	}
+	else if (mod_id == NS_DLL)
+	{
+		strcpy(filename, "ns/");
+	}
+	else if (mod_id == HUNGER_DLL)
+	{
+		strcpy(filename, "hunger/");
+	}
+	else if (mod_id == SHIP_DLL)
+	{
+		strcpy(filename, "ship/");
+	}
+	else if (mod_id == FRONTLINE_DLL)
+	{
+		strcpy(filename, "frontline/");
+	}
+	else
+	{
+		filename[0] = 0;
+		return;
+	}
 
-   else if (mod_id == TFC_DLL)
-      strcpy(filename, "tfc/");
-
-   else if (mod_id == CSTRIKE_DLL)
-      strcpy(filename, "cstrike/");
-
-   else if (mod_id == DOD_DLL)
-      strcpy(filename, "dod/");
-
-   else if (mod_id == GEARBOX_DLL)
-      strcpy(filename, "gearbox/");
-
-   else if (mod_id == REWOLF_DLL)
-      strcpy(filename, "rewolf/");
-
-   else if (mod_id == NS_DLL)
-      strcpy(filename, "ns/");
-
-   else if (mod_id == HUNGER_DLL)
-      strcpy(filename, "hunger/");
-
-   else if (mod_id == FRONTLINE_DLL)
-      strcpy(filename, "frontline/");
-
-   else
-   {
-      filename[0] = 0;
-      return;
-   }
-
-   if ((arg1) && (*arg1) && (arg2) && (*arg2))
-   {
-      strcat(filename, arg1);
-      strcat(filename, "/");
-      strcat(filename, arg2);
-   }
-   else if ((arg1) && (*arg1))
-   {
-      strcat(filename, arg1);
-   }
+	if( arg1 && (*arg1) && (arg2) && (*arg2) )
+	{
+		strcat(filename, arg1);
+		strcat(filename, "/");
+		strcat(filename, arg2);
+	}
+	else if( arg1 && (*arg1) )
+	{
+		strcat(filename, arg1);
+	}
 }
 
 //=========================================================
@@ -624,11 +653,12 @@ void UTIL_LogPrintf( char *fmt, ... )
 }
 
 //=========================================================
-// UTIL_DevPrintf - Prints a logged message to console.
+// UTIL_LogDPrintf - Prints a logged message to console.
 // Preceded by LOG: ( timestamp ) < message >
 //=========================================================
-void UTIL_DevPrintf( char *fmt, ... )
+void UTIL_LogDPrintf( char *fmt, ... )
 {
+	// TODO: make this based on the developer cvar instead of this variable
 	extern int debug_engine;
 
 	if (debug_engine)
@@ -641,6 +671,6 @@ void UTIL_DevPrintf( char *fmt, ... )
 		va_end   ( argptr );
 
 		// Print to server console
-		ALERT( at_logged, "%s\n", string );
+		ALERT( at_logged, "%s", string );
 	}
 }

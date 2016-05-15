@@ -49,8 +49,8 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 #define TFC_DLL			9
 #define REWOLF_DLL		10
 
-#define HUNGER_DLL		20
-#define NS_DLL			21
+#define NS_DLL			20
+#define HUNGER_DLL		21
 #define SHIP_DLL		22
 
 #define FRONTLINE_DLL	100

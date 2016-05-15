@@ -540,4 +540,4 @@ float UTIL_SharedRandomFloat( unsigned int seed, float low, float high );
 
 float UTIL_WeaponTimeBase( void );
 
-void UTIL_DevPrintf( char *fmt, ... );
+void UTIL_LogDPrintf( char *fmt, ... );
