@@ -62,6 +62,222 @@ int number_names = 0;
 #define VALVE_MAX_SKINS    10
 #define GEARBOX_MAX_SKINS  20
 
+bot_player_t g_valveBots[32] =
+{
+	{"Kelly", "barney", false},
+	{"Ted", "gina", false},
+	{"Julie", "gman", false},
+	{"Yahn", "gordon", false},
+	{"Ken", "helmet", false},
+	{"Steve", "hgrunt", false},
+	{"Dario", "recon", false},
+	{"Greg", "robo", false},
+	{"Andrew", "scientist", false},
+	{"Wes", "zombie", false},
+	{"Matt", "barney", false},
+	{"John", "gina", false},
+	{"Mona Lisa", "gman", false},
+	{"Mike", "gordon", false},
+	{"Monica", "helmet", false},
+	{"Brett", "hgrunt", false},
+	{"Erik", "recon", false},
+	{"Chuck", "robo", false},
+	{"Phil", "scientist", false},
+	{"Marc", "zombie", false},
+	{"Karen", "barney", false},
+	{"Dave", "gina", false},
+	{"Miene", "gman", false},
+	{"Randy", "gordon", false},
+	{"Gabe", "helmet", false},
+	{"Yatsze", "hgrunt", false},
+	{"Lisa", "recon", false},
+	{"Cade", "robo", false},
+	{"Kate", "scientist", false},
+	{"Torsten", "zombie", false},
+	{"Jay", "barney", false},
+	{"Harry", "gina", false}
+};
+
+bot_player_t g_gearboxBots[32] = 
+{
+	{"Randy", "barney", false},
+	{"Brian", "beret", false},
+	{"John", "cl_suit", false},
+	{"Rob", "drill", false},
+	{"StephenB", "fassn", false},
+	{"Landon", "gina", false},
+	{"DavidM", "gman", false},
+	{"MikeW", "gordon", false},
+	{"Patrick", "grunt", false},
+	{"Steve", "helmet", false},
+	{"Sean", "hgrunt", false},
+	{"StephenP", "massn", false},
+	{"Kristy", "otis", false},
+	{"Matt", "recon", false},
+	{"Sean", "recruit", false},
+	{"Ben",	"robo", false},				// Sierra
+	{"Chris", "scientist", false},
+	{"Harry", "shephard", false},		// voices
+	{"MikeS", "tower", false},
+	{"Jon", "zombie", false},
+	{"JohnC", "barney", false},			// Valve continued
+	{"Aaron", "beret", false},
+	{"Robin", "cl_suit", false},
+	{"Bill", "drill", false},
+	{"Douglas", "fassn", false},
+	{"Jeffrey",	"gina", false},			// botman
+	{"Eric", "gordon", false},			// Allstars
+	{"DavidK", "grunt", false},
+	{"Tom", "helmet", false},
+	{"Marin", "hgrunt", false},
+	{"RichardG", "massn", false},
+	{"RichardC", "otis", false}
+};
+
+bot_player_t g_gunmanBots[32] = 
+{
+	{"Herb", "bandit", false},		// BoneWolf
+	{"Steven", "general", false},	// Wipeoot
+	{"Rodney", "scientist", false},	// Hostage
+	{"Tomaz", "soldier", false},	// ToM
+	{"Reid", "bandit", false},		// BrushBoy
+	{"Dale", "general", false},		// Mutley
+	{"Renier", "scientist", false},	// Lando
+	{"Adrian", "soldier", false},	// PUG
+	{"BrianL", "bandit", false},	// Cannelbrae
+	{"BrianB", "general", false},	// Sake
+	{"ChrisM", "scientist", false},	// Ilian
+	{"Mary", "soldier", false},		// Spur
+	{"Miriam", "bandit", false},
+	{"Christopher", "general", false},	// CyberAcid
+	{"Steve", "scientist", false},	// Blevo
+	{"Peter", "soldier", false},	// SoulSounds
+	{"ChrisL", "bandit", false},
+	{"Anthony", "general", false},	// Eyeque
+	{"ChrisJ", "scientist", false},
+	{"Aaron", "soldier", false},
+	{"David", "bandit", false},
+	{"Bill", "scientist", false},
+	{"Cynthia", "soldier", false},
+	{"Mary Kae", "bandit", false},
+	{"Eric", "general", false},
+	{"Dex", "scientist", false},
+	{"Jim", "soldier", false},
+	{"Ilian", "bandit", false},
+	{"Joe", "general", false},
+	{"Jeff", "scientist", false},
+	{"Yahn", "bandit", false},
+	{"Robin", "general", false}
+};
+
+bot_player_t g_hungerBots[32] =
+{
+	{"Bill", "civie", false},
+	{"Dave", "dave", false},
+	{"Einar", "einar", false},
+	{"BDog", "einarhev", false},
+	{"Eric", "franklin", false},
+	{"Sebastian", "gangster", false},
+	{"Jack", "jack", false},
+	{"Magnus", "magnus", false},
+	{"Neil", "neil", false},
+	{"Aaron", "nohead", false},
+	{"Ted", "nypdcop", false},
+	{"Per", "orderly", false},
+	{"Petter", "patient", false},
+	{"Lo", "paul", false},
+	{"Richard", "sheriff", false},
+	{"Minh", "worker", false},
+	{"Fabian", "zork", false},
+	{"Dik", "civie", false},
+	{"Bennet", "dave", false},
+	{"David", "einar", false},
+	{"Pete", "franklin", false},
+	{"Nick", "gangster", false},
+	{"Margaret", "jack", false},
+	{"Jerry", "magnus", false},
+	{"Andrew", "nohead", false},
+	{"Don", "nypdcop", false},
+	{"John", "orderly", false},
+	{"Morgan", "patient", false},
+	{"Jiang", "paul", false},
+	{"Dennis", "sheriff", false},
+	{"Brian", "worker", false},
+	{"Ben", "zork", false}
+};
+
+bot_player_t g_nsBots[32] = 
+{
+	{"Charlie", NULL, false},
+	{"Jon", NULL, false},
+	{"Joel", NULL, false},
+	{"David", NULL, false},
+	{"Harry", NULL, false},
+	{"Petter", NULL, false},
+	{"Jim", NULL, false},
+	{"Jason", NULL, false},
+	{"Cory", NULL, false},
+	{"Josh", NULL, false},
+	{"Mike", NULL, false},
+	{"Jeff", NULL, false},
+	{"Alex", NULL, false},
+	{"Phil", NULL, false},
+	{"Florian", NULL, false},
+	{"Karl", NULL, false},
+	{"Joe", NULL, false},
+	{"Max", NULL, false},
+	{"Kevin", NULL, false},
+	{"Ned", NULL, false},
+	{"Guy", NULL, false},
+	{"Spencer", NULL, false},
+	{"Tom", NULL, false},
+	{"Joseph", NULL, false},
+	{"Ozgur", NULL, false},
+	{"Jeremy", NULL, false},
+	{"Hugo", NULL, false},
+	{"Lani", NULL, false},
+	{"Oliver", NULL, false},
+	{"Emmanuel", NULL, false},
+	{"Matt", NULL, false},
+	{"Nick", NULL, false}
+};
+
+bot_player_t g_shipBots[32] = 
+{
+	{"Chris", NULL, false},
+	{"Ailsa", NULL, false},
+	{"Ed", NULL, false},
+	{"Simon", NULL, false},
+	{"Jason", NULL, false},
+	{"Neil", NULL, false},
+	{"Andy", NULL, false},
+	{"David", NULL, false},
+	{"Jock", NULL, false},
+	{"Gayle", NULL, false},
+	{"Debbie", NULL, false},
+	{"Mike", NULL, false},
+	{"Nick", NULL, false},
+	{"Mark", NULL, false},
+	{"Dorota", NULL, false},
+	{"Jonathon", NULL, false},
+	{"Julian", NULL, false},
+	{"Richard", NULL, false},
+	{"Duncan", NULL, false},
+	{"Rebecca", NULL, false},
+	{"Andrea", NULL, false},
+	{"Julie", NULL, false},
+	{"Glen", NULL, false},
+	{"Ellis", NULL, false},
+	{"Edward", NULL, false},
+	{"Alek", NULL, false},
+	{"Casey", NULL, false},
+	{"Suzie", NULL, false},
+	{"Caro", NULL, false},
+	{"Reanne", NULL, false},
+	{"Lucy", NULL, false},
+	{"Toby", NULL, false}
+};
+
 // indicate which models are currently used for random model allocation
 bool valve_skin_used[VALVE_MAX_SKINS] = {
    FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
@@ -129,13 +345,16 @@ inline void SET_CLIENT_KEY_VALUE( int clientIndex, char *infobuffer,
 // this is the LINK_ENTITY_TO_CLASS function that creates a player (bot)
 void player( entvars_t *pev )
 {
-   static LINK_ENTITY_FUNC otherClassName = NULL;
-   if (otherClassName == NULL)
-      otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, "player");
-   if (otherClassName != NULL)
-   {
-      (*otherClassName)(pev);
-   }
+	static LINK_ENTITY_FUNC otherClassName = NULL;
+
+	if( otherClassName == NULL )
+	{
+		otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, "player");
+	}
+	if( otherClassName != NULL )
+	{
+		(*otherClassName)(pev);
+	}
 }
 
 
@@ -346,6 +565,50 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
    int index;
    int i, j, length;
    bool found = FALSE;
+
+   bot_player_t *pBots;
+
+	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
+	{
+		pBots = g_valveBots;
+	}
+	else if( mod_id == GEARBOX_DLL )
+	{
+		pBots = g_gearboxBots;
+	}
+	else if( mod_id == REWOLF_DLL )
+	{
+		pBots = g_gunmanBots;
+	}
+	else if( mod_id == NS_DLL )
+	{
+		pBots = g_nsBots;
+	}
+	else if( mod_id == HUNGER_DLL )
+	{
+		pBots = g_hungerBots;
+	}
+	else if( mod_id == SHIP_DLL )
+	{
+		pBots = g_shipBots;
+	}
+
+	int iIndex = RANDOM_LONG( 0, 31 );
+
+	// find an unused bot slot
+	while( pBots[iIndex].bIsUsed == TRUE )
+	{
+		iIndex++;
+
+		if( iIndex == 31 )
+		{
+			iIndex = 0;
+		}
+	}
+
+	// create the bot
+	pBots[iIndex].bIsUsed = true;
+    edict_t *pBotEdict = CREATE_FAKE_CLIENT( pBots[iIndex].szName );
 
 
    if ((mod_id == VALVE_DLL) ||
@@ -558,7 +821,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
    if (FNullEnt( BotEnt ))
    {
       if (pPlayer)
+	  {
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Max. Players reached.  Can't create bot!\n");
+	  }
    }
    else
    {

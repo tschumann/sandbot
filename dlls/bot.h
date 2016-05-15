@@ -131,12 +131,18 @@ int Cmd_Argc( void );
 
 typedef struct
 {
-   int  iId;     // weapon ID
-   int  iClip;   // amount of ammo in the clip
-   int  iAmmo1;  // amount of ammo in primary reserve
-   int  iAmmo2;  // amount of ammo in secondary reserve
+	int  iId;     // weapon ID
+	int  iClip;   // amount of ammo in the clip
+	int  iAmmo1;  // amount of ammo in primary reserve
+	int  iAmmo2;  // amount of ammo in secondary reserve
 } bot_current_weapon_t;
 
+struct bot_player_t
+{
+	char szName[32];
+	char szModel[16];
+	BOOL bIsUsed;
+};
 
 typedef struct
 {
