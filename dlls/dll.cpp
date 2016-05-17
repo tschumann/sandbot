@@ -253,30 +253,28 @@ int DispatchSpawn( edict_t *pent )
 
 void DispatchThink( edict_t *pent )
 {
-   (*other_gFunctionTable.pfnThink)(pent);
+	(*other_gFunctionTable.pfnThink)(pent);
 }
 
 void DispatchUse( edict_t *pentUsed, edict_t *pentOther )
 {
-   (*other_gFunctionTable.pfnUse)(pentUsed, pentOther);
+	(*other_gFunctionTable.pfnUse)(pentUsed, pentOther);
 }
 
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
-   (*other_gFunctionTable.pfnTouch)(pentTouched, pentOther);
+	(*other_gFunctionTable.pfnTouch)(pentTouched, pentOther);
 }
 
 void DispatchBlocked( edict_t *pentBlocked, edict_t *pentOther )
 {
-   (*other_gFunctionTable.pfnBlocked)(pentBlocked, pentOther);
+	(*other_gFunctionTable.pfnBlocked)(pentBlocked, pentOther);
 }
 
 void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 {
    static edict_t *temp_pent;
    static int flag_index;
-
-//   fp=fopen("bot.txt","a"); fprintf(fp, "DispatchKeyValue: %x %s=%s\n",pentKeyvalue,pkvd->szKeyName,pkvd->szValue); fclose(fp);
 
    if (mod_id == TFC_DLL)
    {
@@ -388,42 +386,42 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 
 void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 {
-   (*other_gFunctionTable.pfnSave)(pent, pSaveData);
+	(*other_gFunctionTable.pfnSave)(pent, pSaveData);
 }
 
 int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity )
 {
-   return (*other_gFunctionTable.pfnRestore)(pent, pSaveData, globalEntity);
+	return (*other_gFunctionTable.pfnRestore)(pent, pSaveData, globalEntity);
 }
 
 void DispatchObjectCollisionBox( edict_t *pent )
 {
-   (*other_gFunctionTable.pfnSetAbsBox)(pent);
+	(*other_gFunctionTable.pfnSetAbsBox)(pent);
 }
 
 void SaveWriteFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount )
 {
-   (*other_gFunctionTable.pfnSaveWriteFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
+	(*other_gFunctionTable.pfnSaveWriteFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
 }
 
 void SaveReadFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount )
 {
-   (*other_gFunctionTable.pfnSaveReadFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
+	(*other_gFunctionTable.pfnSaveReadFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
 }
 
 void SaveGlobalState( SAVERESTOREDATA *pSaveData )
 {
-   (*other_gFunctionTable.pfnSaveGlobalState)(pSaveData);
+	(*other_gFunctionTable.pfnSaveGlobalState)(pSaveData);
 }
 
 void RestoreGlobalState( SAVERESTOREDATA *pSaveData )
 {
-   (*other_gFunctionTable.pfnRestoreGlobalState)(pSaveData);
+	(*other_gFunctionTable.pfnRestoreGlobalState)(pSaveData);
 }
 
 void ResetGlobalState( void )
 {
-   (*other_gFunctionTable.pfnResetGlobalState)();
+	(*other_gFunctionTable.pfnResetGlobalState)();
 }
 
 BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ]  )
@@ -514,8 +512,9 @@ void ClientDisconnect( edict_t *pEntity )
 
 void ClientKill( edict_t *pEntity )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientKill: %x\n",pEntity); fclose(fp); }
-   (*other_gFunctionTable.pfnClientKill)(pEntity);
+	UTIL_LogDPrintf("ClientKill: pEntity=%x\n", pEntity);
+
+	(*other_gFunctionTable.pfnClientKill)(pEntity);
 }
 
 void ClientPutInServer( edict_t *pEntity )
@@ -914,29 +913,29 @@ void ClientCommand( edict_t *pEntity )
 
 void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 {
-   if (debug_engine) { fp=fopen("bot.txt", "a"); fprintf(fp, "ClientUserInfoChanged: pEntity=%x infobuffer=%s\n", pEntity, infobuffer); fclose(fp); }
+	UTIL_LogDPrintf("ClientUserInfoChanged: pEntity=%x infobuffer=%s\n", pEntity, infobuffer);
 
-   (*other_gFunctionTable.pfnClientUserInfoChanged)(pEntity, infobuffer);
+	(*other_gFunctionTable.pfnClientUserInfoChanged)(pEntity, infobuffer);
 }
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
-   (*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
+	(*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
 }
 
 void ServerDeactivate( void )
 {
-   (*other_gFunctionTable.pfnServerDeactivate)();
+	(*other_gFunctionTable.pfnServerDeactivate)();
 }
 
 void PlayerPreThink( edict_t *pEntity )
 {
-   (*other_gFunctionTable.pfnPlayerPreThink)(pEntity);
+	(*other_gFunctionTable.pfnPlayerPreThink)(pEntity);
 }
 
 void PlayerPostThink( edict_t *pEntity )
 {
-   (*other_gFunctionTable.pfnPlayerPostThink)(pEntity);
+	(*other_gFunctionTable.pfnPlayerPostThink)(pEntity);
 }
 
 void StartFrame( void )
@@ -1339,126 +1338,126 @@ void StartFrame( void )
 
 void ParmsNewLevel( void )
 {
-   (*other_gFunctionTable.pfnParmsNewLevel)();
+	(*other_gFunctionTable.pfnParmsNewLevel)();
 }
 
 void ParmsChangeLevel( void )
 {
-   (*other_gFunctionTable.pfnParmsChangeLevel)();
+	(*other_gFunctionTable.pfnParmsChangeLevel)();
 }
 
 const char *GetGameDescription( void )
 {
-   return (*other_gFunctionTable.pfnGetGameDescription)();
+	return (*other_gFunctionTable.pfnGetGameDescription)();
 }
 
 void PlayerCustomization( edict_t *pEntity, customization_t *pCust )
 {
-   if (debug_engine) { fp=fopen("bot.txt", "a"); fprintf(fp, "PlayerCustomization: %x\n",pEntity); fclose(fp); }
+	UTIL_LogDPrintf("PlayerCustomization: pEntity=%x pCust=%x\n", pEntity, pCust);
 
-   (*other_gFunctionTable.pfnPlayerCustomization)(pEntity, pCust);
+	(*other_gFunctionTable.pfnPlayerCustomization)(pEntity, pCust);
 }
 
 void SpectatorConnect( edict_t *pEntity )
 {
-   (*other_gFunctionTable.pfnSpectatorConnect)(pEntity);
+	(*other_gFunctionTable.pfnSpectatorConnect)(pEntity);
 }
 
 void SpectatorDisconnect( edict_t *pEntity )
 {
-   (*other_gFunctionTable.pfnSpectatorDisconnect)(pEntity);
+	(*other_gFunctionTable.pfnSpectatorDisconnect)(pEntity);
 }
 
 void SpectatorThink( edict_t *pEntity )
 {
-   (*other_gFunctionTable.pfnSpectatorThink)(pEntity);
+	(*other_gFunctionTable.pfnSpectatorThink)(pEntity);
 }
 
 void Sys_Error( const char *error_string )
 {
-   (*other_gFunctionTable.pfnSys_Error)(error_string);
+	(*other_gFunctionTable.pfnSys_Error)(error_string);
 }
 
-void PM_Move ( struct playermove_s *ppmove, int server )
+void PM_Move( struct playermove_s *ppmove, int server )
 {
-   (*other_gFunctionTable.pfnPM_Move)(ppmove, server);
+	(*other_gFunctionTable.pfnPM_Move)(ppmove, server);
 }
 
-void PM_Init ( struct playermove_s *ppmove )
+void PM_Init( struct playermove_s *ppmove )
 {
-   (*other_gFunctionTable.pfnPM_Init)(ppmove);
+	(*other_gFunctionTable.pfnPM_Init)(ppmove);
 }
 
 char PM_FindTextureType( char *name )
 {
-   return (*other_gFunctionTable.pfnPM_FindTextureType)(name);
+	return (*other_gFunctionTable.pfnPM_FindTextureType)(name);
 }
 
 void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pvs, unsigned char **pas )
 {
-   (*other_gFunctionTable.pfnSetupVisibility)(pViewEntity, pClient, pvs, pas);
+	(*other_gFunctionTable.pfnSetupVisibility)(pViewEntity, pClient, pvs, pas);
 }
 
 void UpdateClientData ( const struct edict_s *ent, int sendweapons, struct clientdata_s *cd )
 {
-   (*other_gFunctionTable.pfnUpdateClientData)(ent, sendweapons, cd);
+	(*other_gFunctionTable.pfnUpdateClientData)(ent, sendweapons, cd);
 }
 
 int AddToFullPack( struct entity_state_s *state, int e, edict_t *ent, edict_t *host, int hostflags, int player, unsigned char *pSet )
 {
-   return (*other_gFunctionTable.pfnAddToFullPack)(state, e, ent, host, hostflags, player, pSet);
+	return (*other_gFunctionTable.pfnAddToFullPack)(state, e, ent, host, hostflags, player, pSet);
 }
 
 void CreateBaseline( int player, int eindex, struct entity_state_s *baseline, struct edict_s *entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs )
 {
-   (*other_gFunctionTable.pfnCreateBaseline)(player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs);
+	(*other_gFunctionTable.pfnCreateBaseline)(player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs);
 }
 
 void RegisterEncoders( void )
 {
-   (*other_gFunctionTable.pfnRegisterEncoders)();
+	(*other_gFunctionTable.pfnRegisterEncoders)();
 }
 
 int GetWeaponData( struct edict_s *player, struct weapon_data_s *info )
 {
-   return (*other_gFunctionTable.pfnGetWeaponData)(player, info);
+	return (*other_gFunctionTable.pfnGetWeaponData)(player, info);
 }
 
 void CmdStart( const edict_t *player, const struct usercmd_s *cmd, unsigned int random_seed )
 {
-   (*other_gFunctionTable.pfnCmdStart)(player, cmd, random_seed);
+	(*other_gFunctionTable.pfnCmdStart)(player, cmd, random_seed);
 }
 
 void CmdEnd ( const edict_t *player )
 {
-   (*other_gFunctionTable.pfnCmdEnd)(player);
+	(*other_gFunctionTable.pfnCmdEnd)(player);
 }
 
 int ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size )
 {
-   return (*other_gFunctionTable.pfnConnectionlessPacket)(net_from, args, response_buffer, response_buffer_size);
+	return (*other_gFunctionTable.pfnConnectionlessPacket)(net_from, args, response_buffer, response_buffer_size);
 }
 
 int GetHullBounds( int hullnumber, float *mins, float *maxs )
 {
-   return (*other_gFunctionTable.pfnGetHullBounds)(hullnumber, mins, maxs);
+	return (*other_gFunctionTable.pfnGetHullBounds)(hullnumber, mins, maxs);
 }
 
 void CreateInstancedBaselines( void )
 {
-   (*other_gFunctionTable.pfnCreateInstancedBaselines)();
+	(*other_gFunctionTable.pfnCreateInstancedBaselines)();
 }
 
 int InconsistentFile( const edict_t *player, const char *filename, char *disconnect_message )
 {
-   if (debug_engine) { fp=fopen("bot.txt", "a"); fprintf(fp, "InconsistentFile: %x filename=%s\n",player,filename); fclose(fp); }
+	UTIL_LogDPrintf("InconsistentFile: player=%x filename=%s disconnect_message=%s\n", player, filename, disconnect_message);
 
-   return (*other_gFunctionTable.pfnInconsistentFile)(player, filename, disconnect_message);
+	return (*other_gFunctionTable.pfnInconsistentFile)(player, filename, disconnect_message);
 }
 
 int AllowLagCompensation( void )
 {
-   return (*other_gFunctionTable.pfnAllowLagCompensation)();
+	return (*other_gFunctionTable.pfnAllowLagCompensation)();
 }
 
 
