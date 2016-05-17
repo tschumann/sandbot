@@ -43,7 +43,6 @@ extern float wp_display_time[MAX_WAYPOINTS];
 extern bot_t bots[32];
 extern bool b_observer_mode;
 extern bool b_botdontshoot;
-char welcome_msg[] = "HPB bot - http://planethalflife.com/botman";
 
 static FILE *fp;
 
@@ -64,8 +63,6 @@ int prev_num_bots = 0;
 bool g_GameRules = FALSE;
 edict_t *clients[32];
 edict_t *listenserver_edict = NULL;
-float welcome_time = 0.0;
-bool welcome_sent = FALSE;
 int g_menu_waypoint;
 int g_menu_state = 0;
 
@@ -1027,26 +1024,6 @@ void StartFrame( void )
          }
 
          bot_check_time = gpGlobals->time + 30.0;
-      }
-
-      if (!IS_DEDICATED_SERVER())
-      {
-         if ((listenserver_edict != NULL) && (welcome_sent == FALSE) &&
-             (welcome_time < 1.0))
-         {
-            // are they out of observer mode yet?
-            if (IsAlive(listenserver_edict))
-               welcome_time = gpGlobals->time + 5.0;  // welcome in 5 seconds
-         }
-
-         if ((welcome_time > 0.0) && (welcome_time < gpGlobals->time) &&
-             (welcome_sent == FALSE))
-         {
-            // let's send a welcome message to this client...
-            UTIL_SayText(welcome_msg, listenserver_edict);
-
-            welcome_sent = TRUE;  // clear this so we only do it once
-         }
       }
 
       // adjust the millisecond delay based on the frame rate interval...
