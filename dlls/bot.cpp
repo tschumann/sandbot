@@ -134,6 +134,12 @@ bot_player_t g_gearboxBots[32] =
 	{"RichardC", "otis", false}
 };
 
+bot_player_t g_cstrikeBots[32] = 
+{
+	{"Minh", NULL, false},
+	{"Jesse", NULL, false}
+};
+
 bot_player_t g_gunmanBots[32] = 
 {
 	{"Herb", "bandit", false},		// BoneWolf
@@ -170,42 +176,6 @@ bot_player_t g_gunmanBots[32] =
 	{"Robin", "general", false}
 };
 
-bot_player_t g_hungerBots[32] =
-{
-	{"Bill", "civie", false},
-	{"Dave", "dave", false},
-	{"Einar", "einar", false},
-	{"BDog", "einarhev", false},
-	{"Eric", "franklin", false},
-	{"Sebastian", "gangster", false},
-	{"Jack", "jack", false},
-	{"Magnus", "magnus", false},
-	{"Neil", "neil", false},
-	{"Aaron", "nohead", false},
-	{"Ted", "nypdcop", false},
-	{"Per", "orderly", false},
-	{"Petter", "patient", false},
-	{"Lo", "paul", false},
-	{"Richard", "sheriff", false},
-	{"Minh", "worker", false},
-	{"Fabian", "zork", false},
-	{"Dik", "civie", false},
-	{"Bennet", "dave", false},
-	{"David", "einar", false},
-	{"Pete", "franklin", false},
-	{"Nick", "gangster", false},
-	{"Margaret", "jack", false},
-	{"Jerry", "magnus", false},
-	{"Andrew", "nohead", false},
-	{"Don", "nypdcop", false},
-	{"John", "orderly", false},
-	{"Morgan", "patient", false},
-	{"Jiang", "paul", false},
-	{"Dennis", "sheriff", false},
-	{"Brian", "worker", false},
-	{"Ben", "zork", false}
-};
-
 bot_player_t g_nsBots[32] = 
 {
 	{"Charlie", NULL, false},
@@ -240,6 +210,42 @@ bot_player_t g_nsBots[32] =
 	{"Emmanuel", NULL, false},
 	{"Matt", NULL, false},
 	{"Nick", NULL, false}
+};
+
+bot_player_t g_hungerBots[32] =
+{
+	{"Bill", "civie", false},
+	{"Dave", "dave", false},
+	{"Einar", "einar", false},
+	{"BDog", "einarhev", false},
+	{"Eric", "franklin", false},
+	{"Sebastian", "gangster", false},
+	{"Jack", "jack", false},
+	{"Magnus", "magnus", false},
+	{"Neil", "neil", false},
+	{"Aaron", "nohead", false},
+	{"Ted", "nypdcop", false},
+	{"Per", "orderly", false},
+	{"Petter", "patient", false},
+	{"Lo", "paul", false},
+	{"Richard", "sheriff", false},
+	{"Minh", "worker", false},
+	{"Fabian", "zork", false},
+	{"Dik", "civie", false},
+	{"Bennet", "dave", false},
+	{"David", "einar", false},
+	{"Pete", "franklin", false},
+	{"Nick", "gangster", false},
+	{"Margaret", "jack", false},
+	{"Jerry", "magnus", false},
+	{"Andrew", "nohead", false},
+	{"Don", "nypdcop", false},
+	{"John", "orderly", false},
+	{"Morgan", "patient", false},
+	{"Jiang", "paul", false},
+	{"Dennis", "sheriff", false},
+	{"Brian", "worker", false},
+	{"Ben", "zork", false}
 };
 
 bot_player_t g_shipBots[32] = 
@@ -306,13 +312,10 @@ char *gearbox_bot_names[GEARBOX_MAX_SKINS] = {
    "Gordon", "Grunt", "Helmet", "H-Grunt", "Massn", "Otis", "Recon",
    "Recruit", "Robo", "Scientist", "Shephard", "Tower", "Zombie"};
 
-char bot_names[MAX_BOT_NAMES][BOT_NAME_LEN+1];
-
 // how often (out of 1000 times) the bot will pause, based on bot skill
 float pause_frequency[5] = {4, 7, 10, 15, 20};
 
-float pause_time[5][2] = {
-   {0.2, 0.5}, {0.5, 1.0}, {0.7, 1.3}, {1.0, 1.7}, {1.2, 2.0}};
+float pause_time[5][2] = {{0.2, 0.5}, {0.5, 1.0}, {0.7, 1.3}, {1.0, 1.7}, {1.2, 2.0}};
 
 // TheFatal's method for calculating the msecval
 extern int msecnum;
@@ -322,23 +325,22 @@ extern float msecval;
 
 inline edict_t *CREATE_FAKE_CLIENT( const char *netname )
 {
-   return (*g_engfuncs.pfnCreateFakeClient)( netname );
+	return (*g_engfuncs.pfnCreateFakeClient)( netname );
 }
 
 inline char *GET_INFOBUFFER( edict_t *e )
 {
-   return (*g_engfuncs.pfnGetInfoKeyBuffer)( e );
+	return (*g_engfuncs.pfnGetInfoKeyBuffer)( e );
 }
 
 inline char *GET_INFO_KEY_VALUE( char *infobuffer, char *key )
 {
-   return (g_engfuncs.pfnInfoKeyValue( infobuffer, key ));
+	return (g_engfuncs.pfnInfoKeyValue( infobuffer, key ));
 }
 
-inline void SET_CLIENT_KEY_VALUE( int clientIndex, char *infobuffer,
-                                  char *key, char *value )
+inline void SET_CLIENT_KEY_VALUE( int clientIndex, char *infobuffer, char *key, char *value )
 {
-   (*g_engfuncs.pfnSetClientKeyValue)( clientIndex, infobuffer, key, value );
+	(*g_engfuncs.pfnSetClientKeyValue)( clientIndex, infobuffer, key, value );
 }
 
 
@@ -360,202 +362,96 @@ void player( entvars_t *pev )
 
 void BotSpawnInit( bot_t *pBot )
 {
-   pBot->v_prev_origin = Vector(9999.0, 9999.0, 9999.0);
-   pBot->prev_time = gpGlobals->time;
+	pBot->v_prev_origin = Vector(9999.0, 9999.0, 9999.0);
+	pBot->prev_time = gpGlobals->time;
 
-   pBot->waypoint_origin = Vector(0, 0, 0);
-   pBot->f_waypoint_time = 0.0;
-   pBot->curr_waypoint_index = -1;
-   pBot->prev_waypoint_index[0] = -1;
-   pBot->prev_waypoint_index[1] = -1;
-   pBot->prev_waypoint_index[2] = -1;
-   pBot->prev_waypoint_index[3] = -1;
-   pBot->prev_waypoint_index[4] = -1;
+	pBot->waypoint_origin = Vector(0, 0, 0);
+	pBot->f_waypoint_time = 0.0;
+	pBot->curr_waypoint_index = -1;
+	pBot->prev_waypoint_index[0] = -1;
+	pBot->prev_waypoint_index[1] = -1;
+	pBot->prev_waypoint_index[2] = -1;
+	pBot->prev_waypoint_index[3] = -1;
+	pBot->prev_waypoint_index[4] = -1;
 
-   pBot->f_random_waypoint_time = gpGlobals->time;
-   pBot->waypoint_goal = -1;
-   pBot->f_waypoint_goal_time = 0.0;
-   pBot->waypoint_near_flag = FALSE;
-   pBot->waypoint_flag_origin = Vector(0, 0, 0);
-   pBot->prev_waypoint_distance = 0.0;
+	pBot->f_random_waypoint_time = gpGlobals->time;
+	pBot->waypoint_goal = -1;
+	pBot->f_waypoint_goal_time = 0.0;
+	pBot->waypoint_near_flag = FALSE;
+	pBot->waypoint_flag_origin = Vector(0, 0, 0);
+	pBot->prev_waypoint_distance = 0.0;
 
-   pBot->blinded_time = 0.0;
+	pBot->blinded_time = 0.0;
 
-   pBot->prev_speed = 0.0;  // fake "paused" since bot is NOT stuck
+	pBot->prev_speed = 0.0;  // fake "paused" since bot is NOT stuck
 
-   pBot->f_find_item = 0.0;
+	pBot->f_find_item = 0.0;
 
-   pBot->ladder_dir = LADDER_UNKNOWN;
-   pBot->f_start_use_ladder_time = 0.0;
-   pBot->f_end_use_ladder_time = 0.0;
-   pBot->waypoint_top_of_ladder = FALSE;
+	pBot->ladder_dir = LADDER_UNKNOWN;
+	pBot->f_start_use_ladder_time = 0.0;
+	pBot->f_end_use_ladder_time = 0.0;
+	pBot->waypoint_top_of_ladder = FALSE;
 
-   pBot->f_wall_check_time = 0.0;
-   pBot->f_wall_on_right = 0.0;
-   pBot->f_wall_on_left = 0.0;
-   pBot->f_dont_avoid_wall_time = 0.0;
-   pBot->f_look_for_waypoint_time = 0.0;
-   pBot->f_jump_time = 0.0;
-   pBot->f_dont_check_stuck = 0.0;
+	pBot->f_wall_check_time = 0.0;
+	pBot->f_wall_on_right = 0.0;
+	pBot->f_wall_on_left = 0.0;
+	pBot->f_dont_avoid_wall_time = 0.0;
+	pBot->f_look_for_waypoint_time = 0.0;
+	pBot->f_jump_time = 0.0;
+	pBot->f_dont_check_stuck = 0.0;
 
-   // pick a wander direction (50% of the time to the left, 50% to the right)
-   if (RANDOM_LONG(1, 100) <= 50)
-      pBot->wander_dir = WANDER_LEFT;
-   else
-      pBot->wander_dir = WANDER_RIGHT;
+	// pick a wander direction (50% of the time to the left, 50% to the right)
+	if (RANDOM_LONG(1, 100) <= 50)
+	{
+		pBot->wander_dir = WANDER_LEFT;
+	}
+	else
+	{
+		pBot->wander_dir = WANDER_RIGHT;
+	}
 
-   pBot->f_exit_water_time = 0.0;
+	pBot->f_exit_water_time = 0.0;
 
-   pBot->pBotEnemy = NULL;
-   pBot->f_bot_see_enemy_time = gpGlobals->time;
-   pBot->f_bot_find_enemy_time = gpGlobals->time;
-   pBot->pBotUser = NULL;
-   pBot->f_bot_use_time = 0.0;
-   pBot->b_bot_say_killed = FALSE;
-   pBot->f_bot_say_killed = 0.0;
-   pBot->f_sniper_aim_time = 0.0;
+	pBot->pBotEnemy = NULL;
+	pBot->f_bot_see_enemy_time = gpGlobals->time;
+	pBot->f_bot_find_enemy_time = gpGlobals->time;
+	pBot->pBotUser = NULL;
+	pBot->f_bot_use_time = 0.0;
+	pBot->b_bot_say_killed = FALSE;
+	pBot->f_bot_say_killed = 0.0;
+	pBot->f_sniper_aim_time = 0.0;
 
-   pBot->f_shoot_time = gpGlobals->time;
-   pBot->f_primary_charging = -1.0;
-   pBot->f_secondary_charging = -1.0;
-   pBot->charging_weapon_id = 0;
+	pBot->f_shoot_time = gpGlobals->time;
+	pBot->f_primary_charging = -1.0;
+	pBot->f_secondary_charging = -1.0;
+	pBot->charging_weapon_id = 0;
 
-   pBot->f_pause_time = 0.0;
-   pBot->f_sound_update_time = 0.0;
-   pBot->bot_has_flag = FALSE;
+	pBot->f_pause_time = 0.0;
+	pBot->f_sound_update_time = 0.0;
+	pBot->bot_has_flag = FALSE;
 
-   pBot->b_see_tripmine = FALSE;
-   pBot->b_shoot_tripmine = FALSE;
-   pBot->v_tripmine = Vector(0,0,0);
+	pBot->b_see_tripmine = FALSE;
+	pBot->b_shoot_tripmine = FALSE;
+	pBot->v_tripmine = Vector(0,0,0);
 
-   pBot->b_use_health_station = FALSE;
-   pBot->f_use_health_time = 0.0;
-   pBot->b_use_HEV_station = FALSE;
-   pBot->f_use_HEV_time = 0.0;
+	pBot->b_use_health_station = FALSE;
+	pBot->f_use_health_time = 0.0;
+	pBot->b_use_HEV_station = FALSE;
+	pBot->f_use_HEV_time = 0.0;
 
-   pBot->b_use_button = FALSE;
-   pBot->f_use_button_time = 0;
-   pBot->b_lift_moving = FALSE;
+	pBot->b_use_button = FALSE;
+	pBot->f_use_button_time = 0;
+	pBot->b_lift_moving = FALSE;
 
-   pBot->b_use_capture = FALSE;
-   pBot->f_use_capture_time = 0.0;
-   pBot->pCaptureEdict = NULL;
+	pBot->b_use_capture = FALSE;
+	pBot->f_use_capture_time = 0.0;
+	pBot->pCaptureEdict = NULL;
 
-   memset(&(pBot->current_weapon), 0, sizeof(pBot->current_weapon));
-   memset(&(pBot->m_rgAmmo), 0, sizeof(pBot->m_rgAmmo));
+	memset(&(pBot->current_weapon), 0, sizeof(pBot->current_weapon));
+	memset(&(pBot->m_rgAmmo), 0, sizeof(pBot->m_rgAmmo));
 }
 
-
-void BotNameInit( void )
-{
-   FILE *bot_name_fp;
-   char bot_name_filename[256];
-   int str_index;
-   char name_buffer[80];
-   int length, index;
-
-   UTIL_BuildFileName(bot_name_filename, "bot_names.txt", NULL);
-
-   bot_name_fp = fopen(bot_name_filename, "r");
-
-   if (bot_name_fp != NULL)
-   {
-      while ((number_names < MAX_BOT_NAMES) &&
-             (fgets(name_buffer, 80, bot_name_fp) != NULL))
-      {
-         length = strlen(name_buffer);
-
-         if (name_buffer[length-1] == '\n')
-         {
-            name_buffer[length-1] = 0;  // remove '\n'
-            length--;
-         }
-
-         str_index = 0;
-         while (str_index < length)
-         {
-            if ((name_buffer[str_index] < ' ') || (name_buffer[str_index] > '~') ||
-                (name_buffer[str_index] == '"'))
-            for (index=str_index; index < length; index++)
-               name_buffer[index] = name_buffer[index+1];
-
-            str_index++;
-         }
-
-         if (name_buffer[0] != 0)
-         {
-            strncpy(bot_names[number_names], name_buffer, BOT_NAME_LEN);
-
-            number_names++;
-         }
-      }
-
-      fclose(bot_name_fp);
-   }
-}
-
-
-void BotPickName( char *name_buffer )
-{
-   int name_index, index;
-   bool used;
-   edict_t *pPlayer;
-   int attempts = 0;
-
-   // see if a name exists from a kicked bot (if so, reuse it)
-   for (index=0; index < 32; index++)
-   {
-      if ((bots[index].is_used == FALSE) && (bots[index].name[0]))
-      {
-         strcpy(name_buffer, bots[index].name);
-
-         return;
-      }   
-   }
-
-   name_index = RANDOM_LONG(1, number_names) - 1;  // zero based
-
-   // check make sure this name isn't used
-   used = TRUE;
-
-   while (used)
-   {
-      used = FALSE;
-
-      for (index = 1; index <= gpGlobals->maxClients; index++)
-      {
-         pPlayer = INDEXENT(index);
-
-         if (pPlayer && !pPlayer->free)
-         {
-            if (strcmp(bot_names[name_index], STRING(pPlayer->v.netname)) == 0)
-            {
-               used = TRUE;
-               break;
-            }
-         }
-      }
-
-      if (used)
-      {
-         name_index++;
-
-         if (name_index == number_names)
-            name_index = 0;
-
-         attempts++;
-
-         if (attempts == number_names)
-            used = FALSE;  // break out of loop even if already used
-      }
-   }
-
-   strcpy(name_buffer, bot_names[name_index]);
-}
-
-
-void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
-                const char *arg3, const char *arg4)
+void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char *arg3, const char *arg4)
 {
    edict_t *BotEnt;
    bot_t *pBot;
@@ -705,9 +601,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
          }
          else
          {
-            if (number_names > 0)
-               BotPickName( c_name );
-            else if (mod_id == VALVE_DLL)
+            if (mod_id == VALVE_DLL)
                strcpy( c_name, valve_bot_names[index] );
             else // must be GEARBOX_DLL
                strcpy( c_name, gearbox_bot_names[index] );
@@ -759,14 +653,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
          }
          else
          {
-            if (number_names > 0)
-               BotPickName( c_name );
-            else
-            {
-               // copy the name of the model to the bot's name...
-               strncpy( c_name, arg1, BOT_NAME_LEN-1 );
-               c_name[BOT_NAME_LEN] = 0;  // make sure c_skin is null terminated
-            }
+            // copy the name of the model to the bot's name...
+            strncpy( c_name, arg1, BOT_NAME_LEN-1 );
+            c_name[BOT_NAME_LEN] = 0;  // make sure c_skin is null terminated
          }
       }
 
@@ -787,10 +676,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
       }
       else
       {
-         if (number_names > 0)
-            BotPickName( c_name );
-         else
-            strcpy(c_name, "Bot");
+         strcpy(c_name, "Bot");
       }
 
       skill = 0;

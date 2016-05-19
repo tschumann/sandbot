@@ -115,7 +115,6 @@ char *show_menu_3_flf =
    {"Waypoint Tags\n\n1. Capture Point\n2. Defend Point\n3. Prone\n\n5. CANCEL"};
 
 
-void BotNameInit(void);
 void UpdateClientData(const struct edict_s *ent, int sendweapons, struct clientdata_s *cd);
 void ProcessBotCfgFile(void);
 
@@ -140,9 +139,6 @@ void GameDLLInit( void )
 
    for (i=0; i < 5; i++)
       recent_bot_whine[i] = -1;
-
-   BotNameInit();
-
 
    UTIL_BuildFileName(filename, "bot_whine.txt", NULL);
 
