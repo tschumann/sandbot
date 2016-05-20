@@ -504,11 +504,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 	// create the bot
 	pBots[iIndex].bIsUsed = true;
-    edict_t *pBotEdict = CREATE_FAKE_CLIENT( pBots[iIndex].szName );
+    // edict_t *pBotEdict = CREATE_FAKE_CLIENT( pBots[iIndex].szName );
 
 
-   if ((mod_id == VALVE_DLL) ||
-       ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)))
+   if ((mod_id == VALVE_DLL) || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)))
    {
       int  max_skin_index;
 
@@ -519,49 +518,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       if ((arg1 == NULL) || (*arg1 == 0))
       {
-         bool *pSkinUsed;
-
-         // pick a random skin
-         if (mod_id == VALVE_DLL)
-         {
-            index = RANDOM_LONG(0, VALVE_MAX_SKINS-1);
-            pSkinUsed = &valve_skin_used[0];
-         }
-         else  // must be GEARBOX_DLL
-         {
-            index = RANDOM_LONG(0, GEARBOX_MAX_SKINS-1);
-            pSkinUsed = &gearbox_skin_used[0];
-         }
-
-         // check if this skin has already been used...
-         while (pSkinUsed[index] == TRUE)
-         {
-            index++;
-
-            if (index == max_skin_index)
-               index = 0;
-         }
-
-         pSkinUsed[index] = TRUE;
-
-         // check if all skins are now used...
-         for (i = 0; i < max_skin_index; i++)
-         {
-            if (pSkinUsed[i] == FALSE)
-               break;
-         }
-
-         // if all skins are used, reset used to FALSE for next selection
-         if (i == max_skin_index)
-         {
-            for (i = 0; i < max_skin_index; i++)
-               pSkinUsed[i] = FALSE;
-         }
-
-         if (mod_id == VALVE_DLL)
-            strcpy( c_skin, valve_bot_skins[index] );
-         else // must be GEARBOX_DLL
-            strcpy( c_skin, gearbox_bot_skins[index] );
+			strcpy( c_skin, pBots[iIndex].szModel );
       }
       else
       {
@@ -601,10 +558,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          }
          else
          {
-            if (mod_id == VALVE_DLL)
-               strcpy( c_name, valve_bot_names[index] );
-            else // must be GEARBOX_DLL
-               strcpy( c_name, gearbox_bot_names[index] );
+               strcpy( c_name, pBots[iIndex].szName );
          }
       }
       else
