@@ -8,4 +8,4 @@ cldll "1"
 startmap "city1a"
 hlversion "1000"
 nomodels "0"  // Don't show models in browser as we haven't changed it yet
-gamedll "dlls\gunman.dll"
+gamedll "dlls\sandbot.dll"
