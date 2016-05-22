@@ -103,6 +103,9 @@ int recent_bot_whine[5];
 
 cvar_t sv_bot = {"bot",""};
 
+// a fresh install of Natural Selection 3.2 will spam the console about the non-existence of this cvar
+cvar_t sv_airmove = {"sv_airmove", "0"};
+
 char *show_menu_1 =
    {"Waypoint Tags\n\n1. Team Specific\n2. Wait for Lift\n3. Door\n4. Sniper Spot\n5. More..."};
 char *show_menu_2 =
@@ -128,6 +131,7 @@ void GameDLLInit( void )
    char *ptr;
 
    CVAR_REGISTER (&sv_bot);
+   CVAR_REGISTER(&sv_airmove);
 
    for (i=0; i<32; i++)
       clients[i] = NULL;

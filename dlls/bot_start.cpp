@@ -328,6 +328,15 @@ void BotStartGame( bot_t *pBot )
          return;
       }
    }
+   else if (mod_id == NS_DLL)
+   {
+	   // TODO: add support for team choice
+	   FakeClientCommand(pEdict, "autoassign", NULL, NULL);
+
+	   pBot->not_started = 0;
+
+	   return;
+   }
    else if (mod_id == FRONTLINE_DLL)
    {
       // handle FrontLineForce stuff here...

@@ -188,7 +188,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if (strcmpi(game_dir, "ns") == 0)
 	{
-		mod_id = HUNGER_DLL;
+		mod_id = NS_DLL;
 
 #ifndef __linux__
 		h_Library = LoadLibrary("ns/dlls/ns.dll"); // and load the library
@@ -198,7 +198,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if (strcmpi(game_dir, "ship") == 0)
 	{
-		mod_id = HUNGER_DLL;
+		mod_id = SHIP_DLL;
 
 #ifndef __linux__
 		h_Library = LoadLibrary("ship/dlls/ship.dll"); // and load the library
