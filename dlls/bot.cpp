@@ -284,34 +284,6 @@ bot_player_t g_shipBots[32] =
 	{"Toby", NULL, false}
 };
 
-// indicate which models are currently used for random model allocation
-bool valve_skin_used[VALVE_MAX_SKINS] = {
-   FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
-
-bool gearbox_skin_used[GEARBOX_MAX_SKINS] = {
-   FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-   FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
-
-// store the names of the models...
-char *valve_bot_skins[VALVE_MAX_SKINS] = {
-   "barney", "gina", "gman", "gordon", "helmet",
-   "hgrunt", "recon", "robo", "scientist", "zombie"};
-
-char *gearbox_bot_skins[GEARBOX_MAX_SKINS] = {
-   "barney", "beret", "cl_suit", "drill", "fassn", "gina", "gman",
-   "gordon", "grunt", "helmet", "hgrunt", "massn", "otis", "recon",
-   "recruit", "robo", "scientist", "shephard", "tower", "zombie"};
-
-// store the player names for each of the models...
-char *valve_bot_names[VALVE_MAX_SKINS] = {
-   "Barney", "Gina", "G-Man", "Gordon", "Helmet",
-   "H-Grunt", "Recon", "Robo", "Scientist", "Zombie"};
-
-char *gearbox_bot_names[GEARBOX_MAX_SKINS] = {
-   "Barney", "Beret", "Cl_suit", "Drill", "Fassn", "Gina", "G-Man",
-   "Gordon", "Grunt", "Helmet", "H-Grunt", "Massn", "Otis", "Recon",
-   "Recruit", "Robo", "Scientist", "Shephard", "Tower", "Zombie"};
-
 // how often (out of 1000 times) the bot will pause, based on bot skill
 float pause_frequency[5] = {4, 7, 10, 15, 20};
 
@@ -453,16 +425,15 @@ void BotSpawnInit( bot_t *pBot )
 
 void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char *arg3, const char *arg4)
 {
-   edict_t *BotEnt;
-   bot_t *pBot;
-   char c_skin[BOT_SKIN_LEN+1];
-   char c_name[BOT_NAME_LEN+1];
-   int skill;
-   int index;
-   int i, j, length;
-   bool found = FALSE;
+	edict_t *BotEnt;
+	bot_t *pBot;
+	char c_skin[BOT_SKIN_LEN+1];
+	char c_name[BOT_NAME_LEN+1];
+	int skill;
+	int index;
+	int i, j, length;
 
-   bot_player_t *pBots;
+	bot_player_t *pBots;
 
 	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
 	{
@@ -504,18 +475,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 	// create the bot
 	pBots[iIndex].bIsUsed = true;
-    // edict_t *pBotEdict = CREATE_FAKE_CLIENT( pBots[iIndex].szName );
 
-
-   if ((mod_id == VALVE_DLL) || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)))
+	// arg1 is model, arg2 is name, arg3 is skill
+   if (mod_id == VALVE_DLL || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
    {
-      int  max_skin_index;
-
-      if (mod_id == VALVE_DLL)
-         max_skin_index = VALVE_MAX_SKINS;
-      else  // must be GEARBOX_DLL
-         max_skin_index = GEARBOX_MAX_SKINS;
-
       if ((arg1 == NULL) || (*arg1 == 0))
       {
 			strcpy( c_skin, pBots[iIndex].szModel );
@@ -531,87 +494,15 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       index = 0;
 
-      while ((!found) && (index < max_skin_index))
-      {
-         if (mod_id == VALVE_DLL)
-         {
-            if (strcmp(c_skin, valve_bot_skins[index]) == 0)
-               found = TRUE;
-            else
-               index++;
-         }
-         else // must be GEARBOX_DLL
-         {
-            if (strcmp(c_skin, gearbox_bot_skins[index]) == 0)
-               found = TRUE;
-            else
-               index++;
-         }
-      }
-
-      if (found == TRUE)
-      {
-         if ((arg2 != NULL) && (*arg2 != 0))
-         {
-            strncpy( c_name, arg2, BOT_SKIN_LEN-1 );
-            c_name[BOT_SKIN_LEN] = 0;  // make sure c_name is null terminated
-         }
-         else
-         {
-               strcpy( c_name, pBots[iIndex].szName );
-         }
-      }
-      else
-      {
-         char dir_name[32];
-         char filename[128];
-
-         struct stat stat_str;
-
-         GET_GAME_DIR(dir_name);
-
-         sprintf(filename, "%s/models/player/%s", dir_name, c_skin);
-
-         if (stat(filename, &stat_str) != 0)
-         {
-            sprintf(filename, "valve/models/player/%s", c_skin);
-
-            if (stat(filename, &stat_str) != 0)
-            {
-               char err_msg[80];
-
-               sprintf( err_msg, "model \"%s\" is unknown.\n", c_skin );
-               if (pPlayer)
-                  ClientPrint(pPlayer, HUD_PRINTNOTIFY, err_msg );
-               if (IS_DEDICATED_SERVER())
-                  printf(err_msg);
-
-               if (pPlayer)
-                  ClientPrint(pPlayer, HUD_PRINTNOTIFY,
-                     "use barney, gina, gman, gordon, helmet, hgrunt,\n");
-               if (IS_DEDICATED_SERVER())
-                  printf("use barney, gina, gman, gordon, helmet, hgrunt,\n");
-               if (pPlayer)
-                  ClientPrint(pPlayer, HUD_PRINTNOTIFY,
-                     "    recon, robo, scientist, or zombie\n");
-               if (IS_DEDICATED_SERVER())
-                  printf("    recon, robo, scientist, or zombie\n");
-               return;
-            }
-         }
-
-         if ((arg2 != NULL) && (*arg2 != 0))
-         {
-            strncpy( c_name, arg2, BOT_NAME_LEN-1 );
-            c_name[BOT_NAME_LEN] = 0;  // make sure c_name is null terminated
-         }
-         else
-         {
-            // copy the name of the model to the bot's name...
-            strncpy( c_name, arg1, BOT_NAME_LEN-1 );
-            c_name[BOT_NAME_LEN] = 0;  // make sure c_skin is null terminated
-         }
-      }
+     if ((arg2 != NULL) && (*arg2 != 0))
+     {
+        strncpy( c_name, arg2, BOT_SKIN_LEN-1 );
+        c_name[BOT_SKIN_LEN] = 0;  // make sure c_name is null terminated
+     }
+     else
+     {
+           strcpy( c_name, pBots[iIndex].szName );
+     }
 
       skill = 0;
 
@@ -621,6 +512,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       if ((skill < 1) || (skill > 5))
          skill = default_bot_skill;
    }
+   // arg1 is ??? (make it team?), arg2 is ??? (collapse?), arg3 is name, arg4 is skill
    else
    {
       if ((arg3 != NULL) && (*arg3 != 0))
@@ -630,7 +522,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       }
       else
       {
-         strcpy(c_name, "Bot");
+         strcpy(c_name, pBots[iIndex].szName);
       }
 
       skill = 0;
