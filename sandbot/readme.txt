@@ -9,7 +9,7 @@ Installation: Copy the files into your Steam/steamapps/common/Half-Life director
 == Usage ==
 
 addbot		Add a bot to the server
-bot_skill	Bot skill cvar (1, 2 or 3)
+bot_skill	Bot skill cvar (1, 2, 3, 4 or 5)
 
 == Frequently Asked Questions ==
 

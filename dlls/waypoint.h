@@ -15,46 +15,52 @@
 
 #define REACHABLE_RANGE 400.0
 
+// TODO: increase this to 64 bits
 // defines for waypoint flags field (32 bits are available)
-#define W_FL_TEAM        ((1<<0) + (1<<1))  /* allow for 4 teams (0-3) */
-#define W_FL_TEAM_SPECIFIC (1<<2)  /* waypoint only for specified team */
-#define W_FL_CROUCH      (1<<3)  /* must crouch to reach this waypoint */
-#define W_FL_LADDER      (1<<4)  /* waypoint on a ladder */
-#define W_FL_LIFT        (1<<5)  /* wait for lift to be down before approaching this waypoint */
-#define W_FL_DOOR        (1<<6)  /* wait for door to open */
-#define W_FL_HEALTH      (1<<7)  /* health kit (or wall mounted) location */
-#define W_FL_ARMOR       (1<<8)  /* armor (or HEV) location */
-#define W_FL_AMMO        (1<<9)  /* ammo location */
-#define W_FL_SNIPER      (1<<10) /* sniper waypoint (a good sniper spot) */
+#define W_FL_TEAM			((1<<0) + (1<<1))  /* allow for 4 teams (0-3) */
+#define W_FL_TEAM_SPECIFIC	(1<<2)  /* waypoint only for specified team */
+#define W_FL_CROUCH			(1<<3)  /* must crouch to reach this waypoint */
+#define W_FL_LADDER			(1<<4)  /* waypoint on a ladder */
+#define W_FL_LIFT			(1<<5)  /* wait for lift to be down before approaching this waypoint */
+#define W_FL_DOOR			(1<<6)  /* wait for door to open */
+#define W_FL_HEALTH			(1<<7)  /* health kit (or wall mounted) location */
+#define W_FL_ARMOR			(1<<8)  /* armor (or HEV) location */
+#define W_FL_AMMO			(1<<9)  /* ammo location */
+#define W_FL_SNIPER			(1<<10) /* sniper waypoint (a good sniper spot) */
 
-#define W_FL_TFC_FLAG    (1<<11) /* flag position (or hostage or president) */
-#define W_FL_FLF_CAP     (1<<11) /* Front Line Force capture point */
+#define W_FL_TFC_FLAG		(1<<11) /* flag position (or hostage or president) */
+#define W_FL_FLF_CAP		(1<<11) /* Front Line Force capture point */
 
-#define W_FL_TFC_FLAG_GOAL (1<<12) /* flag return position (or rescue zone) */
-#define W_FL_FLF_DEFEND  (1<<12) /* Front Line Force defend point */
+#define W_FL_TFC_FLAG_GOAL	(1<<12) /* flag return position (or rescue zone) */
+#define W_FL_FLF_DEFEND		(1<<12) /* Front Line Force defend point */
 
-#define W_FL_PRONE       (1<<13) /* go prone (laying down) */
-#define W_FL_AIMING      (1<<14) /* aiming waypoint */
+#define W_FL_PRONE			(1<<13) /* go prone (laying down) */
+#define W_FL_AIMING			(1<<14) /* aiming waypoint */
 
-#define W_FL_DELETED     (1<<31) /* used by waypoint allocation code */
+#define W_FL_NS_HIVE		(1<<15)
+#define W_FL_NS_COMMAND_CHAIR	(1<<16)
+#define W_FL_NS_RESNODE		(1<<17)
+
+#define W_FL_DELETED		(1<<31) /* used by waypoint allocation code */
 
 
-#define WAYPOINT_VERSION 4
+#define WAYPOINT_HEADER "Sandbot"
+#define WAYPOINT_VERSION 1
 
 // define the waypoint file header structure...
 typedef struct {
-   char filetype[8];  // should be "HPB_bot\0"
+   char filetype[8];
    int  waypoint_file_version;
-   int  waypoint_file_flags;  // not currently used
+   int  waypoint_file_flags;	// not currently used
    int  number_of_waypoints;
-   char mapname[32];  // name of map for these waypoints
+   char mapname[32];	// name of map for these waypoints
 } WAYPOINT_HDR;
 
 
 // define the structure for waypoints...
 typedef struct {
-   int    flags;    // button, lift, flag, health, ammo, etc.
-   Vector origin;   // location
+   __int64 flags;	// button, lift, flag, health, ammo, etc.
+   Vector origin;	// location
 } WAYPOINT;
 
 

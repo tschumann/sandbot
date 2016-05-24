@@ -1033,8 +1033,7 @@ bool WaypointLoad(edict_t *pEntity)
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
-   if (IS_DEDICATED_SERVER())
-      printf("loading waypoint file: %s\n", filename);
+   ALERT(at_console, "loading waypoint file: %s\n", filename);
 
    FILE *bfp = fopen(filename, "rb");
 
@@ -1044,12 +1043,11 @@ bool WaypointLoad(edict_t *pEntity)
       fread(&header, sizeof(header), 1, bfp);
 
       header.filetype[7] = 0;
-      if (strcmp(header.filetype, "HPB_bot") == 0)
+      if (strcmp(header.filetype, WAYPOINT_HEADER) == 0)
       {
          if (header.waypoint_file_version != WAYPOINT_VERSION)
          {
-            if (pEntity)
-               ClientPrint(pEntity, HUD_PRINTNOTIFY, "Incompatible HPB bot waypoint file version!\nWaypoints not loaded!\n");
+			ALERT(at_console, "Tried to load .wpt with v%d, expected v%d\n", header.waypoint_file_version, WAYPOINT_VERSION);
 
             fclose(bfp);
             return FALSE;
@@ -1138,7 +1136,7 @@ void WaypointSave(void)
    short int num;
    PATH *p;
 
-   strcpy(header.filetype, "HPB_bot");
+   strcpy(header.filetype, WAYPOINT_HEADER);
 
    header.waypoint_file_version = WAYPOINT_VERSION;
 
