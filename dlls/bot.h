@@ -99,6 +99,11 @@ int Cmd_Argc( void );
 #define MSG_OPFOR_TEAM_SELECT   2
 #define MSG_OPFOR_CLASS_SELECT  3
 
+// not strictly messages as you don't join team via a menu
+#define MSG_NS_JOIN_ALIEN		1
+#define MSG_NS_JOIN_MARINE		2
+#define MSG_NS_JOIN_AUTO		3
+
 // game start messages for FrontLineForce...
 #define MSG_FLF_IDLE            1
 #define MSG_FLF_TEAM_SELECT     2

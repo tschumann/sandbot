@@ -512,12 +512,31 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       if ((skill < 1) || (skill > 5))
          skill = default_bot_skill;
    }
-   // arg1 is ??? (make it team?), arg2 is ??? (collapse?), arg3 is name, arg4 is skill
+   // arg1 is team, arg2 is name, arg3 is skill
    else
    {
-      if ((arg3 != NULL) && (*arg3 != 0))
+		if ((arg1 != NULL) && (*arg1 != 0))
+		{
+			if( mod_id == NS_DLL )
+			{
+				if( !strcmp(arg1, "alien") )
+				{
+					pBot->start_action = MSG_NS_JOIN_ALIEN;
+				}
+				else if( !strcmp(arg1, "marine") )
+				{
+					pBot->start_action = MSG_NS_JOIN_MARINE;
+				}
+				else
+				{
+					pBot->start_action = MSG_NS_JOIN_AUTO;
+				}
+			}
+		}
+
+      if ((arg2 != NULL) && (*arg2 != 0))
       {
-         strncpy( c_name, arg3, BOT_NAME_LEN-1 );
+         strncpy( c_name, arg2, BOT_NAME_LEN-1 );
          c_name[BOT_NAME_LEN] = 0;  // make sure c_name is null terminated
       }
       else
@@ -527,8 +546,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       skill = 0;
 
-      if ((arg4 != NULL) && (*arg4 != 0))
-         skill = atoi(arg4);
+      if ((arg3 != NULL) && (*arg3 != 0))
+         skill = atoi(arg3);
          
       if ((skill < 1) || (skill > 5))
          skill = default_bot_skill;

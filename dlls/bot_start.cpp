@@ -330,12 +330,24 @@ void BotStartGame( bot_t *pBot )
    }
    else if (mod_id == NS_DLL)
    {
-	   // TODO: add support for team choice
-	   FakeClientCommand(pEdict, "autoassign", NULL, NULL);
+		switch( pBot->start_action )
+		{
+		case MSG_NS_JOIN_ALIEN:
+			FakeClientCommand(pEdict, "jointeamone", NULL, NULL);
+			break;
+		case MSG_NS_JOIN_MARINE:
+			FakeClientCommand(pEdict, "jointeamtwo", NULL, NULL);
+			break;
+		case MSG_NS_JOIN_AUTO:
+		default:
+			FakeClientCommand(pEdict, "autoassign", NULL, NULL);
+			break;
+		}	   
 
-	   pBot->not_started = 0;
+		pBot->start_action = 0;
+		pBot->not_started = 0;
 
-	   return;
+		return;
    }
    else if (mod_id == FRONTLINE_DLL)
    {
