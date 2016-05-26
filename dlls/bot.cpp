@@ -432,6 +432,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	int skill;
 	int index;
 	int i, j, length;
+	int start_action = 0;
 
 	bot_player_t *pBots;
 
@@ -521,15 +522,15 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			{
 				if( !strcmp(arg1, "alien") )
 				{
-					pBot->start_action = MSG_NS_JOIN_ALIEN;
+					start_action = MSG_NS_JOIN_ALIEN;
 				}
 				else if( !strcmp(arg1, "marine") )
 				{
-					pBot->start_action = MSG_NS_JOIN_MARINE;
+					start_action = MSG_NS_JOIN_MARINE;
 				}
 				else
 				{
-					pBot->start_action = MSG_NS_JOIN_AUTO;
+					start_action = MSG_NS_JOIN_AUTO;
 				}
 			}
 		}
@@ -657,6 +658,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          pBot->start_action = MSG_OPFOR_IDLE;
       else if (mod_id == FRONTLINE_DLL)
          pBot->start_action = MSG_FLF_IDLE;
+	  else if (mod_id == NS_DLL && start_action != 0)
+		  pBot->start_action = start_action;
       else
          pBot->start_action = 0;  // not needed for non-team MODs
 
