@@ -430,9 +430,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	char c_skin[BOT_SKIN_LEN+1];
 	char c_name[BOT_NAME_LEN+1];
 	int skill;
-	int index;
 	int i, j, length;
 	int start_action = 0;
+	int bot_team = -1, bot_class = -1;
 
 	bot_player_t *pBots;
 
@@ -477,7 +477,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	// create the bot
 	pBots[iIndex].bIsUsed = true;
 
-	// arg1 is model, arg2 is name, arg3 is skill
+	// arg1 is model
    if (mod_id == VALVE_DLL || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
    {
       if ((arg1 == NULL) || (*arg1 == 0))
@@ -492,28 +492,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       for (i = 0; c_skin[i] != 0; i++)
          c_skin[i] = tolower( c_skin[i] );  // convert to all lowercase
-
-      index = 0;
-
-     if ((arg2 != NULL) && (*arg2 != 0))
-     {
-        strncpy( c_name, arg2, BOT_SKIN_LEN-1 );
-        c_name[BOT_SKIN_LEN] = 0;  // make sure c_name is null terminated
-     }
-     else
-     {
-           strcpy( c_name, pBots[iIndex].szName );
-     }
-
-      skill = 0;
-
-      if ((arg3 != NULL) && (*arg3 != 0))
-         skill = atoi(arg3);
-         
-      if ((skill < 1) || (skill > 5))
-         skill = default_bot_skill;
    }
-   // arg1 is team, arg2 is name, arg3 is skill
+   // arg1 is team, arg2 is class
    else
    {
 		if ((arg1 != NULL) && (*arg1 != 0))
@@ -535,24 +515,24 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-      if ((arg2 != NULL) && (*arg2 != 0))
+	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
+          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
+          (mod_id == FRONTLINE_DLL))
       {
-         strncpy( c_name, arg2, BOT_NAME_LEN-1 );
-         c_name[BOT_NAME_LEN] = 0;  // make sure c_name is null terminated
-      }
-      else
-      {
-         strcpy(c_name, pBots[iIndex].szName);
-      }
+         if ((arg1 != NULL) && (arg1[0] != 0))
+         {
+            pBot->bot_team = atoi(arg1);
 
-      skill = 0;
-
-      if ((arg3 != NULL) && (*arg3 != 0))
-         skill = atoi(arg3);
-         
-      if ((skill < 1) || (skill > 5))
-         skill = default_bot_skill;
+            if ((arg2 != NULL) && (arg2[0] != 0))
+            {
+               pBot->bot_class = atoi(arg2);
+            }
+         }
+      }
    }
+
+   strcpy(c_name, pBots[iIndex].szName);
+   skill = default_bot_skill;
 
    length = strlen(c_name);
 
@@ -681,23 +661,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       pBot->bot_skill = skill - 1;  // 0 based for array indexes
 
-      pBot->bot_team = -1;
-      pBot->bot_class = -1;
-
-      if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
-          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
-          (mod_id == FRONTLINE_DLL))
-      {
-         if ((arg1 != NULL) && (arg1[0] != 0))
-         {
-            pBot->bot_team = atoi(arg1);
-
-            if ((arg2 != NULL) && (arg2[0] != 0))
-            {
-               pBot->bot_class = atoi(arg2);
-            }
-         }
-      }
+      pBot->bot_team = bot_team;
+      pBot->bot_class = bot_class;
    }
 }
 
