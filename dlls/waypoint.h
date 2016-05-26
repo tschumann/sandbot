@@ -9,6 +9,15 @@
 #ifndef WAYPOINT_H
 #define WAYPOINT_H
 
+#ifdef _MSC_VER
+
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+
+#else
+#include <stdint.h>
+#endif
+
 #include <limits.h>
 
 #define MAX_WAYPOINTS 1024
@@ -59,7 +68,7 @@ typedef struct {
 
 // define the structure for waypoints...
 typedef struct {
-   __int64 flags;	// button, lift, flag, health, ammo, etc.
+   uint64_t flags;	// button, lift, flag, health, ammo, etc.
    Vector origin;	// location
 } WAYPOINT;
 
