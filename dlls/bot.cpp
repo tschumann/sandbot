@@ -140,6 +140,43 @@ bot_player_t g_cstrikeBots[32] =
 	{"Jesse", NULL, false}
 };
 
+bot_player_t g_dodBots[32] = 
+{
+	{"Matt", NULL, false},		// mugsy
+	{"John", NULL, false},		// pickitup
+	{"Kelly", NULL, false},		// thunder weenie
+	{"Tim", NULL, false},		// Waldo
+	{"Jake", NULL, false},		// molotov_billy
+	{"Travis", NULL, false},	// agent-0
+	{"Magnus", NULL, false},	// Insta
+	{"Davide", NULL, false},	// Chow_Yun_Fat
+	{"Iikka", NULL, false},		// Fingers
+	{"Joel", NULL, false},		// c0w
+	{"Chris", NULL, false},		// Narby
+	{"Svante", NULL, false},	// xerent
+	{"Arjan", NULL, false},		// IR
+	{"Wes", NULL, false},		// FuzzDad
+	{"Brian", NULL, false},		// Arcturus
+	{"ChrisS", NULL, false},	// Unreal
+	{"Arttu", NULL, false},		// skdr
+	{"Jeremy", NULL, false},	// Izuno
+	{"Patrick", NULL, false},	// Mojo
+	{"Mike", NULL, false},		// MikeZilla
+	{"David", NULL, false},		// Zaphod
+	{"Jeff", NULL, false},		// ViciouS
+	{"Michael", NULL, false},	// Dim Reaper
+	{"MichaelG", NULL, false},	// Sector-Effector
+	{"Sean", NULL, false},
+	{"Unknown1", NULL, false},	// Panzergrenadier
+	{"Unknown2", NULL, false},	// WIZZARD
+	{"Unknown3", NULL, false},	// Kommie
+	{"Unknown4", NULL, false},	// H&K - Sean?
+	{"Unknown5", NULL, false},	// lovemeister
+	{"Unknown6", NULL, false},	// Masako
+	{"Unknown7", NULL, false},	// DasJuden
+	{"Unknown8", NULL, false},	// Kamikazi
+};
+
 bot_player_t g_gunmanBots[32] = 
 {
 	{"Herb", "bandit", false},		// BoneWolf
@@ -427,12 +464,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 {
 	edict_t *BotEnt;
 	bot_t *pBot;
-	char c_skin[BOT_SKIN_LEN+1];
-	char c_name[BOT_NAME_LEN+1];
 	int skill;
 	int i, j, length;
 	int start_action = 0;
-	int bot_team = -1, bot_class = -1;
 
 	bot_player_t *pBots;
 
@@ -443,6 +477,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	else if( mod_id == GEARBOX_DLL )
 	{
 		pBots = g_gearboxBots;
+	}
+	else if( mod_id == DOD_DLL )
+	{
+		pBots = g_dodBots;
 	}
 	else if( mod_id == REWOLF_DLL )
 	{
@@ -477,66 +515,12 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	// create the bot
 	pBots[iIndex].bIsUsed = true;
 
-	// arg1 is model
-   if (mod_id == VALVE_DLL || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
-   {
-      if ((arg1 == NULL) || (*arg1 == 0))
-      {
-			strcpy( c_skin, pBots[iIndex].szModel );
-      }
-      else
-      {
-         strncpy( c_skin, arg1, BOT_SKIN_LEN-1 );
-         c_skin[BOT_SKIN_LEN] = 0;  // make sure c_skin is null terminated
-      }
-
-      for (i = 0; c_skin[i] != 0; i++)
-         c_skin[i] = tolower( c_skin[i] );  // convert to all lowercase
-   }
-   // arg1 is team, arg2 is class
-   else
-   {
-		if ((arg1 != NULL) && (*arg1 != 0))
-		{
-			if( mod_id == NS_DLL )
-			{
-				if( !strcmp(arg1, "alien") )
-				{
-					start_action = MSG_NS_JOIN_ALIEN;
-				}
-				else if( !strcmp(arg1, "marine") )
-				{
-					start_action = MSG_NS_JOIN_MARINE;
-				}
-				else
-				{
-					start_action = MSG_NS_JOIN_AUTO;
-				}
-			}
-		}
-
-	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
-          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
-          (mod_id == FRONTLINE_DLL))
-      {
-         if ((arg1 != NULL) && (arg1[0] != 0))
-         {
-            pBot->bot_team = atoi(arg1);
-
-            if ((arg2 != NULL) && (arg2[0] != 0))
-            {
-               pBot->bot_class = atoi(arg2);
-            }
-         }
-      }
-   }
-
-   strcpy(c_name, pBots[iIndex].szName);
+	// TODO: make skill a per-round changeable cvar
    skill = default_bot_skill;
 
-   length = strlen(c_name);
-
+   // TODO: move this to a utility function: it may be useful
    // remove any illegal characters from name...
+   /*
    for (i = 0; i < length; i++)
    {
       if ((c_name[i] <= ' ') || (c_name[i] > '~') ||
@@ -547,8 +531,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          length--;
       }               
    }
+   */
 
-   BotEnt = CREATE_FAKE_CLIENT( c_name );
+   BotEnt = CREATE_FAKE_CLIENT( pBots[iIndex].szName );
 
    if (FNullEnt( BotEnt ))
    {
@@ -589,7 +574,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 
       if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", c_skin );
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBots[iIndex].szModel );
       else // other mods
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "gina" );
 
@@ -607,7 +592,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "ah", "1");
       }
 
-      ClientConnect( BotEnt, c_name, "127.0.0.1", ptr );
+      ClientConnect( BotEnt, pBots[iIndex].szName, "127.0.0.1", ptr );
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
       ClientPutInServer( BotEnt );
@@ -624,7 +609,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       pBot->name[0] = 0;  // name not set by server yet
       pBot->bot_money = 0;
 
-      strcpy(pBot->skin, c_skin);
+      strcpy(pBot->skin, pBots[iIndex].szModel);
 
       pBot->pEdict = BotEnt;
 
@@ -661,8 +646,42 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       pBot->bot_skill = skill - 1;  // 0 based for array indexes
 
-      pBot->bot_team = bot_team;
-      pBot->bot_class = bot_class;
+      pBot->bot_team = -1;
+      pBot->bot_class = -1;
+
+	  	if ((arg1 != NULL) && (*arg1 != 0))
+		{
+			if( mod_id == NS_DLL )
+			{
+				if( !strcmp(arg1, "alien") )
+				{
+					start_action = MSG_NS_JOIN_ALIEN;
+				}
+				else if( !strcmp(arg1, "marine") )
+				{
+					start_action = MSG_NS_JOIN_MARINE;
+				}
+				else
+				{
+					start_action = MSG_NS_JOIN_AUTO;
+				}
+			}
+		}
+
+	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
+          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
+          (mod_id == FRONTLINE_DLL))
+      {
+         if ((arg1 != NULL) && (arg1[0] != 0))
+         {
+            pBot->bot_team = atoi(arg1);
+
+            if ((arg2 != NULL) && (arg2[0] != 0))
+            {
+               pBot->bot_class = atoi(arg2);
+            }
+         }
+      }
    }
 }
 
