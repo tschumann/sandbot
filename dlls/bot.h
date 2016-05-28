@@ -252,8 +252,123 @@ typedef struct
    bot_current_weapon_t current_weapon;  // one current weapon for each bot
    int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 
+   // Natural Selection
+   bool bEvolved;
+   bool bEvolving;
+
 } bot_t;
 
+// Only one of these allowed per entity, stored in pev->iuser3.
+typedef enum
+{
+	AVH_USER3_NONE = 0,
+	AVH_USER3_MARINE_PLAYER,
+	AVH_USER3_COMMANDER_PLAYER,
+	AVH_USER3_ALIEN_PLAYER1,
+	AVH_USER3_ALIEN_PLAYER2,
+	AVH_USER3_ALIEN_PLAYER3,
+	AVH_USER3_ALIEN_PLAYER4,
+	AVH_USER3_ALIEN_PLAYER5,
+	AVH_USER3_ALIEN_EMBRYO,
+	AVH_USER3_SPAWN_TEAMONE,
+	AVH_USER3_SPAWN_TEAMTWO,
+	AVH_USER3_PARTICLE_ON,				// only valid for AvHParticleEntity: entindex as int in fuser1, template index stored in fuser2
+	AVH_USER3_PARTICLE_OFF,				// only valid for AvHParticleEntity: particle system handle in fuser1
+	AVH_USER3_WELD,						// float progress (0 - 100) stored in fuser1
+	AVH_USER3_ALPHA,					// fuser1 indicates how much alpha this entity toggles to in commander mode, fuser2 for players
+	AVH_USER3_MARINEITEM,				// Something a friendly marine can pick up
+	AVH_USER3_WAYPOINT,
+	AVH_USER3_HIVE,
+	AVH_USER3_NOBUILD,
+	AVH_USER3_USEABLE,
+	AVH_USER3_AUDIO_ON,
+	AVH_USER3_AUDIO_OFF,
+	AVH_USER3_FUNC_RESOURCE,
+	AVH_USER3_COMMANDER_STATION,
+	AVH_USER3_TURRET_FACTORY,
+	AVH_USER3_ARMORY,
+	AVH_USER3_ADVANCED_ARMORY,
+	AVH_USER3_ARMSLAB,
+	AVH_USER3_PROTOTYPE_LAB,
+	AVH_USER3_OBSERVATORY,
+	AVH_USER3_CHEMLAB,
+	AVH_USER3_MEDLAB,
+	AVH_USER3_NUKEPLANT,
+	AVH_USER3_TURRET,
+	AVH_USER3_SIEGETURRET,
+	AVH_USER3_RESTOWER,
+	AVH_USER3_PLACEHOLDER,
+	AVH_USER3_INFANTRYPORTAL,
+	AVH_USER3_NUKE,
+	AVH_USER3_BREAKABLE,
+	AVH_USER3_UMBRA,
+	AVH_USER3_PHASEGATE,
+	AVH_USER3_DEFENSE_CHAMBER,
+	AVH_USER3_MOVEMENT_CHAMBER,
+	AVH_USER3_OFFENSE_CHAMBER,
+	AVH_USER3_SENSORY_CHAMBER,
+	AVH_USER3_ALIENRESTOWER,
+	AVH_USER3_HEAVY,
+	AVH_USER3_JETPACK,
+	AVH_USER3_ADVANCED_TURRET_FACTORY,
+	AVH_USER3_SPAWN_READYROOM,
+	AVH_USER3_CLIENT_COMMAND,
+	AVH_USER3_FUNC_ILLUSIONARY,
+	AVH_USER3_MENU_BUILD,
+	AVH_USER3_MENU_BUILD_ADVANCED,
+	AVH_USER3_MENU_ASSIST,
+	AVH_USER3_MENU_EQUIP,
+	AVH_USER3_MINE,
+	AVH_USER3_UNKNOWN,
+	AVH_USER3_MAX
+} AvHUser3;
+
+typedef enum
+{
+	MASK_NONE = 0,
+	MASK_VIS_SIGHTED = 1,					// This means this is an entity that can be seen by at least one member of the opposing team.  Assumes commanders can never be seen.
+	MASK_VIS_DETECTED = 2,					// This entity has been detected by the other team but isn't currently seen
+	MASK_BUILDABLE = 4,						// This entity is buildable
+	MASK_UPGRADE_1 = 8,						// Marine weapons 1, armor, marine basebuildable slot #0
+	MASK_UPGRADE_2 = 16,					// Marine weapons 2, regen, marine basebuildable slot #1
+	MASK_UPGRADE_3 = 32,					// Marine weapons 3, redemption, marine basebuildable slot #2
+	MASK_UPGRADE_4 = 64,					// Marine armor 1, speed, marine basebuildable slot #3
+	MASK_UPGRADE_5 = 128,					// Marine armor 2, adrenaline, marine basebuildable slot #4
+	MASK_UPGRADE_6 = 256,					// Marine armor 3, silence, marine basebuildable slot #5
+	MASK_UPGRADE_7 = 512,					// Marine jetpacks, Cloaking, marine basebuildable slot #6
+	MASK_UPGRADE_8 = 1024,					// Pheromone, motion-tracking, marine basebuildable slot #7
+	MASK_UPGRADE_9 = 2048,					// Scent of fear, exoskeleton
+	MASK_UPGRADE_10 = 4096,					// Defensive level 2, power armor
+	MASK_UPGRADE_11 = 8192,					// Defensive level 3, electrical defense
+	MASK_UPGRADE_12 = 16384,				// Movement level 2,
+	MASK_UPGRADE_13 = 32768,				// Movement level 3, marine heavy armor
+	MASK_UPGRADE_14 = 65536,				// Sensory level 2
+	MASK_UPGRADE_15 = 131072,				// Sensory level 3
+	MASK_ALIEN_MOVEMENT = 262144,			// Onos is charging
+	MASK_WALLSTICKING = 524288,				// Flag for wall-sticking
+	MASK_BUFFED = 1048576,                  // Alien is in range of active primal scream, or marine is under effects of catalyst
+	MASK_UMBRA = 2097152,
+	MASK_DIGESTING = 4194304,				// When set on a visible player, player is digesting.  When set on invisible player, player is being digested
+	MASK_RECYCLING = 8388608,
+	MASK_TOPDOWN = 16777216,
+	MASK_PLAYER_STUNNED = 33554432,			// Player has been stunned by stomp
+	MASK_ENSNARED = 67108864,
+	MASK_ALIEN_EMBRYO = 134217728,
+	MASK_SELECTABLE = 268435456,
+	MASK_PARASITED = 536870912,
+	MASK_SENSORY_NEARBY = 1073741824
+} AvHUser4;
+
+typedef enum
+{
+	PLAYMODE_UNDEFINED = 0,
+	PLAYMODE_READYROOM = 1,
+	PLAYMODE_PLAYING = 2,
+	PLAYMODE_AWAITINGREINFORCEMENT = 3,	// Player is dead and waiting in line to get back in
+	PLAYMODE_REINFORCING = 4,			// Player is in the process of coming back into the game
+	PLAYMODE_OBSERVER = 5,
+	PLAYMODE_REINFORCINGCOMPLETE = 6	// Combat only: 'press fire to respawn'
+} AvHPlayMode;
 
 #define MAX_TEAMS 32
 #define MAX_TEAMNAME_LENGTH 16

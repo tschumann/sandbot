@@ -276,6 +276,10 @@ int UTIL_GetTeam(edict_t *pEntity)
 
       return 0;  // return zero if team is unknown
    }
+   else if( mod_id == NS_DLL )
+	{
+		return pEntity->v.team;
+	}
    else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
    {
       // OpFor CTF map...
@@ -359,32 +363,34 @@ int UTIL_GetTeam(edict_t *pEntity)
 // return class number 0 through N
 int UTIL_GetClass(edict_t *pEntity)
 {
-   char *infobuffer;
-   char model_name[32];
+	char *infobuffer;
+	char model_name[32];
 
-   infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEntity );
-   strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
+	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEntity );
+	strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
 
-   if (mod_id == FRONTLINE_DLL)
-   {
-      if ((strcmp(model_name, "natorecon") == 0) ||
-          (strcmp(model_name, "axisrecon") == 0))
-      {
-         return 0;  // recon
-      }
-      else if ((strcmp(model_name, "natoassault") == 0) ||
-               (strcmp(model_name, "axisassault") == 0))
-      {
-         return 1;  // assault
-      }
-      else if ((strcmp(model_name, "natosupport") == 0) ||
-               (strcmp(model_name, "axissupport") == 0))
-      {
-         return 2;  // support
-      }
-   }
+	if( mod_id == NS_DLL )
+	{
+		// TODO: what are the classes?
+		return pEntity->v.iuser3;
+	}
+	else if (mod_id == FRONTLINE_DLL)
+	{
+		if ((strcmp(model_name, "natorecon") == 0) || (strcmp(model_name, "axisrecon") == 0))
+		{
+			return 0;  // recon
+		}
+		else if ((strcmp(model_name, "natoassault") == 0) || (strcmp(model_name, "axisassault") == 0))
+		{
+			return 1;  // assault
+		}
+		else if ((strcmp(model_name, "natosupport") == 0) || (strcmp(model_name, "axissupport") == 0))
+		{
+			return 2;  // support
+		}
+	}
 
-   return 0;
+	return 0;
 }
 
 
@@ -673,4 +679,82 @@ void UTIL_LogDPrintf( char *fmt, ... )
 		// Print to server console
 		ALERT( at_logged, "%s", string );
 	}
+}
+
+Vector UTIL_GetOrigin( edict_t *pEdict )
+{
+	if( !strncmp( STRING(pEdict->v.classname), "func_", 5 ) )
+	{
+		return VecBModelOrigin(pEdict);
+	}
+
+	return pEdict->v.origin;
+}
+
+// Natural Selection
+
+bool UTIL_IsBuilt( edict_t *pent )
+{
+	if( pent->v.iuser4 & MASK_BUILDABLE )
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool UTIL_IsCombat()
+{
+	const char *szMap = STRING(gpGlobals->mapname);
+
+	if( szMap[0] == 'c' /*|| szMap[0] == 'C'*/ )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+float UTIL_GetResources( edict_t *player )
+{
+	return player->v.vuser4.z / 100.0;
+}
+
+float UTIL_GetExperience( edict_t *player )
+{
+    return player->v.vuser4.z / 100.0;
+}
+
+int UTIL_GetPoints( edict_t *player )
+{
+	int iSpent = *(int*)( (char*)(player) + 1581 );
+
+	return iSpent;
+}
+
+BOOL UTIL_IsEvolved( const bot_t *pBot )
+{
+	return ( ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5 ) ) && !pBot->bEvolved && pBot->bEvolving;
+}
+
+bool UTIL_CanEvolve( const bot_t *pBot )
+{
+	if( pBot->pBotEnemy )
+	{
+		return false;
+	}
+
+	if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER1 )
+	{
+		return false;
+	}
+
+	if( pBot->bEvolved && pBot->bEvolving )
+	{
+		return false;
+	}
+
+	return true;
 }
