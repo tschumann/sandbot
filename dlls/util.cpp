@@ -664,10 +664,9 @@ void UTIL_LogPrintf( char *fmt, ... )
 //=========================================================
 void UTIL_LogDPrintf( char *fmt, ... )
 {
-	// TODO: make this based on the developer cvar instead of this variable
-	extern int debug_engine;
+	extern cvar_t *developer;
 
-	if (debug_engine)
+	if (_DEBUG /*developer->value*/)
     {
 		va_list        argptr;
 		static char    string[1024];
@@ -676,8 +675,9 @@ void UTIL_LogDPrintf( char *fmt, ... )
 		vsprintf ( string, fmt, argptr );
 		va_end   ( argptr );
 
-		// Print to server console
-		ALERT( at_logged, "%s", string );
+		// Print to server console 
+		// TODO: revert back to at_logged and get it working
+		ALERT( at_console, "%s", string );
 	}
 }
 

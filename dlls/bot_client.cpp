@@ -16,6 +16,8 @@
 #include "bot_client.h"
 #include "bot_weapons.h"
 
+// https://wiki.alliedmods.net/Half-life_1_game_events
+
 // types of damage to ignore...
 #define IGNORE_DAMAGE (DMG_CRUSH | DMG_FREEZE | DMG_FALL | DMG_SHOCK | \
                        DMG_DROWN | DMG_NERVEGAS | DMG_RADIATION | \
@@ -60,6 +62,12 @@ void BotClient_CS_VGUI(void *p, int bot_index)
 // This message is sent when the Day of Defeat VGUI menu is displayed.
 void BotClient_DOD_VGUI(void *p, int bot_index)
 {
+	if ((*(int *)p) == 2)  // is it a team select menu?
+		bots[bot_index].start_action = MSG_DOD_TEAM_SELECT;
+	else if ((*(int *)p) == 10)  // is is a allied class select menu?
+		bots[bot_index].start_action = MSG_DOD_ALLIED_SELECT;
+	else if ((*(int *)p) == 13)  // is is an axis class select menu?
+		bots[bot_index].start_action = MSG_DOD_AXIS_SELECT;
 }
 
 // This message is sent when a menu is being displayed in Counter-Strike.
@@ -197,8 +205,64 @@ void BotClient_CS_WeaponList(void *p, int bot_index)
 
 void BotClient_DOD_WeaponList(void *p, int bot_index)
 {
-	// this is just like the Valve Weapon List message
-	BotClient_Valve_WeaponList(p, bot_index);
+   static int state = 0;   // current state machine state
+   static bot_weapon_t bot_weapon;
+
+   if (state == 0)
+   {
+      state++;
+      // strcpy(bot_weapon.szClassname, (char *)p);
+   }
+   else if (state == 1)
+   {
+      state++;
+      bot_weapon.iAmmo1 = *(int *)p;  // ammo index 1
+   }
+   else if (state == 2)
+   {
+      state++;
+      bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
+   }
+   else if (state == 3)
+   {
+      state++;
+      bot_weapon.iAmmo2 = *(int *)p;  // ammo index 2
+   }
+   else if (state == 4)
+   {
+      state++;
+      bot_weapon.iAmmo2Max = *(int *)p;  // max ammo2
+   }
+   else if (state == 5)
+   {
+      state++;
+      bot_weapon.iSlot = *(int *)p;  // slot for this weapon
+   }
+   else if (state == 6)
+   {
+      state++;
+      // bot_weapon.iPosition = *(int *)p;  // position in slot
+	  bot_weapon.iId = *(int *)p;  // weapon ID???
+   }
+   else if (state == 7)
+   {
+      state++;
+      bot_weapon.iId = *(int *)p;  // weapon ID
+   }
+   else if (state == 8)
+   {
+      state++;
+      bot_weapon.iId = *(int *)p;  // weapon ID
+   }
+   else if (state == 9)
+   {
+      state = 0;
+
+      bot_weapon.iFlags = *(int *)p;  // flags for weapon (WTF???)
+
+      // store away this weapon with it's ammo information...
+      // weapon_defs[bot_weapon.iId] = bot_weapon;
+   }
 }
 
 void BotClient_TFC_WeaponList(void *p, int bot_index)

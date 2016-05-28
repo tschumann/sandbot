@@ -266,6 +266,53 @@ void BotStartGame( bot_t *pBot )
          return;
       }
    }
+   else if( mod_id == DOD_DLL )
+   {
+	   if (pBot->start_action == MSG_DOD_TEAM_SELECT)
+       {
+		 pBot->start_action = MSG_OPFOR_IDLE;  // switch back to idle
+
+         if ((pBot->bot_team != 1) && (pBot->bot_team != 2))
+            pBot->bot_team = -1;
+
+         if (pBot->bot_team == -1)
+            pBot->bot_team = RANDOM_LONG(1, 2);
+
+         // select the team the bot wishes to join...
+         if (pBot->bot_team == 1)
+            strcpy(c_team, "1");
+         else if (pBot->bot_team == 2)
+            strcpy(c_team, "2");
+
+         FakeClientCommand(pEdict, "jointeam", c_team, NULL);
+
+         return;
+	   }
+	   if (pBot->start_action == MSG_DOD_ALLIED_SELECT)
+		  {
+			 pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
+
+			 // TODO: add proper class selection
+			 FakeClientCommand(pEdict, "cls_random", c_class, NULL);
+
+			 // bot has now joined the game (doesn't need to be started)
+			 pBot->not_started = 0;
+
+			 return;
+		  }
+	   if (pBot->start_action == MSG_DOD_AXIS_SELECT)
+		  {
+			 pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
+
+			 // TODO: add proper class selection
+			 FakeClientCommand(pEdict, "cls_random", c_class, NULL);
+
+			 // bot has now joined the game (doesn't need to be started)
+			 pBot->not_started = 0;
+
+			 return;
+		  }
+   }
    else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
    {
       // handle Opposing Force CTF stuff here...

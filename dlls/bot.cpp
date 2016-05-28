@@ -618,6 +618,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          pBot->start_action = MSG_TFC_IDLE;
       else if (mod_id == CSTRIKE_DLL)
          pBot->start_action = MSG_CS_IDLE;
+	  else if (mod_id == DOD_DLL)
+         pBot->start_action = MSG_DOD_IDLE;
       else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
          pBot->start_action = MSG_OPFOR_IDLE;
       else if (mod_id == FRONTLINE_DLL)
@@ -667,7 +669,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
+	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == DOD_DLL) ||
           ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
           (mod_id == FRONTLINE_DLL))
       {

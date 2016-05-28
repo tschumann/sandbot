@@ -103,6 +103,10 @@ int recent_bot_whine[5];
 
 cvar_t sv_bot = {"bot",""};
 
+cvar_t bot_skill = {"bot_skill", "3"};
+
+cvar_t *developer;
+
 // a fresh install of Natural Selection 3.2 will spam the console about the non-existence of this cvar
 cvar_t sv_airmove = {"sv_airmove", "0"};
 
@@ -132,6 +136,8 @@ void GameDLLInit( void )
 
    CVAR_REGISTER (&sv_bot);
    CVAR_REGISTER(&sv_airmove);
+   CVAR_REGISTER(&bot_skill);
+   developer = CVAR_GET_POINTER("developer");
 
    for (i=0; i<32; i++)
       clients[i] = NULL;
@@ -183,70 +189,68 @@ int DispatchSpawn( edict_t *pent )
 {
    int index;
 
-   if (gpGlobals->deathmatch)
-   {
-      char *pClassname = (char *)STRING(pent->v.classname);
 
-      if (debug_engine)
-      {
-         fp=fopen("bot.txt","a");
-         fprintf(fp, "DispatchSpawn: %x %s\n",pent,pClassname);
-         if (pent->v.model != 0)
-            fprintf(fp, " model=%s\n",STRING(pent->v.model));
-         fclose(fp);
-      }
+  char *pClassname = (char *)STRING(pent->v.classname);
 
-      if (strcmp(pClassname, "worldspawn") == 0)
-      {
-         // do level initialization stuff here...
+  if (debug_engine)
+  {
+     fp=fopen("bot.txt","a");
+     fprintf(fp, "DispatchSpawn: %x %s\n",pent,pClassname);
+     if (pent->v.model != 0)
+        fprintf(fp, " model=%s\n",STRING(pent->v.model));
+     fclose(fp);
+  }
 
-         WaypointInit();
-         WaypointLoad(NULL);
+  if (strcmp(pClassname, "worldspawn") == 0)
+  {
+     // do level initialization stuff here...
 
-         pent_info_tfdetect = NULL;
-         pent_info_ctfdetect = NULL;
-         pent_info_frontline = NULL;
-         pent_item_tfgoal = NULL;
+     WaypointInit();
+     WaypointLoad(NULL);
 
-         for (index=0; index < 4; index++)
-         {
-            max_team_players[index] = 0;  // no player limit
-            team_class_limits[index] = 0;  // no class limits
-            team_allies[index] = 0;
-         }
+     pent_info_tfdetect = NULL;
+     pent_info_ctfdetect = NULL;
+     pent_info_frontline = NULL;
+     pent_item_tfgoal = NULL;
 
-         max_teams = 0;
-         num_flags = 0;
+     for (index=0; index < 4; index++)
+     {
+        max_team_players[index] = 0;  // no player limit
+        team_class_limits[index] = 0;  // no class limits
+        team_allies[index] = 0;
+     }
 
-         PRECACHE_SOUND("weapons/xbow_hit1.wav");      // waypoint add
-         PRECACHE_SOUND("weapons/mine_activate.wav");  // waypoint delete
-         PRECACHE_SOUND("common/wpn_hudoff.wav");      // path add/delete start
-         PRECACHE_SOUND("common/wpn_hudon.wav");       // path add/delete done
-         PRECACHE_SOUND("common/wpn_moveselect.wav");  // path add/delete cancel
-         PRECACHE_SOUND("common/wpn_denyselect.wav");  // path add/delete error
+     max_teams = 0;
+     num_flags = 0;
 
-         m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
+     PRECACHE_SOUND("weapons/xbow_hit1.wav");      // waypoint add
+     PRECACHE_SOUND("weapons/mine_activate.wav");  // waypoint delete
+     PRECACHE_SOUND("common/wpn_hudoff.wav");      // path add/delete start
+     PRECACHE_SOUND("common/wpn_hudon.wav");       // path add/delete done
+     PRECACHE_SOUND("common/wpn_moveselect.wav");  // path add/delete cancel
+     PRECACHE_SOUND("common/wpn_denyselect.wav");  // path add/delete error
 
-         g_GameRules = TRUE;
+     m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
 
-         is_team_play = 0.0;
-         memset(team_names, 0, sizeof(team_names));
-         num_teams = 0;
-         checked_teamplay = FALSE;
+     g_GameRules = TRUE;
 
-         bot_cfg_pause_time = 0.0;
-         respawn_time = 0.0;
-         spawn_time_reset = FALSE;
+     is_team_play = 0.0;
+     memset(team_names, 0, sizeof(team_names));
+     num_teams = 0;
+     checked_teamplay = FALSE;
 
-         prev_num_bots = num_bots;
-         num_bots = 0;
+     bot_cfg_pause_time = 0.0;
+     respawn_time = 0.0;
+     spawn_time_reset = FALSE;
 
-         flf_bug_fix = 0;
-         flf_bug_check = 0;
+     prev_num_bots = num_bots;
+     num_bots = 0;
 
-         bot_check_time = gpGlobals->time + 30.0;
-      }
-   }
+     flf_bug_fix = 0;
+     flf_bug_check = 0;
+
+     bot_check_time = gpGlobals->time + 30.0;
+  }
 
    return (*other_gFunctionTable.pfnSpawn)(pent);
 }
@@ -425,87 +429,81 @@ void ResetGlobalState( void )
 }
 
 BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ]  )
-{ 
-   if (gpGlobals->deathmatch)
-   {
-      int i;
-      int count = 0;
+{
+  int i;
+  int count = 0;
 
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientConnect: pent=%x name=%s\n",pEntity,pszName); fclose(fp); }
+  if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientConnect: pent=%x name=%s\n",pEntity,pszName); fclose(fp); }
 
-      // check if this client is the listen server client
-      if (strcmp(pszAddress, "loopback") == 0)
-      {
-         // save the edict of the listen server client...
-         listenserver_edict = pEntity;
-      }
+  // check if this client is the listen server client
+  if (strcmp(pszAddress, "loopback") == 0)
+  {
+     // save the edict of the listen server client...
+     listenserver_edict = pEntity;
+  }
 
-      // check if this is NOT a bot joining the server...
-      if (strcmp(pszAddress, "127.0.0.1") != 0)
-      {
-         // don't try to add bots for 60 seconds, give client time to get added
-         bot_check_time = gpGlobals->time + 60.0;
+  // check if this is NOT a bot joining the server...
+  if (strcmp(pszAddress, "127.0.0.1") != 0)
+  {
+     // don't try to add bots for 60 seconds, give client time to get added
+     bot_check_time = gpGlobals->time + 60.0;
 
-         for (i=0; i < 32; i++)
-         {
-            if (bots[i].is_used)  // count the number of bots in use
-               count++;
-         }
+     for (i=0; i < 32; i++)
+     {
+        if (bots[i].is_used)  // count the number of bots in use
+           count++;
+     }
 
-         // if there are currently more than the minimum number of bots running
-         // then kick one of the bots off the server...
-         if ((count > min_bots) && (min_bots != -1))
-         {
-            for (i=0; i < 32; i++)
-            {
-               if (bots[i].is_used)  // is this slot used?
-               {
-                  char cmd[80];
+     // if there are currently more than the minimum number of bots running
+     // then kick one of the bots off the server...
+     if ((count > min_bots) && (min_bots != -1))
+     {
+        for (i=0; i < 32; i++)
+        {
+           if (bots[i].is_used)  // is this slot used?
+           {
+              char cmd[80];
 
-                  sprintf(cmd, "kick \"%s\"\n", bots[i].name);
+              sprintf(cmd, "kick \"%s\"\n", bots[i].name);
 
-                  SERVER_COMMAND(cmd);  // kick the bot using (kick "name")
+              SERVER_COMMAND(cmd);  // kick the bot using (kick "name")
 
-                  break;
-               }
-            }
-         }
-      }
-   }
+              break;
+           }
+        }
+     }
+  }
 
    return (*other_gFunctionTable.pfnClientConnect)(pEntity, pszName, pszAddress, szRejectReason);
 }
 
 void ClientDisconnect( edict_t *pEntity )
 {
-   if (gpGlobals->deathmatch)
-   {
-      int i;
+  int i;
 
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientDisconnect: %x\n",pEntity); fclose(fp); }
+  if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientDisconnect: %x\n",pEntity); fclose(fp); }
 
-      i = 0;
-      while ((i < 32) && (clients[i] != pEntity))
-         i++;
+  i = 0;
+  while ((i < 32) && (clients[i] != pEntity))
+     i++;
 
-      if (i < 32)
-         clients[i] = NULL;
+  if (i < 32)
+     clients[i] = NULL;
 
 
-      for (i=0; i < 32; i++)
-      {
-         if (bots[i].pEdict == pEntity)
-         {
-            // someone kicked this bot off of the server...
+  for (i=0; i < 32; i++)
+  {
+     if (bots[i].pEdict == pEntity)
+     {
+        // someone kicked this bot off of the server...
 
-            bots[i].is_used = FALSE;  // this slot is now free to use
+        bots[i].is_used = FALSE;  // this slot is now free to use
 
-            bots[i].kick_time = gpGlobals->time;  // save the kicked time
+        bots[i].kick_time = gpGlobals->time;  // save the kicked time
 
-            break;
-         }
-      }
-   }
+        break;
+     }
+  }
 
    (*other_gFunctionTable.pfnClientDisconnect)(pEntity);
 }
@@ -534,33 +532,29 @@ void ClientPutInServer( edict_t *pEntity )
 
 void ClientCommand( edict_t *pEntity )
 {
-   // only allow custom commands if deathmatch mode and NOT dedicated server and
+	const char *pcmd = Cmd_Argv(0);
+	const char *arg1 = Cmd_Argv(1);
+	const char *arg2 = Cmd_Argv(2);
+	const char *arg3 = Cmd_Argv(3);
+	const char *arg4 = Cmd_Argv(4);
+
+	UTIL_LogDPrintf("ClientCommand: pEntity=%x, pcmd=%s", pEntity, pcmd);
+	if ((arg1 != NULL) && (*arg1 != 0))
+		UTIL_LogDPrintf(", arg1=%s", arg1);
+	if ((arg2 != NULL) && (*arg2 != 0))
+		UTIL_LogDPrintf(", arg2=%s", arg2);
+	if ((arg3 != NULL) && (*arg3 != 0))
+		UTIL_LogDPrintf(", arg3=%s", arg3);
+	if ((arg4 != NULL) && (*arg4 != 0))
+		UTIL_LogDPrintf(", arg4=%s", arg4);
+	UTIL_LogDPrintf("\n");
+
+   // only allow custom commands if NOT dedicated server and
    // client sending command is the listen server client...
 
-   if ((gpGlobals->deathmatch) && (!IS_DEDICATED_SERVER()) &&
-       (pEntity == listenserver_edict))
+   if (!IS_DEDICATED_SERVER() && (pEntity == listenserver_edict))
    {
-      const char *pcmd = Cmd_Argv(0);
-      const char *arg1 = Cmd_Argv(1);
-      const char *arg2 = Cmd_Argv(2);
-      const char *arg3 = Cmd_Argv(3);
-      const char *arg4 = Cmd_Argv(4);
       char msg[80];
-
-      if (debug_engine)
-      {
-         fp=fopen("bot.txt","a"); fprintf(fp,"ClientCommand: %s",pcmd);
-         if ((arg1 != NULL) && (*arg1 != 0))
-            fprintf(fp," %s", arg1);
-         if ((arg2 != NULL) && (*arg2 != 0))
-            fprintf(fp," %s", arg2);
-         if ((arg3 != NULL) && (*arg3 != 0))
-            fprintf(fp," %s", arg3);
-         if ((arg4 != NULL) && (*arg4 != 0))
-            fprintf(fp," %s", arg4);
-         fprintf(fp, "\n");
-         fclose(fp);
-      }
 
       if (FStrEq(pcmd, "addbot"))
       {
@@ -940,398 +934,395 @@ void PlayerPostThink( edict_t *pEntity )
 
 void StartFrame( void )
 {
-   if (gpGlobals->deathmatch)
-   {
-      edict_t *pPlayer;
-      static float check_server_cmd = 0.0;
-      static int i, index, player_index, bot_index;
-      static float previous_time = -1.0;
-      char msg[256];
-      int count;
-
-      // if a new map has started then (MUST BE FIRST IN StartFrame)...
-      if ((gpGlobals->time + 0.1) < previous_time)
-      {
-         char filename[256];
-         char mapname[64];
-
-         check_server_cmd = 0.0;  // reset at start of map
-
-         msecnum = 0;
-         msecdel = 0;
-         msecval = 0;
-
-         // check if mapname_bot.cfg file exists...
-
-         strcpy(mapname, STRING(gpGlobals->mapname));
-         strcat(mapname, "_bot.cfg");
-
-         UTIL_BuildFileName(filename, "maps", mapname);
-
-         if ((bot_cfg_fp = fopen(filename, "r")) != NULL)
-         {
-            sprintf(msg, "Executing %s\n", filename);
-            ALERT( at_console, msg );
-
-            for (index = 0; index < 32; index++)
-            {
-               bots[index].is_used = FALSE;
-               bots[index].respawn_state = 0;
-               bots[index].kick_time = 0.0;
-            }
-
-            if (IS_DEDICATED_SERVER())
-               bot_cfg_pause_time = gpGlobals->time + 5.0;
-            else
-               bot_cfg_pause_time = gpGlobals->time + 20.0;
-         }
-         else
-         {
-            count = 0;
-
-            // mark the bots as needing to be respawned...
-            for (index = 0; index < 32; index++)
-            {
-               if (count >= prev_num_bots)
-               {
-                  bots[index].is_used = FALSE;
-                  bots[index].respawn_state = 0;
-                  bots[index].kick_time = 0.0;
-               }
-
-               if (bots[index].is_used)  // is this slot used?
-               {
-                  bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
-                  count++;
-               }
-
-               // check for any bots that were very recently kicked...
-               if ((bots[index].kick_time + 5.0) > previous_time)
-               {
-                  bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
-                  count++;
-               }
-               else
-                  bots[index].kick_time = 0.0;  // reset to prevent false spawns later
-            }
-
-            // set the respawn time
-            if (IS_DEDICATED_SERVER())
-               respawn_time = gpGlobals->time + 5.0;
-            else
-               respawn_time = gpGlobals->time + 20.0;
-         }
-
-         bot_check_time = gpGlobals->time + 30.0;
-      }
-
-      // adjust the millisecond delay based on the frame rate interval...
-      if (msecdel <= gpGlobals->time)
-      {
-         msecdel = gpGlobals->time + 0.5;
-         if (msecnum > 0)
-            msecval = 450.0/msecnum;
-         msecnum = 0;
-      }
-      else
-         msecnum++;
-
-      if (msecval < 1)    // don't allow msec to be less than 1...
-         msecval = 1;
-
-      if (msecval > 100)  // ...or greater than 100
-         msecval = 100;
-
-      count = 0;
-
-      for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
-      {
-         if ((bots[bot_index].is_used) &&  // is this slot used AND
-             (bots[bot_index].respawn_state == RESPAWN_IDLE))  // not respawning
-         {
-            BotThink(&bots[bot_index]);
-
-            count++;
-
-            if ((mod_id == FRONTLINE_DLL) && (flf_bug_check == 0))
-            {
-               edict_t *pent = NULL;
-               int fix_flag = 0;
-
-               flf_bug_check = 1;
-
-               while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
-               {
-                  if (pent->v.skin != 0)  // not blue skin?
-                  {
-                     flf_bug_fix = 1;  // need to use bug fix code
-                  }
-               }
-            }
-         }
-      }
-
-      if (count > num_bots)
-         num_bots = count;
-
-      for (player_index = 1; player_index <= gpGlobals->maxClients; player_index++)
-      {
-         pPlayer = INDEXENT(player_index);
-
-         if (pPlayer && !pPlayer->free)
-         {
-            if ((g_waypoint_on) && FBitSet(pPlayer->v.flags, FL_CLIENT))
-            {
-                  WaypointThink(pPlayer);
-            }
-
-            if ((mod_id == FRONTLINE_DLL) && (flf_bug_check == 0))
-            {
-               edict_t *pent = NULL;
-               int fix_flag = 0;
-
-               flf_bug_check = 1;
-
-               while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
-               {
-                  if (pent->v.skin != 0)  // not blue skin?
-                  {
-                     flf_bug_fix = 1;  // need to use bug fix code
-                  }
-               }
-            }
-         }
-      }
-
-      // are we currently respawning bots and is it time to spawn one yet?
-      if ((respawn_time > 1.0) && (respawn_time <= gpGlobals->time))
-      {
-         int index = 0;
-
-         // find bot needing to be respawned...
-         while ((index < 32) &&
-                (bots[index].respawn_state != RESPAWN_NEED_TO_RESPAWN))
-            index++;
-
-         if (index < 32)
-         {
-            bots[index].respawn_state = RESPAWN_IS_RESPAWNING;
-            bots[index].is_used = FALSE;      // free up this slot
-
-            // respawn 1 bot then wait a while (otherwise engine crashes)
-            if ((mod_id == VALVE_DLL) ||
-                ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
-            {
-               char c_skill[2];
-
-               sprintf(c_skill, "%d", bots[index].bot_skill);
-
-               BotCreate(NULL, bots[index].skin, bots[index].name, c_skill, NULL);
-            }
-            else
-            {
-               char c_skill[2];
-               char c_team[2];
-               char c_class[3];
-
-               sprintf(c_skill, "%d", bots[index].bot_skill);
-               sprintf(c_team, "%d", bots[index].bot_team);
-               sprintf(c_class, "%d", bots[index].bot_class);
-
-               if ((mod_id == TFC_DLL) || (mod_id == GEARBOX_DLL))
-                  BotCreate(NULL, NULL, NULL, bots[index].name, c_skill);
-               else
-                  BotCreate(NULL, c_team, c_class, bots[index].name, c_skill);
-            }
-
-            respawn_time = gpGlobals->time + 2.0;  // set next respawn time
-
-            bot_check_time = gpGlobals->time + 5.0;
-         }
-         else
-         {
-            respawn_time = 0.0;
-         }
-      }
-
-      if (g_GameRules)
-      {
-         if (need_to_open_cfg)  // have we open bot.cfg file yet?
-         {
-            char filename[256];
-            char mapname[64];
-
-            need_to_open_cfg = FALSE;  // only do this once!!!
-
-            // check if mapname_bot.cfg file exists...
-
-            strcpy(mapname, STRING(gpGlobals->mapname));
-            strcat(mapname, "_bot.cfg");
-
-            UTIL_BuildFileName(filename, "maps", mapname);
-
-            if ((bot_cfg_fp = fopen(filename, "r")) != NULL)
-            {
-               sprintf(msg, "Executing %s\n", filename);
-               ALERT( at_console, msg );
-            }
-            else
-            {
-               UTIL_BuildFileName(filename, "bot.cfg", NULL);
-
-               sprintf(msg, "Executing %s\n", filename);
-               ALERT( at_console, msg );
-
-               bot_cfg_fp = fopen(filename, "r");
-
-               if (bot_cfg_fp == NULL)
-                  ALERT( at_console, "bot.cfg file not found\n" );
-            }
-
-            if (IS_DEDICATED_SERVER())
-               bot_cfg_pause_time = gpGlobals->time + 5.0;
-            else
-               bot_cfg_pause_time = gpGlobals->time + 20.0;
-         }
-
-         if (!IS_DEDICATED_SERVER() && !spawn_time_reset)
-         {
-            if (listenserver_edict != NULL)
-            {
-               if (IsAlive(listenserver_edict))
-               {
-                  spawn_time_reset = TRUE;
-
-                  if (respawn_time >= 1.0)
-                     respawn_time = min(respawn_time, gpGlobals->time + (float)1.0);
-
-                  if (bot_cfg_pause_time >= 1.0)
-                     bot_cfg_pause_time = min(bot_cfg_pause_time, gpGlobals->time + (float)1.0);
-               }
-            }
-         }
-
-         if ((bot_cfg_fp) &&
-             (bot_cfg_pause_time >= 1.0) && (bot_cfg_pause_time <= gpGlobals->time))
-         {
-            // process bot.cfg file options...
-            ProcessBotCfgFile();
-         }
-
-      }      
-
-      // if time to check for server commands then do so...
-      if ((check_server_cmd <= gpGlobals->time) && IS_DEDICATED_SERVER())
-      {
-         check_server_cmd = gpGlobals->time + 1.0;
-
-         char *cvar_bot = (char *)CVAR_GET_STRING( "bot" );
-
-         if ( cvar_bot && cvar_bot[0] )
-         {
-            char cmd_line[80];
-            char *cmd, *arg1, *arg2, *arg3, *arg4;
-
-            strcpy(cmd_line, cvar_bot);
-
-            index = 0;
-            cmd = cmd_line;
-            arg1 = arg2 = arg3 = arg4 = NULL;
-
-            // skip to blank or end of string...
-            while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-               index++;
-
-            if (cmd_line[index] == ' ')
-            {
-               cmd_line[index++] = 0;
-               arg1 = &cmd_line[index];
-
-               // skip to blank or end of string...
-               while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-                  index++;
-
-               if (cmd_line[index] == ' ')
-               {
-                  cmd_line[index++] = 0;
-                  arg2 = &cmd_line[index];
-
-                  // skip to blank or end of string...
-                  while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-                     index++;
-
-                  if (cmd_line[index] == ' ')
-                  {
-                     cmd_line[index++] = 0;
-                     arg3 = &cmd_line[index];
-
-                     // skip to blank or end of string...
-                     while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-                        index++;
-
-                     if (cmd_line[index] == ' ')
-                     {
-                        cmd_line[index++] = 0;
-                        arg4 = &cmd_line[index];
-                     }
-                  }
-               }
-            }
-
-            if (strcmp(cmd, "addbot") == 0)
-            {
-               BotCreate( NULL, arg1, arg2, arg3, arg4 );
-
-               bot_check_time = gpGlobals->time + 5.0;
-            }
-            else if (strcmp(cmd, "min_bots") == 0)
-            {
-               min_bots = atoi( arg1 );
-
-               if ((min_bots < 0) || (min_bots > 31))
-                  min_bots = 1;
-      
-               sprintf(msg, "min_bots set to %d\n", min_bots);
-               printf(msg);
-            }
-            else if (strcmp(cmd, "max_bots") == 0)
-            {
-               max_bots = atoi( arg1 );
-     
-               if ((max_bots < 0) || (max_bots > 31)) 
-                  max_bots = 1;
-
-               sprintf(msg, "max_bots set to %d\n", max_bots);
-               printf(msg);
-            }
-
-            CVAR_SET_STRING("bot", "");
-         }
-      }
-
-      // check if time to see if a bot needs to be created...
-      if (bot_check_time < gpGlobals->time)
-      {
-         int count = 0;
-
-         bot_check_time = gpGlobals->time + 5.0;
-
-         for (i = 0; i < 32; i++)
-         {
-            if (clients[i] != NULL)
-               count++;
-         }
-
-         // if there are currently less than the maximum number of "players"
-         // then add another bot using the default skill level...
-         if ((count < max_bots) && (max_bots != -1))
-         {
-            BotCreate( NULL, NULL, NULL, NULL, NULL );
-         }
-      }
-
-      previous_time = gpGlobals->time;
-   }
+  edict_t *pPlayer;
+  static float check_server_cmd = 0.0;
+  static int i, index, player_index, bot_index;
+  static float previous_time = -1.0;
+  char msg[256];
+  int count;
+
+  // if a new map has started then (MUST BE FIRST IN StartFrame)...
+  if ((gpGlobals->time + 0.1) < previous_time)
+  {
+     char filename[256];
+     char mapname[64];
+
+     check_server_cmd = 0.0;  // reset at start of map
+
+     msecnum = 0;
+     msecdel = 0;
+     msecval = 0;
+
+     // check if mapname_bot.cfg file exists...
+
+     strcpy(mapname, STRING(gpGlobals->mapname));
+     strcat(mapname, "_bot.cfg");
+
+     UTIL_BuildFileName(filename, "maps", mapname);
+
+     if ((bot_cfg_fp = fopen(filename, "r")) != NULL)
+     {
+        sprintf(msg, "Executing %s\n", filename);
+        ALERT( at_console, msg );
+
+        for (index = 0; index < 32; index++)
+        {
+           bots[index].is_used = FALSE;
+           bots[index].respawn_state = 0;
+           bots[index].kick_time = 0.0;
+        }
+
+        if (IS_DEDICATED_SERVER())
+           bot_cfg_pause_time = gpGlobals->time + 5.0;
+        else
+           bot_cfg_pause_time = gpGlobals->time + 20.0;
+     }
+     else
+     {
+        count = 0;
+
+        // mark the bots as needing to be respawned...
+        for (index = 0; index < 32; index++)
+        {
+           if (count >= prev_num_bots)
+           {
+              bots[index].is_used = FALSE;
+              bots[index].respawn_state = 0;
+              bots[index].kick_time = 0.0;
+           }
+
+           if (bots[index].is_used)  // is this slot used?
+           {
+              bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
+              count++;
+           }
+
+           // check for any bots that were very recently kicked...
+           if ((bots[index].kick_time + 5.0) > previous_time)
+           {
+              bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
+              count++;
+           }
+           else
+              bots[index].kick_time = 0.0;  // reset to prevent false spawns later
+        }
+
+        // set the respawn time
+        if (IS_DEDICATED_SERVER())
+           respawn_time = gpGlobals->time + 5.0;
+        else
+           respawn_time = gpGlobals->time + 20.0;
+     }
+
+     bot_check_time = gpGlobals->time + 30.0;
+  }
+
+  // adjust the millisecond delay based on the frame rate interval...
+  if (msecdel <= gpGlobals->time)
+  {
+     msecdel = gpGlobals->time + 0.5;
+     if (msecnum > 0)
+        msecval = 450.0/msecnum;
+     msecnum = 0;
+  }
+  else
+     msecnum++;
+
+  if (msecval < 1)    // don't allow msec to be less than 1...
+     msecval = 1;
+
+  if (msecval > 100)  // ...or greater than 100
+     msecval = 100;
+
+  count = 0;
+
+  for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
+  {
+     if ((bots[bot_index].is_used) &&  // is this slot used AND
+         (bots[bot_index].respawn_state == RESPAWN_IDLE))  // not respawning
+     {
+        BotThink(&bots[bot_index]);
+
+        count++;
+
+        if ((mod_id == FRONTLINE_DLL) && (flf_bug_check == 0))
+        {
+           edict_t *pent = NULL;
+           int fix_flag = 0;
+
+           flf_bug_check = 1;
+
+           while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
+           {
+              if (pent->v.skin != 0)  // not blue skin?
+              {
+                 flf_bug_fix = 1;  // need to use bug fix code
+              }
+           }
+        }
+     }
+  }
+
+  if (count > num_bots)
+     num_bots = count;
+
+  for (player_index = 1; player_index <= gpGlobals->maxClients; player_index++)
+  {
+     pPlayer = INDEXENT(player_index);
+
+     if (pPlayer && !pPlayer->free)
+     {
+        if ((g_waypoint_on) && FBitSet(pPlayer->v.flags, FL_CLIENT))
+        {
+              WaypointThink(pPlayer);
+        }
+
+        if ((mod_id == FRONTLINE_DLL) && (flf_bug_check == 0))
+        {
+           edict_t *pent = NULL;
+           int fix_flag = 0;
+
+           flf_bug_check = 1;
+
+           while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
+           {
+              if (pent->v.skin != 0)  // not blue skin?
+              {
+                 flf_bug_fix = 1;  // need to use bug fix code
+              }
+           }
+        }
+     }
+  }
+
+  // are we currently respawning bots and is it time to spawn one yet?
+  if ((respawn_time > 1.0) && (respawn_time <= gpGlobals->time))
+  {
+     int index = 0;
+
+     // find bot needing to be respawned...
+     while ((index < 32) &&
+            (bots[index].respawn_state != RESPAWN_NEED_TO_RESPAWN))
+        index++;
+
+     if (index < 32)
+     {
+        bots[index].respawn_state = RESPAWN_IS_RESPAWNING;
+        bots[index].is_used = FALSE;      // free up this slot
+
+        // respawn 1 bot then wait a while (otherwise engine crashes)
+        if ((mod_id == VALVE_DLL) ||
+            ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
+        {
+           char c_skill[2];
+
+           sprintf(c_skill, "%d", bots[index].bot_skill);
+
+           BotCreate(NULL, bots[index].skin, bots[index].name, c_skill, NULL);
+        }
+        else
+        {
+           char c_skill[2];
+           char c_team[2];
+           char c_class[3];
+
+           sprintf(c_skill, "%d", bots[index].bot_skill);
+           sprintf(c_team, "%d", bots[index].bot_team);
+           sprintf(c_class, "%d", bots[index].bot_class);
+
+           if ((mod_id == TFC_DLL) || (mod_id == GEARBOX_DLL))
+              BotCreate(NULL, NULL, NULL, bots[index].name, c_skill);
+           else
+              BotCreate(NULL, c_team, c_class, bots[index].name, c_skill);
+        }
+
+        respawn_time = gpGlobals->time + 2.0;  // set next respawn time
+
+        bot_check_time = gpGlobals->time + 5.0;
+     }
+     else
+     {
+        respawn_time = 0.0;
+     }
+  }
+
+  if (g_GameRules)
+  {
+     if (need_to_open_cfg)  // have we open bot.cfg file yet?
+     {
+        char filename[256];
+        char mapname[64];
+
+        need_to_open_cfg = FALSE;  // only do this once!!!
+
+        // check if mapname_bot.cfg file exists...
+
+        strcpy(mapname, STRING(gpGlobals->mapname));
+        strcat(mapname, "_bot.cfg");
+
+        UTIL_BuildFileName(filename, "maps", mapname);
+
+        if ((bot_cfg_fp = fopen(filename, "r")) != NULL)
+        {
+           sprintf(msg, "Executing %s\n", filename);
+           ALERT( at_console, msg );
+        }
+        else
+        {
+           UTIL_BuildFileName(filename, "bot.cfg", NULL);
+
+           sprintf(msg, "Executing %s\n", filename);
+           ALERT( at_console, msg );
+
+           bot_cfg_fp = fopen(filename, "r");
+
+           if (bot_cfg_fp == NULL)
+              ALERT( at_console, "bot.cfg file not found\n" );
+        }
+
+        if (IS_DEDICATED_SERVER())
+           bot_cfg_pause_time = gpGlobals->time + 5.0;
+        else
+           bot_cfg_pause_time = gpGlobals->time + 20.0;
+     }
+
+     if (!IS_DEDICATED_SERVER() && !spawn_time_reset)
+     {
+        if (listenserver_edict != NULL)
+        {
+           if (IsAlive(listenserver_edict))
+           {
+              spawn_time_reset = TRUE;
+
+              if (respawn_time >= 1.0)
+                 respawn_time = min(respawn_time, gpGlobals->time + (float)1.0);
+
+              if (bot_cfg_pause_time >= 1.0)
+                 bot_cfg_pause_time = min(bot_cfg_pause_time, gpGlobals->time + (float)1.0);
+           }
+        }
+     }
+
+     if ((bot_cfg_fp) &&
+         (bot_cfg_pause_time >= 1.0) && (bot_cfg_pause_time <= gpGlobals->time))
+     {
+        // process bot.cfg file options...
+        ProcessBotCfgFile();
+     }
+
+  }      
+
+  // if time to check for server commands then do so...
+  if ((check_server_cmd <= gpGlobals->time) && IS_DEDICATED_SERVER())
+  {
+     check_server_cmd = gpGlobals->time + 1.0;
+
+     char *cvar_bot = (char *)CVAR_GET_STRING( "bot" );
+
+     if ( cvar_bot && cvar_bot[0] )
+     {
+        char cmd_line[80];
+        char *cmd, *arg1, *arg2, *arg3, *arg4;
+
+        strcpy(cmd_line, cvar_bot);
+
+        index = 0;
+        cmd = cmd_line;
+        arg1 = arg2 = arg3 = arg4 = NULL;
+
+        // skip to blank or end of string...
+        while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
+           index++;
+
+        if (cmd_line[index] == ' ')
+        {
+           cmd_line[index++] = 0;
+           arg1 = &cmd_line[index];
+
+           // skip to blank or end of string...
+           while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
+              index++;
+
+           if (cmd_line[index] == ' ')
+           {
+              cmd_line[index++] = 0;
+              arg2 = &cmd_line[index];
+
+              // skip to blank or end of string...
+              while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
+                 index++;
+
+              if (cmd_line[index] == ' ')
+              {
+                 cmd_line[index++] = 0;
+                 arg3 = &cmd_line[index];
+
+                 // skip to blank or end of string...
+                 while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
+                    index++;
+
+                 if (cmd_line[index] == ' ')
+                 {
+                    cmd_line[index++] = 0;
+                    arg4 = &cmd_line[index];
+                 }
+              }
+           }
+        }
+
+        if (strcmp(cmd, "addbot") == 0)
+        {
+           BotCreate( NULL, arg1, arg2, arg3, arg4 );
+
+           bot_check_time = gpGlobals->time + 5.0;
+        }
+        else if (strcmp(cmd, "min_bots") == 0)
+        {
+           min_bots = atoi( arg1 );
+
+           if ((min_bots < 0) || (min_bots > 31))
+              min_bots = 1;
+  
+           sprintf(msg, "min_bots set to %d\n", min_bots);
+           printf(msg);
+        }
+        else if (strcmp(cmd, "max_bots") == 0)
+        {
+           max_bots = atoi( arg1 );
+ 
+           if ((max_bots < 0) || (max_bots > 31)) 
+              max_bots = 1;
+
+           sprintf(msg, "max_bots set to %d\n", max_bots);
+           printf(msg);
+        }
+
+        CVAR_SET_STRING("bot", "");
+     }
+  }
+
+  // check if time to see if a bot needs to be created...
+  if (bot_check_time < gpGlobals->time)
+  {
+     int count = 0;
+
+     bot_check_time = gpGlobals->time + 5.0;
+
+     for (i = 0; i < 32; i++)
+     {
+        if (clients[i] != NULL)
+           count++;
+     }
+
+     // if there are currently less than the maximum number of "players"
+     // then add another bot using the default skill level...
+     if ((count < max_bots) && (max_bots != -1))
+     {
+        BotCreate( NULL, NULL, NULL, NULL, NULL );
+     }
+  }
+
+  previous_time = gpGlobals->time;
 
    (*other_gFunctionTable.pfnStartFrame)();
 }
