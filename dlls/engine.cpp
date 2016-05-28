@@ -296,8 +296,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
    if (gpGlobals->deathmatch)
    {
       int index = -1;
-
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnMessageBegin: edict=%x dest=%d type=%d\n",ed,msg_dest,msg_type); fclose(fp); }
+	  UTIL_LogDPrintf("pfnMessageBegin: msg_dest=%d msg_type=%d ed=%x\n", msg_dest, msg_type, ed);
 
       if (ed)
       {
@@ -565,66 +564,66 @@ void pfnMessageEnd(void)
 
 void pfnWriteByte(int iValue)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteByte: %d\n",iValue); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogDPrintf("pfnWriteByte: %d\n", iValue);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-	  {
-         (*botMsgFunction)((void *)&iValue, botMsgIndex);
-	  }
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)&iValue, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteByte)(iValue);
+	(*g_engfuncs.pfnWriteByte)(iValue);
 }
 
 void pfnWriteChar(int iValue)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteChar: %d\n",iValue); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogDPrintf("pfnWriteChar: %d\n", iValue);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-	  {
-         (*botMsgFunction)((void *)&iValue, botMsgIndex);
-	  }
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)&iValue, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteChar)(iValue);
+	(*g_engfuncs.pfnWriteChar)(iValue);
 }
 
 void pfnWriteShort(int iValue)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteShort: %d\n",iValue); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogDPrintf("pfnWriteShort: %d\n", iValue);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-	  {
-         (*botMsgFunction)((void *)&iValue, botMsgIndex);
-	  }
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)&iValue, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteShort)(iValue);
+	(*g_engfuncs.pfnWriteShort)(iValue);
 }
 
 void pfnWriteLong(int iValue)
 {
-   if (gpGlobals->deathmatch)
-   {
-      if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnWriteLong: %d\n",iValue); fclose(fp); }
+	if( gpGlobals->deathmatch )
+	{
+		UTIL_LogDPrintf("pfnWriteLong: %d\n", iValue);
 
-      // if this message is for a bot, call the client message function...
-      if (botMsgFunction)
-	  {
-         (*botMsgFunction)((void *)&iValue, botMsgIndex);
-	  }
-   }
+		// if this message is for a bot, call the client message function...
+		if( botMsgFunction )
+		{
+			(*botMsgFunction)((void *)&iValue, botMsgIndex);
+		}
+	}
 
-   (*g_engfuncs.pfnWriteLong)(iValue);
+	(*g_engfuncs.pfnWriteLong)(iValue);
 }
 
 void pfnWriteAngle(float flValue)
