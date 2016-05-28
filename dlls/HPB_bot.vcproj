@@ -2,8 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="HPB_bot"
+	Name="sandbot"
 	ProjectGUID="{21B87DAD-4AA5-4BB7-A1EA-40BC1DEBB6F3}"
+	RootNamespace="sandbot"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -74,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Release/HPB_bot.dll"
+				OutputFile=".\Release/sandbot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\HPB_bot.def"
@@ -172,7 +173,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Debug/HPB_bot.dll"
+				OutputFile=".\Debug/sandbot.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\HPB_bot.def"
