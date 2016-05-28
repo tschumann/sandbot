@@ -19,6 +19,7 @@ A. I've tried and things just broke unexpectedly.
 == Changelog ==
 
 v0.2 (??/??/??)
+- Reduced Gunman Chronicles gauss pistol rate of fire slightly.
 - Started using new bot framework.
 - Added some documenation.
 

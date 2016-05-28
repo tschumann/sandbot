@@ -270,7 +270,7 @@ bot_weapon_select_t gunman_weapon_select[] = {
 	9999.0, 0.0, 0.0,
 	100, true, 100, 1, 0,
 	false, false, false, false, 0.0, 0.0},
-	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.1, 0.0,
+	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.2, 0.0,
 	0.0, 1024.0, 0.0, 0.0,
     100, true, 100, 1, 0,
 	true, FALSE, FALSE, FALSE, 0.0, 0.0},
@@ -538,11 +538,9 @@ edict_t *BotFindEnemy( bot_t *pBot )
          // don't have an enemy anymore so null out the pointer...
          pBot->pBotEnemy = NULL;
       }
-      else if (FInViewCone( &vecEnd, pEdict ) &&
-               FVisible( vecEnd, pEdict ))
+      else if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
       {
-         if ((mod_id == TFC_DLL) &&
-             (pEdict->v.playerclass == TFC_CLASS_MEDIC))
+         if ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_MEDIC))
          {
             if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
             {
@@ -596,8 +594,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
                int bot_team = UTIL_GetTeam(pEdict);
 
                // don't target your enemies...
-               if ((bot_team != player_team) &&
-                   !(team_allies[bot_team] & (1<<player_team)))
+               if ((bot_team != player_team) && !(team_allies[bot_team] & (1<<player_team)))
                   continue;
 
                // check if player needs to be healed...
@@ -607,8 +604,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
                vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
 
                // see if bot can see the player...
-               if (FInViewCone( &vecEnd, pEdict ) &&
-                   FVisible( vecEnd, pEdict ))
+               if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
                {
                   float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
 
@@ -651,8 +647,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
             vecEnd = pent->v.origin + pent->v.view_ofs;
 
             // is this sentry gun visible?
-            if (FInViewCone( &vecEnd, pEdict ) &&
-                FVisible( vecEnd, pEdict ))
+            if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
             {
                float distance = (pent->v.origin - pEdict->v.origin).Length();
 
@@ -712,8 +707,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
             vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
 
             // see if bot can see the player...
-            if (FInViewCone( &vecEnd, pEdict ) &&
-                FVisible( vecEnd, pEdict ))
+            if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
             {
                float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
                if (distance < nearestdistance)
@@ -743,8 +737,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
    }
 
    // has the bot NOT seen an ememy for at least 5 seconds (time to reload)?
-   if ((pBot->f_bot_see_enemy_time > 0) &&
-       ((pBot->f_bot_see_enemy_time + 5.0) <= gpGlobals->time))
+   if ((pBot->f_bot_see_enemy_time > 0) && ((pBot->f_bot_see_enemy_time + 5.0) <= gpGlobals->time))
    {
       pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
 
