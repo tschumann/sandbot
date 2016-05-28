@@ -6,8 +6,9 @@
 // bot_client.h
 //
 
-void BotClient_TFC_VGUI(void *p, int bot_index);
 void BotClient_CS_VGUI(void *p, int bot_index);
+void BotClient_DOD_VGUI(void *p, int bot_index);
+void BotClient_TFC_VGUI(void *p, int bot_index);
 void BotClient_CS_ShowMenu(void *p, int bot_index);
 void BotClient_Gearbox_VGUI(void *p, int bot_index);
 void BotClient_FLF_VGUI(void *p, int bot_index);
@@ -15,6 +16,7 @@ void BotClient_FLF_VGUI(void *p, int bot_index);
 void BotClient_Valve_WeaponList(void *p, int bot_index);
 void BotClient_Gearbox_WeaponList(void *p, int bot_index);
 void BotClient_CS_WeaponList(void *p, int bot_index);
+void BotClient_DOD_WeaponList(void *p, int bot_index);
 void BotClient_TFC_WeaponList(void *p, int bot_index);
 void BotClient_Gunman_WeaponList(void *p, int bot_index);
 void BotClient_NS_WeaponList(void *p, int bot_index);

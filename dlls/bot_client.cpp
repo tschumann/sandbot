@@ -57,6 +57,10 @@ void BotClient_CS_VGUI(void *p, int bot_index)
       bots[bot_index].start_action = MSG_CS_CT_SELECT;
 }
 
+// This message is sent when the Day of Defeat VGUI menu is displayed.
+void BotClient_DOD_VGUI(void *p, int bot_index)
+{
+}
 
 // This message is sent when a menu is being displayed in Counter-Strike.
 void BotClient_CS_ShowMenu(void *p, int bot_index)
@@ -186,6 +190,12 @@ void BotClient_Gearbox_WeaponList(void *p, int bot_index)
 }
 
 void BotClient_CS_WeaponList(void *p, int bot_index)
+{
+	// this is just like the Valve Weapon List message
+	BotClient_Valve_WeaponList(p, bot_index);
+}
+
+void BotClient_DOD_WeaponList(void *p, int bot_index)
 {
 	// this is just like the Valve Weapon List message
 	BotClient_Valve_WeaponList(p, bot_index);

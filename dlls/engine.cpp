@@ -324,22 +324,22 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
                else if (msg_type == message_ScreenFade)
                   botMsgFunction = BotClient_Valve_ScreenFade;
             }
-            else if (mod_id == TFC_DLL)
+			else if (mod_id == GEARBOX_DLL)
             {
                if (msg_type == message_VGUI)
-                  botMsgFunction = BotClient_TFC_VGUI;
+                  botMsgFunction = BotClient_Gearbox_VGUI;
                else if (msg_type == message_WeaponList)
-                  botMsgFunction = BotClient_TFC_WeaponList;
+                  botMsgFunction = BotClient_Gearbox_WeaponList;
                else if (msg_type == message_CurWeapon)
-                  botMsgFunction = BotClient_TFC_CurrentWeapon;
+                  botMsgFunction = BotClient_Gearbox_CurrentWeapon;
                else if (msg_type == message_AmmoX)
-                  botMsgFunction = BotClient_TFC_AmmoX;
+                  botMsgFunction = BotClient_Gearbox_AmmoX;
                else if (msg_type == message_AmmoPickup)
-                  botMsgFunction = BotClient_TFC_AmmoPickup;
+                  botMsgFunction = BotClient_Gearbox_AmmoPickup;
                else if (msg_type == message_Damage)
-                  botMsgFunction = BotClient_TFC_Damage;
+                  botMsgFunction = BotClient_Gearbox_Damage;
                else if (msg_type == message_ScreenFade)
-                  botMsgFunction = BotClient_TFC_ScreenFade;
+                  botMsgFunction = BotClient_Gearbox_ScreenFade;
             }
             else if (mod_id == CSTRIKE_DLL)
             {
@@ -362,22 +362,37 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
                else if (msg_type == message_ScreenFade)
                   botMsgFunction = BotClient_CS_ScreenFade;
             }
-            else if (mod_id == GEARBOX_DLL)
+			else if (mod_id == DOD_DLL)
             {
                if (msg_type == message_VGUI)
-                  botMsgFunction = BotClient_Gearbox_VGUI;
+                  botMsgFunction = BotClient_CS_VGUI;
                else if (msg_type == message_WeaponList)
-                  botMsgFunction = BotClient_Gearbox_WeaponList;
+                  botMsgFunction = BotClient_DOD_WeaponList;
                else if (msg_type == message_CurWeapon)
-                  botMsgFunction = BotClient_Gearbox_CurrentWeapon;
+                  botMsgFunction = BotClient_Valve_CurrentWeapon;
                else if (msg_type == message_AmmoX)
-                  botMsgFunction = BotClient_Gearbox_AmmoX;
+                  botMsgFunction = BotClient_Valve_AmmoX;
                else if (msg_type == message_AmmoPickup)
-                  botMsgFunction = BotClient_Gearbox_AmmoPickup;
+                  botMsgFunction = BotClient_Valve_AmmoPickup;
                else if (msg_type == message_Damage)
-                  botMsgFunction = BotClient_Gearbox_Damage;
+                  botMsgFunction = BotClient_Valve_Damage;
+            }
+			else if (mod_id == TFC_DLL)
+            {
+               if (msg_type == message_VGUI)
+                  botMsgFunction = BotClient_TFC_VGUI;
+               else if (msg_type == message_WeaponList)
+                  botMsgFunction = BotClient_TFC_WeaponList;
+               else if (msg_type == message_CurWeapon)
+                  botMsgFunction = BotClient_TFC_CurrentWeapon;
+               else if (msg_type == message_AmmoX)
+                  botMsgFunction = BotClient_TFC_AmmoX;
+               else if (msg_type == message_AmmoPickup)
+                  botMsgFunction = BotClient_TFC_AmmoPickup;
+               else if (msg_type == message_Damage)
+                  botMsgFunction = BotClient_TFC_Damage;
                else if (msg_type == message_ScreenFade)
-                  botMsgFunction = BotClient_Gearbox_ScreenFade;
+                  botMsgFunction = BotClient_TFC_ScreenFade;
             }
 			else if (mod_id == REWOLF_DLL)
             {
@@ -499,6 +514,11 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
          {
             if (msg_type == message_WeaponList)
                botMsgFunction = BotClient_Valve_WeaponList;
+         }
+		 else if (mod_id == DOD_DLL)
+         {
+            if (msg_type == message_WeaponList)
+               botMsgFunction = BotClient_TFC_WeaponList;
          }
          else if (mod_id == TFC_DLL)
          {

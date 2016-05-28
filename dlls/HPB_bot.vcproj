@@ -86,7 +86,7 @@
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Release/HPB_bot.lib"
+				ImportLibrary=".\Release/sandbot.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -101,7 +101,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/HPB_bot.bsc"
+				OutputFile=".\Release/sandbot.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -182,7 +182,7 @@
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Debug/HPB_bot.lib"
+				ImportLibrary=".\Debug/sandbot.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -197,7 +197,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/HPB_bot.bsc"
+				OutputFile=".\Debug/sandbot.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

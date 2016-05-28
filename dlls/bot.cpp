@@ -168,7 +168,6 @@ bot_player_t g_dodBots[32] =
 	{"MichaelG", NULL, false},	// Sector-Effector
 	{"Sean", NULL, false},
 	{"Unknown1", NULL, false},	// Panzergrenadier
-	{"Unknown2", NULL, false},	// WIZZARD
 	{"Unknown3", NULL, false},	// Kommie
 	{"Unknown4", NULL, false},	// H&K - Sean?
 	{"Unknown5", NULL, false},	// lovemeister
