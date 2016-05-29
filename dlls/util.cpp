@@ -707,14 +707,7 @@ bool UTIL_IsCombat()
 {
 	const char *szMap = STRING(gpGlobals->mapname);
 
-	if( szMap[0] == 'c' /*|| szMap[0] == 'C'*/ )
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (szMap[0] == 'c') && (szMap[1] == '0');
 }
 
 float UTIL_GetResources( edict_t *player )
@@ -730,6 +723,7 @@ float UTIL_GetExperience( edict_t *player )
 int UTIL_GetPoints( edict_t *player )
 {
 	// TODO: wrong?
+	// TODO: can be calculated from applied upgrades? better than platform-dependant offsets
 	// see http://www.modns.org/index.php?showtopic=2579
 	int iSpent = *(int*)( (char*)(player) + 1581 );
 

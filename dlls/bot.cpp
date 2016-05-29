@@ -693,24 +693,24 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 					{
 					case 0:
 					case 1:
-						pBot->bot_class = AVH_USER3_ALIEN_PLAYER1;
+						pBot->desired_class = AVH_USER3_ALIEN_PLAYER1;
 						break;
 					case 2:
 					case 3:
 					case 4:
 					case 5:
-						pBot->bot_class = AVH_USER3_ALIEN_PLAYER2;
+						pBot->desired_class = AVH_USER3_ALIEN_PLAYER2;
 						break;
 					case 6:
-						pBot->bot_class = AVH_USER3_ALIEN_PLAYER3;
+						pBot->desired_class = AVH_USER3_ALIEN_PLAYER3;
 						break;
 					case 7:
 					case 8:
 					case 9:
-						pBot->bot_class = AVH_USER3_ALIEN_PLAYER4;
+						pBot->desired_class = AVH_USER3_ALIEN_PLAYER4;
 						break;
 					case 10:
-						pBot->bot_class = AVH_USER3_ALIEN_PLAYER5;
+						pBot->desired_class = AVH_USER3_ALIEN_PLAYER5;
 						break;
 					}
 				}
@@ -726,8 +726,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		}
 
 	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == DOD_DLL) ||
-          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) ||
-          (mod_id == FRONTLINE_DLL))
+          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) || (mod_id == FRONTLINE_DLL))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
          {
@@ -1980,25 +1979,25 @@ void BotThink( bot_t *pBot )
 			// start evolving
 			if( !UTIL_IsCombat() && UTIL_CanEvolve( pBot ) )
 			{
-				if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
+				if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
 				{
 					pBot->f_move_speed = 0.0;
 					pBot->pEdict->v.impulse = 114;
 					pBot->bEvolving = true;
 				}
-				else if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
+				else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
 				{
 					pBot->f_move_speed = 0.0;
 					pBot->pEdict->v.impulse = 115;
 					pBot->bEvolving = true;
 				}
-				else if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
+				else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
 				{
 					pBot->f_move_speed = 0.0;
 					pBot->pEdict->v.impulse = 116;
 					pBot->bEvolving = true;
 				}
-				else if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
+				else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
 				{
 					pBot->f_move_speed = 0.0;
 					pBot->pEdict->v.impulse = 117;

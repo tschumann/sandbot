@@ -277,6 +277,8 @@ typedef struct
 	bool bUseArmory;
 	float fUseArmoryTime;
 
+	int desired_class;
+
 	bool bBuild;
 	float fBuildTime;
 	bool bBuildAlienResourceTower;
