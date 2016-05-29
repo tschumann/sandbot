@@ -729,6 +729,8 @@ float UTIL_GetExperience( edict_t *player )
 
 int UTIL_GetPoints( edict_t *player )
 {
+	// TODO: wrong?
+	// see http://www.modns.org/index.php?showtopic=2579
 	int iSpent = *(int*)( (char*)(player) + 1581 );
 
 	return iSpent;

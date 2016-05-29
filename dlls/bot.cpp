@@ -686,6 +686,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 				{
 					start_action = MSG_NS_JOIN_ALIEN;
 
+					// decide randomly which class to become
 					int iClass = RANDOM_LONG( 0, 10 );
 
 					switch( iClass )
