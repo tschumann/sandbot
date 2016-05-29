@@ -486,7 +486,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	edict_t *BotEnt;
 	bot_t *pBot;
 	int skill;
-	int i, j, length;
 	int start_action = 0;
 
 	bot_player_t *pBots;
@@ -686,6 +685,33 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 				if( !strcmp(arg1, "alien") )
 				{
 					start_action = MSG_NS_JOIN_ALIEN;
+
+					int iClass = RANDOM_LONG( 0, 10 );
+
+					switch( iClass )
+					{
+					case 0:
+					case 1:
+						pBot->bot_class = AVH_USER3_ALIEN_PLAYER1;
+						break;
+					case 2:
+					case 3:
+					case 4:
+					case 5:
+						pBot->bot_class = AVH_USER3_ALIEN_PLAYER2;
+						break;
+					case 6:
+						pBot->bot_class = AVH_USER3_ALIEN_PLAYER3;
+						break;
+					case 7:
+					case 8:
+					case 9:
+						pBot->bot_class = AVH_USER3_ALIEN_PLAYER4;
+						break;
+					case 10:
+						pBot->bot_class = AVH_USER3_ALIEN_PLAYER5;
+						break;
+					}
 				}
 				else if( !strcmp(arg1, "marine") )
 				{
@@ -1838,8 +1864,7 @@ void BotThink( bot_t *pBot )
             {
                // set the time that the bot will stop "pausing"
                pBot->f_pause_time = gpGlobals->time +
-                  RANDOM_FLOAT(pause_time[pBot->bot_skill][0],
-                               pause_time[pBot->bot_skill][1]);
+                  RANDOM_FLOAT(pause_time[pBot->bot_skill][0], pause_time[pBot->bot_skill][1]);
             }
          }
       }
@@ -1858,8 +1883,7 @@ void BotThink( bot_t *pBot )
       {
          // check if the waypoint is at the top of a ladder AND
          // the bot isn't currenly on a ladder...
-         if ((pBot->waypoint_top_of_ladder) &&
-             (pEdict->v.movetype != MOVETYPE_FLY))
+         if ((pBot->waypoint_top_of_ladder) && (pEdict->v.movetype != MOVETYPE_FLY))
          {
             // is the bot on "ground" above the ladder?
             if (pEdict->v.flags & FL_ONGROUND)
@@ -1894,11 +1918,9 @@ void BotThink( bot_t *pBot )
 
       // check if the waypoint is a sniper waypoint AND
       // bot isn't currently aiming at an ememy...
-      if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) &&
-          (pBot->pBotEnemy == NULL))
+      if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) && (pBot->pBotEnemy == NULL))
       {
-         if ((mod_id != TFC_DLL) ||
-             ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_SNIPER)))
+         if ((mod_id != TFC_DLL) || ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_SNIPER)))
          {
             // check if it's time to adjust aim yet...
             if (pBot->f_sniper_aim_time <= gpGlobals->time)
@@ -1936,13 +1958,61 @@ void BotThink( bot_t *pBot )
    // save the previous speed (for checking if stuck)
    pBot->prev_speed = pBot->f_move_speed;
 
+   	if( mod_id == NS_DLL )
+	{
+		extern bool UTIL_IsEvolved( const bot_t *pBot );
+		extern bool UTIL_CanEvolve( const bot_t *pBot );
+		extern bool UTIL_IsCombat();
+		extern float UTIL_GetResources( edict_t *player );
+
+		// TODO - combat and classic branches, tidy up
+		if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+		{
+			// finish evolving
+			if( UTIL_IsEvolved( pBot ) )
+			{
+				pBot->f_move_speed = pBot->f_max_speed;
+				pBot->bEvolving = false;
+				pBot->bEvolved = true;
+			}
+
+			// start evolving
+			if( !UTIL_IsCombat() && UTIL_CanEvolve( pBot ) )
+			{
+				if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
+				{
+					pBot->f_move_speed = 0.0;
+					pBot->pEdict->v.impulse = 114;
+					pBot->bEvolving = true;
+				}
+				else if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
+				{
+					pBot->f_move_speed = 0.0;
+					pBot->pEdict->v.impulse = 115;
+					pBot->bEvolving = true;
+				}
+				else if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
+				{
+					pBot->f_move_speed = 0.0;
+					pBot->pEdict->v.impulse = 116;
+					pBot->bEvolving = true;
+				}
+				else if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
+				{
+					pBot->f_move_speed = 0.0;
+					pBot->pEdict->v.impulse = 117;
+					pBot->bEvolving = true;
+				}
+			}
+		}
+	}
+
    BotFixIdealPitch (pEdict);
    BotFixIdealYaw (pEdict);
    BotFixBodyAngles (pEdict);
    BotFixViewAngles (pEdict);
 
-   g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed,
-                                0, 0, pEdict->v.button, 0, msecval);
+   g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
    return;
 }

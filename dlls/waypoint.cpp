@@ -830,8 +830,7 @@ void WaypointAddAiming(edict_t *pEntity)
    // draw a blue waypoint
    WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0,
-                   ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0, ATTN_NORM, 0, 100);
 
    // increment total number of waypoints if adding at end of array...
    if (index == num_waypoints)
@@ -917,8 +916,7 @@ void WaypointDelete(edict_t *pEntity)
 
    wp_display_time[index] = 0.0;
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/mine_activate.wav", 1.0,
-                   ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/mine_activate.wav", 1.0, ATTN_NORM, 0, 100);
 }
 
 
@@ -935,15 +933,13 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       if (waypoint1 == -1)
       {
          // play "cancelled" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
 
       // play "start" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0, ATTN_NORM, 0, 100);
 
       return;
    }
@@ -955,8 +951,7 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       if ((waypoint1 == -1) || (waypoint2 == -1))
       {
          // play "error" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
@@ -964,8 +959,7 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       WaypointAddPath(waypoint1, waypoint2);
 
       // play "done" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0, ATTN_NORM, 0, 100);
    }
 }
 
@@ -983,15 +977,13 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       if (waypoint1 == -1)
       {
          // play "cancelled" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
 
       // play "start" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0, ATTN_NORM, 0, 100);
 
       return;
    }
@@ -1003,8 +995,7 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       if ((waypoint1 == -1) || (waypoint2 == -1))
       {
          // play "error" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
@@ -1012,8 +1003,7 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       WaypointDeletePath(waypoint1, waypoint2);
 
       // play "done" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0, ATTN_NORM, 0, 100);
    }
 }
 

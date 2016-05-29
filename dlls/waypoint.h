@@ -24,8 +24,7 @@ typedef unsigned __int64 uint64_t;
 
 #define REACHABLE_RANGE 400.0
 
-// TODO: increase this to 64 bits
-// defines for waypoint flags field (32 bits are available)
+// defines for waypoint flags field (64 bits are available)
 #define W_FL_TEAM			((1<<0) + (1<<1))  /* allow for 4 teams (0-3) */
 #define W_FL_TEAM_SPECIFIC	(1<<2)  /* waypoint only for specified team */
 #define W_FL_CROUCH			(1<<3)  /* must crouch to reach this waypoint */

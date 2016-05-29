@@ -83,6 +83,19 @@ int Cmd_Argc( void );
 #define RESPAWN_NEED_TO_RESPAWN  2
 #define RESPAWN_IS_RESPAWNING    3
 
+// Natural Selection
+#define TEAM_NONE	0
+#define TEAM_MARINE	1
+#define TEAM_ALIEN	2
+
+#define kGorgeCost 10
+#define kLerkCost 30
+#define kFadeCost 50
+#define kOnosCost 75
+
+#define kAlienResourceTowerCost 15
+#define kHiveCost 40
+
 // game start messages for TFC...
 #define MSG_TFC_IDLE          1
 #define MSG_TFC_TEAM_SELECT   2

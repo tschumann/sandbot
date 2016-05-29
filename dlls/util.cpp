@@ -371,7 +371,7 @@ int UTIL_GetClass(edict_t *pEntity)
 
 	if( mod_id == NS_DLL )
 	{
-		// TODO: what are the classes?
+		// see AvHUser3
 		return pEntity->v.iuser3;
 	}
 	else if (mod_id == FRONTLINE_DLL)
@@ -734,7 +734,7 @@ int UTIL_GetPoints( edict_t *player )
 	return iSpent;
 }
 
-BOOL UTIL_IsEvolved( const bot_t *pBot )
+bool UTIL_IsEvolved( const bot_t *pBot )
 {
 	return ( ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5 ) ) && !pBot->bEvolved && pBot->bEvolving;
 }

@@ -491,17 +491,17 @@ extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blendi
 
    // if the blending interface has been formerly reported as missing, give up
    if (missing)
-      return (FALSE);
+      return FALSE;
 
    // do we NOT know if the blending interface is provided ? if so, look for its address
    if (other_Server_GetBlendingInterface == NULL)
-      other_Server_GetBlendingInterface = (SERVER_GETBLENDINGINTERFACE) GetProcAddress (h_Library, "Server_GetBlendingInterface");
+      other_Server_GetBlendingInterface = (SERVER_GETBLENDINGINTERFACE)GetProcAddress(h_Library, "Server_GetBlendingInterface");
 
    // have we NOT found it ?
    if (!other_Server_GetBlendingInterface)
    {
       missing = TRUE; // then mark it as missing, no use to look for it again in the future
-      return (FALSE); // and give up
+      return FALSE; // and give up
    }
 
    // else call the function that provides the blending interface on request
