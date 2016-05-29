@@ -455,6 +455,28 @@ void BotSpawnInit( bot_t *pBot )
 	pBot->f_use_capture_time = 0.0;
 	pBot->pCaptureEdict = NULL;
 
+	// Gunman Chronicles
+	pBot->bFists = false;
+	// pBot->iPistolMode = PISTOL_PULSE;
+	// pBot->iShotgunMode = SHOTGUN_SHOTGUN;
+	pBot->bMinigunSpin = false;
+
+	// Natural Selection
+	pBot->bUseArmory = false;
+	pBot->fUseArmoryTime = 0.0;
+
+	pBot->bBuild = false;
+	pBot->fBuildTime = 0.0;
+	pBot->bBuildAlienResourceTower = false;
+	pBot->bBuildHive = false;
+
+	pBot->bEvolving = false;
+	pBot->bEvolved = false;
+
+	// The Ship
+	pBot->bUseDoor = false;
+	pBot->fUseDoorTime = 0.0;
+
 	memset(&(pBot->current_weapon), 0, sizeof(pBot->current_weapon));
 	memset(&(pBot->m_rgAmmo), 0, sizeof(pBot->m_rgAmmo));
 }
@@ -608,7 +630,14 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       pBot->name[0] = 0;  // name not set by server yet
       pBot->bot_money = 0;
 
-      strcpy(pBot->skin, pBots[iIndex].szModel);
+	  if (pBots[iIndex].szModel)
+	  {
+		strcpy(pBot->skin, pBots[iIndex].szModel);
+	  }
+	  else
+	  {
+		  strcpy(pBot->skin, "");
+	  }
 
       pBot->pEdict = BotEnt;
 
@@ -939,6 +968,38 @@ void BotFindItem( bot_t *pBot )
                      pBot->b_use_button = FALSE;
                   }
                }
+			   else if( mod_id == SHIP_DLL && !strcmp( "func_door", item_name ) )
+                {
+                    // use the button about 100% of the time, if haven't
+                    // used a button in at least 5 seconds...
+                    if( ( RANDOM_LONG(1, 100) <= 100 ) && ( ( pBot->f_use_button_time + 5.0 ) < gpGlobals->time ) )
+                    {
+                        // check if flag not set and facing it...
+                        if( !pBot->bUseDoor )
+                        {
+                            // check if close enough and facing it directly...
+                            if( ( distance < PLAYER_SEARCH_RADIUS ) && ( angle_to_entity <= 10 ) )
+                            {
+                                pBot->bUseDoor = TRUE;
+                                pBot->fUseDoorTime = gpGlobals->time;
+                            }
+
+                            // if close to door...
+                            if( distance < 100.0 )
+                            {
+                                // don't avoid walls for a while
+                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
+                            }
+
+                            can_pickup = TRUE;
+                        }
+                    }
+                    else
+                    {
+                        // don't need or can't use this item...
+                        pBot->bUseDoor = FALSE;
+                    }
+                }
             }
          }
       }
@@ -1126,6 +1187,11 @@ void BotFindItem( bot_t *pBot )
       BotFixIdealYaw(pEdict);
 
       pBot->pBotPickupItem = pPickupEntity;  // save the item bot is trying to get
+
+	  if( mod_id == SHIP_DLL )
+	{
+		FakeClientCommand( pEdict, "pickup", NULL, NULL );
+	}
    }
 }
 
@@ -1581,6 +1647,11 @@ void BotThink( bot_t *pBot )
 
             BotUseLift( pBot, moved_distance );
          }
+		 // The Ship
+		else if( pBot->bUseDoor )
+		{
+			BotUseDoor( pBot );
+		}
 
          else
          {

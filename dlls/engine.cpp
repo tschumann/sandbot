@@ -49,6 +49,12 @@ static FILE *fp;
 
 int pfnPrecacheModel(char* s)
 {
+	// TODO: The Ship crashes trying to precache these: is this Sandbot passing bad data?
+	// Error: could not load file models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl
+	// Error: could not load file models/player/models/player/John.mdl/models/player/John.mdl.mdl
+	// Error: could not load file models/player/models/player/john2.mdl/models/player/john2.mdl.m
+	// Error: could not load file models/player/models/player/Holliday.mdl/models/player/Holliday
+
 	return (*g_engfuncs.pfnPrecacheModel)(s);
 }
 int pfnPrecacheSound(char* s)
@@ -419,6 +425,21 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Hunger_ScreenFade;
         }
+		else if (mod_id == SHIP_DLL)
+        {
+           if (msg_type == message_WeaponList)
+              botMsgFunction = BotClient_Valve_WeaponList;
+           else if (msg_type == message_CurWeapon)
+              botMsgFunction = BotClient_Valve_CurrentWeapon;
+           else if (msg_type == message_AmmoX)
+              botMsgFunction = BotClient_Valve_AmmoX;
+           else if (msg_type == message_AmmoPickup)
+              botMsgFunction = BotClient_Valve_AmmoPickup;
+           else if (msg_type == message_Damage)
+              botMsgFunction = BotClient_Valve_Damage;
+           else if (msg_type == message_ScreenFade)
+              botMsgFunction = BotClient_Valve_ScreenFade;
+        }
         else if (mod_id == FRONTLINE_DLL)
         {
            if (msg_type == message_VGUI)
@@ -487,6 +508,11 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_Hunger_DeathMsg;
      }
+	 else if (mod_id == SHIP_DLL)
+     {
+        if (msg_type == message_DeathMsg)
+           botMsgFunction = BotClient_Valve_DeathMsg;
+     }
      else if (mod_id == FRONTLINE_DLL)
      {
         if (msg_type == message_DeathMsg)
@@ -546,6 +572,11 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_Hunger_WeaponList;
+     }
+	 else if (mod_id == SHIP_DLL)
+     {
+        if (msg_type == message_WeaponList)
+           botMsgFunction = BotClient_Valve_WeaponList;
      }
      else if (mod_id == FRONTLINE_DLL)
      {
@@ -911,6 +942,23 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 			message_ScreenFade = msg;
 	}
 	if( mod_id == HUNGER_DLL )
+	{
+		if (strcmp(pszName, "WeaponList") == 0)
+			message_WeaponList = msg;
+		else if (strcmp(pszName, "CurWeapon") == 0)
+			message_CurWeapon = msg;
+		else if (strcmp(pszName, "AmmoX") == 0)
+			message_AmmoX = msg;
+		else if (strcmp(pszName, "AmmoPickup") == 0)
+			message_AmmoPickup = msg;
+		else if (strcmp(pszName, "Damage") == 0)
+			message_Damage = msg;
+		else if (strcmp(pszName, "DeathMsg") == 0)
+			message_DeathMsg = msg;
+		else if (strcmp(pszName, "ScreenFade") == 0)
+			message_ScreenFade = msg;
+	}
+	if( mod_id == SHIP_DLL )
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;

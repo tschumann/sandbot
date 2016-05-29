@@ -532,7 +532,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
       if (!IsAlive(pBot->pBotEnemy))  // is the enemy dead?, assume bot killed it
       {
          // the enemy is dead, jump for joy about 10% of the time
-         if (RANDOM_LONG(1, 100) <= 10)
+         if (RANDOM_LONG(1, 100) <= 10 && mod_id != SHIP_DLL)
             pEdict->v.button |= IN_JUMP;
 
          // don't have an enemy anymore so null out the pointer...
@@ -860,6 +860,10 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
    else if (mod_id == HUNGER_DLL)
    {
       pSelect = &hunger_weapon_select[0];
+   }
+   else if (mod_id == SHIP_DLL)
+   {
+      pSelect = &valve_weapon_select[0];
    }
    else if (mod_id == FRONTLINE_DLL)
    {

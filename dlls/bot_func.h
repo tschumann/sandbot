@@ -42,6 +42,7 @@ void BotRandomTurn( bot_t *pBot );
 bool BotFollowUser( bot_t *pBot );
 bool BotCheckWallOnLeft( bot_t *pBot );
 bool BotCheckWallOnRight( bot_t *pBot );
+void BotUseDoor( bot_t *pBot );
 
 edict_t *BotFindEnemy( bot_t *pBot );
 Vector BotBodyTarget( edict_t *pBotEnemy, bot_t *pBot );

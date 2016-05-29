@@ -2,19 +2,18 @@ Sandbot
 
 == About ==
 Name: Sandbot
-Description: A deathmatch bot for Half-Life, Gunman Chronicles and They Hunger.
-Requirements: Half-Life (Steam version, either Windows or Linux).
+Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (deathmatch) Gunman Chronicles and They Hunger (under the hood there is support for Half-Life Opposing Force (capture the flag), Day of Defeat, Team Fortress Classic, Natural Selection and The Ship but they are still experimental).
+Requirements: Half-Life/Half-Life Opposing Force (Steam version, either Windows or Linux).
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
 == Usage ==
 
 addbot		Add a bot to the server
-bot_skill	Bot skill cvar (1, 2, 3, 4 or 5)
 
 == Frequently Asked Questions ==
 
 Q. Can you add MetaMod support?
-A. I've tried and things just broke unexpectedly.
+A. I've tried and things just broke unexpectedly, so not right now.
 
 == Changelog ==
 
@@ -39,7 +38,8 @@ You may not use the software if you do not agree to these terms.
 Thanks to:
 Valve, for the Half-Life SDK and the Valve ERC.
 Todd Aspeotis, for teaching me C++.
-Jeffrey 'botman' Broome for his bot code.
+Jeffrey 'botman' Broome for his bot code and other cool stuff.
+ModDB for being a good host.
 
 == Credits ==
 

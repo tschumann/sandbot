@@ -1129,3 +1129,22 @@ bool BotCheckWallOnRight( bot_t *pBot )
    return FALSE;
 }
 
+void BotUseDoor( bot_t *pBot )
+{
+	edict_t *pEdict = pBot->pEdict;
+
+	// just need to use the door once, when the flag gets set...
+	if( pBot->fUseDoorTime == gpGlobals->time )
+	{
+		pEdict->v.button = IN_USE;
+
+		// face opposite from the button
+		// pEdict->v.ideal_yaw += 180.0;  // rotate 180 degrees
+
+		BotFixIdealYaw( pEdict );
+	}
+
+	pBot->bUseDoor = false;
+
+	pBot->f_move_speed = pBot->f_max_speed;
+}

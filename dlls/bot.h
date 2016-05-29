@@ -254,12 +254,31 @@ typedef struct
    float f_use_capture_time;
    edict_t *pCaptureEdict;
 
+   	// Gunman Chronicles
+	bool bFists;
+	int iPistolMode;
+	int iShotgunMode;
+	bool bMinigunSpin;
+
+	// Natural Selection
+	bool bUseArmory;
+	float fUseArmoryTime;
+
+	bool bBuild;
+	float fBuildTime;
+	bool bBuildAlienResourceTower;
+	bool bBuildHive;
+
+	// int iClass;
+	bool bEvolving;
+	bool bEvolved;
+
+	// The Ship
+	bool bUseDoor;
+	float fUseDoorTime;
+
    bot_current_weapon_t current_weapon;  // one current weapon for each bot
    int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
-
-   // Natural Selection
-   bool bEvolved;
-   bool bEvolving;
 
 } bot_t;
 
