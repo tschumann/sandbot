@@ -274,6 +274,7 @@ typedef struct
 	bool bEvolved;
 
 	// The Ship
+	edict_t *pQuarry;
 	bool bUseDoor;
 	float fUseDoorTime;
 

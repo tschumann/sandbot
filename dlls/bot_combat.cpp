@@ -515,57 +515,60 @@ void BotCheckTeamplay(void)
 
 edict_t *BotFindEnemy( bot_t *pBot )
 {
-   Vector vecEnd;
-   static bool flag=TRUE;
-   edict_t *pent = NULL;
-   edict_t *pNewEnemy;
-   float nearestdistance;
-   int i;
+	Vector vecEnd;
+	static bool flag=TRUE;
+	edict_t *pent = NULL;
+	edict_t *pNewEnemy;
+	float nearestdistance;
+	int i;
 
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   if (pBot->pBotEnemy != NULL)  // does the bot already have an enemy?
-   {
-      vecEnd = pBot->pBotEnemy->v.origin + pBot->pBotEnemy->v.view_ofs;
+	if (pBot->pBotEnemy != NULL)  // does the bot already have an enemy?
+	{
+		vecEnd = pBot->pBotEnemy->v.origin + pBot->pBotEnemy->v.view_ofs;
 
-      // if the enemy is dead?
-      if (!IsAlive(pBot->pBotEnemy))  // is the enemy dead?, assume bot killed it
-      {
-         // the enemy is dead, jump for joy about 10% of the time
-         if (RANDOM_LONG(1, 100) <= 10 && mod_id != SHIP_DLL)
-            pEdict->v.button |= IN_JUMP;
+		// if the enemy is dead? if it is, assume the bot kill it
+		if (!IsAlive(pBot->pBotEnemy))
+		{
+			// the enemy is dead, jump for joy about 10% of the time,
+			// except in The Ship where this would be too conspicuous
+			if (RANDOM_LONG(1, 100) <= 10 && mod_id != SHIP_DLL)
+			{
+				pEdict->v.button |= IN_JUMP;
+			}
 
-         // don't have an enemy anymore so null out the pointer...
-         pBot->pBotEnemy = NULL;
-      }
-      else if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
-      {
-         if ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_MEDIC))
-         {
-            if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
-            {
-               pBot->pBotEnemy = NULL;  // player is healed, null out pointer
-            }
-         }
-         else
-         {
-            // if enemy is still visible and in field of view, keep it
+			// don't have an enemy anymore so null out the pointer
+			pBot->pBotEnemy = NULL;
+		}
+		else if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+		{
+			if ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_MEDIC))
+			{
+				if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
+				{
+					pBot->pBotEnemy = NULL;  // player is healed, null out pointer
+				}
+			}
+			else
+			{
+				// if enemy is still visible and in field of view, keep it
 
-            // face the enemy
-            Vector v_enemy = pBot->pBotEnemy->v.origin - pEdict->v.origin;
-            Vector bot_angles = UTIL_VecToAngles( v_enemy );
+				// face the enemy
+				Vector v_enemy = pBot->pBotEnemy->v.origin - pEdict->v.origin;
+				Vector bot_angles = UTIL_VecToAngles( v_enemy );
 
-            pEdict->v.ideal_yaw = bot_angles.y;
+				pEdict->v.ideal_yaw = bot_angles.y;
 
-            BotFixIdealYaw(pEdict);
+				BotFixIdealYaw(pEdict);
 
-            // keep track of when we last saw an enemy
-            pBot->f_bot_see_enemy_time = gpGlobals->time;
+				// keep track of when we last saw an enemy
+				pBot->f_bot_see_enemy_time = gpGlobals->time;
 
-            return (pBot->pBotEnemy);
-         }
-      }
-   }
+				return pBot->pBotEnemy;
+			}
+		}
+	}
 
    pent = NULL;
    pNewEnemy = NULL;
@@ -704,6 +707,15 @@ edict_t *BotFindEnemy( bot_t *pBot )
                }
             }
 
+			if( mod_id == SHIP_DLL )
+			{
+				// if the bot has no quarry or the quarry isn't this player
+				if( !pBot->pQuarry || ( pBot->pQuarry != pPlayer ) )
+				{
+					continue;
+				}
+			}
+
             vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
 
             // see if bot can see the player...
@@ -748,7 +760,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
       }
    }
 
-   return (pNewEnemy);
+   return pNewEnemy;
 }
 
 

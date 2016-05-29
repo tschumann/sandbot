@@ -50,10 +50,25 @@ static FILE *fp;
 int pfnPrecacheModel(char* s)
 {
 	// TODO: The Ship crashes trying to precache these: is this Sandbot passing bad data?
-	// Error: could not load file models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl
-	// Error: could not load file models/player/models/player/John.mdl/models/player/John.mdl.mdl
-	// Error: could not load file models/player/models/player/john2.mdl/models/player/john2.mdl.m
-	// Error: could not load file models/player/models/player/Holliday.mdl/models/player/Holliday
+	if( mod_id == SHIP_DLL )
+	{
+		if( !strcmp(s, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
+		{
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/Jane.mdl");
+		}
+		else if( !strcmp(s, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
+		{
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/John.mdl");
+		}
+		else if( !strcmp(s, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
+		{
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/john2.mdl");
+		}
+		else if( !strcmp(s, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
+		{
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/Holliday.mdl");
+		}
+	}
 
 	return (*g_engfuncs.pfnPrecacheModel)(s);
 }
