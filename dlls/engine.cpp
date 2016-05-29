@@ -43,6 +43,7 @@ int message_WarmUp = 0;      // for Front Line Force
 int message_WinMessage = 0;  // for Front Line Force
 int message_ScreenFade = 0;
 int message_HLTV = 0; // for Counter-Strike
+int gmsgCountdown = 0;	// Natural Selection
 
 static FILE *fp;
 
@@ -517,6 +518,10 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_NS_DeathMsg;
+		else if( msg_type == gmsgCountdown )
+		{
+			botMsgFunction = BotClient_NS_CountDown;
+		}
      }
 	 else if (mod_id == HUNGER_DLL)
      {
@@ -955,6 +960,10 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 			message_DeathMsg = msg;
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
+		else if( !strcmp( pszName, "Countdown" ) )
+		{
+			gmsgCountdown = msg;
+		}
 	}
 	if( mod_id == HUNGER_DLL )
 	{

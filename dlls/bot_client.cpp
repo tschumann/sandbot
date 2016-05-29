@@ -1009,3 +1009,15 @@ void BotClient_CS_HLTV(void *p, int bot_index)
    }
 }
 
+void BotClient_NS_CountDown( void *p, int bot_index )
+{
+	extern bool g_bInGame;
+	extern int g_iCountDown;
+	extern float g_fCountDownTime;
+
+	// reset these values
+	g_bInGame = false;
+	g_fCountDownTime = 0.0;
+
+	g_iCountDown = *(int *)p;
+}

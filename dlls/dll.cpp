@@ -932,6 +932,10 @@ void PlayerPostThink( edict_t *pEntity )
 	(*other_gFunctionTable.pfnPlayerPostThink)(pEntity);
 }
 
+bool g_bInGame = false;
+int g_iCountDown = 0;
+float g_fCountDownTime = 0.0;
+
 void StartFrame( void )
 {
   edict_t *pPlayer;
@@ -940,6 +944,24 @@ void StartFrame( void )
   static float previous_time = -1.0;
   char msg[256];
   int count;
+
+  if( !g_bInGame )
+	{
+		if( mod_id == NS_DLL )
+		{
+			// if the Countdown message has been sent, make a note of the time
+			if( g_iCountDown && !g_fCountDownTime )
+			{
+				g_fCountDownTime = gpGlobals->time;
+			}
+
+			// if the Countdown time (plus a bit) has passed, we're in-game
+			if( g_iCountDown && g_fCountDownTime + (float)g_iCountDown + 1.0 < gpGlobals->time )
+			{
+				g_bInGame = true;
+			}
+		}
+	}
 
   // if a new map has started then (MUST BE FIRST IN StartFrame)...
   if ((gpGlobals->time + 0.1) < previous_time)

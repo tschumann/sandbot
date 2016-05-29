@@ -1965,8 +1965,10 @@ void BotThink( bot_t *pBot )
 		extern bool UTIL_IsCombat();
 		extern float UTIL_GetResources( edict_t *player );
 
+		extern bool g_bInGame;
+
 		// TODO - combat and classic branches, tidy up
-		if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+		if( g_bInGame && UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 		{
 			// finish evolving
 			if( UTIL_IsEvolved( pBot ) )
