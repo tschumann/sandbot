@@ -734,96 +734,96 @@ edict_t *BotFindEnemy( bot_t *pBot )
       }
    }
 
-   if (pNewEnemy)
-   {
-      // face the enemy
-      Vector v_enemy = pNewEnemy->v.origin - pEdict->v.origin;
-      Vector bot_angles = UTIL_VecToAngles( v_enemy );
+	if (pNewEnemy)
+	{
+		// face the enemy
+		Vector v_enemy = pNewEnemy->v.origin - pEdict->v.origin;
+		Vector bot_angles = UTIL_VecToAngles( v_enemy );
 
-      pEdict->v.ideal_yaw = bot_angles.y;
+		pEdict->v.ideal_yaw = bot_angles.y;
 
-      BotFixIdealYaw(pEdict);
+		BotFixIdealYaw(pEdict);
 
-      // keep track of when we last saw an enemy
-      pBot->f_bot_see_enemy_time = gpGlobals->time;
-   }
+		// keep track of when we last saw an enemy
+		pBot->f_bot_see_enemy_time = gpGlobals->time;
+	}
 
-   // has the bot NOT seen an ememy for at least 5 seconds (time to reload)?
-   if ((pBot->f_bot_see_enemy_time > 0) && ((pBot->f_bot_see_enemy_time + 5.0) <= gpGlobals->time))
-   {
-      pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
+		// has the bot NOT seen an ememy for at least 5 seconds (time to reload)?
+	if ((pBot->f_bot_see_enemy_time > 0) && ((pBot->f_bot_see_enemy_time + 5.0) <= gpGlobals->time))
+	{
+		pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
 
-	  // TODO: is this check needed for all mods where players reload? check where else IN_RELOAD is set
-      if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
-      {
-         pEdict->v.button |= IN_RELOAD;  // press reload button
-      }
-   }
+		// TODO: is this check needed for all mods where players reload? check where else IN_RELOAD is set
+		if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
+		{
+			pEdict->v.button |= IN_RELOAD;  // press reload button
+		}
+	}
 
-   return pNewEnemy;
+	return pNewEnemy;
 }
 
 
 Vector BotBodyTarget( edict_t *pBotEnemy, bot_t *pBot )
 {
-   Vector target;
-   float f_distance;
-   float f_scale;
-   int d_x, d_y, d_z;
+	Vector target;
+	float f_distance;
+	float f_scale;
+	int d_x, d_y, d_z;
 
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   f_distance = (pBotEnemy->v.origin - pEdict->v.origin).Length();
+	f_distance = (pBotEnemy->v.origin - pEdict->v.origin).Length();
 
-   if (f_distance > 1000)
-      f_scale = 1.0;
-   else if (f_distance > 100)
-      f_scale = f_distance / 1000.0;
-   else
-      f_scale = 0.1;
+	if (f_distance > 1000)
+		f_scale = 1.0;
+	else if (f_distance > 100)
+		f_scale = f_distance / 1000.0;
+	else
+		f_scale = 0.1;
 
-   switch (pBot->bot_skill)
-   {
-      case 0:
-         // VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)
-         target = pBotEnemy->v.origin + pBotEnemy->v.view_ofs * RANDOM_FLOAT( 0.5, 1.1 );
-         d_x = 0;  // no offset
-         d_y = 0;
-         d_z = 0;
-         break;
-      case 1:
-         // GOOD, offset a little for x, y, and z
-         target = pBotEnemy->v.origin + pBotEnemy->v.view_ofs;  // aim for the head (if you can find it)
-         d_x = RANDOM_FLOAT(-5, 5) * f_scale;
-         d_y = RANDOM_FLOAT(-5, 5) * f_scale;
-         d_z = RANDOM_FLOAT(-10, 10) * f_scale;
-         break;
-      case 2:
-         // FAIR, offset somewhat for x, y, and z
-         target = pBotEnemy->v.origin;  // aim for the body
-         d_x = RANDOM_FLOAT(-10, 10) * f_scale;
-         d_y = RANDOM_FLOAT(-10, 10) * f_scale;
-         d_z = RANDOM_FLOAT(-18, 18) * f_scale;
-         break;
-      case 3:
-         // POOR, offset for x, y, and z
-         target = pBotEnemy->v.origin;  // aim for the body
-         d_x = RANDOM_FLOAT(-20, 20) * f_scale;
-         d_y = RANDOM_FLOAT(-20, 20) * f_scale;
-         d_z = RANDOM_FLOAT(-32, 32) * f_scale;
-         break;
-      case 4:
-         // BAD, offset lots for x, y, and z
-         target = pBotEnemy->v.origin;  // aim for the body
-         d_x = RANDOM_FLOAT(-35, 35) * f_scale;
-         d_y = RANDOM_FLOAT(-35, 35) * f_scale;
-         d_z = RANDOM_FLOAT(-50, 50) * f_scale;
-         break;
-   }
+	switch (pBot->bot_skill)
+	{
+		case 0:
+			// VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)
+			target = pBotEnemy->v.origin + pBotEnemy->v.view_ofs * RANDOM_FLOAT( 0.5, 1.1 );
+			d_x = 0;  // no offset
+			d_y = 0;
+			d_z = 0;
+			break;
+		case 1:
+			// GOOD, offset a little for x, y, and z
+			target = pBotEnemy->v.origin + pBotEnemy->v.view_ofs;  // aim for the head (if you can find it)
+			d_x = RANDOM_FLOAT(-5, 5) * f_scale;
+			d_y = RANDOM_FLOAT(-5, 5) * f_scale;
+			d_z = RANDOM_FLOAT(-10, 10) * f_scale;
+			break;
+		case 2:
+			// FAIR, offset somewhat for x, y, and z
+			target = pBotEnemy->v.origin;  // aim for the body
+			d_x = RANDOM_FLOAT(-10, 10) * f_scale;
+			d_y = RANDOM_FLOAT(-10, 10) * f_scale;
+			d_z = RANDOM_FLOAT(-18, 18) * f_scale;
+			break;
+		case 3:
+			// POOR, offset for x, y, and z
+			target = pBotEnemy->v.origin;  // aim for the body
+			d_x = RANDOM_FLOAT(-20, 20) * f_scale;
+			d_y = RANDOM_FLOAT(-20, 20) * f_scale;
+			d_z = RANDOM_FLOAT(-32, 32) * f_scale;
+			break;
+		case 4:
+			// BAD, offset lots for x, y, and z
+			target = pBotEnemy->v.origin;  // aim for the body
+			d_x = RANDOM_FLOAT(-35, 35) * f_scale;
+			d_y = RANDOM_FLOAT(-35, 35) * f_scale;
+			d_z = RANDOM_FLOAT(-50, 50) * f_scale;
+			break;
+	}
 
-   target = target + Vector(d_x, d_y, d_z);
+	target = target + Vector(d_x, d_y, d_z);
 
-   return target;
+	return target;
 }
 
 
