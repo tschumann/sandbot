@@ -197,8 +197,19 @@
 #define HUNGER_WEAPON_TH_MEDKIT		23
 
 // weapon ID values for The Ship
-
-// TODO
+#define SHIP_WEAPON_9MMAR
+#define SHIP_WEAPON_9MMHANDGUN
+#define SHIP_WEAPON_357
+#define SHIP_WEAPON_CROSSBOW
+#define SHIP_WEAPON_CROWBAR
+#define SHIP_WEAPON_HANDGRENADE
+#define SHIP_WEAPON_PUSHHANDS
+#define SHIP_WEAPON_RPG
+#define SHIP_WEAPON_SATCHEL
+#define SHIP_WEAPON_SHOTGUN
+#define SHIP_WEAPON_SYRINGE
+#define SHIP_WEAPON_SHOTGUN
+#define SHIP_WEAPON_UMBRELLA
 
 // weapon ID values for FrontLineForce
 #define FLF_WEAPON_AK5           10
