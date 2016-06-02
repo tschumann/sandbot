@@ -189,6 +189,11 @@ bot_weapon_select_t cs_weapon_select[] = {
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
+bot_weapon_select_t dod_weapon_select[] = {
+	/* terminator */
+	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
+};
+
 bot_weapon_select_t tfc_weapon_select[] = {
 	{TF_WEAPON_AXE, "tf_weapon_axe", 0.3, 0.0,
 	 0.0, 50.0, 0.0, 0.0,
@@ -443,6 +448,11 @@ bot_weapon_select_t hunger_weapon_select[] = {
 	FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
     /* terminator */
     {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
+};
+
+bot_weapon_select_t ship_weapon_select[] = {
+	/* terminator */
+	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
 bot_weapon_select_t frontline_weapon_select[] = {
@@ -833,54 +843,59 @@ Vector BotBodyTarget( edict_t *pBotEnemy, bot_t *pBot )
 
 bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 {
-   bot_weapon_select_t *pSelect = NULL;
-   int select_index;
-   int iId;
-   bool use_primary;
-   bool use_secondary;
-   int use_percent;
-   int primary_percent;
+	bot_weapon_select_t *pSelect = NULL;
+	int select_index;
+	int iId;
+	bool use_primary;
+	bool use_secondary;
+	int use_percent;
+	int primary_percent;
 
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   float distance = v_enemy.Length();  // how far away is the enemy?
+	// how far away is the enemy?
+	float distance = v_enemy.Length();
 
-   if (mod_id == VALVE_DLL)
-   {
-      pSelect = &valve_weapon_select[0];
-   }
-   else if (mod_id == TFC_DLL)
-   {
-      pSelect = &tfc_weapon_select[0];
-   }
-   else if (mod_id == CSTRIKE_DLL)
-   {
-      pSelect = &cs_weapon_select[0];
-   }
-   else if (mod_id == GEARBOX_DLL)
-   {
-      pSelect = &gearbox_weapon_select[0];
-   }
-   else if (mod_id == REWOLF_DLL)
-   {
-      pSelect = &gunman_weapon_select[0];
-   }
-   else if (mod_id == NS_DLL)
-   {
-      pSelect = &ns_weapon_select[0];
-   }
-   else if (mod_id == HUNGER_DLL)
-   {
-      pSelect = &hunger_weapon_select[0];
-   }
-   else if (mod_id == SHIP_DLL)
-   {
-      pSelect = &valve_weapon_select[0];
-   }
-   else if (mod_id == FRONTLINE_DLL)
-   {
-      pSelect = &frontline_weapon_select[0];
-   }
+	if (mod_id == VALVE_DLL)
+	{
+		pSelect = &valve_weapon_select[0];
+	}
+	else if (mod_id == GEARBOX_DLL)
+	{
+		pSelect = &gearbox_weapon_select[0];
+	}
+	else if (mod_id == CSTRIKE_DLL)
+	{
+		pSelect = &cs_weapon_select[0];
+	}
+	else if (mod_id == DOD_DLL)
+	{
+		pSelect = &dod_weapon_select[0];
+	}
+	else if (mod_id == TFC_DLL)
+	{
+		pSelect = &tfc_weapon_select[0];
+	}
+	else if (mod_id == REWOLF_DLL)
+	{
+		pSelect = &gunman_weapon_select[0];
+	}
+	else if (mod_id == NS_DLL)
+	{
+		pSelect = &ns_weapon_select[0];
+	}
+	else if (mod_id == HUNGER_DLL)
+	{
+		pSelect = &hunger_weapon_select[0];
+	}
+	else if (mod_id == SHIP_DLL)
+	{
+		pSelect = &ship_weapon_select[0];
+	}
+	else if (mod_id == FRONTLINE_DLL)
+	{
+		pSelect = &frontline_weapon_select[0];
+	}
 
    if (pSelect)
    {
@@ -1067,9 +1082,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                int bot_team = UTIL_GetTeam(pEdict);
 
                // only heal your teammates or allies...
-               if (((bot_team == player_team) ||
-                    (team_allies[bot_team] & (1<<player_team))) &&
-                   (iId != TF_WEAPON_MEDIKIT))
+               if (((bot_team == player_team) || (team_allies[bot_team] & (1<<player_team))) && (iId != TF_WEAPON_MEDIKIT))
                {
                   return FALSE;  // don't "fire" unless weapon is medikit
                }
@@ -1085,8 +1098,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                pBot->charging_weapon_id = iId;
 
                // release primary fire after the appropriate delay...
-               pBot->f_primary_charging = gpGlobals->time +
-                              pSelect[select_index].primary_charge_delay;
+               pBot->f_primary_charging = gpGlobals->time + pSelect[select_index].primary_charge_delay;
 
                pBot->f_shoot_time = gpGlobals->time;  // keep charging
             }
@@ -1094,7 +1106,9 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
             {
                // set next time to shoot
                if (pSelect[select_index].primary_fire_hold)
+			   {
                   pBot->f_shoot_time = gpGlobals->time;  // don't let button up
+			   }
                else
                {
                   pBot->f_shoot_time = gpGlobals->time + pSelect[select_index].fPrimaryRate;
@@ -1110,8 +1124,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                pBot->charging_weapon_id = iId;
 
                // release secondary fire after the appropriate delay...
-               pBot->f_secondary_charging = gpGlobals->time +
-                              pSelect[select_index].secondary_charge_delay;
+               pBot->f_secondary_charging = gpGlobals->time + pSelect[select_index].secondary_charge_delay;
 
                pBot->f_shoot_time = gpGlobals->time;  // keep charging
             }
@@ -1119,7 +1132,9 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
             {
                // set next time to shoot
                if (pSelect[select_index].secondary_fire_hold)
+			   {
                   pBot->f_shoot_time = gpGlobals->time;  // don't let button up
+			   }
                else
                {
                   pBot->f_shoot_time = gpGlobals->time + pSelect[select_index].fSecondaryRate;
@@ -1196,37 +1211,44 @@ void BotShootAtEnemy( bot_t *pBot )
 
 bool BotShootTripmine( bot_t *pBot )
 {
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   if (pBot->b_shoot_tripmine != TRUE)
-      return FALSE;
+	if (pBot->b_shoot_tripmine != TRUE)
+	{
+		return FALSE;
+	}
 
-   // aim at the tripmine and fire the glock...
+	// aim at the tripmine and fire the glock...
 
-   Vector v_enemy = pBot->v_tripmine - GetGunPosition( pEdict );
+	Vector v_enemy = pBot->v_tripmine - GetGunPosition( pEdict );
 
-   pEdict->v.v_angle = UTIL_VecToAngles( v_enemy );
+	pEdict->v.v_angle = UTIL_VecToAngles( v_enemy );
 
-   if (pEdict->v.v_angle.y > 180)
-      pEdict->v.v_angle.y -=360;
+	if (pEdict->v.v_angle.y > 180)
+	{
+		pEdict->v.v_angle.y -=360;
+	}
 
-   // Paulo-La-Frite - START bot aiming bug fix
-   if (pEdict->v.v_angle.x > 180)
-      pEdict->v.v_angle.x -=360;
+	// Paulo-La-Frite - START bot aiming bug fix
+	if (pEdict->v.v_angle.x > 180)
+	{
+		pEdict->v.v_angle.x -=360;
+	}
 
-   // set the body angles to point the gun correctly
-   pEdict->v.angles.x = pEdict->v.v_angle.x / 3;
-   pEdict->v.angles.y = pEdict->v.v_angle.y;
-   pEdict->v.angles.z = 0;
+	// set the body angles to point the gun correctly
+	pEdict->v.angles.x = pEdict->v.v_angle.x / 3;
+	pEdict->v.angles.y = pEdict->v.v_angle.y;
+	pEdict->v.angles.z = 0;
 
-   // adjust the view angle pitch to aim correctly (MUST be after body v.angles stuff)
-   pEdict->v.v_angle.x = -pEdict->v.v_angle.x;
-   // Paulo-La-Frite - END
+	// adjust the view angle pitch to aim correctly (MUST be after body v.angles stuff)
+	pEdict->v.v_angle.x = -pEdict->v.v_angle.x;
+	// Paulo-La-Frite - END
 
-   pEdict->v.ideal_yaw = pEdict->v.v_angle.y;
+	pEdict->v.ideal_yaw = pEdict->v.v_angle.y;
 
-   BotFixIdealYaw(pEdict);
+	BotFixIdealYaw(pEdict);
 
-   return (BotFireWeapon( v_enemy, pBot, VALVE_WEAPON_GLOCK ));
+	// TODO: does this work in Opposing Force and They Hunger?
+	return (BotFireWeapon( v_enemy, pBot, VALVE_WEAPON_GLOCK ));
 }
 
