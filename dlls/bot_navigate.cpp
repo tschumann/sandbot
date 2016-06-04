@@ -326,8 +326,7 @@ bool BotFindWaypoint( bot_t *pBot )
    // about 20% of the time choose a waypoint at random
    // (don't do this any more often than every 10 seconds)
 
-   if ((RANDOM_LONG(1, 100) <= 20) &&
-       (pBot->f_random_waypoint_time <= gpGlobals->time))
+   if ((RANDOM_LONG(1, 100) <= 20) && (pBot->f_random_waypoint_time <= gpGlobals->time))
    {
       pBot->f_random_waypoint_time = gpGlobals->time + 10.0;
 
@@ -416,8 +415,8 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             break;  // break out of while loop
          }
-         else if (FInViewCone( &pent->v.origin, pEdict ) &&  // can bot see it?
-                  FVisible( pent->v.origin, pEdict))
+		 // can bot see it?
+         else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
          {
             // check if the flag has an owner...
             if (pent->v.owner != NULL)
@@ -426,8 +425,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                int player_team = UTIL_GetTeam(pent->v.owner);
 
                // attack if not our team and not allies team...
-               if ((player_team != team) &&
-                   !(team_allies[team] & (1<<player_team)))
+               if ((player_team != team) && !(team_allies[team] & (1<<player_team)))
                {
                   // kill the man with the flag!
                   pBot->pBotEnemy = pent->v.owner;
@@ -443,8 +441,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                for (i=0; i < num_flags; i++)
                {
                   // is the flag for this team (or any team)?
-                  if ((flags[i].edict == pent) &&
-                      ((flags[i].team_no == (team+1)) || (flags[i].team_no == 0)))
+                  if ((flags[i].edict == pent) && ((flags[i].team_no == (team+1)) || (flags[i].team_no == 0)))
                   {
                      // find the nearest waypoint to the ball...
                      index = WaypointFindNearest(pent->v.origin, pEdict, 500, team);
@@ -512,8 +509,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             break;  // break out of while loop
          }
-         else if (FInViewCone( &pent->v.origin, pEdict ) &&
-                  FVisible( pent->v.origin, pEdict))
+         else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
          {
             // the bot can see it, check what type of model it is...
 
@@ -593,10 +589,14 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
       }
    }
+   else if (mod_id == NS_DLL)
+   {
+	   // TODO: if you see something stop looking for a waypoint and go to it
+   }
    else if (mod_id == FRONTLINE_DLL)
    {
-      if ((pBot->waypoint_goal != -1) &&  // does bot have a goal?
-          (pBot->pCaptureEdict))
+	   // does bot have a goal?
+      if ((pBot->waypoint_goal != -1) && (pBot->pCaptureEdict))
       {
          int team = UTIL_GetTeam(pEdict);  // skin and team must match
 
@@ -621,8 +621,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       if (pBot->waypoint_goal != -1)
       {
          // is the bot currently heading toward halo AND halo is gone?
-         if ((waypoints[pBot->waypoint_goal].flags & W_FL_FLAG) &&
-             (holywars_saint != NULL) && (holywars_gamemode == 1))
+         if ((waypoints[pBot->waypoint_goal].flags & W_FL_FLAG) && (holywars_saint != NULL) && (holywars_gamemode == 1))
          {
             pBot->waypoint_goal = -1;
          }
@@ -635,8 +634,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       pBot->waypoint_top_of_ladder = FALSE;
 
       // did we just come off of a ladder or are we underwater?
-      if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) ||
-          (pBot->pEdict->v.waterlevel == 3))
+      if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->pEdict->v.waterlevel == 3))
       {
          // find the nearest visible waypoint
          if (mod_id == FRONTLINE_DLL)
@@ -664,6 +662,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
       pBot->f_waypoint_time = gpGlobals->time;
    }
+   // the bot has a waypoint
    else
    {
       // skip this part if bot is trying to get out of water...
@@ -675,15 +674,13 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          v_dest = waypoints[pBot->curr_waypoint_index].origin;
 
          // trace a line from bot's eyes to destination...
-         UTIL_TraceLine( v_src, v_dest, ignore_monsters,
-                         pEdict->v.pContainingEntity, &tr );
+         UTIL_TraceLine( v_src, v_dest, ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
          // check if line of sight to object is blocked (i.e. not visible)
          if (tr.flFraction < 1.0)
          {
             // did we just come off of a ladder or are we under water?
-            if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) ||
-                (pBot->pEdict->v.waterlevel == 3))
+            if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->pEdict->v.waterlevel == 3))
             {
                // find the nearest visible waypoint
                if (mod_id == FRONTLINE_DLL)
@@ -738,8 +735,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       min_distance = 20.0;
 
    // if this is a defenders waypoint, bot must be fairly close...
-   if ((mod_id == FRONTLINE_DLL) &&
-       (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_DEFEND))
+   if ((mod_id == FRONTLINE_DLL) && (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_DEFEND))
       min_distance = 20.0;
 
    // if trying to get out of water, need to get very close to waypoint...
@@ -749,8 +745,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    touching = FALSE;
 
    // did the bot run past the waypoint? (prevent the loop-the-loop problem)
-   if ((pBot->prev_waypoint_distance > 1.0) &&
-       (waypoint_distance > pBot->prev_waypoint_distance))
+   if ((pBot->prev_waypoint_distance > 1.0) && (waypoint_distance > pBot->prev_waypoint_distance))
       touching = TRUE;
 
    // are we close enough to a target waypoint...
@@ -760,6 +755,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    // save current distance as previous
    pBot->prev_waypoint_distance = waypoint_distance;
 
+   // if the bot is on/at the waypoint
    if (touching)
    {
       bool waypoint_found = FALSE;
@@ -781,8 +777,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       // check if the waypoint is a sniper waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER)
       {
-         if (((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_SNIPER)) ||
-             (mod_id != TFC_DLL))
+         if (((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_SNIPER)) || (mod_id != TFC_DLL))
          {
             int aim_index;
 
@@ -892,8 +887,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             }
          }
 
-         if ((mod_id == FRONTLINE_DLL) &&
-             (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_CAP))
+         if ((mod_id == FRONTLINE_DLL) && (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_CAP))
          {
             // it's a capture point
             pent = NULL;
@@ -919,8 +913,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             }
          }
 
-         if ((mod_id == FRONTLINE_DLL) &&
-             (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_DEFEND))
+         if ((mod_id == FRONTLINE_DLL) && (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_DEFEND))
          {
             // it's a defend point
 
@@ -955,8 +948,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
          // find the nearest flag goal waypoint...
 
-         index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                         team, W_FL_FLAG_GOAL);
+         index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG_GOAL);
 
          pBot->waypoint_goal = index;  // goal index or -1
 
@@ -1013,8 +1005,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       }
 
       // if the bot doesn't have a goal waypoint then pick one...
-      if ((pBot->waypoint_goal == -1) &&
-          (pBot->f_waypoint_goal_time < gpGlobals->time))
+      if ((pBot->waypoint_goal == -1) && (pBot->f_waypoint_goal_time < gpGlobals->time))
       {
          // don't pick a goal more often than every 10 seconds...
          pBot->f_waypoint_goal_time = gpGlobals->time + 10.0;
@@ -1033,8 +1024,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          {
             if (RANDOM_LONG(1, 100) <= 50)
             {
-               index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                  team, W_FL_WEAPON, pBot->weapon_points);
+               index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON, pBot->weapon_points);
             }
             else
             {
@@ -1126,8 +1116,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                      if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] < 100)
                      {
                         // go find some metal...
-                        index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                        team, W_FL_ARMOR);
+                        index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_ARMOR);
                      }
                      else  // otherwise we have enough metal...
                      {
@@ -1149,8 +1138,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                   {
                      // find the nearest flag waypoint...
 
-                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                     team, W_FL_FLAG);
+                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
 
                      if (index != -1)
                         pBot->waypoint_goal = index;
@@ -1163,14 +1151,29 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                {
                   // find the nearest flag waypoint...
 
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                  team, W_FL_FLAG);
+                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
 
                   if (index != -1)
                      pBot->waypoint_goal = index;
                }
             }
          }
+		 else if (mod_id == NS_DLL)
+		 {
+			 if( pBot->pEdict->v.team == TEAM_ALIEN )
+			 {
+				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_COMMAND_CHAIR);
+             }
+			 else if( pBot->pEdict->v.team == TEAM_MARINE )
+			 {
+				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_HIVE);
+             }
+
+            if (index != -1)
+            {
+               pBot->waypoint_goal = index;
+			}
+		 }
          else if (mod_id == FRONTLINE_DLL)
          {
             edict_t *caps[20];
@@ -1200,8 +1203,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                {
                   select = RANDOM_LONG(0, index-1);
 
-                  index = WaypointFindNearestGoal(caps[select]->v.origin, pEdict,
-                                                  100, pBot->defender, W_FL_FLF_CAP);
+                  index = WaypointFindNearestGoal(caps[select]->v.origin, pEdict, 100, pBot->defender, W_FL_FLF_CAP);
 
                   if (index != -1)
                   {
@@ -1213,8 +1215,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                {
                   select = RANDOM_LONG(0, index-1);
 
-                  index = WaypointFindRandomGoal(caps[select]->v.origin, pEdict,
-                                                 800, pBot->defender, W_FL_FLF_DEFEND);
+                  index = WaypointFindRandomGoal(caps[select]->v.origin, pEdict, 800, pBot->defender, W_FL_FLF_DEFEND);
 
                   if (index != -1)
                   {
@@ -1230,8 +1231,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             {
                if (RANDOM_LONG(1, 100) <= 50)
                {
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                  team, W_FL_WEAPON, pBot->weapon_points);
+                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON, pBot->weapon_points);
                }
                else
                {
@@ -1256,8 +1256,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                {
                   // find the nearest flag waypoint...
 
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                  team, W_FL_FLAG);
+                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
 
                   if (index != -1)
                      pBot->waypoint_goal = index;
@@ -1265,8 +1264,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                   {
                      // can't get to the halo from here, search for a weapon
 
-                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                     team, W_FL_WEAPON);
+                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON);
 
                      if (index != -1)
                         pBot->waypoint_goal = index;
@@ -1276,8 +1274,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                {
                   if (RANDOM_LONG(1, 100) <= 50)
                   {
-                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                     team, W_FL_WEAPON, pBot->weapon_points);
+                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON, pBot->weapon_points);
                   }
                   else
                   {
@@ -1309,13 +1306,11 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          // get the next waypoint to reach goal...
          if (mod_id == FRONTLINE_DLL)
          {
-            i = WaypointRouteFromTo(pBot->curr_waypoint_index,
-                                    pBot->waypoint_goal, pBot->defender);
+            i = WaypointRouteFromTo(pBot->curr_waypoint_index, pBot->waypoint_goal, pBot->defender);
          }
          else
          {
-            i = WaypointRouteFromTo(pBot->curr_waypoint_index,
-                                    pBot->waypoint_goal, team);
+            i = WaypointRouteFromTo(pBot->curr_waypoint_index, pBot->waypoint_goal, team);
          }
 
          if (i != WAYPOINT_UNREACHABLE)  // can we get to the goal from here?
@@ -1333,8 +1328,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          index = 4;
 
          // try to find the next waypoint
-         while (((status = BotFindWaypoint( pBot )) == FALSE) &&
-                (index > 0))
+         while (((status = BotFindWaypoint( pBot )) == FALSE) && (index > 0))
          {
             // if waypoint not found, clear oldest prevous index and try again
 
@@ -1357,8 +1351,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
    // check if the next waypoint is on a ladder AND
    // the bot it not currently on a ladder...
-   if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_LADDER) &&
-       (pEdict->v.movetype != MOVETYPE_FLY))
+   if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_LADDER) && (pEdict->v.movetype != MOVETYPE_FLY))
    {
       // if it's origin is lower than the bot...
       if (waypoints[pBot->curr_waypoint_index].origin.z < pEdict->v.origin.z)
@@ -1544,8 +1537,7 @@ void BotUnderWater( bot_t *pBot )
    edict_t *pEdict = pBot->pEdict;
 
    // are there waypoints in this level (and not trying to exit water)?
-   if ((num_waypoints > 0) &&
-       (pBot->f_exit_water_time < gpGlobals->time))
+   if ((num_waypoints > 0) && (pBot->f_exit_water_time < gpGlobals->time))
    {
       // head towards a waypoint
       found_waypoint = BotHeadTowardWaypoint(pBot);
@@ -1578,8 +1570,7 @@ void BotUnderWater( bot_t *pBot )
       v_forward = v_src + gpGlobals->v_forward * 90;
    
       // trace from the bot's eyes straight forward...
-      UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters,
-                      pEdict->v.pContainingEntity, &tr);
+      UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
    
       // check if the trace didn't hit anything (i.e. nothing in the way)...
       if (tr.flFraction >= 1.0)
@@ -1597,8 +1588,7 @@ void BotUnderWater( bot_t *pBot )
             v_forward.z -= 90;
    
             // trace from the previous end point straight down...
-            UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters,
-                            pEdict->v.pContainingEntity, &tr);
+            UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
    
             // check if the trace hit something...
             if (tr.flFraction < 1.0)
@@ -1633,8 +1623,7 @@ void BotUseLift( bot_t *pBot, float moved_distance )
    }
 
    // check if the bot has waited too long for the lift to move...
-   if (((pBot->f_use_button_time + 2.0) < gpGlobals->time) &&
-       (!pBot->b_lift_moving))
+   if (((pBot->f_use_button_time + 2.0) < gpGlobals->time) && (!pBot->b_lift_moving))
    {
       // clear use button flag
       pBot->b_use_button = FALSE;
@@ -1679,28 +1668,22 @@ void BotUseLift( bot_t *pBot, float moved_distance )
       v_left_down = v_src + gpGlobals->v_right * -100;
 
       // try tracing forward first...
-      UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters,
-                      pEdict->v.pContainingEntity, &tr1);
-      UTIL_TraceLine( v_src, v_forward_down, dont_ignore_monsters,
-                      pEdict->v.pContainingEntity, &tr2);
+      UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr1);
+      UTIL_TraceLine( v_src, v_forward_down, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr2);
 
       // check if we hit a wall or didn't find a floor...
       if ((tr1.flFraction < 1.0) || (tr2.flFraction >= 1.0))
       {
          // try tracing to the RIGHT side next...
-         UTIL_TraceLine( v_src, v_right, dont_ignore_monsters,
-                         pEdict->v.pContainingEntity, &tr1);
-         UTIL_TraceLine( v_src, v_right_down, dont_ignore_monsters,
-                         pEdict->v.pContainingEntity, &tr2);
+         UTIL_TraceLine( v_src, v_right, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr1);
+         UTIL_TraceLine( v_src, v_right_down, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr2);
 
          // check if we hit a wall or didn't find a floor...
          if ((tr1.flFraction < 1.0) || (tr2.flFraction >= 1.0))
          {
             // try tracing to the LEFT side next...
-            UTIL_TraceLine( v_src, v_left, dont_ignore_monsters,
-                            pEdict->v.pContainingEntity, &tr1);
-            UTIL_TraceLine( v_src, v_left_down, dont_ignore_monsters,
-                            pEdict->v.pContainingEntity, &tr2);
+            UTIL_TraceLine( v_src, v_left, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr1);
+            UTIL_TraceLine( v_src, v_left_down, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr2);
 
             // check if we hit a wall or didn't find a floor...
             if ((tr1.flFraction < 1.0) || (tr2.flFraction >= 1.0))
@@ -1740,8 +1723,7 @@ bool BotStuckInCorner( bot_t *pBot )
    v_src = pEdict->v.origin;
    v_dest = v_src + gpGlobals->v_forward*20 + gpGlobals->v_right*20;
 
-   UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    if (tr.flFraction >= 1.0)
       return FALSE;  // no wall, so not in a corner
@@ -1750,8 +1732,7 @@ bool BotStuckInCorner( bot_t *pBot )
    v_src = pEdict->v.origin;
    v_dest = v_src + gpGlobals->v_forward*20 - gpGlobals->v_right*20;
 
-   UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    if (tr.flFraction >= 1.0)
       return FALSE;  // no wall, so not in a corner
@@ -1857,8 +1838,7 @@ bool BotCantMoveForward( bot_t *pBot, TraceResult *tr )
    v_forward = v_src + gpGlobals->v_forward * 40;
 
    // trace from the bot's eyes straight forward...
-   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, tr);
+   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, tr);
 
    // check if the trace hit something...
    if (tr->flFraction < 1.0)
@@ -1872,8 +1852,7 @@ bool BotCantMoveForward( bot_t *pBot, TraceResult *tr )
    v_forward = v_src + gpGlobals->v_forward * 40;
 
    // trace from the bot's waist straight forward...
-   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, tr);
+   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, tr);
 
    // check if the trace hit something...
    if (tr->flFraction < 1.0)
@@ -1917,8 +1896,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at maximum jump height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1941,8 +1919,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at maximum jump height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1961,8 +1938,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, -99);
 
    // trace a line straight down toward the ground...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1974,8 +1950,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, -99);
 
    // trace a line straight down toward the ground...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1987,8 +1962,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, -99);
 
    // trace a line straight down toward the ground...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)

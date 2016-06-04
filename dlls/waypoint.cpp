@@ -453,8 +453,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags)
          continue;  // skip any aiming waypoints
 
       // skip this waypoint if it's team specific and teams don't match...
-      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) &&
-          ((waypoints[index].flags & W_FL_TEAM) != team))
+      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[index].flags & W_FL_TEAM) != team))
          continue;
 
       if ((waypoints[index].flags & flags) != flags)
@@ -499,8 +498,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags, int 
          continue;  // skip any aiming waypoints
 
       // skip this waypoint if it's team specific and teams don't match...
-      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) &&
-          ((waypoints[index].flags & W_FL_TEAM) != team))
+      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[index].flags & W_FL_TEAM) != team))
          continue;
 
       if ((waypoints[index].flags & flags) != flags)
@@ -1008,8 +1006,7 @@ void WaypointAdd(edict_t *pEntity)
 		WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
    }
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0,
-                   ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0, ATTN_NORM, 0, 100);
 
    // increment total number of waypoints if adding at end of array...
    if (index == num_waypoints)
@@ -1025,15 +1022,13 @@ void WaypointAdd(edict_t *pEntity)
          continue;  // skip any aiming waypoints
 
       // check if the waypoint is reachable from the new one (one-way)
-      if ( WaypointReachable(pEntity->v.origin, waypoints[i].origin, pEntity) &&
-           g_path_waypoint_enable)
+      if ( WaypointReachable(pEntity->v.origin, waypoints[i].origin, pEntity) && g_path_waypoint_enable)
       {
          WaypointAddPath(index, i);
       }
 
       // check if the new one is reachable from the waypoint (other way)
-      if ( WaypointReachable(waypoints[i].origin, pEntity->v.origin, pEntity) &&
-           g_path_waypoint_enable)
+      if ( WaypointReachable(waypoints[i].origin, pEntity->v.origin, pEntity) && g_path_waypoint_enable)
       {
          WaypointAddPath(i, index);
       }
@@ -1084,8 +1079,7 @@ void WaypointAddAiming(edict_t *pEntity)
    // draw a blue waypoint
    WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0,
-                   ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0, ATTN_NORM, 0, 100);
 
    // increment total number of waypoints if adding at end of array...
    if (index == num_waypoints)
@@ -1174,8 +1168,7 @@ void WaypointDelete(edict_t *pEntity)
 
    wp_display_time[index] = 0.0;
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/mine_activate.wav", 1.0,
-                   ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/mine_activate.wav", 1.0,  ATTN_NORM, 0, 100);
 }
 
 
@@ -1208,15 +1201,13 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       if (waypoint1 == -1)
       {
          // play "cancelled" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
 
       // play "start" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0, ATTN_NORM, 0, 100);
 
       return;
    }
@@ -1228,8 +1219,7 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       if ((waypoint1 == -1) || (waypoint2 == -1))
       {
          // play "error" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
@@ -1237,8 +1227,7 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       WaypointAddPath(waypoint1, waypoint2);
 
       // play "done" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0, ATTN_NORM, 0, 100);
    }
 }
 
@@ -1256,15 +1245,13 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       if (waypoint1 == -1)
       {
          // play "cancelled" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
 
       // play "start" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0, ATTN_NORM, 0, 100);
 
       return;
    }
@@ -1276,8 +1263,7 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       if ((waypoint1 == -1) || (waypoint2 == -1))
       {
          // play "error" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0,
-                         ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
 
          return;
       }
@@ -1285,8 +1271,7 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       WaypointDeletePath(waypoint1, waypoint2);
 
       // play "done" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0,
-                      ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0, ATTN_NORM, 0, 100);
    }
 }
 
@@ -1539,15 +1524,13 @@ bool WaypointReachable(Vector v_src, Vector v_dest, edict_t *pEntity)
    {
       // check if this waypoint is "visible"...
 
-      UTIL_TraceLine( v_src, v_dest, ignore_monsters,
-                      pEntity->v.pContainingEntity, &tr );
+      UTIL_TraceLine( v_src, v_dest, ignore_monsters, pEntity->v.pContainingEntity, &tr );
 
       // if waypoint is visible from current position (even behind head)...
       if (tr.flFraction >= 1.0)
       {
          // check for special case of both waypoints being underwater...
-         if ((POINT_CONTENTS( v_src ) == CONTENTS_WATER) &&
-             (POINT_CONTENTS( v_dest ) == CONTENTS_WATER))
+         if ((POINT_CONTENTS( v_src ) == CONTENTS_WATER) && (POINT_CONTENTS( v_dest ) == CONTENTS_WATER))
          {
             return TRUE;
          }
@@ -1562,8 +1545,7 @@ bool WaypointReachable(Vector v_src, Vector v_dest, edict_t *pEntity)
 
             v_new_dest.z = v_new_dest.z - 50;  // straight down 50 units
 
-            UTIL_TraceLine(v_new_src, v_new_dest, dont_ignore_monsters,
-                           pEntity->v.pContainingEntity, &tr);
+            UTIL_TraceLine(v_new_src, v_new_dest, dont_ignore_monsters, pEntity->v.pContainingEntity, &tr);
 
             // check if we didn't hit anything, if not then it's in mid-air
             if (tr.flFraction >= 1.0)
@@ -1581,8 +1563,7 @@ bool WaypointReachable(Vector v_src, Vector v_dest, edict_t *pEntity)
 
          v_down.z = v_down.z - 1000.0;  // straight down 1000 units
 
-         UTIL_TraceLine(v_check, v_down, ignore_monsters,
-                        pEntity->v.pContainingEntity, &tr);
+         UTIL_TraceLine(v_check, v_down, ignore_monsters, pEntity->v.pContainingEntity, &tr);
 
          last_height = tr.flFraction * 1000.0;  // height from ground
 
@@ -1596,8 +1577,7 @@ bool WaypointReachable(Vector v_src, Vector v_dest, edict_t *pEntity)
             v_down = v_check;
             v_down.z = v_down.z - 1000.0;  // straight down 1000 units
 
-            UTIL_TraceLine(v_check, v_down, ignore_monsters,
-                           pEntity->v.pContainingEntity, &tr);
+            UTIL_TraceLine(v_check, v_down, ignore_monsters, pEntity->v.pContainingEntity, &tr);
 
             curr_height = tr.flFraction * 1000.0;  // height from ground
 
@@ -1643,8 +1623,7 @@ int WaypointFindReachable(edict_t *pEntity, float range, int team)
          continue;  // skip any aiming waypoints
 
       // skip this waypoint if it's team specific and teams don't match...
-      if ((team != -1) && (waypoints[i].flags & W_FL_TEAM_SPECIFIC) &&
-          ((waypoints[i].flags & W_FL_TEAM) != team))
+      if ((team != -1) && (waypoints[i].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[i].flags & W_FL_TEAM) != team))
          continue;
 
       distance = (waypoints[i].origin - pEntity->v.origin).Length();
@@ -1652,8 +1631,7 @@ int WaypointFindReachable(edict_t *pEntity, float range, int team)
       if (distance < min_distance)
       {
          // if waypoint is visible from current position (even behind head)...
-         UTIL_TraceLine( pEntity->v.origin + pEntity->v.view_ofs, waypoints[i].origin,
-                         ignore_monsters, pEntity->v.pContainingEntity, &tr );
+         UTIL_TraceLine( pEntity->v.origin + pEntity->v.view_ofs, waypoints[i].origin, ignore_monsters, pEntity->v.pContainingEntity, &tr );
 
          if (tr.flFraction >= 1.0)
          {
@@ -1769,6 +1747,15 @@ void WaypointPrintInfo(edict_t *pEntity)
 
    if (flags & W_FL_DISPENSER)
       ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
+
+	if( flags & W_FL_NS_HIVE )
+	{
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a hive near this waypoint\n");
+	}
+	if( flags & W_FL_NS_COMMAND_CHAIR )
+	{
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a hive near this waypoint\n");
+	}
 }
 
 

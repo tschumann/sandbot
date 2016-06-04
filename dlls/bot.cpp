@@ -1692,9 +1692,7 @@ void BotThink( bot_t *pBot )
             // it is time to look for a waypoint AND
             // there are waypoints in this level...
 
-            if ((pBot->pBotPickupItem == NULL) &&
-                (pBot->f_look_for_waypoint_time <= gpGlobals->time) &&
-                (num_waypoints != 0))
+            if ((pBot->pBotPickupItem == NULL) && (pBot->f_look_for_waypoint_time <= gpGlobals->time) && (num_waypoints != 0))
             {
                found_waypoint = BotHeadTowardWaypoint(pBot);
             }
