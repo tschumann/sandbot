@@ -36,18 +36,26 @@ typedef unsigned __int64 uint64_t;
 #define W_FL_AMMO			(1<<9)  /* ammo location */
 #define W_FL_SNIPER			(1<<10) /* sniper waypoint (a good sniper spot) */
 
+#define W_FL_FLAG			(1<<11) /* flag position (or hostage or president) */
 #define W_FL_TFC_FLAG		(1<<11) /* flag position (or hostage or president) */
 #define W_FL_FLF_CAP		(1<<11) /* Front Line Force capture point */
 
+#define W_FL_FLAG_GOAL		(1<<12) /* flag return position (or rescue zone) */
 #define W_FL_TFC_FLAG_GOAL	(1<<12) /* flag return position (or rescue zone) */
 #define W_FL_FLF_DEFEND		(1<<12) /* Front Line Force defend point */
 
 #define W_FL_PRONE			(1<<13) /* go prone (laying down) */
 #define W_FL_AIMING			(1<<14) /* aiming waypoint */
 
-#define W_FL_NS_HIVE		(1<<15)
-#define W_FL_NS_COMMAND_CHAIR	(1<<16)
-#define W_FL_NS_RESNODE		(1<<17)
+#define W_FL_SENTRYGUN		(1<<15) /* sentry gun waypoint for TFC */
+#define W_FL_DISPENSER		(1<<16) /* dispenser waypoint for TFC */
+
+#define W_FL_WEAPON			(1<<17) /* weapon_ entity location */
+#define W_FL_JUMP			(1<<18) /* jump waypoint */
+
+#define W_FL_NS_HIVE		(1<<20)
+#define W_FL_NS_COMMAND_CHAIR	(1<<21)
+#define W_FL_NS_RESNODE		(1<<22)
 
 #define W_FL_DELETED		(1<<31) /* used by waypoint allocation code */
 
@@ -95,13 +103,17 @@ int  WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int tea
 int  WaypointFindNearest(edict_t *pEntity, float distance, int team);
 int  WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team);
 int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags);
+int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags, int exclude[]);
 int  WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags);
 int  WaypointFindRandomGoal(edict_t *pEntity, int team, int flags);
+int  WaypointFindRandomGoal(edict_t *pEntity, int team, int flags, int exclude[]);
 int  WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags);
 int  WaypointFindNearestAiming(Vector v_origin);
+void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index);
 void WaypointAdd(edict_t *pEntity);
 void WaypointAddAiming(edict_t *pEntity);
 void WaypointDelete(edict_t *pEntity);
+void WaypointUpdate(edict_t *pEntity);
 void WaypointCreatePath(edict_t *pEntity, int cmd);
 void WaypointRemovePath(edict_t *pEntity, int cmd);
 bool WaypointLoad(edict_t *pEntity);

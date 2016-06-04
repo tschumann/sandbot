@@ -80,6 +80,8 @@ int team_allies[4];  // TFC bit mapped allies BLUE, RED, YELLOW, and GREEN
 int max_teams = 0;  // for TFC
 FLAG_S flags[MAX_FLAGS];  // for TFC
 int num_flags = 0;  // for TFC
+int num_backpacks = 0;
+BACKPACK_S backpacks[MAX_BACKPACKS];
 
 FILE *bot_cfg_fp = NULL;
 bool need_to_open_cfg = TRUE;
@@ -222,6 +224,23 @@ int DispatchSpawn( edict_t *pent )
 
      max_teams = 0;
      num_flags = 0;
+
+     for (index=0; index < MAX_FLAGS; index++)
+     {
+        flags[index].edict = NULL;
+        flags[index].team_no = 0;  // any team unless specified
+     }
+
+     num_backpacks = 0;
+
+     for (index=0; index < MAX_BACKPACKS; index++)
+     {
+        backpacks[index].edict = NULL;
+        backpacks[index].armor = 0;
+        backpacks[index].health = 0;
+        backpacks[index].ammo = 0;
+        backpacks[index].team = 0;  // any team unless specified
+     }
 
      PRECACHE_SOUND("weapons/xbow_hit1.wav");      // waypoint add
      PRECACHE_SOUND("weapons/mine_activate.wav");  // waypoint delete

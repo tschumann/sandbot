@@ -53,7 +53,10 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 #define HUNGER_DLL		21
 #define SHIP_DLL		22
 
+#define DMC_DLL			30
+
 #define FRONTLINE_DLL	100
+#define HOLYWARS_DLL	101
 
 
 // define some function prototypes...
@@ -67,6 +70,8 @@ void FakeClientCommand(edict_t *pBot, char *arg1, char *arg2, char *arg3);
 const char *Cmd_Args( void );
 const char *Cmd_Argv( int argc );
 int Cmd_Argc( void );
+
+#define HW_WAIT_SPAWN 1
 
 
 #define LADDER_UNKNOWN  0
@@ -151,6 +156,16 @@ int Cmd_Argc( void );
 
 #define MAX_BOT_WHINE 100
 
+#define MAX_BACKPACKS 100
+
+typedef struct {
+   edict_t *edict;
+   int  armor;   // 0=none
+   int  health;  // 0=none
+   int  ammo;    // 0=none
+   int  team;    // 0=all, 1=Blue, 2=Red, 3=Yellow, 4=Green
+} BACKPACK_S;
+
 
 typedef struct
 {
@@ -228,6 +243,7 @@ typedef struct
    bool waypoint_near_flag;
    Vector waypoint_flag_origin;
    float prev_waypoint_distance;
+   int weapon_points[6];  // five weapon locations + 1 null
 
    edict_t *pBotEnemy;
    float f_bot_see_enemy_time;
@@ -239,6 +255,20 @@ typedef struct
    bool  b_bot_say_killed;
    float f_bot_say_killed;
    float f_sniper_aim_time;
+
+   float f_engineer_build_time;
+
+   int   sentrygun_waypoint;
+   bool  b_build_sentrygun;
+   int   sentrygun_level;
+   int   sentrygun_attack_count;
+   float f_other_sentry_time;
+   bool  b_upgrade_sentry;
+
+   int   dispenser_waypoint;
+   bool  b_build_dispenser;
+   int   dispenser_built;
+   int   dispenser_attack_count;
    
 
    float f_shoot_time;

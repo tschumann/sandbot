@@ -25,6 +25,10 @@
 
 extern int mod_id;
 extern int m_spriteTexture;
+extern int IsDedicatedServer;
+
+extern int num_backpacks;
+extern BACKPACK_S backpacks[MAX_BACKPACKS];
 
 // waypoints with information bits (flags)
 WAYPOINT waypoints[MAX_WAYPOINTS];
@@ -42,6 +46,7 @@ bool g_waypoint_paths = FALSE;  // have any paths been allocated?
 bool g_waypoint_on = FALSE;
 bool g_auto_waypoint = FALSE;
 bool g_path_waypoint = FALSE;
+bool g_path_waypoint_enable = TRUE;
 Vector last_waypoint;
 float f_path_time = 0.0;
 
@@ -56,7 +61,7 @@ void WaypointDebug(void)
 {
    int y = 1, x = 1;
 
-   fp=fopen("bot.txt","a");
+   fp=fopen("HPB_bot.txt","a");
    fprintf(fp,"WaypointDebug: LINKED LIST ERROR!!!\n");
    fclose(fp);
 
@@ -139,7 +144,6 @@ void WaypointInit(void)
 }
 
 
-// add a path from one waypoint (add_index) to another (path_index)...
 void WaypointAddPath(short int add_index, short int path_index)
 {
    PATH *p, *prev;
@@ -196,7 +200,6 @@ void WaypointAddPath(short int add_index, short int path_index)
 }
 
 
-// delete all paths to this waypoint index...
 void WaypointDeletePath(short int del_index)
 {
    PATH *p;
@@ -235,8 +238,6 @@ void WaypointDeletePath(short int del_index)
 }
 
 
-// delete a path from a waypoint (path_index) to another waypoint
-// (del_index)...
 void WaypointDeletePath(short int path_index, short int del_index)
 {
    PATH *p;
@@ -329,9 +330,7 @@ int WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int team
    return -1;
 }
 
-
-// find the nearest waypoint to the player and return the index
-// (-1 if not found)...
+// find the nearest waypoint to the player and return the index (-1 if not found)
 int WaypointFindNearest(edict_t *pEntity, float range, int team)
 {
    int i, min_index;
@@ -381,7 +380,6 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team)
 
 
 // find the nearest waypoint to the source postition and return the index
-// of that waypoint...
 int WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team)
 {
    int index, min_index;
@@ -430,8 +428,6 @@ int WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team)
 }
 
 
-// find the goal nearest to the player matching the "flags" bits and return
-// the index of that waypoint...
 int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags)
 {
    int index, min_index;
@@ -477,8 +473,64 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags)
 }
 
 
-// find the goal nearest to the source position (v_src) matching the "flags"
-// bits and return the index of that waypoint...
+int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags, int exclude[])
+{
+   int index, min_index;
+   int distance, min_distance;
+   int exclude_index;
+
+   if (num_waypoints < 1)
+      return -1;
+
+   // find the nearest waypoint with the matching flags...
+
+   min_index = -1;
+   min_distance = 99999;
+
+   for (index=0; index < num_waypoints; index++)
+   {
+      if (index == src)
+         continue;  // skip the source waypoint
+
+      if (waypoints[index].flags & W_FL_DELETED)
+         continue;  // skip any deleted waypoints
+
+      if (waypoints[index].flags & W_FL_AIMING)
+         continue;  // skip any aiming waypoints
+
+      // skip this waypoint if it's team specific and teams don't match...
+      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) &&
+          ((waypoints[index].flags & W_FL_TEAM) != team))
+         continue;
+
+      if ((waypoints[index].flags & flags) != flags)
+         continue;  // skip this waypoint if the flags don't match
+
+      exclude_index = 0;
+      while (exclude[exclude_index])
+      {
+         if (index == exclude[exclude_index])
+            break;  // found a match, break out of while loop
+
+         exclude_index++;
+      }
+
+      if (index == exclude[exclude_index])
+         continue;  // skip any index that matches exclude list
+
+      distance = WaypointDistanceFromTo(src, index, team);
+
+      if (distance < min_distance)
+      {
+         min_index = index;
+         min_distance = distance;
+      }
+   }
+
+   return min_index;
+}
+
+
 int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags)
 {
    int index, min_index;
@@ -521,12 +573,10 @@ int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int tea
 }
 
 
-// find a random goal matching the "flags" bits and return the index of
-// that waypoint...
 int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags)
 {
    int index;
-   int indexes[50];
+   int indexes[200];
    int count = 0;
 
    if (num_waypoints < 1)
@@ -550,7 +600,7 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags)
       if ((waypoints[index].flags & flags) != flags)
          continue;  // skip this waypoint if the flags don't match
 
-      if (count < 50)
+      if (count < 200)
       {
          indexes[count] = index;
 
@@ -567,12 +617,67 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags)
 }
 
 
-// find a random goal within a range of a position (v_src) matching the
-// "flags" bits and return the index of that waypoint...
+int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags, int exclude[])
+{
+   int index;
+   int indexes[200];
+   int count = 0;
+   int exclude_index;
+
+   if (num_waypoints < 1)
+      return -1;
+
+   // find all the waypoints with the matching flags...
+
+   for (index=0; index < num_waypoints; index++)
+   {
+      if (waypoints[index].flags & W_FL_DELETED)
+         continue;  // skip any deleted waypoints
+
+      if (waypoints[index].flags & W_FL_AIMING)
+         continue;  // skip any aiming waypoints
+
+      // skip this waypoint if it's team specific and teams don't match...
+      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) &&
+          ((waypoints[index].flags & W_FL_TEAM) != team))
+         continue;
+
+      if ((waypoints[index].flags & flags) != flags)
+         continue;  // skip this waypoint if the flags don't match
+
+      exclude_index = 0;
+      while (exclude[exclude_index])
+      {
+         if (index == exclude[exclude_index])
+            break;  // found a match, break out of while loop
+
+         exclude_index++;
+      }
+
+      if (index == exclude[exclude_index])
+         continue;  // skip any index that matches exclude list
+
+      if (count < 200)
+      {
+         indexes[count] = index;
+
+         count++;
+      }
+   }
+
+   if (count == 0)  // no matching waypoints found
+      return -1;
+
+   index = RANDOM_LONG(1, count) - 1;
+
+   return indexes[index];
+}
+
+
 int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags)
 {
    int index;
-   int indexes[50];
+   int indexes[200];
    int count = 0;
    float distance;
 
@@ -599,7 +704,7 @@ int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team
 
       distance = (waypoints[index].origin - v_src).Length();
 
-      if ((distance < range) && (count < 50))
+      if ((distance < range) && (count < 200))
       {
          indexes[count] = index;
 
@@ -616,7 +721,6 @@ int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team
 }
 
 
-// find the nearest "special" aiming waypoint (for sniper aiming)...
 int WaypointFindNearestAiming(Vector v_origin)
 {
    int index;
@@ -677,12 +781,172 @@ void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
 }
 
 
+void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
+{
+   edict_t *pent = NULL;
+   float radius = 40;
+   TraceResult tr;
+   float distance;
+   float min_distance;
+   char item_name[64];
+   char nearest_name[64];
+   edict_t *nearest_pent;
+   int bck_index;
+   int tfc_backpack_index;
+
+   nearest_name[0] = 0;      // null out nearest_name string
+   tfc_backpack_index = -1;  // "null" out backpack index
+   nearest_pent = NULL;
+
+   min_distance = 9999.0;
+
+   //********************************************************
+   // look for the nearest health, armor, ammo, weapon, etc.
+   //********************************************************
+
+   while ((pent = UTIL_FindEntityInSphere( pent, origin, radius )) != NULL)
+   {
+      if (pEntity)
+         UTIL_TraceLine( origin, pent->v.origin, ignore_monsters,
+                         pEntity->v.pContainingEntity, &tr );
+      else
+         UTIL_TraceLine( origin, pent->v.origin, ignore_monsters, NULL, &tr );
+
+      // make sure entity is visible...
+      if (tr.flFraction >= 1.0)
+      {
+         strcpy(item_name, STRING(pent->v.classname));
+
+         if ((strncmp("item_health", item_name, 11) == 0) ||
+             (strncmp("item_armor", item_name, 10) == 0) ||
+             (strncmp("ammo_", item_name, 5) == 0) ||
+             (strcmp("item_cells", item_name) == 0) ||
+             (strcmp("item_shells", item_name) == 0) ||
+             (strcmp("item_spikes", item_name) == 0) ||
+             (strcmp("item_rockets", item_name) == 0) ||
+			 (strcmp("team_hive", item_name) == 0) ||
+			 (strcmp("team_command", item_name) == 0) ||
+             ((strncmp("weapon_", item_name, 7) == 0) &&
+              (pent->v.owner == NULL)))
+         {
+            distance = (pent->v.origin - origin).Length();
+
+            if (distance < min_distance)
+            {
+               strcpy(nearest_name, item_name);
+
+               tfc_backpack_index = -1;  // "null" out backpack index
+
+               nearest_pent = pent;
+
+               min_distance = distance;
+            }
+         }
+
+         if (mod_id == TFC_DLL)
+         {
+            for (bck_index=0; bck_index < num_backpacks; bck_index++)
+            {
+               distance = (pent->v.origin - origin).Length();
+
+               if ((backpacks[bck_index].edict == pent) &&
+                   (distance < min_distance))
+               {
+                  tfc_backpack_index = bck_index;
+
+                  nearest_pent = pent;
+
+                  nearest_name[0] = 0;  // null out nearest_name string
+
+                  min_distance = distance;
+
+                  break;
+               }
+            }
+         }
+      }
+   }
+
+   if (nearest_name[0])  // found an entity name
+   {
+      if (strncmp("item_health", nearest_name, 11) == 0)
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a healthkit!\n");
+         waypoints[wpt_index].flags |= W_FL_HEALTH;
+      }
+
+      if (strncmp("item_armor", nearest_name, 10) == 0)
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found some armor!\n");
+         waypoints[wpt_index].flags |= W_FL_ARMOR;
+      }
+
+      if ((strncmp("ammo_", nearest_name, 5) == 0) ||
+          (strcmp("item_cells", nearest_name) == 0) ||
+          (strcmp("item_shells", nearest_name) == 0) ||
+          (strcmp("item_spikes", nearest_name) == 0) ||
+          (strcmp("item_rockets", nearest_name) == 0))
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found some ammo!\n");
+         waypoints[wpt_index].flags |= W_FL_AMMO;
+      }
+
+      if ((strncmp("weapon_", nearest_name, 7) == 0) &&
+          (nearest_pent->v.owner == NULL))
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a weapon!\n");
+         waypoints[wpt_index].flags |= W_FL_WEAPON;
+      }
+
+	  if ((strcmp("team_hive", nearest_name) == 0))
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a hive!\n");
+         waypoints[wpt_index].flags |= W_FL_NS_HIVE;
+      }
+
+	  if ((strcmp("team_command", nearest_name) == 0))
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a command chair!\n");
+         waypoints[wpt_index].flags |= W_FL_NS_COMMAND_CHAIR;
+      }
+   }
+
+   if ((mod_id == TFC_DLL) &&
+       (tfc_backpack_index != -1))  // found a TFC backpack
+   {
+      if (backpacks[tfc_backpack_index].health)
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found health!\n");
+         waypoints[wpt_index].flags |= W_FL_HEALTH;
+      }
+
+      if (backpacks[tfc_backpack_index].armor)
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found some armor!\n");
+         waypoints[wpt_index].flags |= W_FL_ARMOR;
+      }
+
+      if (backpacks[tfc_backpack_index].ammo)
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found some ammo!\n");
+         waypoints[wpt_index].flags |= W_FL_AMMO;
+      }
+   }
+}
+
+
 void WaypointAdd(edict_t *pEntity)
 {
    int index;
-   edict_t *pent = NULL;
-   float radius = 40;
-   char item_name[64];
 
    if (num_waypoints >= MAX_WAYPOINTS)
       return;
@@ -727,48 +991,25 @@ void WaypointAdd(edict_t *pEntity)
       waypoints[index].flags |= W_FL_LADDER;  // waypoint on a ladder
 
 
-   //********************************************************
-   // look for lift, ammo, flag, health, armor, etc.
-   //********************************************************
+   // search the area near the waypoint for items (HEALTH, AMMO, WEAPON, etc.)
+   WaypointSearchItems(pEntity, waypoints[index].origin, index);
 
-   while ((pent = UTIL_FindEntityInSphere( pent, pEntity->v.origin, radius )) != NULL)
+   if( waypoints[index].flags & W_FL_NS_HIVE )
    {
-      strcpy(item_name, STRING(pent->v.classname));
-
-      if (strcmp("item_healthkit", item_name) == 0)
-      {
-         ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a healthkit!\n");
-         waypoints[index].flags = W_FL_HEALTH;
-      }
-
-      if (strncmp("item_armor", item_name, 10) == 0)
-      {
-         ClientPrint(pEntity, HUD_PRINTCONSOLE, "found some armor!\n");
-         waypoints[index].flags = W_FL_ARMOR;
-      }
-
-	  if (strcmp("team_hive", item_name) == 0)
-      {
-         ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a hive!\n");
-         waypoints[index].flags = W_FL_NS_HIVE;
-      }
-
-	  if (strcmp("team_command", item_name) == 0)
-      {
-         ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a command chair!\n");
-         waypoints[index].flags = W_FL_NS_COMMAND_CHAIR;
-      }
-
-      // *************
-      // LOOK FOR AMMO
-      // *************
-
+	   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 0, 0);
+   }
+   else if( waypoints[index].flags & 2097152 )
+   {
+	   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 0, 255, 0);
+   }
+   else
+   {
+	   // draw a blue waypoint
+		WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
    }
 
-   // draw a blue waypoint
-   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
-
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0, ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0,
+                   ATTN_NORM, 0, 100);
 
    // increment total number of waypoints if adding at end of array...
    if (index == num_waypoints)
@@ -784,13 +1025,15 @@ void WaypointAdd(edict_t *pEntity)
          continue;  // skip any aiming waypoints
 
       // check if the waypoint is reachable from the new one (one-way)
-      if ( WaypointReachable(pEntity->v.origin, waypoints[i].origin, pEntity) )
+      if ( WaypointReachable(pEntity->v.origin, waypoints[i].origin, pEntity) &&
+           g_path_waypoint_enable)
       {
          WaypointAddPath(index, i);
       }
 
       // check if the new one is reachable from the waypoint (other way)
-      if ( WaypointReachable(waypoints[i].origin, pEntity->v.origin, pEntity) )
+      if ( WaypointReachable(waypoints[i].origin, pEntity->v.origin, pEntity) &&
+           g_path_waypoint_enable)
       {
          WaypointAddPath(i, index);
       }
@@ -824,7 +1067,7 @@ void WaypointAddAiming(edict_t *pEntity)
    v_angle.x = 0;  // reset pitch to horizontal
    v_angle.z = 0;  // reset roll to level
 
-   UTIL_MakeVectors(v_angle);
+   MAKE_VECTORS(v_angle);
 
    // store the origin (location) of this waypoint (use entity origin)
    waypoints[index].origin = pEntity->v.origin + gpGlobals->v_forward * 25;
@@ -841,7 +1084,8 @@ void WaypointAddAiming(edict_t *pEntity)
    // draw a blue waypoint
    WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0, ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0,
+                   ATTN_NORM, 0, 100);
 
    // increment total number of waypoints if adding at end of array...
    if (index == num_waypoints)
@@ -863,6 +1107,9 @@ void WaypointDelete(edict_t *pEntity)
       return;
 
    if ((waypoints[index].flags & W_FL_SNIPER) ||
+       (waypoints[index].flags & W_FL_SENTRYGUN) ||
+       (waypoints[index].flags & W_FL_DISPENSER) ||
+       (waypoints[index].flags & W_FL_JUMP) ||
        ((mod_id == FRONTLINE_DLL) && (waypoints[index].flags & W_FL_FLF_DEFEND)))
    {
       int i;
@@ -927,7 +1174,24 @@ void WaypointDelete(edict_t *pEntity)
 
    wp_display_time[index] = 0.0;
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/mine_activate.wav", 1.0, ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/mine_activate.wav", 1.0,
+                   ATTN_NORM, 0, 100);
+}
+
+
+void WaypointUpdate(edict_t *pEntity)
+{
+   int index;
+   int mask;
+
+   mask = W_FL_HEALTH | W_FL_ARMOR | W_FL_AMMO | W_FL_WEAPON;
+
+   for (index=0; index < num_waypoints; index++)
+   {
+      waypoints[index].flags &= ~mask;  // clear the mask bits
+
+      WaypointSearchItems(NULL, waypoints[index].origin, index);
+   }
 }
 
 
@@ -944,13 +1208,15 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       if (waypoint1 == -1)
       {
          // play "cancelled" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0,
+                         ATTN_NORM, 0, 100);
 
          return;
       }
 
       // play "start" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0, ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0,
+                      ATTN_NORM, 0, 100);
 
       return;
    }
@@ -962,7 +1228,8 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       if ((waypoint1 == -1) || (waypoint2 == -1))
       {
          // play "error" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0,
+                         ATTN_NORM, 0, 100);
 
          return;
       }
@@ -970,7 +1237,8 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
       WaypointAddPath(waypoint1, waypoint2);
 
       // play "done" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0, ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0,
+                      ATTN_NORM, 0, 100);
    }
 }
 
@@ -988,13 +1256,15 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       if (waypoint1 == -1)
       {
          // play "cancelled" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0,
+                         ATTN_NORM, 0, 100);
 
          return;
       }
 
       // play "start" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0, ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudoff.wav", 1.0,
+                      ATTN_NORM, 0, 100);
 
       return;
    }
@@ -1006,7 +1276,8 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       if ((waypoint1 == -1) || (waypoint2 == -1))
       {
          // play "error" sound...
-         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
+         EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0,
+                         ATTN_NORM, 0, 100);
 
          return;
       }
@@ -1014,29 +1285,55 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
       WaypointDeletePath(waypoint1, waypoint2);
 
       // play "done" sound...
-      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0, ATTN_NORM, 0, 100);
+      EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_hudon.wav", 1.0,
+                      ATTN_NORM, 0, 100);
    }
 }
 
 
 bool WaypointLoad(edict_t *pEntity)
 {
+   FILE *bfp;
    char mapname[64];
    char filename[256];
+   char new_filename[256];
+#ifdef __linux__
+   char cmd[512];
+#endif
    WAYPOINT_HDR header;
    char msg[80];
    int index, i;
    short int num;
    short int path_index;
+   bool need_rename;
 
    strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".wpt");
+   strcat(mapname, ".HPB_wpt");
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
-   ALERT(at_console, "loading waypoint file: %s\n", filename);
+   if (IS_DEDICATED_SERVER())
+      printf("loading waypoint file: %s\n", filename);
 
-   FILE *bfp = fopen(filename, "rb");
+   bfp = fopen(filename, "rb");
+
+   need_rename = FALSE;
+
+   // if .HBP_wpt files doesn't exist, check .wpt file...
+   if (bfp == NULL)
+   {
+      need_rename = TRUE;
+
+      strcpy(mapname, STRING(gpGlobals->mapname));
+      strcat(mapname, ".wpt");
+
+      UTIL_BuildFileName(filename, "maps", mapname);
+
+      if (IS_DEDICATED_SERVER())
+         printf("loading waypoint file: %s\n", filename);
+
+      bfp = fopen(filename, "rb");
+   }
 
    // if file exists, read the waypoint structure from it
    if (bfp != NULL)
@@ -1044,11 +1341,12 @@ bool WaypointLoad(edict_t *pEntity)
       fread(&header, sizeof(header), 1, bfp);
 
       header.filetype[7] = 0;
-      if (strcmp(header.filetype, WAYPOINT_HEADER) == 0)
+      if (strcmp(header.filetype, "HPB_bot") == 0)
       {
          if (header.waypoint_file_version != WAYPOINT_VERSION)
          {
-			ALERT(at_console, "Tried to load .wpt with v%d, expected v%d\n", header.waypoint_file_version, WAYPOINT_VERSION);
+            if (pEntity)
+               ClientPrint(pEntity, HUD_PRINTNOTIFY, "Incompatible HPB bot waypoint file version!\nWaypoints not loaded!\n");
 
             fclose(bfp);
             return FALSE;
@@ -1108,6 +1406,21 @@ bool WaypointLoad(edict_t *pEntity)
 
       fclose(bfp);
 
+      if (need_rename)
+      {
+         strcpy(mapname, STRING(gpGlobals->mapname));
+         strcat(mapname, ".HPB_wpt");
+
+         UTIL_BuildFileName(new_filename, "maps", mapname);
+
+#ifndef __linux__
+         rename(filename, new_filename);
+#else
+         sprintf(cmd, "/bin/mv -f %s %s", filename, new_filename);
+         system(cmd);
+#endif
+      }
+
       WaypointRouteInit();
    }
    else
@@ -1137,7 +1450,7 @@ void WaypointSave(void)
    short int num;
    PATH *p;
 
-   strcpy(header.filetype, WAYPOINT_HEADER);
+   strcpy(header.filetype, "HPB_bot");
 
    header.waypoint_file_version = WAYPOINT_VERSION;
 
@@ -1150,7 +1463,7 @@ void WaypointSave(void)
    header.mapname[31] = 0;
 
    strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".wpt");
+   strcat(mapname, ".HPB_wpt");
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
@@ -1421,18 +1734,26 @@ void WaypointPrintInfo(edict_t *pEntity)
    if (flags & W_FL_AMMO)
       ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is ammo near this waypoint\n");
 
+   if (flags & W_FL_WEAPON)
+      ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a weapon near this waypoint\n");
+
+   if (flags & W_FL_JUMP)
+      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will jump here\n");
+
    if (flags & W_FL_SNIPER)
       ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a sniper waypoint\n");
 
-   if (flags & W_FL_TFC_FLAG)
+   if (flags & W_FL_FLAG)
    {
       if (mod_id == FRONTLINE_DLL)
          ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+      else if (mod_id == HOLYWARS_DLL)
+         ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a halo spawn point near this waypoint\n");
       else
          ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
    }
 
-   if (flags & W_FL_TFC_FLAG_GOAL)
+   if (flags & W_FL_FLAG_GOAL)
    {
       if (mod_id == FRONTLINE_DLL)
          ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a defender location\n");
@@ -1442,6 +1763,12 @@ void WaypointPrintInfo(edict_t *pEntity)
 
    if (flags & W_FL_PRONE)
       ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will go prone here\n");
+
+   if (flags & W_FL_SENTRYGUN)
+      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a sentry gun here\n");
+
+   if (flags & W_FL_DISPENSER)
+      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
 }
 
 
@@ -1567,8 +1894,6 @@ void WaypointThink(edict_t *pEntity)
 }
 
 
-// run Floyd's algorithm on the waypoint list to generate the least cost
-// path matrix...
 void WaypointFloyds(unsigned short *shortest_path, unsigned short *from_to)
 {
    unsigned int x, y, z;
@@ -1617,8 +1942,6 @@ void WaypointFloyds(unsigned short *shortest_path, unsigned short *from_to)
 }
 
 
-// load the waypoint route files (.wp1, .wp2, etc.) or generate them if
-// they don't exist...
 void WaypointRouteInit(void)
 {
    unsigned int index;
@@ -1644,7 +1967,7 @@ void WaypointRouteInit(void)
    route_num_waypoints = num_waypoints;
 
    strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".wpt");
+   strcat(mapname, ".HPB_wpt");
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
@@ -1675,18 +1998,18 @@ void WaypointRouteInit(void)
    {
       if (build_matrix[matrix])
       {
-         char ext_str[5];  // ".wpX\0"
+         char ext_str[16];  // ".HPB_wpX\0"
          int file1, file2;
          struct stat stat1, stat2;
 
-         sprintf(ext_str, ".wp%d", matrix+1);
+         sprintf(ext_str, ".HPB_wp%d", matrix+1);
 
          strcpy(mapname, STRING(gpGlobals->mapname));
          strcat(mapname, ext_str);
 
          UTIL_BuildFileName(filename2, "maps", mapname);
 
-         if (access(filename2, 0) == 0)  // does the .wpX file exist?
+         if (access(filename2, 0) == 0)  // does the .HPB_wpX file exist?
          {
             file1 = open(filename, O_RDONLY);
             file2 = open(filename2, O_RDONLY);
@@ -1697,7 +2020,7 @@ void WaypointRouteInit(void)
             close(file1);
             close(file2);
 
-            if (stat1.st_mtime < stat2.st_mtime)  // is .wpt older than .wpX file?
+            if (stat1.st_mtime < stat2.st_mtime)  // is .HPB_wpt older than .HPB_wpX file?
             {
                sprintf(msg, "loading HPB bot waypoint paths for team %d\n", matrix+1);
                ALERT(at_console, msg);
@@ -1885,9 +2208,6 @@ void WaypointRouteInit(void)
 }
 
 
-// return the next waypoint index for a path from the Floyd matrix when
-// going from a source waypoint index (src) to a destination waypoint
-// index (dest)...
 unsigned short WaypointRouteFromTo(int src, int dest, int team)
 {
    unsigned short *pFromTo;
@@ -1910,9 +2230,6 @@ unsigned short WaypointRouteFromTo(int src, int dest, int team)
 }
 
 
-// return the total distance (based on the Floyd matrix) of a path from
-// the source waypoint index (src) to the destination waypoint index
-// (dest)...
 int WaypointDistanceFromTo(int src, int dest, int team)
 {
    unsigned short *pShortestPath;
