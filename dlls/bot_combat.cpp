@@ -771,7 +771,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 				{
 					vecEnd = pent->v.origin + pent->v.view_ofs;
 
-					// is this sentry gun visible?
+					// is this hive visible?
 					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 					{
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
@@ -789,9 +789,10 @@ edict_t *BotFindEnemy( bot_t *pBot )
 			{
 				while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
 				{
+					ALERT( at_console, "found a command chair\n" );
 					vecEnd = pent->v.origin + pent->v.view_ofs;
 
-					// is this sentry gun visible?
+					// is this command chair visible?
 					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 					{
 						float distance = (pent->v.origin - pEdict->v.origin).Length();

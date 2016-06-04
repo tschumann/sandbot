@@ -366,6 +366,7 @@ bool BotFindWaypoint( bot_t *pBot )
    return FALSE;  // couldn't find a waypoint
 }
 
+extern bool UTIL_IsCombat();
 
 bool BotHeadTowardWaypoint( bot_t *pBot )
 {
@@ -504,7 +505,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          if ((pent->v.owner == pEdict) && (pent->v.origin == pEdict->v.origin))
          {
             // we are carrying the flag
-
             bot_has_flag = TRUE;
 
             break;  // break out of while loop
@@ -512,7 +512,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
          {
             // the bot can see it, check what type of model it is...
-
             skin = pent->v.skin;
 
             if (skin == 0) // Opposing Force team (these are BACKASSWARDS!)
@@ -589,9 +588,27 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
       }
    }
-   else if (mod_id == NS_DLL)
+   else if (mod_id == NS_DLL && UTIL_IsCombat())
    {
-	   // TODO: if you see something stop looking for a waypoint and go to it
+	   pent = NULL;
+
+	   while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
+		{
+			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
+
+			// is this command chair visible?
+			if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+			{
+				float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+				// is this the closest command chair?
+				if (distance < 100)
+				{
+					ALERT( at_console, "bot seeing a command chair; making in the enemy\n" );
+					pBot->pBotEnemy = pent;
+				}
+			}
+		}
    }
    else if (mod_id == FRONTLINE_DLL)
    {
@@ -1058,8 +1075,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                {
                   // find the nearest flag waypoint...
 
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                  team, W_FL_FLAG);
+                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
                }
                else
                {
@@ -1089,8 +1105,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                      if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] < 130)
                      {
                         // go find some metal...
-                        index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index,
-                                                     team, W_FL_ARMOR);
+                        index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_ARMOR);
                      }
                      else  // otherwise we have enough metal...
                      {
@@ -1162,10 +1177,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		 {
 			 if( pBot->pEdict->v.team == TEAM_ALIEN )
 			 {
+				 ALERT(at_console, "looking for command chair\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_COMMAND_CHAIR);
              }
 			 else if( pBot->pEdict->v.team == TEAM_MARINE )
 			 {
+				 ALERT(at_console, "looking for hive\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_HIVE);
              }
 

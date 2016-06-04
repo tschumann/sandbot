@@ -707,7 +707,7 @@ bool UTIL_IsCombat()
 {
 	const char *szMap = STRING(gpGlobals->mapname);
 
-	return (szMap[0] == 'c') && (szMap[1] == '0');
+	return (szMap[0] == 'c') && (szMap[1] == 'o');
 }
 
 float UTIL_GetResources( edict_t *player )
