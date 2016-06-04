@@ -747,6 +747,18 @@ void WaypointAdd(edict_t *pEntity)
          waypoints[index].flags = W_FL_ARMOR;
       }
 
+	  if (strcmp("team_hive", item_name) == 0)
+      {
+         ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a hive!\n");
+         waypoints[index].flags = W_FL_NS_HIVE;
+      }
+
+	  if (strcmp("team_command", item_name) == 0)
+      {
+         ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a command chair!\n");
+         waypoints[index].flags = W_FL_NS_COMMAND_CHAIR;
+      }
+
       // *************
       // LOOK FOR AMMO
       // *************
@@ -756,8 +768,7 @@ void WaypointAdd(edict_t *pEntity)
    // draw a blue waypoint
    WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 250, 5);
 
-   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0,
-                   ATTN_NORM, 0, 100);
+   EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1.0, ATTN_NORM, 0, 100);
 
    // increment total number of waypoints if adding at end of array...
    if (index == num_waypoints)

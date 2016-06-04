@@ -725,6 +725,7 @@ int UTIL_GetPoints( edict_t *player )
 	// TODO: wrong?
 	// TODO: can be calculated from applied upgrades? better than platform-dependant offsets
 	// see http://www.modns.org/index.php?showtopic=2579
+	// TODO: if it's just for a bot we can track what the bot has spent and store it
 	int iSpent = *(int*)( (char*)(player) + 1581 );
 
 	return iSpent;

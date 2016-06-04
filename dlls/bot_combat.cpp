@@ -757,8 +757,58 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		// keep track of when we last saw an enemy
 		pBot->f_bot_see_enemy_time = gpGlobals->time;
 	}
+	else
+	{
+		pent = NULL;
 
-		// has the bot NOT seen an ememy for at least 5 seconds (time to reload)?
+		extern bool UTIL_IsCombat();
+
+		if( mod_id == NS_DLL && UTIL_IsCombat() )
+		{
+			if( pBot->pEdict->v.team == TEAM_MARINE )
+			{
+				while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
+				{
+					vecEnd = pent->v.origin + pent->v.view_ofs;
+
+					// is this sentry gun visible?
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					{
+						float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+						// is this the closest hive?
+						if (distance < nearestdistance)
+						{
+							nearestdistance = distance;
+							pNewEnemy = pent;
+						}
+					}
+				}
+			}
+			else if( pBot->pEdict->v.team == TEAM_ALIEN )
+			{
+				while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
+				{
+					vecEnd = pent->v.origin + pent->v.view_ofs;
+
+					// is this sentry gun visible?
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					{
+						float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+						// is this the closest command chair?
+						if (distance < nearestdistance)
+						{
+							nearestdistance = distance;
+							pNewEnemy = pent;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// has the bot NOT seen an ememy for at least 5 seconds (time to reload)?
 	if ((pBot->f_bot_see_enemy_time > 0) && ((pBot->f_bot_see_enemy_time + 5.0) <= gpGlobals->time))
 	{
 		pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
