@@ -21,6 +21,7 @@ void BotClient_TFC_WeaponList(void *p, int bot_index);
 void BotClient_Gunman_WeaponList(void *p, int bot_index);
 void BotClient_NS_WeaponList(void *p, int bot_index);
 void BotClient_Hunger_WeaponList(void *p, int bot_index);
+void BotClient_Ship_WeaponList(void *p, int bot_index);
 void BotClient_FLF_WeaponList(void *p, int bot_index);
 
 void BotClient_Valve_CurrentWeapon(void *p, int bot_index);
@@ -30,6 +31,7 @@ void BotClient_TFC_CurrentWeapon(void *p, int bot_index);
 void BotClient_Gunman_CurrentWeapon(void *p, int bot_index);
 void BotClient_NS_CurrentWeapon(void *p, int bot_index);
 void BotClient_Hunger_CurrentWeapon(void *p, int bot_index);
+void BotClient_Ship_CurrentWeapon(void *p, int bot_index);
 void BotClient_FLF_CurrentWeapon(void *p, int bot_index);
 
 void BotClient_Valve_AmmoX(void *p, int bot_index);
@@ -39,6 +41,7 @@ void BotClient_TFC_AmmoX(void *p, int bot_index);
 void BotClient_Gunman_AmmoX(void *p, int bot_index);
 void BotClient_NS_AmmoX(void *p, int bot_index);
 void BotClient_Hunger_AmmoX(void *p, int bot_index);
+void BotClient_Ship_AmmoX(void *p, int bot_index);
 void BotClient_FLF_AmmoX(void *p, int bot_index);
 
 void BotClient_Valve_AmmoPickup(void *p, int bot_index);
@@ -48,6 +51,7 @@ void BotClient_TFC_AmmoPickup(void *p, int bot_index);
 void BotClient_Gunman_AmmoPickup(void *p, int bot_index);
 void BotClient_NS_AmmoPickup(void *p, int bot_index);
 void BotClient_Hunger_AmmoPickup(void *p, int bot_index);
+void BotClient_Ship_AmmoPickup(void *p, int bot_index);
 void BotClient_FLF_AmmoPickup(void *p, int bot_index);
 
 void BotClient_Valve_Damage(void *p, int bot_index);
@@ -57,6 +61,7 @@ void BotClient_TFC_Damage(void *p, int bot_index);
 void BotClient_Gunman_Damage(void *p, int bot_index);
 void BotClient_NS_Damage(void *p, int bot_index);
 void BotClient_Hunger_Damage(void *p, int bot_index);
+void BotClient_Ship_Damage(void *p, int bot_index);
 void BotClient_FLF_Damage(void *p, int bot_index);
 
 void BotClient_CS_Money(void *p, int bot_index);
@@ -86,8 +91,11 @@ void BotClient_TFC_ScreenFade(void *p, int bot_index);
 void BotClient_Gunman_ScreenFade(void *p, int bot_index);
 void BotClient_NS_ScreenFade(void *p, int bot_index);
 void BotClient_Hunger_ScreenFade(void *p, int bot_index);
+void BotClient_Ship_ScreenFade(void *p, int bot_index);
 void BotClient_FLF_ScreenFade(void *p, int bot_index);
 
 void BotClient_CS_HLTV(void *p, int bot_index);
 
 void BotClient_NS_CountDown( void *p, int bot_index );
+
+void BotClient_Ship_Quarry( void *p, int bot_index );

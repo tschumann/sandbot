@@ -51,6 +51,7 @@ static FILE *fp;
 int pfnPrecacheModel(char* s)
 {
 	// TODO: The Ship crashes trying to precache these: is this Sandbot passing bad data?
+	// TODO: this doesn't fix it - work out what is causing the issue
 	if( mod_id == SHIP_DLL )
 	{
 		if( !strcmp(s, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
@@ -444,17 +445,17 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 		else if (mod_id == SHIP_DLL)
         {
            if (msg_type == message_WeaponList)
-              botMsgFunction = BotClient_Valve_WeaponList;
+              botMsgFunction = BotClient_Ship_WeaponList;
            else if (msg_type == message_CurWeapon)
-              botMsgFunction = BotClient_Valve_CurrentWeapon;
+              botMsgFunction = BotClient_Ship_CurrentWeapon;
            else if (msg_type == message_AmmoX)
-              botMsgFunction = BotClient_Valve_AmmoX;
+              botMsgFunction = BotClient_Ship_AmmoX;
            else if (msg_type == message_AmmoPickup)
-              botMsgFunction = BotClient_Valve_AmmoPickup;
+              botMsgFunction = BotClient_Ship_AmmoPickup;
            else if (msg_type == message_Damage)
-              botMsgFunction = BotClient_Valve_Damage;
+              botMsgFunction = BotClient_Ship_Damage;
            else if (msg_type == message_ScreenFade)
-              botMsgFunction = BotClient_Valve_ScreenFade;
+              botMsgFunction = BotClient_Ship_ScreenFade;
         }
         else if (mod_id == FRONTLINE_DLL)
         {
@@ -596,7 +597,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 	 else if (mod_id == SHIP_DLL)
      {
         if (msg_type == message_WeaponList)
-           botMsgFunction = BotClient_Valve_WeaponList;
+           botMsgFunction = BotClient_Ship_WeaponList;
      }
      else if (mod_id == FRONTLINE_DLL)
      {

@@ -358,6 +358,12 @@ void BotClient_Hunger_WeaponList( void *p, int bot_index )
 	BotClient_Valve_WeaponList(p, bot_index);
 }
 
+void BotClient_Ship_WeaponList(void *p, int bot_index)
+{
+	// this is just like the Valve Weapon List message
+	BotClient_Valve_WeaponList(p, bot_index);
+}
+
 void BotClient_FLF_WeaponList(void *p, int bot_index)
 {
 	// this is just like the Valve Weapon List message
@@ -443,6 +449,12 @@ void BotClient_Hunger_CurrentWeapon(void *p, int bot_index)
 	BotClient_Valve_CurrentWeapon(p, bot_index);
 }
 
+void BotClient_Ship_CurrentWeapon( void *p, int bot_index )
+{
+    // this is just like the Valve Current Weapon message
+    BotClient_Valve_CurrentWeapon(p, bot_index);
+}
+
 void BotClient_FLF_CurrentWeapon(void *p, int bot_index)
 {
 	// this is just like the Valve Current Weapon message
@@ -512,6 +524,12 @@ void BotClient_NS_AmmoX(void *p, int bot_index)
 }
 
 void BotClient_Hunger_AmmoX(void *p, int bot_index)
+{
+	// this is just like the Valve AmmoX message
+	BotClient_Valve_AmmoX(p, bot_index);
+}
+
+void BotClient_Ship_AmmoX(void *p, int bot_index)
 {
 	// this is just like the Valve AmmoX message
 	BotClient_Valve_AmmoX(p, bot_index);
@@ -589,6 +607,12 @@ void BotClient_NS_AmmoPickup(void *p, int bot_index)
 }
 
 void BotClient_Hunger_AmmoPickup(void *p, int bot_index)
+{
+	// this is just like the Valve Ammo Pickup message
+	BotClient_Valve_AmmoPickup(p, bot_index);
+}
+
+void BotClient_Ship_AmmoPickup(void *p, int bot_index)
 {
 	// this is just like the Valve Ammo Pickup message
 	BotClient_Valve_AmmoPickup(p, bot_index);
@@ -699,6 +723,12 @@ void BotClient_NS_Damage(void *p, int bot_index)
 }
 
 void BotClient_Hunger_Damage(void *p, int bot_index)
+{
+	// this is just like the Valve Battery message
+	BotClient_Valve_Damage(p, bot_index);
+}
+
+void BotClient_Ship_Damage(void *p, int bot_index)
 {
 	// this is just like the Valve Battery message
 	BotClient_Valve_Damage(p, bot_index);
@@ -981,6 +1011,12 @@ void BotClient_Hunger_ScreenFade(void *p, int bot_index)
 	BotClient_Valve_ScreenFade(p, bot_index);
 }
 
+void BotClient_Ship_ScreenFade(void *p, int bot_index)
+{
+	// this is just like the Valve ScreenFade message
+	BotClient_Valve_ScreenFade(p, bot_index);
+}
+
 void BotClient_FLF_ScreenFade(void *p, int bot_index)
 {
 	// this is just like the Valve ScreenFade message
@@ -994,7 +1030,9 @@ void BotClient_CS_HLTV(void *p, int bot_index)
    int index;
 
    if (state == 0)
+   {
       players = *(int *) p;
+   }
    else if (state == 1)
    {
       // new round in CS 1.6
@@ -1020,4 +1058,9 @@ void BotClient_NS_CountDown( void *p, int bot_index )
 	g_fCountDownTime = 0.0;
 
 	g_iCountDown = *(int *)p;
+}
+
+void BotClient_Ship_Quarry( void *p, int bot_index )
+{
+	int quarryId = *(int *)p;
 }
