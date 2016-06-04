@@ -720,15 +720,14 @@ float UTIL_GetExperience( edict_t *player )
     return player->v.vuser4.z / 100.0;
 }
 
-int UTIL_GetPoints( edict_t *player )
+int UTIL_GetPoints( bot_t *player )
 {
-	// TODO: wrong?
-	// TODO: can be calculated from applied upgrades? better than platform-dependant offsets
-	// see http://www.modns.org/index.php?showtopic=2579
-	// TODO: if it's just for a bot we can track what the bot has spent and store it
-	int iSpent = *(int*)( (char*)(player) + 1581 );
+	// TODO: wrong? see http://www.modns.org/index.php?showtopic=2579
+	// can be calculated from applied upgrades? better than platform-dependant offsets
+	// int iSpent = *(int*)( (char*)(player) + 1581 );
 
-	return iSpent;
+	// return iSpent;
+	return (int)UTIL_GetExperience(player->pEdict) - player->points_spent;
 }
 
 bool UTIL_IsEvolved( const bot_t *pBot )

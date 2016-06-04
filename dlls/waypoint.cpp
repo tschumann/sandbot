@@ -1293,7 +1293,7 @@ bool WaypointLoad(edict_t *pEntity)
    bool need_rename;
 
    strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".HPB_wpt");
+   strcat(mapname, ".wpt");
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
@@ -1326,12 +1326,12 @@ bool WaypointLoad(edict_t *pEntity)
       fread(&header, sizeof(header), 1, bfp);
 
       header.filetype[7] = 0;
-      if (strcmp(header.filetype, "HPB_bot") == 0)
+      if (strcmp(header.filetype, WAYPOINT_HEADER) == 0)
       {
          if (header.waypoint_file_version != WAYPOINT_VERSION)
          {
             if (pEntity)
-               ClientPrint(pEntity, HUD_PRINTNOTIFY, "Incompatible HPB bot waypoint file version!\nWaypoints not loaded!\n");
+               ClientPrint(pEntity, HUD_PRINTNOTIFY, "Incompatible Sandbot waypoint file version!\nWaypoints not loaded!\n");
 
             fclose(bfp);
             return FALSE;
@@ -1394,7 +1394,7 @@ bool WaypointLoad(edict_t *pEntity)
       if (need_rename)
       {
          strcpy(mapname, STRING(gpGlobals->mapname));
-         strcat(mapname, ".HPB_wpt");
+         strcat(mapname, ".wpt");
 
          UTIL_BuildFileName(new_filename, "maps", mapname);
 
@@ -1435,7 +1435,7 @@ void WaypointSave(void)
    short int num;
    PATH *p;
 
-   strcpy(header.filetype, "HPB_bot");
+   strcpy(header.filetype, WAYPOINT_HEADER);
 
    header.waypoint_file_version = WAYPOINT_VERSION;
 
@@ -1448,7 +1448,7 @@ void WaypointSave(void)
    header.mapname[31] = 0;
 
    strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".HPB_wpt");
+   strcat(mapname, ".wpt");
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
@@ -1954,7 +1954,7 @@ void WaypointRouteInit(void)
    route_num_waypoints = num_waypoints;
 
    strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".HPB_wpt");
+   strcat(mapname, ".wpt");
 
    UTIL_BuildFileName(filename, "maps", mapname);
 
@@ -1985,18 +1985,18 @@ void WaypointRouteInit(void)
    {
       if (build_matrix[matrix])
       {
-         char ext_str[16];  // ".HPB_wpX\0"
+         char ext_str[16];  // ".wpX\0"
          int file1, file2;
          struct stat stat1, stat2;
 
-         sprintf(ext_str, ".HPB_wp%d", matrix+1);
+         sprintf(ext_str, ".wp%d", matrix+1);
 
          strcpy(mapname, STRING(gpGlobals->mapname));
          strcat(mapname, ext_str);
 
          UTIL_BuildFileName(filename2, "maps", mapname);
 
-         if (access(filename2, 0) == 0)  // does the .HPB_wpX file exist?
+         if (access(filename2, 0) == 0)  // does the .wpX file exist?
          {
             file1 = open(filename, O_RDONLY);
             file2 = open(filename2, O_RDONLY);
@@ -2007,7 +2007,7 @@ void WaypointRouteInit(void)
             close(file1);
             close(file2);
 
-            if (stat1.st_mtime < stat2.st_mtime)  // is .HPB_wpt older than .HPB_wpX file?
+            if (stat1.st_mtime < stat2.st_mtime)  // is .wpt older than .HPB_wpX file?
             {
                sprintf(msg, "loading HPB bot waypoint paths for team %d\n", matrix+1);
                ALERT(at_console, msg);

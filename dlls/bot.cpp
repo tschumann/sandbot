@@ -464,6 +464,7 @@ void BotSpawnInit( bot_t *pBot )
 	// Natural Selection
 	pBot->bUseArmory = false;
 	pBot->fUseArmoryTime = 0.0;
+	pBot->points_spent = 0;
 
 	pBot->bBuild = false;
 	pBot->fBuildTime = 0.0;
@@ -1965,43 +1966,59 @@ void BotThink( bot_t *pBot )
 
 		extern bool g_bInGame;
 
-		// TODO - combat and classic branches, tidy up
-		if( g_bInGame && UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+		if( g_bInGame && !UTIL_IsCombat() )
 		{
-			// finish evolving
-			if( UTIL_IsEvolved( pBot ) )
+			if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 			{
-				pBot->f_move_speed = pBot->f_max_speed;
-				pBot->bEvolving = false;
-				pBot->bEvolved = true;
-			}
+				// finish evolving
+				if( UTIL_IsEvolved( pBot ) )
+				{
+					pBot->f_move_speed = pBot->f_max_speed;
+					pBot->bEvolving = false;
+					pBot->bEvolved = true;
+				}
 
-			// start evolving
-			if( !UTIL_IsCombat() && UTIL_CanEvolve( pBot ) )
+				// start evolving
+				if( UTIL_CanEvolve( pBot ) )
+				{
+					if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
+					{
+						pBot->f_move_speed = 0.0;
+						pBot->pEdict->v.impulse = 114;
+						pBot->bEvolving = true;
+					}
+					else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
+					{
+						pBot->f_move_speed = 0.0;
+						pBot->pEdict->v.impulse = 115;
+						pBot->bEvolving = true;
+					}
+					else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
+					{
+						pBot->f_move_speed = 0.0;
+						pBot->pEdict->v.impulse = 116;
+						pBot->bEvolving = true;
+					}
+					else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
+					{
+						pBot->f_move_speed = 0.0;
+						pBot->pEdict->v.impulse = 117;
+						pBot->bEvolving = true;
+					}
+				}
+			}
+			else if( g_bInGame && UTIL_IsCombat() )
 			{
-				if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
+				extern int UTIL_GetPoints( bot_t *player );
+
+				if( UTIL_GetPoints( pBot ) )
 				{
-					pBot->f_move_speed = 0.0;
-					pBot->pEdict->v.impulse = 114;
-					pBot->bEvolving = true;
-				}
-				else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
-				{
-					pBot->f_move_speed = 0.0;
-					pBot->pEdict->v.impulse = 115;
-					pBot->bEvolving = true;
-				}
-				else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
-				{
-					pBot->f_move_speed = 0.0;
-					pBot->pEdict->v.impulse = 116;
-					pBot->bEvolving = true;
-				}
-				else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
-				{
-					pBot->f_move_speed = 0.0;
-					pBot->pEdict->v.impulse = 117;
-					pBot->bEvolving = true;
+					if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+					{
+					}
+					else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
+					{
+					}
 				}
 			}
 		}

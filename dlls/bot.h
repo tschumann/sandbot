@@ -306,6 +306,7 @@ typedef struct
 	// Natural Selection
 	bool bUseArmory;
 	float fUseArmoryTime;
+	int points_spent;
 
 	int desired_class;
 

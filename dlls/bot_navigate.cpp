@@ -1171,6 +1171,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             if (index != -1)
             {
+				ALERT(at_console, "an ns bot is heading for a goal\n");
                pBot->waypoint_goal = index;
 			}
 		 }
