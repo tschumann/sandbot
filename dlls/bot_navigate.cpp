@@ -588,27 +588,55 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
       }
    }
-   else if (mod_id == NS_DLL && UTIL_IsCombat())
+   else if (mod_id == NS_DLL )
    {
-	   pent = NULL;
+	   if( UTIL_IsCombat() )
+	   {
+		   if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+		   {
+			   pent = NULL;
 
-	   while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
-		{
-			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
-
-			// is this command chair visible?
-			if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
-			{
-				float distance = (pent->v.origin - pEdict->v.origin).Length();
-
-				// is this the closest command chair?
-				if (distance < 100)
+			   while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
 				{
-					ALERT( at_console, "bot seeing a command chair; making in the enemy\n" );
-					pBot->pBotEnemy = pent;
+					Vector vecEnd = pent->v.origin + pent->v.view_ofs;
+
+					// is this command chair visible?
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					{
+						float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+						// is this the closest command chair?
+						if (distance < 100)
+						{
+							ALERT( at_console, "bot seeing a command chair; making it the enemy\n" );
+							pBot->pBotEnemy = pent;
+						}
+					}
 				}
-			}
-		}
+		   }
+		   else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
+		   {
+			   pent = NULL;
+
+			   while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
+				{
+					Vector vecEnd = pent->v.origin + pent->v.view_ofs;
+
+					// is this hive visible?
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					{
+						float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+						// is this the closest command chair?
+						if (distance < 100)
+						{
+							ALERT( at_console, "bot seeing a hive; making it the enemy\n" );
+							pBot->pBotEnemy = pent;
+						}
+					}
+				}
+		   }
+	   }
    }
    else if (mod_id == FRONTLINE_DLL)
    {
