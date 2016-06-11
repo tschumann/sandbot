@@ -737,12 +737,14 @@ bool UTIL_IsEvolved( const bot_t *pBot )
 
 bool UTIL_CanEvolve( const bot_t *pBot )
 {
+	// don't evolve while in combat
 	if( pBot->pBotEnemy )
 	{
 		return false;
 	}
 
-	if( pBot->bot_class == AVH_USER3_ALIEN_PLAYER1 )
+	// if the bot should always be a skulk, it can't evolve
+	if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER1 )
 	{
 		return false;
 	}

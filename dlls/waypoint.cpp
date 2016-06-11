@@ -805,10 +805,13 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
    while ((pent = UTIL_FindEntityInSphere( pent, origin, radius )) != NULL)
    {
       if (pEntity)
-         UTIL_TraceLine( origin, pent->v.origin, ignore_monsters,
-                         pEntity->v.pContainingEntity, &tr );
+	  {
+         UTIL_TraceLine( origin, pent->v.origin, ignore_monsters, pEntity->v.pContainingEntity, &tr );
+	  }
       else
+	  {
          UTIL_TraceLine( origin, pent->v.origin, ignore_monsters, NULL, &tr );
+	  }
 
       // make sure entity is visible...
       if (tr.flFraction >= 1.0)
@@ -915,8 +918,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       }
    }
 
-   if ((mod_id == TFC_DLL) &&
-       (tfc_backpack_index != -1))  // found a TFC backpack
+   if ((mod_id == TFC_DLL) && (tfc_backpack_index != -1))  // found a TFC backpack
    {
       if (backpacks[tfc_backpack_index].health)
       {
@@ -947,7 +949,9 @@ void WaypointAdd(edict_t *pEntity)
    int index;
 
    if (num_waypoints >= MAX_WAYPOINTS)
+   {
       return;
+   }
 
    index = 0;
 
@@ -1100,10 +1104,8 @@ void WaypointDelete(edict_t *pEntity)
    if (index == -1)
       return;
 
-   if ((waypoints[index].flags & W_FL_SNIPER) ||
-       (waypoints[index].flags & W_FL_SENTRYGUN) ||
-       (waypoints[index].flags & W_FL_DISPENSER) ||
-       (waypoints[index].flags & W_FL_JUMP) ||
+   if ((waypoints[index].flags & W_FL_SNIPER) || (waypoints[index].flags & W_FL_SENTRYGUN) ||
+       (waypoints[index].flags & W_FL_DISPENSER) || (waypoints[index].flags & W_FL_JUMP) ||
        ((mod_id == FRONTLINE_DLL) && (waypoints[index].flags & W_FL_FLF_DEFEND)))
    {
       int i;
@@ -1649,104 +1651,103 @@ int WaypointFindReachable(edict_t *pEntity, float range, int team)
       return -1;
 
    return min_index;
-
 }
 
 
 void WaypointPrintInfo(edict_t *pEntity)
 {
-   char msg[80];
-   int index;
-   int flags;
+	char msg[80];
+	int index;
+	int flags;
 
-   // find the nearest waypoint...
-   index = WaypointFindNearest(pEntity, 50.0, -1);
+	// find the nearest waypoint...
+	index = WaypointFindNearest(pEntity, 50.0, -1);
 
-   if (index == -1)
-      return;
+	if (index == -1)
+		return;
 
-   sprintf(msg,"Waypoint %d of %d total\n", index, num_waypoints);
-   ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
+	sprintf(msg,"Waypoint %d of %d total\n", index, num_waypoints);
+	ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
 
-   flags = waypoints[index].flags;
+	flags = waypoints[index].flags;
 
-   if (flags & W_FL_TEAM_SPECIFIC)
-   {
-      if (mod_id == FRONTLINE_DLL)
-      {
-         if ((flags & W_FL_TEAM) == 0)
-            strcpy(msg, "Waypoint is for Attackers\n");
-         else if ((flags & W_FL_TEAM) == 1)
-            strcpy(msg, "Waypoint is for Defenders\n");
-      }
-      else
-      {
-         if ((flags & W_FL_TEAM) == 0)
-            strcpy(msg, "Waypoint is for TEAM 1\n");
-         else if ((flags & W_FL_TEAM) == 1)
-            strcpy(msg, "Waypoint is for TEAM 2\n");
-         else if ((flags & W_FL_TEAM) == 2)
-            strcpy(msg, "Waypoint is for TEAM 3\n");
-         else if ((flags & W_FL_TEAM) == 3)
-            strcpy(msg, "Waypoint is for TEAM 4\n");
-      }
+	if (flags & W_FL_TEAM_SPECIFIC)
+	{
+		if (mod_id == FRONTLINE_DLL)
+		{
+			if ((flags & W_FL_TEAM) == 0)
+				strcpy(msg, "Waypoint is for Attackers\n");
+			else if ((flags & W_FL_TEAM) == 1)
+				strcpy(msg, "Waypoint is for Defenders\n");
+		}
+		else
+		{
+			if ((flags & W_FL_TEAM) == 0)
+				strcpy(msg, "Waypoint is for TEAM 1\n");
+			else if ((flags & W_FL_TEAM) == 1)
+				strcpy(msg, "Waypoint is for TEAM 2\n");
+			else if ((flags & W_FL_TEAM) == 2)
+				strcpy(msg, "Waypoint is for TEAM 3\n");
+			else if ((flags & W_FL_TEAM) == 3)
+				strcpy(msg, "Waypoint is for TEAM 4\n");
+		}
 
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
-   }
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
+	}
 
-   if (flags & W_FL_LIFT)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will wait for lift before approaching\n");
+	if (flags & W_FL_LIFT)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will wait for lift before approaching\n");
 
-   if (flags & W_FL_LADDER)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "This waypoint is on a ladder\n");
+	if (flags & W_FL_LADDER)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "This waypoint is on a ladder\n");
 
-   if (flags & W_FL_DOOR)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a door waypoint\n");
+	if (flags & W_FL_DOOR)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a door waypoint\n");
 
-   if (flags & W_FL_HEALTH)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is health near this waypoint\n");
+	if (flags & W_FL_HEALTH)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is health near this waypoint\n");
 
-   if (flags & W_FL_ARMOR)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is armor near this waypoint\n");
+	if (flags & W_FL_ARMOR)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is armor near this waypoint\n");
 
-   if (flags & W_FL_AMMO)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is ammo near this waypoint\n");
+	if (flags & W_FL_AMMO)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is ammo near this waypoint\n");
 
-   if (flags & W_FL_WEAPON)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a weapon near this waypoint\n");
+	if (flags & W_FL_WEAPON)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a weapon near this waypoint\n");
 
-   if (flags & W_FL_JUMP)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will jump here\n");
+	if (flags & W_FL_JUMP)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will jump here\n");
 
-   if (flags & W_FL_SNIPER)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a sniper waypoint\n");
+	if (flags & W_FL_SNIPER)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a sniper waypoint\n");
 
-   if (flags & W_FL_FLAG)
-   {
-      if (mod_id == FRONTLINE_DLL)
-         ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
-      else if (mod_id == HOLYWARS_DLL)
-         ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a halo spawn point near this waypoint\n");
-      else
-         ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
-   }
+	if (flags & W_FL_FLAG)
+	{
+		if (mod_id == FRONTLINE_DLL)
+			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+		else if (mod_id == HOLYWARS_DLL)
+			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a halo spawn point near this waypoint\n");
+		else
+			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
+	}
 
-   if (flags & W_FL_FLAG_GOAL)
-   {
-      if (mod_id == FRONTLINE_DLL)
-         ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a defender location\n");
-      else
-         ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
-   }
+	if (flags & W_FL_FLAG_GOAL)
+	{
+		if (mod_id == FRONTLINE_DLL)
+			ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a defender location\n");
+		else
+			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
+	}
 
-   if (flags & W_FL_PRONE)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will go prone here\n");
+	if (flags & W_FL_PRONE)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will go prone here\n");
 
-   if (flags & W_FL_SENTRYGUN)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a sentry gun here\n");
+	if (flags & W_FL_SENTRYGUN)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a sentry gun here\n");
 
-   if (flags & W_FL_DISPENSER)
-      ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
+	if (flags & W_FL_DISPENSER)
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
 
 	if( flags & W_FL_NS_HIVE )
 	{
@@ -2124,8 +2125,7 @@ void WaypointRouteInit(void)
 
                               if (distance > REACHABLE_RANGE)
                               {
-                                 sprintf(msg, "Waypoint path distance > %4.1f at from %d to %d\n",
-                                              REACHABLE_RANGE, row, index);
+                                 sprintf(msg, "Waypoint path distance > %4.1f at from %d to %d\n", REACHABLE_RANGE, row, index);
                                  ALERT(at_console, msg);
                               }
                               else

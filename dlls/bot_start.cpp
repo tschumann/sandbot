@@ -37,8 +37,7 @@ void BotStartGame( bot_t *pBot )
 
    if (mod_id == TFC_DLL)
    {
-      if ((pBot->start_action == MSG_TFC_IDLE) &&
-          (pBot->create_time + 3.0 <= gpGlobals->time))
+      if ((pBot->start_action == MSG_TFC_IDLE) && (pBot->create_time + 3.0 <= gpGlobals->time))
       {
          pBot->start_action = MSG_TFC_TEAM_SELECT;  // force team selection
       }
@@ -60,8 +59,7 @@ void BotStartGame( bot_t *pBot )
 
          retry_count = 0;
 
-         while ((retry_count < 4) &&
-                (max_team_players[pBot->bot_team-1] > 0))  // not unlimited?
+         while ((retry_count < 4) && (max_team_players[pBot->bot_team-1] > 0))  // not unlimited?
          {
             count = 0;
 
