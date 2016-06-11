@@ -8,7 +8,12 @@ Installation: Copy the files into your Steam/steamapps/common/Half-Life director
 
 == Usage ==
 
-addbot		Add a bot to the server
+addbot			Add a bot to the server
+botskill [1-5]	Set the bot skill level
+waypoint add	Add a waypoint
+waypoint delete	Delete a waypoint
+waypoint save	Write waypoints to file
+waypoint info	Print what type of waypoint a waypoint is
 
 == Frequently Asked Questions ==
 
@@ -19,7 +24,7 @@ A. I've tried and things just broke unexpectedly, so not right now.
 
 v0.2 (??/??/??)
 - Reduced Gunman Chronicles gauss pistol rate of fire slightly.
-- Started using new bot framework.
+- Started using new bot framework (which brings Linux support with it).
 - Added some documenation.
 
 v0.1 (2/05/16)
@@ -40,6 +45,7 @@ Valve, for the Half-Life SDK and the Valve ERC.
 Todd Aspeotis, for teaching me C++.
 Jeffrey 'botman' Broome for his bot code and other cool stuff.
 ModDB for being a good host.
+Bots United for their support.
 
 == Credits ==
 
