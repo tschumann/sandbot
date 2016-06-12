@@ -1337,8 +1337,7 @@ void BotThink( bot_t *pBot )
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
 
-      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed,
-                                   0, 0, pEdict->v.button, 0, msecval);
+      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
       return;
    }
@@ -1412,8 +1411,7 @@ void BotThink( bot_t *pBot )
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
 
-      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed,
-                                   0, 0, pEdict->v.button, 0, msecval);
+      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
       return;
    }
@@ -1423,8 +1421,7 @@ void BotThink( bot_t *pBot )
    }
 
    // check if time to check for player sounds (if don't already have enemy)
-   if ((pBot->f_sound_update_time <= gpGlobals->time) &&
-       (pBot->pBotEnemy == NULL))
+   if ((pBot->f_sound_update_time <= gpGlobals->time) && (pBot->pBotEnemy == NULL))
    {
       int ind;
       edict_t *pPlayer;
@@ -1442,9 +1439,7 @@ void BotThink( bot_t *pBot )
             if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
                continue;
 
-            if (IsAlive(pPlayer) &&
-                (FBitSet(pPlayer->v.flags, FL_CLIENT) ||
-                 FBitSet(pPlayer->v.flags, FL_FAKECLIENT)))
+            if (IsAlive(pPlayer) && (FBitSet(pPlayer->v.flags, FL_CLIENT) || FBitSet(pPlayer->v.flags, FL_FAKECLIENT)))
             {
                // check for sounds being made by other players...
                if (UpdateSounds(pEdict, pPlayer))
@@ -1522,6 +1517,7 @@ void BotThink( bot_t *pBot )
 
       if (pBot->pBotEnemy != NULL)  // does an enemy exist?
       {
+		  ALERT( at_console, "about to shoot at enemy\n" );
          BotShootAtEnemy( pBot );  // shoot at the enemy
 
          pBot->f_pause_time = 0;  // dont't pause if enemy exists

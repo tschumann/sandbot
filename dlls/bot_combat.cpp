@@ -291,6 +291,7 @@ bot_weapon_select_t gunman_weapon_select[] = {
     {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
+// see AvHBasePlayerWeapon::mRange
 bot_weapon_select_t ns_weapon_select[] = {
     {NS_WEAPON_GRENADE, "weapon_grenade", 1.0, 0.0,
 	250.0, 750.0, 0.0, 0.0,
@@ -321,7 +322,7 @@ bot_weapon_select_t ns_weapon_select[] = {
     100, TRUE, 100, 1, 0,
 	true, FALSE, FALSE, FALSE, 0.0, 0.0},
 	{NS_WEAPON_KNIFE, "weapon_knife", 0.7, 0.0,
-	0.0, 50.0, 0.0, 0.0,
+	0.0, 5.0, 0.0, 0.0,
     100, TRUE, 100, 0, 0,
 	FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 
@@ -772,13 +773,15 @@ edict_t *BotFindEnemy( bot_t *pBot )
 					vecEnd = pent->v.origin + pent->v.view_ofs;
 
 					// is this hive visible?
-					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) && pent->v.solid != SOLID_NOT)
 					{
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
+						ALERT( at_console, "found a hive\n" );
 
 						// is this the closest hive?
 						if (distance < nearestdistance)
 						{
+							ALERT( at_console, "targetting hive\n" );
 							nearestdistance = distance;
 							pNewEnemy = pent;
 						}
@@ -789,13 +792,13 @@ edict_t *BotFindEnemy( bot_t *pBot )
 			{
 				while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
 				{
-					ALERT( at_console, "found a command chair\n" );
 					vecEnd = pent->v.origin + pent->v.view_ofs;
 
 					// is this command chair visible?
 					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 					{
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
+						ALERT( at_console, "found a command chair\n" );
 
 						// is this the closest command chair?
 						if (distance < nearestdistance)
@@ -974,8 +977,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
             // find the correct fire delay for this weapon
             select_index = 0;
 
-            while ((pSelect[select_index].iId) &&
-                   (pSelect[select_index].iId != iId))
+            while ((pSelect[select_index].iId) && (pSelect[select_index].iId != iId))
                select_index++;
 
             pBot->f_shoot_time = gpGlobals->time + pSelect[select_index].fPrimaryRate;
@@ -1007,8 +1009,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
             // find the correct fire delay for this weapon
             select_index = 0;
 
-            while ((pSelect[select_index].iId) &&
-                   (pSelect[select_index].iId != iId))
+            while ((pSelect[select_index].iId) && (pSelect[select_index].iId != iId))
                select_index++;
 
             pBot->f_shoot_time = gpGlobals->time +  pSelect[select_index].fSecondaryRate;
@@ -1030,8 +1031,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
       while (pSelect[select_index].iId)
       {
          // was a weapon choice specified? (and if so do they NOT match?)
-         if ((weapon_choice != 0) &&
-             (weapon_choice != pSelect[select_index].iId))
+         if ((weapon_choice != 0) && (weapon_choice != pSelect[select_index].iId))
          {
             select_index++;  // skip to next weapon
             continue;
@@ -1054,8 +1054,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 #endif
 
          // is the bot underwater and does this weapon NOT work under water?
-         if ((pEdict->v.waterlevel == 3) &&
-             !(pSelect[select_index].can_use_underwater))
+         if ((pEdict->v.waterlevel == 3) && !(pSelect[select_index].can_use_underwater))
          {
             select_index++;  // skip to next weapon
             continue;
@@ -1077,14 +1076,13 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 
          // is primary percent less than weapon primary percent AND
          // no ammo required for this weapon OR
-            // enough ammo available to fire AND
+         // enough ammo available to fire AND
          // the bot is far enough away to use primary fire AND
          // the bot is close enough to the enemy to use primary fire
 
          if ((primary_percent <= pSelect[select_index].primary_fire_percent) &&
              ((weapon_defs[iId].iAmmo1 == -1) ||
-              (pBot->m_rgAmmo[weapon_defs[iId].iAmmo1] >=
-               pSelect[select_index].min_primary_ammo)) &&
+              (pBot->m_rgAmmo[weapon_defs[iId].iAmmo1] >= pSelect[select_index].min_primary_ammo)) &&
              (distance >= pSelect[select_index].primary_min_distance) &&
              (distance <= pSelect[select_index].primary_max_distance))
          {
@@ -1096,8 +1094,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          // the bot is close enough to the enemy to use secondary fire
 
          else if (((weapon_defs[iId].iAmmo2 == -1) ||
-                   (pBot->m_rgAmmo[weapon_defs[iId].iAmmo2] >=
-                    pSelect[select_index].min_secondary_ammo)) &&
+                   (pBot->m_rgAmmo[weapon_defs[iId].iAmmo2] >= pSelect[select_index].min_secondary_ammo)) &&
                   (distance >= pSelect[select_index].secondary_min_distance) &&
                   (distance <= pSelect[select_index].secondary_max_distance))
          {
@@ -1107,13 +1104,16 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          // see if there wasn't enough ammo to fire the weapon...
          if ((use_primary == FALSE) && (use_secondary == FALSE))
          {
+			 ALERT( at_console, "no ammo\n" );
             select_index++;  // skip to next weapon
             continue;
          }
 
          // select this weapon if it isn't already selected
          if (pBot->current_weapon.iId != iId)
+		{
             UTIL_SelectItem(pEdict, pSelect[select_index].weapon_name);
+		}
 
          if (mod_id == TFC_DLL)
          {
@@ -1230,7 +1230,8 @@ void BotShootAtEnemy( bot_t *pBot )
    // Paulo-La-Frite - END
 
    float x = pEdict->v.v_angle.y;
-   if (x > 180) x -= 360;
+   if (x > 180)
+	   x -= 360;
    if (abs(pEdict->v.ideal_yaw - x) > 2.0)
       fp = NULL;
 

@@ -590,7 +590,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    }
    else if (mod_id == NS_DLL )
    {
-	   if( UTIL_IsCombat() )
+	   if( UTIL_IsCombat() && pBot->pBotEnemy == NULL )
 	   {
 		   if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 		   {
@@ -616,6 +616,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		   }
 		   else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
 		   {
+			   ALERT( at_console, "marine seeing if there's anything\n" );
 			   pent = NULL;
 
 			   while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
@@ -623,12 +624,13 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					Vector vecEnd = pent->v.origin + pent->v.view_ofs;
 
 					// is this hive visible?
-					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) && pent->v.solid != SOLID_NOT)
 					{
+						ALERT( at_console, "hive visible\n" );
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest hive?
-						if (distance < 200)
+						if (distance < 300)
 						{
 							ALERT( at_console, "bot seeing a hive; making it the enemy\n" );
 							pBot->pBotEnemy = pent;

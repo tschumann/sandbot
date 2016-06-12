@@ -462,6 +462,21 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Ship_ScreenFade;
         }
+		else if (mod_id == NS_DLL)
+        {
+           if (msg_type == message_WeaponList)
+              botMsgFunction = BotClient_NS_WeaponList;
+           else if (msg_type == message_CurWeapon)
+              botMsgFunction = BotClient_NS_CurrentWeapon;
+           else if (msg_type == message_AmmoX)
+              botMsgFunction = BotClient_NS_AmmoX;
+           else if (msg_type == message_AmmoPickup)
+              botMsgFunction = BotClient_NS_AmmoPickup;
+           else if (msg_type == message_Damage)
+              botMsgFunction = BotClient_NS_Damage;
+           else if (msg_type == message_ScreenFade)
+              botMsgFunction = BotClient_NS_ScreenFade;
+        }
         else if (mod_id == FRONTLINE_DLL)
         {
            if (msg_type == message_VGUI)
