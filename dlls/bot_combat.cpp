@@ -781,7 +781,6 @@ edict_t *BotFindEnemy( bot_t *pBot )
 						// is this the closest hive?
 						if (distance < nearestdistance)
 						{
-							ALERT( at_console, "targetting hive\n" );
 							nearestdistance = distance;
 							pNewEnemy = pent;
 						}
@@ -1104,7 +1103,6 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          // see if there wasn't enough ammo to fire the weapon...
          if ((use_primary == FALSE) && (use_secondary == FALSE))
          {
-			 ALERT( at_console, "no ammo\n" );
             select_index++;  // skip to next weapon
             continue;
          }

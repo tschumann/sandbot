@@ -1517,7 +1517,6 @@ void BotThink( bot_t *pBot )
 
       if (pBot->pBotEnemy != NULL)  // does an enemy exist?
       {
-		  ALERT( at_console, "about to shoot at enemy\n" );
          BotShootAtEnemy( pBot );  // shoot at the enemy
 
          pBot->f_pause_time = 0;  // dont't pause if enemy exists
