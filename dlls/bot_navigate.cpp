@@ -627,8 +627,8 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					{
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
 
-						// is this the closest command chair?
-						if (distance < 100)
+						// is this the closest hive?
+						if (distance < 200)
 						{
 							ALERT( at_console, "bot seeing a hive; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
@@ -1017,8 +1017,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          v_dest.z = v_dest.z + 100.0;
 
          // trace a line to destination...
-         UTIL_TraceLine( v_src, v_dest, ignore_monsters,
-                         pEdict->v.pContainingEntity, &tr );
+         UTIL_TraceLine( v_src, v_dest, ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
          if (tr.flFraction >= 1.0)
          {

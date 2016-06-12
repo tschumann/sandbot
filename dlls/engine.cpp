@@ -282,7 +282,12 @@ void pfnGetAimVector(edict_t* ent, float speed, float *rgflReturn)
 }
 void pfnServerCommand(char* str)
 {
-	UTIL_LogDPrintf("pfnServerCommand: str=%s\n", str);
+	// Natural Selection 3.2 forces these every frame
+	if( !strncmp(str, "sv_airmove", strlen("sv_airmove")) && !strncmp(str, "sv_airaccelerate", strlen("sv_airaccelerate")) )
+	{
+		UTIL_LogDPrintf("pfnServerCommand: str=%s\n", str);
+	}
+	
 	(*g_engfuncs.pfnServerCommand)(str);
 }
 void pfnServerExecute(void)

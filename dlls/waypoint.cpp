@@ -778,11 +778,11 @@ void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
    MESSAGE_END();
 }
 
-
+// pEntity is the player
 void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
 {
    edict_t *pent = NULL;
-   float radius = 40;
+   float radius = 200;	// increased from 40 as team_hive hangs from the ceiling and isn't close enough by default
    TraceResult tr;
    float distance;
    float min_distance;
@@ -817,18 +817,15 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       if (tr.flFraction >= 1.0)
       {
          strcpy(item_name, STRING(pent->v.classname));
+		 ALERT( at_console, "%s is visible\n", item_name );
 
-         if ((strncmp("item_health", item_name, 11) == 0) ||
-             (strncmp("item_armor", item_name, 10) == 0) ||
-             (strncmp("ammo_", item_name, 5) == 0) ||
-             (strcmp("item_cells", item_name) == 0) ||
-             (strcmp("item_shells", item_name) == 0) ||
-             (strcmp("item_spikes", item_name) == 0) ||
-             (strcmp("item_rockets", item_name) == 0) ||
-			 (strcmp("team_hive", item_name) == 0) ||
-			 (strcmp("team_command", item_name) == 0) ||
-             ((strncmp("weapon_", item_name, 7) == 0) &&
-              (pent->v.owner == NULL)))
+         if (!strncmp("item_health", item_name, 11) ||
+             !strncmp("item_armor", item_name, 10) ||
+             !strncmp("ammo_", item_name, 5) ||
+             !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
+             !strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
+			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) ||
+             !strncmp("weapon_", item_name, 7) && (pent->v.owner == NULL))
          {
             distance = (pent->v.origin - origin).Length();
 
@@ -895,8 +892,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          waypoints[wpt_index].flags |= W_FL_AMMO;
       }
 
-      if ((strncmp("weapon_", nearest_name, 7) == 0) &&
-          (nearest_pent->v.owner == NULL))
+      if ((strncmp("weapon_", nearest_name, 7) == 0) && (nearest_pent->v.owner == NULL))
       {
          if (pEntity)
             ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a weapon!\n");
