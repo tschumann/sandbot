@@ -20,6 +20,9 @@ waypoint info	Print what type of waypoint a waypoint is
 Q. Can you add MetaMod support?
 A. I've tried and things just broke unexpectedly, so not right now.
 
+Q. Can it be used for dedicated servers?
+A. Maybe - I haven't tested it, but it should.
+
 == Changelog ==
 
 v0.2 (??/??/??)

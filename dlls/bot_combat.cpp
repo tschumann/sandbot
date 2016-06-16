@@ -190,6 +190,12 @@ bot_weapon_select_t cs_weapon_select[] = {
 };
 
 bot_weapon_select_t dod_weapon_select[] = {
+	/*{DOD_WEAPON_AMERKNIFE, "weapon_amerknife", 0.3, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_GERKNIFE, "weapon_gerknife", 0.3, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
 	/* terminator */
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };

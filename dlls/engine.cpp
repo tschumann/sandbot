@@ -318,8 +318,8 @@ int pfnPointContents(const float *rgflVector)
 }
 void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
 {
-  int index = -1;
-  UTIL_LogDPrintf("pfnMessageBegin: msg_dest=%d msg_type=%d ed=%x\n", msg_dest, msg_type, ed);
+	int index = -1;
+	UTIL_LogDPrintf("pfnMessageBegin: msg_dest=%d msg_type=%d ed=%x\n", msg_dest, msg_type, ed);
 
   if (ed)
   {
@@ -538,7 +538,9 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 	 else if (mod_id == NS_DLL)
      {
         if (msg_type == message_DeathMsg)
+		{
            botMsgFunction = BotClient_NS_DeathMsg;
+		}
 		else if( msg_type == gmsgCountdown )
 		{
 			botMsgFunction = BotClient_NS_CountDown;

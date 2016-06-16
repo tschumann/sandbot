@@ -1540,8 +1540,8 @@ void BotThink( bot_t *pBot )
       {
          // no enemy, let's just wander around...
 
-         if ((pEdict->v.waterlevel != 2) &&  // is bot NOT under water?
-             (pEdict->v.waterlevel != 3))
+		  // is bot NOT under water?
+         if ((pEdict->v.waterlevel != 2) && (pEdict->v.waterlevel != 3))
          {
             // reset pitch to 0 (level horizontally)
             pEdict->v.idealpitch = 0;
@@ -1743,8 +1743,7 @@ void BotThink( bot_t *pBot )
                         // if there was a wall on the left over 1/2 a second ago then
                         // 20% of the time randomly turn between 45 and 60 degrees
             
-                        if ((pBot->f_wall_on_left != 0) &&
-                            (pBot->f_wall_on_left <= gpGlobals->time - 0.5) &&
+                        if ((pBot->f_wall_on_left != 0) && (pBot->f_wall_on_left <= gpGlobals->time - 0.5) &&
                             (RANDOM_LONG(1, 100) <= 20))
                         {
                            pEdict->v.ideal_yaw += RANDOM_LONG(45, 60);
@@ -1762,8 +1761,7 @@ void BotThink( bot_t *pBot )
                         // if there was a wall on the right over 1/2 a second ago then
                         // 20% of the time randomly turn between 45 and 60 degrees
             
-                        if ((pBot->f_wall_on_right != 0) &&
-                            (pBot->f_wall_on_right <= gpGlobals->time - 0.5) &&
+                        if ((pBot->f_wall_on_right != 0) && (pBot->f_wall_on_right <= gpGlobals->time - 0.5) &&
                             (RANDOM_LONG(1, 100) <= 20))
                         {
                            pEdict->v.ideal_yaw -= RANDOM_LONG(45, 60);
@@ -1780,8 +1778,7 @@ void BotThink( bot_t *pBot )
                }
             
                // check if bot is about to hit a wall.  TraceResult gets returned
-               if ((pBot->f_dont_avoid_wall_time <= gpGlobals->time) &&
-                   BotCantMoveForward( pBot, &tr ))
+               if ((pBot->f_dont_avoid_wall_time <= gpGlobals->time) && BotCantMoveForward( pBot, &tr ))
                {
                   // ADD LATER
                   // need to check if bot can jump up or duck under here...
@@ -1793,8 +1790,7 @@ void BotThink( bot_t *pBot )
 
             // check if bot is on a ladder and has been on a ladder for
             // more than 5 seconds...
-            if ((pEdict->v.movetype == MOVETYPE_FLY) &&
-                (pBot->f_start_use_ladder_time > 0.0) &&
+            if ((pEdict->v.movetype == MOVETYPE_FLY) && (pBot->f_start_use_ladder_time > 0.0) &&
                 ((pBot->f_start_use_ladder_time + 5.0) <= gpGlobals->time))
             {
                // bot is stuck on a ladder...
@@ -1810,8 +1806,7 @@ void BotThink( bot_t *pBot )
             // check if the bot hasn't moved much since the last location
             // (and NOT on a ladder since ladder stuck handled elsewhere)
             // (don't check for stuck if f_dont_check_stuck in the future)
-            if ((moved_distance <= 1.0) && (pBot->prev_speed >= 1.0) &&
-                (pEdict->v.movetype != MOVETYPE_FLY) &&
+            if ((moved_distance <= 1.0) && (pBot->prev_speed >= 1.0) && (pEdict->v.movetype != MOVETYPE_FLY) &&
                 (pBot->f_dont_check_stuck < gpGlobals->time))
             {
                // the bot must be stuck!
@@ -1852,13 +1847,11 @@ void BotThink( bot_t *pBot )
 
             // should the bot pause for a while here?
             // (don't pause on ladders or while being "used"...
-            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->bot_skill]) &&
-                (pEdict->v.movetype != MOVETYPE_FLY) &&
+            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->bot_skill]) && (pEdict->v.movetype != MOVETYPE_FLY) &&
                 (pBot->pBotUser == NULL))
             {
                // set the time that the bot will stop "pausing"
-               pBot->f_pause_time = gpGlobals->time +
-                  RANDOM_FLOAT(pause_time[pBot->bot_skill][0], pause_time[pBot->bot_skill][1]);
+               pBot->f_pause_time = gpGlobals->time + RANDOM_FLOAT(pause_time[pBot->bot_skill][0], pause_time[pBot->bot_skill][1]);
             }
          }
       }
@@ -2006,8 +1999,11 @@ void BotThink( bot_t *pBot )
 			{
 				extern int UTIL_GetPoints( bot_t *player );
 
+				// only try and upgrade if there are points to spend
 				if( UTIL_GetPoints( pBot ) )
 				{
+					// check - upgrades are stored in pev->iuser4?
+					// find out what impulses mean what (check AvHMessage.h)
 					if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 					{
 					}
