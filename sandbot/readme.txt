@@ -23,6 +23,9 @@ A. I've tried and things just broke unexpectedly, so not right now.
 Q. Can it be used for dedicated servers?
 A. Maybe - I haven't tested it, but it should.
 
+Q. Can I make some waypoints?
+A. Yes, but hold off for now - things are probably going to change in that space.
+
 == Changelog ==
 
 v0.2 (18/06/16)
