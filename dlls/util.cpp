@@ -666,7 +666,8 @@ void UTIL_LogDPrintf( char *fmt, ... )
 {
 	extern cvar_t *developer;
 
-	if (0) // _DEBUG /*developer->value*/)
+#if _DEBUG
+	if (1) /*developer->value*/)
     {
 		va_list        argptr;
 		static char    string[1024];
@@ -679,6 +680,7 @@ void UTIL_LogDPrintf( char *fmt, ... )
 		// TODO: revert back to at_logged and get it working
 		ALERT( at_console, "%s", string );
 	}
+#endif
 }
 
 Vector UTIL_GetOrigin( edict_t *pEdict )

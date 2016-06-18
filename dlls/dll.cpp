@@ -922,7 +922,8 @@ void ClientCommand( edict_t *pEntity )
 
          return;
       }
-		else if (FStrEq(pcmd, "player_info") && _DEBUG)
+#if _DEBUG
+		else if (FStrEq(pcmd, "player_info"))
 		{
 			int playerIndex = atoi( arg1 );
 
@@ -956,6 +957,7 @@ void ClientCommand( edict_t *pEntity )
 
 			return;
 		}
+#endif
    }
 
    (*other_gFunctionTable.pfnClientCommand)(pEntity);
