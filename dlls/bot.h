@@ -182,8 +182,9 @@ struct bot_player_t
 	BOOL bIsUsed;
 };
 
-typedef struct
+class bot_t
 {
+public:
    bool is_used;
    int respawn_state;
    edict_t *pEdict;
@@ -327,7 +328,7 @@ typedef struct
    bot_current_weapon_t current_weapon;  // one current weapon for each bot
    int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 
-} bot_t;
+};
 
 // Only one of these allowed per entity, stored in pev->iuser3.
 typedef enum
