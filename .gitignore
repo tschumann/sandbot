@@ -6,7 +6,7 @@ dlls/Release/*
 *.suo
 *.user
 
+dlls/*.so
 *.o
-*.so
 
 *~
