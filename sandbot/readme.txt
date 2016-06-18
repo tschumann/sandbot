@@ -2,7 +2,7 @@ Sandbot
 
 == About ==
 Name: Sandbot
-Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (deathmatch) Gunman Chronicles and They Hunger (under the hood there is support for Half-Life Opposing Force (capture the flag), Day of Defeat, Team Fortress Classic, Natural Selection and The Ship but they are still experimental).
+Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (deathmatch) Gunman Chronicles, Natural Selection (combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (capture the flag), Day of Defeat, Team Fortress Classic, Natural Selection (classic) and The Ship but they are still experimental).
 Requirements: Steam versions of either Half-Life, Half-Life Opposing Force and the latest versions of Gunman Chronicles or They Hunger.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
