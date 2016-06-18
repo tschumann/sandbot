@@ -727,7 +727,7 @@ int UTIL_GetPoints( bot_t *player )
 	// int iSpent = *(int*)( (char*)(player) + 1581 );
 
 	// return iSpent;
-	return (int)UTIL_GetExperience(player->pEdict) - player->points_spent;
+	return (int)(UTIL_GetExperience(player->pEdict) / 100.0) - player->points_spent;
 }
 
 bool UTIL_IsEvolved( const bot_t *pBot )
@@ -755,4 +755,23 @@ bool UTIL_CanEvolve( const bot_t *pBot )
 	}
 
 	return true;
+}
+
+bool UTIL_IsNearHive(bot_t *pBot)
+{
+	edict_t *pEdict = pBot->pEdict;
+	Vector vecEnd;
+	edict_t *pent = NULL;
+
+	while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
+	{
+		float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+		if( distance <= 600 )
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

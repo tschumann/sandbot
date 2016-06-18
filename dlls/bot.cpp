@@ -1995,20 +1995,53 @@ void BotThink( bot_t *pBot )
 					}
 				}
 			}
-			else if( g_bInGame && UTIL_IsCombat() )
-			{
-				extern int UTIL_GetPoints( bot_t *player );
+		}
+		else if( g_bInGame && UTIL_IsCombat() )
+		{
+			extern int UTIL_GetPoints( bot_t *player );
+			extern bool UTIL_IsNearHive(bot_t *pBot);
 
-				// only try and upgrade if there are points to spend
-				if( UTIL_GetPoints( pBot ) )
+			// only try and upgrade if there are points to spend
+			if( UTIL_GetPoints( pBot ) )
+			{
+				// upgrades are stored in pev->iuser4 (mostly)
+				// find out what impulses mean what (check AvHMessage.h)
+				if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN && pBot->pBotEnemy == NULL && UTIL_IsNearHive(pBot) )
 				{
-					// check - upgrades are stored in pev->iuser4?
-					// find out what impulses mean what (check AvHMessage.h)
-					if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+					// carapace
+					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
 					{
+						pBot->pEdict->v.impulse = 101;
+						pBot->points_spent += 1;
 					}
-					else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
+					// fade
+					// TODO: this doesn't stick so if the bot is killed while evolving points_spent is wrong
+					else if( !(pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4) && UTIL_GetPoints( pBot ) >= 3 )
 					{
+						pBot->pEdict->v.impulse = 116;
+						pBot->points_spent += 3;
+					}
+				}
+				else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
+				{
+					// weapon damage 1
+					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
+					{
+						// FakeClientCommand(pBot->pEdict, "impulse", "23", NULL);
+						pBot->pEdict->v.impulse = 23;
+						pBot->points_spent += 1;
+					}
+					// shotgun
+					else if( !(pBot->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN)) && UTIL_GetPoints( pBot ) >= 1 )
+					{
+						pBot->pEdict->v.impulse = 64;
+						pBot->points_spent += 1;
+					}
+					// heavy machine gun
+					else if( !(pBot->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN)) && UTIL_GetPoints( pBot ) >= 1 )
+					{
+						pBot->pEdict->v.impulse = 65;
+						pBot->points_spent += 1;
 					}
 				}
 			}
@@ -2024,4 +2057,3 @@ void BotThink( bot_t *pBot )
 
    return;
 }
-

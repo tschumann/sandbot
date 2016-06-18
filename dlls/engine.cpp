@@ -56,19 +56,19 @@ int pfnPrecacheModel(char* s)
 	{
 		if( !strcmp(s, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/Jane.mdl");
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/Jane.mdl");
 		}
 		else if( !strcmp(s, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/John.mdl");
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/John.mdl");
 		}
 		else if( !strcmp(s, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/john2.mdl");
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/john2.mdl");
 		}
 		else if( !strcmp(s, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/models/player/Holliday.mdl");
+			return (*g_engfuncs.pfnPrecacheModel)("models/player/Holliday.mdl");
 		}
 	}
 

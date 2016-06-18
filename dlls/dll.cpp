@@ -251,6 +251,15 @@ int DispatchSpawn( edict_t *pent )
 
      m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
 
+	 if( mod_id == SHIP_DLL )
+	 {
+		 extern int pfnPrecacheModel(char* s);
+		pfnPrecacheModel("models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl");
+		pfnPrecacheModel("models/player/models/player/John.mdl/models/player/John.mdl.mdl");
+		pfnPrecacheModel("models/player/models/player/john2.mdl/models/player/john2.mdl.m");
+		pfnPrecacheModel("models/player/models/player/Holliday.mdl/models/player/Holliday");
+	 }
+
      g_GameRules = TRUE;
 
      is_team_play = 0.0;
@@ -906,19 +915,47 @@ void ClientCommand( edict_t *pEntity )
 
          while ((pent = UTIL_FindEntityInSphere( pent, pEntity->v.origin, radius )) != NULL)
          {
-            sprintf(str, "Found %s at %5.2f %5.2f %5.2f\n",
-                       STRING(pent->v.classname),
-                       pent->v.origin.x, pent->v.origin.y,
-                       pent->v.origin.z);
+            sprintf(str, "Found %s at %5.2f %5.2f %5.2f\n", STRING(pent->v.classname),
+                       pent->v.origin.x, pent->v.origin.y, pent->v.origin.z);
             ClientPrint(pEntity, HUD_PRINTCONSOLE, str);
-
-            FILE *fp=fopen("bot.txt", "a");
-            fprintf(fp, "ClientCommmand: search %s", str);
-            fclose(fp);
          }
 
          return;
       }
+		else if (FStrEq(pcmd, "player_info") && _DEBUG)
+		{
+			int playerIndex = atoi( arg1 );
+
+			edict_t *player = g_engfuncs.pfnPEntityOfEntIndex( playerIndex );
+
+			if( mod_id == NS_DLL )
+			{
+				extern float UTIL_GetResources( edict_t *player );
+				extern float UTIL_GetExperience( edict_t *player );
+
+				if( player->v.team == TEAM_MARINE )
+				{
+					ALERT( at_console, "Team: Marine\n" );
+				}
+				else if( player->v.team == TEAM_ALIEN )
+				{
+					ALERT( at_console, "Team: Alien\n" );
+				}
+				ALERT( at_console, "Resources: %f\n", UTIL_GetResources( player ) );
+				ALERT( at_console, "Experience: %f\n", UTIL_GetExperience( player ) );
+
+				if( (player->v.iuser4 & MASK_UPGRADE_1) && (player->v.team == TEAM_MARINE))
+				{
+					ALERT( at_console, "Marine Weapons 1\n" );
+				}
+				if( (player->v.iuser4 & MASK_UPGRADE_1) && (player->v.team == TEAM_ALIEN))
+				{
+					ALERT( at_console, "Carapace\n" );
+				}
+			}
+
+			return;
+		}
    }
 
    (*other_gFunctionTable.pfnClientCommand)(pEntity);
