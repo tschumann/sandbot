@@ -2,7 +2,7 @@ Sandbot
 
 == About ==
 Name: Sandbot
-Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (deathmatch) Gunman Chronicles, Natural Selection (combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (capture the flag), Day of Defeat, Team Fortress Classic, Natural Selection (classic) and The Ship but they are still experimental).
+Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (deathmatch), Gunman Chronicles, Natural Selection (combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (capture the flag), Day of Defeat, Team Fortress Classic, Natural Selection (classic) and The Ship but they are still experimental).
 Requirements: Steam versions of either Half-Life, Half-Life Opposing Force and the latest versions of Gunman Chronicles or They Hunger.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
@@ -25,12 +25,13 @@ A. Maybe - I haven't tested it, but it should.
 
 == Changelog ==
 
-v0.2 (??/??/??)
-- Reduced Gunman Chronicles gauss pistol rate of fire slightly.
+v0.2 (18/06/16)
+- [Natural Selection] Added better combat mode play
+- [Gunman Chronicles] Gauss pistol rate of fire slightly.
 - Started using new bot framework (which brings Linux support with it).
 - Added some documenation.
 
-v0.1 (2/05/16)
+v0.1 (02/05/16)
 - Initial release (after more than 5 years of being untouched and unreleased).
 
 == End User License Agreement ==
@@ -47,6 +48,7 @@ Thanks to:
 Valve, for the Half-Life SDK and the Valve ERC.
 Todd Aspeotis, for teaching me C++.
 Jeffrey 'botman' Broome for his bot code and other cool stuff.
+Maleficus for setting a high standard of how good bots can be.
 ModDB for being a good host.
 Bots United for their support.
 
