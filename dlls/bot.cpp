@@ -2006,7 +2006,7 @@ void BotThink( bot_t *pBot )
 			{
 				// upgrades are stored in pev->iuser4 (mostly)
 				// find out what impulses mean what (check AvHMessage.h)
-				if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN && pBot->pBotEnemy == NULL && UTIL_IsNearHive(pBot) )
+				if( pBot->GetTeam() == TEAM_ALIEN && pBot->pBotEnemy == NULL && UTIL_IsNearHive(pBot) )
 				{
 					// carapace
 					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
@@ -2022,7 +2022,7 @@ void BotThink( bot_t *pBot )
 						pBot->points_spent += 3;
 					}
 				}
-				else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
+				else if( pBot->GetTeam() == TEAM_MARINE )
 				{
 					// weapon damage 1
 					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
@@ -2032,7 +2032,7 @@ void BotThink( bot_t *pBot )
 						pBot->points_spent += 1;
 					}
 					// shotgun
-					else if( !(pBot->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN)) && UTIL_GetPoints( pBot ) >= 1 )
+					else if( !pBot->HasShotgun() && UTIL_GetPoints( pBot ) >= 1 )
 					{
 						pBot->pEdict->v.impulse = 64;
 						pBot->points_spent += 1;
@@ -2056,4 +2056,14 @@ void BotThink( bot_t *pBot )
    g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
    return;
+}
+
+int bot_t::GetTeam()
+{
+	return this->pEdict->v.team;
+}
+
+bool bot_t::HasShotgun()
+{
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
 }

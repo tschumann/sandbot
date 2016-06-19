@@ -185,118 +185,123 @@ struct bot_player_t
 class bot_t
 {
 public:
-   bool is_used;
-   int respawn_state;
-   edict_t *pEdict;
-   bool need_to_initialize;
-   char name[BOT_NAME_LEN+1];
-   char skin[BOT_SKIN_LEN+1];
-   int bot_skill;
-   int not_started;
-   int start_action;
-   float kick_time;
-   float create_time;
+	virtual int GetTeam();
 
-   // things from pev in CBasePlayer...
-   int bot_team;
-   int bot_class;
-   int bot_money;        // for Counter-Strike
-   int primary_weapon;   // for Front Line Force
-   int secondary_weapon; // for Front Line Force
-   int defender;         // for Front Line Force
-   int warmup;           // for Front Line Force
-   float idle_angle;
-   float idle_angle_time;  // for Front Line Force
-   int round_end;        // round has ended (in round based games)
-   float blinded_time;
+	// TODO: this is for Natural Selection only
+	virtual bool HasShotgun();
 
-   float f_max_speed;
-   float prev_speed;
-   float prev_time;
-   Vector v_prev_origin;
+	bool is_used;
+	int respawn_state;
+	edict_t *pEdict;
+	bool need_to_initialize;
+	char name[BOT_NAME_LEN+1];
+	char skin[BOT_SKIN_LEN+1];
+	int bot_skill;
+	int not_started;
+	int start_action;
+	float kick_time;
+	float create_time;
 
-   float f_find_item;
-   edict_t *pBotPickupItem;
+	// things from pev in CBasePlayer...
+	int bot_team;
+	int bot_class;
+	int bot_money;        // for Counter-Strike
+	int primary_weapon;   // for Front Line Force
+	int secondary_weapon; // for Front Line Force
+	int defender;         // for Front Line Force
+	int warmup;           // for Front Line Force
+	float idle_angle;
+	float idle_angle_time;  // for Front Line Force
+	int round_end;        // round has ended (in round based games)
+	float blinded_time;
 
-   int ladder_dir;
-   float f_start_use_ladder_time;
-   float f_end_use_ladder_time;
-   bool  waypoint_top_of_ladder;
+	float f_max_speed;
+	float prev_speed;
+	float prev_time;
+	Vector v_prev_origin;
 
-   float f_wall_check_time;
-   float f_wall_on_right;
-   float f_wall_on_left;
-   float f_dont_avoid_wall_time;
-   float f_look_for_waypoint_time;
-   float f_jump_time;
-   float f_dont_check_stuck;
+	float f_find_item;
+	edict_t *pBotPickupItem;
 
-   int wander_dir;
-   float f_exit_water_time;
+	int ladder_dir;
+	float f_start_use_ladder_time;
+	float f_end_use_ladder_time;
+	bool  waypoint_top_of_ladder;
 
-   Vector waypoint_origin;
-   float f_waypoint_time;
-   int curr_waypoint_index;
-   int prev_waypoint_index[5];
-   float f_random_waypoint_time;
-   int waypoint_goal;
-   float f_waypoint_goal_time;
-   bool waypoint_near_flag;
-   Vector waypoint_flag_origin;
-   float prev_waypoint_distance;
-   int weapon_points[6];  // five weapon locations + 1 null
+	float f_wall_check_time;
+	float f_wall_on_right;
+	float f_wall_on_left;
+	float f_dont_avoid_wall_time;
+	float f_look_for_waypoint_time;
+	float f_jump_time;
+	float f_dont_check_stuck;
 
-   edict_t *pBotEnemy;
-   float f_bot_see_enemy_time;
-   float f_bot_find_enemy_time;
-   edict_t *pBotUser;
-   float f_bot_use_time;
-   float f_bot_spawn_time;
-   edict_t *killer_edict;
-   bool  b_bot_say_killed;
-   float f_bot_say_killed;
-   float f_sniper_aim_time;
+	int wander_dir;
+	float f_exit_water_time;
 
-   float f_engineer_build_time;
+	Vector waypoint_origin;
+	float f_waypoint_time;
+	int curr_waypoint_index;
+	int prev_waypoint_index[5];
+	float f_random_waypoint_time;
+	int waypoint_goal;
+	float f_waypoint_goal_time;
+	bool waypoint_near_flag;
+	Vector waypoint_flag_origin;
+	float prev_waypoint_distance;
+	int weapon_points[6];  // five weapon locations + 1 null
 
-   int   sentrygun_waypoint;
-   bool  b_build_sentrygun;
-   int   sentrygun_level;
-   int   sentrygun_attack_count;
-   float f_other_sentry_time;
-   bool  b_upgrade_sentry;
+	edict_t *pBotEnemy;
+	float f_bot_see_enemy_time;
+	float f_bot_find_enemy_time;
+	edict_t *pBotUser;
+	float f_bot_use_time;
+	float f_bot_spawn_time;
+	edict_t *killer_edict;
+	bool  b_bot_say_killed;
+	float f_bot_say_killed;
+	float f_sniper_aim_time;
 
-   int   dispenser_waypoint;
-   bool  b_build_dispenser;
-   int   dispenser_built;
-   int   dispenser_attack_count;
-   
+	float f_engineer_build_time;
 
-   float f_shoot_time;
-   float f_primary_charging;
-   float f_secondary_charging;
-   int   charging_weapon_id;
-   float f_move_speed;
-   float f_pause_time;
-   float f_sound_update_time;
-   bool  bot_has_flag;
+	int   sentrygun_waypoint;
+	bool  b_build_sentrygun;
+	int   sentrygun_level;
+	int   sentrygun_attack_count;
+	float f_other_sentry_time;
+	bool  b_upgrade_sentry;
 
-   bool  b_see_tripmine;
-   bool  b_shoot_tripmine;
-   Vector v_tripmine;
+	int   dispenser_waypoint;
+	bool  b_build_dispenser;
+	int   dispenser_built;
+	int   dispenser_attack_count;
 
-   bool  b_use_health_station;
-   float f_use_health_time;
-   bool  b_use_HEV_station;
-   float f_use_HEV_time;
 
-   bool  b_use_button;
-   float f_use_button_time;
-   bool  b_lift_moving;
+	float f_shoot_time;
+	float f_primary_charging;
+	float f_secondary_charging;
+	int   charging_weapon_id;
+	float f_move_speed;
+	float f_pause_time;
+	float f_sound_update_time;
+	bool  bot_has_flag;
 
-   bool  b_use_capture;
-   float f_use_capture_time;
-   edict_t *pCaptureEdict;
+	bool  b_see_tripmine;
+	bool  b_shoot_tripmine;
+	Vector v_tripmine;
+
+	bool  b_use_health_station;
+	float f_use_health_time;
+	bool  b_use_HEV_station;
+	float f_use_HEV_time;
+
+	bool  b_use_button;
+	float f_use_button_time;
+	bool  b_lift_moving;
+
+	bool  b_use_capture;
+	float f_use_capture_time;
+	edict_t *pCaptureEdict;
 
    	// Gunman Chronicles
 	bool bFists;

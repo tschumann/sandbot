@@ -725,7 +725,7 @@ float UTIL_GetExperience( edict_t *player )
 int UTIL_GetPoints( bot_t *player )
 {
 	// TODO: wrong? see http://www.modns.org/index.php?showtopic=2579
-	// can be calculated from applied upgrades? better than platform-dependant offsets
+	// TODO: does it matter? the bot can you try to upgrade regardless of if it fails
 	// int iSpent = *(int*)( (char*)(player) + 1581 );
 
 	// return iSpent;
