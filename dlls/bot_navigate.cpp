@@ -366,8 +366,6 @@ bool BotFindWaypoint( bot_t *pBot )
    return FALSE;  // couldn't find a waypoint
 }
 
-extern bool UTIL_IsCombat();
-
 bool BotHeadTowardWaypoint( bot_t *pBot )
 {
    int i;
@@ -590,7 +588,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    }
    else if (mod_id == NS_DLL )
    {
-	   if( UTIL_IsCombat() && pBot->pBotEnemy == NULL )
+	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
 	   {
 		   if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 		   {

@@ -89,6 +89,10 @@ float bot_cfg_pause_time = 0.0;
 float respawn_time = 0.0;
 bool spawn_time_reset = FALSE;
 
+// cheap and hacky polymorphism
+Game game;
+Game *pGame = &game;
+
 int flf_bug_fix;  // for FLF 1.1 capture point bug
 int flf_bug_check;  // for FLF 1.1 capture point bug
 
@@ -123,10 +127,7 @@ char *show_menu_3 =
 char *show_menu_3_flf =
    {"Waypoint Tags\n\n1. Capture Point\n2. Defend Point\n3. Prone\n\n5. CANCEL"};
 
-
-void UpdateClientData(const struct edict_s *ent, int sendweapons, struct clientdata_s *cd);
 void ProcessBotCfgFile(void);
-
 
 void GameDLLInit( void )
 {
@@ -189,10 +190,9 @@ void GameDLLInit( void )
 
 int DispatchSpawn( edict_t *pent )
 {
-   int index;
+	int index;
 
-
-  char *pClassname = (char *)STRING(pent->v.classname);
+	char *pClassname = (char *)STRING(pent->v.classname);
 
   if (debug_engine)
   {
@@ -341,8 +341,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
       }
       else if (pent_info_tfdetect == NULL)
       {
-         if ((strcmp(pkvd->szKeyName, "classname") == 0) &&
-             (strcmp(pkvd->szValue, "info_tfdetect") == 0))
+         if ((strcmp(pkvd->szKeyName, "classname") == 0) && (strcmp(pkvd->szValue, "info_tfdetect") == 0))
          {
             pent_info_tfdetect = pentKeyvalue;
          }
@@ -364,8 +363,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
       }
       else if (pent_item_tfgoal == NULL)
       {
-         if ((strcmp(pkvd->szKeyName, "classname") == 0) &&
-             (strcmp(pkvd->szValue, "item_tfgoal") == 0))
+         if ((strcmp(pkvd->szKeyName, "classname") == 0) && (strcmp(pkvd->szValue, "item_tfgoal") == 0))
          {
             if (num_flags < MAX_FLAGS)
             {
@@ -405,8 +403,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
    {
       if (pent_info_ctfdetect == NULL)
       {
-         if ((strcmp(pkvd->szKeyName, "classname") == 0) &&
-             (strcmp(pkvd->szValue, "info_ctfdetect") == 0))
+         if ((strcmp(pkvd->szKeyName, "classname") == 0) && (strcmp(pkvd->szValue, "info_ctfdetect") == 0))
          {
             pent_info_ctfdetect = pentKeyvalue;
          }
@@ -922,8 +919,7 @@ void ClientCommand( edict_t *pEntity )
 
          return;
       }
-#if _DEBUG
-		else if (FStrEq(pcmd, "player_info"))
+		else if (FStrEq(pcmd, "player_info") && DEBUG_CODE)
 		{
 			int playerIndex = atoi( arg1 );
 
@@ -957,7 +953,6 @@ void ClientCommand( edict_t *pEntity )
 
 			return;
 		}
-#endif
    }
 
    (*other_gFunctionTable.pfnClientCommand)(pEntity);

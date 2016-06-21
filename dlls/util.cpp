@@ -666,8 +666,7 @@ void UTIL_LogDPrintf( char *fmt, ... )
 {
 	extern cvar_t *developer;
 
-#if _DEBUG
-	if (1 /*developer->value*/)
+	if (DEBUG_CODE /*developer->value*/)
     {
 		va_list        argptr;
 		static char    string[1024];
@@ -680,7 +679,6 @@ void UTIL_LogDPrintf( char *fmt, ... )
 		// TODO: revert back to at_logged and get it working
 		ALERT( at_console, "%s", string );
 	}
-#endif
 }
 
 Vector UTIL_GetOrigin( edict_t *pEdict )
@@ -705,13 +703,6 @@ bool UTIL_IsBuilt( edict_t *pent )
     return true;
 }
 
-bool UTIL_IsCombat()
-{
-	const char *szMap = STRING(gpGlobals->mapname);
-
-	return (szMap[0] == 'c') && (szMap[1] == 'o');
-}
-
 float UTIL_GetResources( edict_t *player )
 {
 	return player->v.vuser4.z / 100.0;
@@ -726,6 +717,7 @@ int UTIL_GetPoints( bot_t *player )
 {
 	// TODO: wrong? see http://www.modns.org/index.php?showtopic=2579
 	// TODO: does it matter? the bot can you try to upgrade regardless of if it fails
+	// TODO: it gets displayed on the HUD (i.e. from the client) so the client must be able to easily access it
 	// int iSpent = *(int*)( (char*)(player) + 1581 );
 
 	// return iSpent;

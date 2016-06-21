@@ -1949,12 +1949,11 @@ void BotThink( bot_t *pBot )
 	{
 		extern bool UTIL_IsEvolved( const bot_t *pBot );
 		extern bool UTIL_CanEvolve( const bot_t *pBot );
-		extern bool UTIL_IsCombat();
 		extern float UTIL_GetResources( edict_t *player );
 
 		extern bool g_bInGame;
 
-		if( g_bInGame && !UTIL_IsCombat() )
+		if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
 		{
 			if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 			{
@@ -1996,7 +1995,7 @@ void BotThink( bot_t *pBot )
 				}
 			}
 		}
-		else if( g_bInGame && UTIL_IsCombat() )
+		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
 		{
 			extern int UTIL_GetPoints( bot_t *player );
 			extern bool UTIL_IsNearHive(bot_t *pBot);
@@ -2006,7 +2005,7 @@ void BotThink( bot_t *pBot )
 			{
 				// upgrades are stored in pev->iuser4 (mostly)
 				// find out what impulses mean what (check AvHMessage.h)
-				if( pBot->GetTeam() == TEAM_ALIEN && pBot->pBotEnemy == NULL && UTIL_IsNearHive(pBot) )
+				if( pBot->GetTeam() == TEAM_ALIEN && !pBot->HasEnemy() && UTIL_IsNearHive(pBot) )
 				{
 					// carapace
 					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
@@ -2032,30 +2031,27 @@ void BotThink( bot_t *pBot )
 						pBot->points_spent += 1;
 					}
 					// shotgun
-					else if( !pBot->HasShotgun() && UTIL_GetPoints( pBot ) >= 1 )
+					else if( !((NSBot *)pBot)->HasShotgun() && UTIL_GetPoints( pBot ) >= 1 )
 					{
-						pBot->pEdict->v.impulse = 64;
-						pBot->points_spent += 1;
+						((NSBot *)pBot)->UpgradeToShotgun();
 					}
-					// heavy machine gun
-					else if( !(pBot->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN)) && UTIL_GetPoints( pBot ) >= 1 )
+					else if( !((NSBot *)pBot)->HasHMG() && UTIL_GetPoints( pBot ) >= 1 )
 					{
-						pBot->pEdict->v.impulse = 65;
-						pBot->points_spent += 1;
+						((NSBot *)pBot)->UpgradeToHMG();
 					}
 				}
 			}
 		}
 	}
 
-   BotFixIdealPitch (pEdict);
-   BotFixIdealYaw (pEdict);
-   BotFixBodyAngles (pEdict);
-   BotFixViewAngles (pEdict);
+	BotFixIdealPitch (pEdict);
+	BotFixIdealYaw (pEdict);
+	BotFixBodyAngles (pEdict);
+	BotFixViewAngles (pEdict);
 
-   g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
+	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
-   return;
+	return;
 }
 
 int bot_t::GetTeam()
@@ -2063,7 +2059,27 @@ int bot_t::GetTeam()
 	return this->pEdict->v.team;
 }
 
-bool bot_t::HasShotgun()
+bool bot_t::HasEnemy()
+{
+	return this->pBotEnemy != NULL;
+}
+
+bool NSBot::HasShotgun()
 {
 	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
+}
+
+bool NSBot::HasHMG()
+{
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
+}
+
+void NSBot::UpgradeToShotgun()
+{
+	this->pEdict->v.impulse = this->COMBAT_UPGRADE_SHOTGUN;
+}
+
+void NSBot::UpgradeToHMG()
+{
+	this->pEdict->v.impulse = this->COMBAT_UPGRADE_HMG;
 }

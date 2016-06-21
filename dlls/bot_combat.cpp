@@ -768,9 +768,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 	{
 		pent = NULL;
 
-		extern bool UTIL_IsCombat();
-
-		if( mod_id == NS_DLL && UTIL_IsCombat() )
+		if( mod_id == NS_DLL && ((NSGame *)pGame)->IsCombat() )
 		{
 			if( pBot->pEdict->v.team == TEAM_MARINE )
 			{

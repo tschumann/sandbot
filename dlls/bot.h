@@ -35,6 +35,12 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 #endif
 
 
+#if _DEBUG
+#define DEBUG_CODE 1
+#else
+#define DEBUG_CODE 0
+#endif // _DEBUG
+
 
 // define constants used to identify the MOD we are playing...
 
@@ -175,6 +181,33 @@ typedef struct
 	int  iAmmo2;  // amount of ammo in secondary reserve
 } bot_current_weapon_t;
 
+class Game
+{
+};
+
+class GearboxGame : public Game
+{
+public:
+	bool IsCTF()
+	{
+		extern edict_t *pent_info_ctfdetect;
+		return pent_info_ctfdetect != NULL;
+	}
+};
+
+class NSGame : public Game
+{
+public:
+	bool IsCombat()
+	{
+		const char *szMap = STRING(gpGlobals->mapname);
+
+		return (szMap[0] == 'c') && (szMap[1] == 'o');
+	}
+};
+
+extern Game *pGame;
+
 struct bot_player_t
 {
 	char szName[32];
@@ -186,9 +219,7 @@ class bot_t
 {
 public:
 	virtual int GetTeam();
-
-	// TODO: this is for Natural Selection only
-	virtual bool HasShotgun();
+	virtual bool HasEnemy();
 
 	bool is_used;
 	int respawn_state;
@@ -333,6 +364,21 @@ public:
    bot_current_weapon_t current_weapon;  // one current weapon for each bot
    int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 
+};
+
+class NSBot : public bot_t
+{
+public:
+	virtual bool HasShotgun();
+	virtual bool HasHMG();
+	virtual void UpgradeToShotgun();
+	virtual void UpgradeToHMG();
+
+	// TODO: possibly make these equal to the exact names of things in the Natural
+	// Selection code so they can be traced back if necessary (ideally use the exact
+	// names used in Natural Selection but they can be vague at times)
+	const static int COMBAT_UPGRADE_SHOTGUN = 64;
+	const static int COMBAT_UPGRADE_HMG = 65;
 };
 
 // Only one of these allowed per entity, stored in pev->iuser3.
