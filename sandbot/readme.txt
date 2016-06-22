@@ -28,8 +28,11 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
+v0.2.1 (??/??/??)
+- [Natural Selection] Marine bots will no longer upgrade when they have an enemy in combat mode.
+
 v0.2 (18/06/16)
-- [Natural Selection] Added better combat mode play
+- [Natural Selection] Added better combat mode play.
 - [Gunman Chronicles] Gauss pistol rate of fire slightly.
 - Started using new bot framework (which brings Linux support with it).
 - Added some documenation.

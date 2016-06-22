@@ -183,6 +183,10 @@ typedef struct
 
 class Game
 {
+protected:
+	// TODO: these should be in NSGame
+	edict_t *pCommandChair;
+	edict_t **pHives;
 };
 
 class GearboxGame : public Game
@@ -204,6 +208,11 @@ public:
 
 		return (szMap[0] == 'c') && (szMap[1] == 'o');
 	}
+
+	edict_t **GetHives()
+	{
+		return this->pHives;
+	}
 };
 
 extern Game *pGame;
@@ -218,6 +227,7 @@ struct bot_player_t
 class bot_t
 {
 public:
+	virtual void OnSpawn();
 	virtual int GetTeam();
 	virtual bool HasEnemy();
 
@@ -369,16 +379,29 @@ public:
 class NSBot : public bot_t
 {
 public:
+	virtual bool IsNearHive();
+
+	virtual bool HasWeaponDamage1();
 	virtual bool HasShotgun();
 	virtual bool HasHMG();
+	virtual void UpgradeToWeaponDamage1();
 	virtual void UpgradeToShotgun();
 	virtual void UpgradeToHMG();
+
+	virtual bool HasCarapace();
+	virtual void UpgradeToCarapace();
+	virtual void EvolveToFade();
+
+	virtual bool IsFade();
 
 	// TODO: possibly make these equal to the exact names of things in the Natural
 	// Selection code so they can be traced back if necessary (ideally use the exact
 	// names used in Natural Selection but they can be vague at times)
+	const static int COMBAT_UPGRADE_WEAPON_DAMAGE_1 = 23;
 	const static int COMBAT_UPGRADE_SHOTGUN = 64;
 	const static int COMBAT_UPGRADE_HMG = 65;
+	const static int COMBAT_UPGRADE_CARAPACE = 101;	
+	const static int EVOLVE_TO_FADE = 116;
 };
 
 // Only one of these allowed per entity, stored in pev->iuser3.

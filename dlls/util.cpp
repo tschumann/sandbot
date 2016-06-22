@@ -750,22 +750,3 @@ bool UTIL_CanEvolve( const bot_t *pBot )
 
 	return true;
 }
-
-bool UTIL_IsNearHive(bot_t *pBot)
-{
-	edict_t *pEdict = pBot->pEdict;
-	Vector vecEnd;
-	edict_t *pent = NULL;
-
-	while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
-	{
-		float distance = (pent->v.origin - pEdict->v.origin).Length();
-
-		if( distance <= 600 )
-		{
-			return true;
-		}
-	}
-
-	return false;
-}

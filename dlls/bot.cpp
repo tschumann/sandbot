@@ -370,6 +370,8 @@ void player( entvars_t *pev )
 
 void BotSpawnInit( bot_t *pBot )
 {
+	pBot->OnSpawn();
+
 	pBot->v_prev_origin = Vector(9999.0, 9999.0, 9999.0);
 	pBot->prev_time = gpGlobals->time;
 
@@ -1997,48 +1999,31 @@ void BotThink( bot_t *pBot )
 		}
 		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
 		{
-			extern int UTIL_GetPoints( bot_t *player );
-			extern bool UTIL_IsNearHive(bot_t *pBot);
-
-			// only try and upgrade if there are points to spend
-			if( UTIL_GetPoints( pBot ) )
+			// find out what impulses mean what (check AvHMessage.h)
+			if( pBot->GetTeam() == TEAM_ALIEN && !pBot->HasEnemy() && ((NSBot *)pBot)->IsNearHive() )
 			{
-				// upgrades are stored in pev->iuser4 (mostly)
-				// find out what impulses mean what (check AvHMessage.h)
-				if( pBot->GetTeam() == TEAM_ALIEN && !pBot->HasEnemy() && UTIL_IsNearHive(pBot) )
+				if( !((NSBot *)pBot)->HasCarapace() )
 				{
-					// carapace
-					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
-					{
-						pBot->pEdict->v.impulse = 101;
-						pBot->points_spent += 1;
-					}
-					// fade
-					// TODO: this doesn't stick so if the bot is killed while evolving points_spent is wrong
-					else if( !(pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4) && UTIL_GetPoints( pBot ) >= 3 )
-					{
-						pBot->pEdict->v.impulse = 116;
-						pBot->points_spent += 3;
-					}
+					((NSBot *)pBot)->UpgradeToCarapace();					
 				}
-				else if( pBot->GetTeam() == TEAM_MARINE )
+				else if( !((NSBot *)pBot)->IsFade() )
 				{
-					// weapon damage 1
-					if( !(pBot->pEdict->v.iuser4 & MASK_UPGRADE_1) && UTIL_GetPoints( pBot ) >= 1 )
-					{
-						// FakeClientCommand(pBot->pEdict, "impulse", "23", NULL);
-						pBot->pEdict->v.impulse = 23;
-						pBot->points_spent += 1;
-					}
-					// shotgun
-					else if( !((NSBot *)pBot)->HasShotgun() && UTIL_GetPoints( pBot ) >= 1 )
-					{
-						((NSBot *)pBot)->UpgradeToShotgun();
-					}
-					else if( !((NSBot *)pBot)->HasHMG() && UTIL_GetPoints( pBot ) >= 1 )
-					{
-						((NSBot *)pBot)->UpgradeToHMG();
-					}
+					((NSBot *)pBot)->EvolveToFade();
+				}
+			}
+			else if( pBot->GetTeam() == TEAM_MARINE && !pBot->HasEnemy() )
+			{
+				if( !((NSBot *)pBot)->HasWeaponDamage1() )
+				{
+					((NSBot *)pBot)->UpgradeToWeaponDamage1();
+				}
+				else if( !((NSBot *)pBot)->HasShotgun() )
+				{
+					((NSBot *)pBot)->UpgradeToShotgun();
+				}
+				else if( !((NSBot *)pBot)->HasHMG() )
+				{
+					((NSBot *)pBot)->UpgradeToHMG();
 				}
 			}
 		}
@@ -2054,6 +2039,10 @@ void BotThink( bot_t *pBot )
 	return;
 }
 
+void bot_t::OnSpawn()
+{
+}
+
 int bot_t::GetTeam()
 {
 	return this->pEdict->v.team;
@@ -2062,6 +2051,29 @@ int bot_t::GetTeam()
 bool bot_t::HasEnemy()
 {
 	return this->pBotEnemy != NULL;
+}
+
+bool NSBot::IsNearHive()
+{
+	edict_t *pent = NULL;
+
+	// TODO: cache the results of this in NSGame
+	while( pent = UTIL_FindEntityByClassname( pent, "team_hive" ) )
+	{
+		float distance = (pent->v.origin - this->pEdict->v.origin).Length();
+
+		if( distance <= 600 )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool NSBot::HasWeaponDamage1()
+{
+	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
 }
 
 bool NSBot::HasShotgun()
@@ -2074,6 +2086,11 @@ bool NSBot::HasHMG()
 	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
 }
 
+void NSBot::UpgradeToWeaponDamage1()
+{
+	this->pEdict->v.impulse = this->COMBAT_UPGRADE_WEAPON_DAMAGE_1;
+}
+
 void NSBot::UpgradeToShotgun()
 {
 	this->pEdict->v.impulse = this->COMBAT_UPGRADE_SHOTGUN;
@@ -2082,4 +2099,31 @@ void NSBot::UpgradeToShotgun()
 void NSBot::UpgradeToHMG()
 {
 	this->pEdict->v.impulse = this->COMBAT_UPGRADE_HMG;
+}
+
+bool NSBot::HasCarapace()
+{
+	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
+}
+
+void NSBot::UpgradeToCarapace()
+{
+	this->pEdict->v.impulse = this->COMBAT_UPGRADE_CARAPACE;
+}
+
+void NSBot::EvolveToFade()
+{
+	if( ((NSGame *)pGame)->IsCombat() )
+	{
+		this->pEdict->v.impulse = this->EVOLVE_TO_FADE;
+	}
+	else
+	{
+		// TODO:
+	}
+}
+
+bool NSBot::IsFade()
+{
+	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4;
 }
