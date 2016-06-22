@@ -376,6 +376,17 @@ public:
 
 };
 
+class GunmanBot : public bot_t
+{
+public:
+	virtual void OnSpawn();
+
+	virtual void UseGaussPistolPulse();
+	virtual void UseGaussPistolCharge();
+	virtual void UseGaussPistolRapid();
+	virtual void UseGaussPistolSniper();
+};
+
 class NSBot : public bot_t
 {
 public:

@@ -2053,6 +2053,38 @@ bool bot_t::HasEnemy()
 	return this->pBotEnemy != NULL;
 }
 
+void GunmanBot::OnSpawn()
+{
+	if( RANDOM_LONG(1, 100) <= 50 )
+	{
+		this->UseGaussPistolPulse();
+	}
+	else
+	{
+		this->UseGaussPistolRapid();
+	}
+}
+
+void GunmanBot::UseGaussPistolPulse()
+{
+	// TODO:
+}
+
+void GunmanBot::UseGaussPistolCharge()
+{
+	// TODO:
+}
+
+void GunmanBot::UseGaussPistolRapid()
+{
+	// TODO:
+}
+
+void GunmanBot::UseGaussPistolSniper()
+{
+	// TODO:
+}
+
 bool NSBot::IsNearHive()
 {
 	edict_t *pent = NULL;
