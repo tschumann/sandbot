@@ -148,7 +148,7 @@ void GameDLLInit( void )
    whine_count = 0;
 
    // initialize the bots array of structures...
-   memset(bots, 0, sizeof(bots));
+   // memset(bots, 0, sizeof(bots));
 
    for (i=0; i < 5; i++)
       recent_bot_whine[i] = -1;
