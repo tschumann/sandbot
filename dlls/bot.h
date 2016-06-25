@@ -183,6 +183,10 @@ typedef struct
 
 class Game
 {
+public:
+	bool IsCTF() { return false; };
+	bool IsCombat() { return false; };
+	edict_t **GetHives() { return NULL; };
 protected:
 	// TODO: these should be in NSGame
 	edict_t *pCommandChair;
@@ -371,9 +375,30 @@ public:
 	bool bUseDoor;
 	float fUseDoorTime;
 
-   bot_current_weapon_t current_weapon;  // one current weapon for each bot
-   int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
+	bot_current_weapon_t current_weapon;  // one current weapon for each bot
+	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 
+	// Gunman Chronicles
+	virtual void UseGaussPistolPulse() {};
+	virtual void UseGaussPistolCharge() {};
+	virtual void UseGaussPistolRapid() {};
+	virtual void UseGaussPistolSniper() {};
+
+	// Natural Selection
+	virtual bool IsNearHive() { return false; };
+
+	virtual bool HasWeaponDamage1() { return false; };
+	virtual bool HasShotgun() { return false; };
+	virtual bool HasHMG() { return false; };
+	virtual void UpgradeToWeaponDamage1() {};
+	virtual void UpgradeToShotgun() {};
+	virtual void UpgradeToHMG() {};
+
+	virtual bool HasCarapace() { return false; };
+	virtual void UpgradeToCarapace() {};
+	virtual void EvolveToFade() {};
+
+	virtual bool IsFade() { return false; };
 };
 
 class GunmanBot : public bot_t

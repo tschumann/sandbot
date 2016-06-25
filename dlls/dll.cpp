@@ -1113,8 +1113,8 @@ void StartFrame( void )
 
   for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
   {
-     if ((bots[bot_index].is_used) &&  // is this slot used AND
-         (bots[bot_index].respawn_state == RESPAWN_IDLE))  // not respawning
+	 // is this slot used AND not respawning
+     if (bots[bot_index].is_used && bots[bot_index].respawn_state == RESPAWN_IDLE)
      {
         BotThink(&bots[bot_index]);
 
@@ -1176,8 +1176,7 @@ void StartFrame( void )
      int index = 0;
 
      // find bot needing to be respawned...
-     while ((index < 32) &&
-            (bots[index].respawn_state != RESPAWN_NEED_TO_RESPAWN))
+     while ((index < 32) && (bots[index].respawn_state != RESPAWN_NEED_TO_RESPAWN))
         index++;
 
      if (index < 32)
@@ -1277,8 +1276,7 @@ void StartFrame( void )
         }
      }
 
-     if ((bot_cfg_fp) &&
-         (bot_cfg_pause_time >= 1.0) && (bot_cfg_pause_time <= gpGlobals->time))
+     if ((bot_cfg_fp) && (bot_cfg_pause_time >= 1.0) && (bot_cfg_pause_time <= gpGlobals->time))
      {
         // process bot.cfg file options...
         ProcessBotCfgFile();

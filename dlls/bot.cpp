@@ -480,8 +480,18 @@ void BotSpawnInit( bot_t *pBot )
 	pBot->bUseDoor = false;
 	pBot->fUseDoorTime = 0.0;
 
-	memset(&(pBot->current_weapon), 0, sizeof(pBot->current_weapon));
-	memset(&(pBot->m_rgAmmo), 0, sizeof(pBot->m_rgAmmo));
+	pBot->current_weapon.iAmmo1 = 0;
+	pBot->current_weapon.iAmmo2 = 0;
+	pBot->current_weapon.iClip = 0;
+	pBot->current_weapon.iId = 0;
+
+	for( int i = 0; i < MAX_AMMO_SLOTS; i++ )
+	{
+		pBot->m_rgAmmo[i] = 0;
+	}
+
+	// memset(&(pBot->current_weapon), 0, sizeof(pBot->current_weapon));
+	// memset(&(pBot->m_rgAmmo), 0, sizeof(pBot->m_rgAmmo));
 }
 
 void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char *arg3, const char *arg4)
@@ -1955,7 +1965,7 @@ void BotThink( bot_t *pBot )
 
 		extern bool g_bInGame;
 
-		if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
+		if( g_bInGame && !((NSGame *)pGame)->IsCombat() )
 		{
 			if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
 			{
