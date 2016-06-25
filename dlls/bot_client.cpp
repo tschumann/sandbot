@@ -25,7 +25,6 @@
                        DMG_SLOWFREEZE | 0xFF000000)
 
 extern int mod_id;
-extern bot_t bots[32];
 
 bot_weapon_t weapon_defs[MAX_WEAPONS]; // array of weapon definitions
 
@@ -34,12 +33,9 @@ bot_weapon_t weapon_defs[MAX_WEAPONS]; // array of weapon definitions
 void BotClient_TFC_VGUI(void *p, int bot_index)
 {
    if ((*(int *)p) == 2)  // is it a team select menu?
-
-      bots[bot_index].start_action = MSG_TFC_TEAM_SELECT;
-
+      pBots[bot_index]->start_action = MSG_TFC_TEAM_SELECT;
    else if ((*(int *)p) == 3)  // is is a class selection menu?
-
-      bots[bot_index].start_action = MSG_TFC_CLASS_SELECT;
+      pBots[bot_index]->start_action = MSG_TFC_CLASS_SELECT;
 }
 
 
@@ -47,27 +43,22 @@ void BotClient_TFC_VGUI(void *p, int bot_index)
 void BotClient_CS_VGUI(void *p, int bot_index)
 {
    if ((*(int *)p) == 2)  // is it a team select menu?
-
-      bots[bot_index].start_action = MSG_CS_TEAM_SELECT;
-
+      pBots[bot_index]->start_action = MSG_CS_TEAM_SELECT;
    else if ((*(int *)p) == 26)  // is is a terrorist model select menu?
-
-      bots[bot_index].start_action = MSG_CS_T_SELECT;
-
+      pBots[bot_index]->start_action = MSG_CS_T_SELECT;
    else if ((*(int *)p) == 27)  // is is a counter-terrorist model select menu?
-
-      bots[bot_index].start_action = MSG_CS_CT_SELECT;
+      pBots[bot_index]->start_action = MSG_CS_CT_SELECT;
 }
 
 // This message is sent when the Day of Defeat VGUI menu is displayed.
 void BotClient_DOD_VGUI(void *p, int bot_index)
 {
 	if ((*(int *)p) == 2)  // is it a team select menu?
-		bots[bot_index].start_action = MSG_DOD_TEAM_SELECT;
+		pBots[bot_index]->start_action = MSG_DOD_TEAM_SELECT;
 	else if ((*(int *)p) == 10)  // is is a allied class select menu?
-		bots[bot_index].start_action = MSG_DOD_ALLIED_SELECT;
+		pBots[bot_index]->start_action = MSG_DOD_ALLIED_SELECT;
 	else if ((*(int *)p) == 13)  // is is an axis class select menu?
-		bots[bot_index].start_action = MSG_DOD_AXIS_SELECT;
+		pBots[bot_index]->start_action = MSG_DOD_AXIS_SELECT;
 }
 
 // This message is sent when a menu is being displayed in Counter-Strike.
@@ -83,15 +74,15 @@ void BotClient_CS_ShowMenu(void *p, int bot_index)
 
    if (strcmp((char *)p, "#Team_Select") == 0)  // team select menu?
    {
-      bots[bot_index].start_action = MSG_CS_TEAM_SELECT;
+      pBots[bot_index]->start_action = MSG_CS_TEAM_SELECT;
    }
    else if (strcmp((char *)p, "#Terrorist_Select") == 0)  // T model select?
    {
-      bots[bot_index].start_action = MSG_CS_T_SELECT;
+      pBots[bot_index]->start_action = MSG_CS_T_SELECT;
    }
    else if (strcmp((char *)p, "#CT_Select") == 0)  // CT model select menu?
    {
-      bots[bot_index].start_action = MSG_CS_CT_SELECT;
+      pBots[bot_index]->start_action = MSG_CS_CT_SELECT;
    }
 
    state = 0;  // reset state machine
@@ -102,12 +93,10 @@ void BotClient_CS_ShowMenu(void *p, int bot_index)
 void BotClient_Gearbox_VGUI(void *p, int bot_index)
 {
    if ((*(int *)p) == 2)  // is it a team select menu?
-
-      bots[bot_index].start_action = MSG_OPFOR_TEAM_SELECT;
+      pBots[bot_index]->start_action = MSG_OPFOR_TEAM_SELECT;
 
    else if ((*(int *)p) == 3)  // is is a class selection menu?
-
-      bots[bot_index].start_action = MSG_OPFOR_CLASS_SELECT;
+      pBots[bot_index]->start_action = MSG_OPFOR_CLASS_SELECT;
 }
 
 
@@ -115,21 +104,21 @@ void BotClient_Gearbox_VGUI(void *p, int bot_index)
 void BotClient_FLF_VGUI(void *p, int bot_index)
 {
    if ((*(int *)p) == 2)  // is it a team select menu?
-      bots[bot_index].start_action = MSG_FLF_TEAM_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_TEAM_SELECT;
    else if ((*(int *)p) == 3)  // is it a class selection menu?
-      bots[bot_index].start_action = MSG_FLF_CLASS_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_CLASS_SELECT;
    else if ((*(int *)p) == 70)  // is it a weapon selection menu?
-      bots[bot_index].start_action = MSG_FLF_WEAPON_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_WEAPON_SELECT;
    else if ((*(int *)p) == 72)  // is it a submachine gun selection menu?
-      bots[bot_index].start_action = MSG_FLF_SUBMACHINE_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_SUBMACHINE_SELECT;
    else if ((*(int *)p) == 73)  // is it a shotgun selection menu?
-      bots[bot_index].start_action = MSG_FLF_SHOTGUN_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_SHOTGUN_SELECT;
    else if ((*(int *)p) == 75)  // is it a rifle selection menu?
-      bots[bot_index].start_action = MSG_FLF_RIFLE_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_RIFLE_SELECT;
    else if ((*(int *)p) == 76)  // is it a pistol selection menu?
-      bots[bot_index].start_action = MSG_FLF_PISTOL_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_PISTOL_SELECT;
    else if ((*(int *)p) == 78)  // is it a heavyweapons selection menu?
-      bots[bot_index].start_action = MSG_FLF_HEAVYWEAPONS_SELECT;
+      pBots[bot_index]->start_action = MSG_FLF_HEAVYWEAPONS_SELECT;
 }
 
 
@@ -400,14 +389,12 @@ void BotClient_Valve_CurrentWeapon(void *p, int bot_index)
       {
          if (iState == 1)
          {
-            bots[bot_index].current_weapon.iId = iId;
-            bots[bot_index].current_weapon.iClip = iClip;
+            pBots[bot_index]->current_weapon.iId = iId;
+            pBots[bot_index]->current_weapon.iClip = iClip;
 
             // update the ammo counts for this weapon...
-            bots[bot_index].current_weapon.iAmmo1 =
-               bots[bot_index].m_rgAmmo[weapon_defs[iId].iAmmo1];
-            bots[bot_index].current_weapon.iAmmo2 =
-               bots[bot_index].m_rgAmmo[weapon_defs[iId].iAmmo2];
+            pBots[bot_index]->current_weapon.iAmmo1 = pBots[bot_index]->m_rgAmmo[weapon_defs[iId].iAmmo1];
+            pBots[bot_index]->current_weapon.iAmmo2 = pBots[bot_index]->m_rgAmmo[weapon_defs[iId].iAmmo2];
          }
       }
    }
@@ -481,15 +468,13 @@ void BotClient_Valve_AmmoX(void *p, int bot_index)
 
       ammount = *(int *)p;  // the ammount of ammo currently available
 
-      bots[bot_index].m_rgAmmo[index] = ammount;  // store it away
+      pBots[bot_index]->m_rgAmmo[index] = ammount;  // store it away
 
-      ammo_index = bots[bot_index].current_weapon.iId;
+      ammo_index = pBots[bot_index]->current_weapon.iId;
 
       // update the ammo counts for this weapon...
-      bots[bot_index].current_weapon.iAmmo1 =
-         bots[bot_index].m_rgAmmo[weapon_defs[ammo_index].iAmmo1];
-      bots[bot_index].current_weapon.iAmmo2 =
-         bots[bot_index].m_rgAmmo[weapon_defs[ammo_index].iAmmo2];
+      pBots[bot_index]->current_weapon.iAmmo1 = pBots[bot_index]->m_rgAmmo[weapon_defs[ammo_index].iAmmo1];
+      pBots[bot_index]->current_weapon.iAmmo2 = pBots[bot_index]->m_rgAmmo[weapon_defs[ammo_index].iAmmo2];
    }
 }
 
@@ -564,15 +549,13 @@ void BotClient_Valve_AmmoPickup(void *p, int bot_index)
 
       ammount = *(int *)p;
 
-      bots[bot_index].m_rgAmmo[index] = ammount;
+      pBots[bot_index]->m_rgAmmo[index] = ammount;
 
-      ammo_index = bots[bot_index].current_weapon.iId;
+      ammo_index = pBots[bot_index]->current_weapon.iId;
 
       // update the ammo counts for this weapon...
-      bots[bot_index].current_weapon.iAmmo1 =
-         bots[bot_index].m_rgAmmo[weapon_defs[ammo_index].iAmmo1];
-      bots[bot_index].current_weapon.iAmmo2 =
-         bots[bot_index].m_rgAmmo[weapon_defs[ammo_index].iAmmo2];
+      pBots[bot_index]->current_weapon.iAmmo1 = pBots[bot_index]->m_rgAmmo[weapon_defs[ammo_index].iAmmo1];
+      pBots[bot_index]->current_weapon.iAmmo2 = pBots[bot_index]->m_rgAmmo[weapon_defs[ammo_index].iAmmo2];
    }
 }
 
@@ -673,20 +656,20 @@ void BotClient_Valve_Damage(void *p, int bot_index)
 
          // if the bot doesn't have an enemy and someone is shooting at it then
          // turn in the attacker's direction...
-         if (bots[bot_index].pBotEnemy == NULL)
+         if (pBots[bot_index]->pBotEnemy == NULL)
          {
             // face the attacker...
-            Vector v_enemy = damage_origin - bots[bot_index].pEdict->v.origin;
+            Vector v_enemy = damage_origin - pBots[bot_index]->pEdict->v.origin;
             Vector bot_angles = UTIL_VecToAngles( v_enemy );
 
-            bots[bot_index].pEdict->v.ideal_yaw = bot_angles.y;
+            pBots[bot_index]->pEdict->v.ideal_yaw = bot_angles.y;
 
-            BotFixIdealYaw(bots[bot_index].pEdict);
+            BotFixIdealYaw(pBots[bot_index]->pEdict);
 
             // stop using health or HEV stations...
-            bots[bot_index].b_use_health_station = FALSE;
-            bots[bot_index].b_use_HEV_station = FALSE;
-            bots[bot_index].b_use_capture = FALSE;
+            pBots[bot_index]->b_use_health_station = FALSE;
+            pBots[bot_index]->b_use_HEV_station = FALSE;
+            pBots[bot_index]->b_use_capture = FALSE;
          }
       }
    }
@@ -750,7 +733,7 @@ void BotClient_CS_Money(void *p, int bot_index)
 	{
 		state++;
 
-		bots[bot_index].bot_money = *(int *)p;	// amount of money
+		pBots[bot_index]->bot_money = *(int *)p;	// amount of money
 	}
 	else
 	{
@@ -792,12 +775,12 @@ void BotClient_Valve_DeathMsg(void *p, int bot_index)
          if ((killer_index == 0) || (killer_index == victim_index))
          {
             // bot killed by world (worldspawn) or bot killed self...
-            bots[index].killer_edict = NULL;
+            pBots[index]->killer_edict = NULL;
          }
          else
          {
             // store edict of player that killed this bot...
-            bots[index].killer_edict = INDEXENT(killer_index);
+            pBots[index]->killer_edict = INDEXENT(killer_index);
          }
       }
    }
@@ -863,11 +846,11 @@ void BotClient_FLF_TextMsg(void *p, int bot_index)
 
       if (strcmp((char *)p, "You are Attacking\n") == 0)  // attacker msg
       {
-         bots[bot_index].defender = 0;  // attacker
+         pBots[bot_index]->defender = 0;  // attacker
       }
       else if (strcmp((char *)p, "You are Defending\n") == 0)  // defender msg
       {
-         bots[bot_index].defender = 1;  // defender
+         pBots[bot_index]->defender = 1;  // defender
       }
    }
 }
@@ -876,17 +859,17 @@ void BotClient_FLF_TextMsg(void *p, int bot_index)
 // This message gets sent when the WarmUpTime is enabled/disabled
 void BotClient_FLF_WarmUp(void *p, int bot_index)
 {
-   bots[bot_index].warmup = *(int *)p;
+   pBots[bot_index]->warmup = *(int *)p;
 }
 
 
 // This message gets sent to ALL when the WarmUpTime is enabled/disabled
 void BotClient_FLF_WarmUpAll(void *p, int bot_index)
 {
-   for (int i=0; i < 32; i++)
+   for (int i=0; i < MAX_PLAYERS; i++)
    {
-      if (bots[i].is_used)  // count the number of bots in use
-         bots[i].warmup = *(int *)p;
+      if (pBots[i]->is_used)  // count the number of bots in use
+         pBots[i]->warmup = *(int *)p;
    }
 }
 
@@ -894,10 +877,10 @@ void BotClient_FLF_WarmUpAll(void *p, int bot_index)
 // This message gets sent when the round is over
 void BotClient_FLF_WinMessage(void *p, int bot_index)
 {
-   for (int i=0; i < 32; i++)
+   for (int i=0; i < MAX_PLAYERS; i++)
    {
-      if (bots[i].is_used)  // count the number of bots in use
-         bots[i].round_end = 1;
+      if (pBots[i]->is_used)  // count the number of bots in use
+         pBots[i]->round_end = 1;
    }
 }
 
@@ -929,8 +912,8 @@ void BotClient_FLF_TempEntity(void *p, int bot_index)
          if (strncmp((char *)p, "Capturing ", 10) == 0)
          {
             // if bot is currently capturing, keep timer alive...
-            if (bots[bot_index].b_use_capture)
-               bots[bot_index].f_use_capture_time = gpGlobals->time + 2.0;
+            if (pBots[bot_index]->b_use_capture)
+               pBots[bot_index]->f_use_capture_time = gpGlobals->time + 2.0;
          }
       }
 
@@ -967,7 +950,7 @@ void BotClient_Valve_ScreenFade(void *p, int bot_index)
       state = 0;
 
       length = (duration + hold_time) / 4096;
-      bots[bot_index].blinded_time = gpGlobals->time + length - 2.0;
+      pBots[bot_index]->blinded_time = gpGlobals->time + length - 2.0;
    }
    else
    {
@@ -1040,8 +1023,8 @@ void BotClient_CS_HLTV(void *p, int bot_index)
       {
          for (index = 0; index < 32; index++)
          {
-            if (bots[index].is_used)
-               BotSpawnInit (&bots[index]); // reset bots for new round
+            if (pBots[index]->is_used)
+               BotSpawnInit (pBots[index]); // reset bots for new round
          }
       }
    }

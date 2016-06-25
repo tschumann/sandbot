@@ -8,35 +8,34 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
-// TODO: this should be in its own subclass
-void bot_t::_Gunman_OnSpawn()
+void GunmanBot::OnSpawn()
 {
 	this->iPistolMode = RANDOM_LONG(1, 3);
 }
 
-int bot_t::GetPistolMode()
+int GunmanBot::GetPistolMode()
 {
 	return this->iPistolMode;
 }
 
-void bot_t::UseGaussPistolPulse()
+void GunmanBot::UseGaussPistolPulse()
 {
 	FakeClientCommand( this->pEdict, "cust_11", NULL, NULL );
 }
 
-void bot_t::UseGaussPistolCharge()
+void GunmanBot::UseGaussPistolCharge()
 {
 	// gauss_bolt in logs
 	FakeClientCommand( this->pEdict, "cust_12", NULL, NULL );
 }
 
-void bot_t::UseGaussPistolRapid()
+void GunmanBot::UseGaussPistolRapid()
 {
 	// gauss_charged in logs
 	FakeClientCommand( this->pEdict, "cust_13", NULL, NULL );
 }
 
-void bot_t::UseGaussPistolSniper()
+void GunmanBot::UseGaussPistolSniper()
 {
 	FakeClientCommand( this->pEdict, "cust_14", NULL, NULL );
 }

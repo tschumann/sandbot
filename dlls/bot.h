@@ -156,6 +156,8 @@ int Cmd_Argc( void );
 #define TFC_CLASS_SPY       8
 #define TFC_CLASS_ENGINEER  9
 
+#define MAX_PLAYERS	32
+
 
 #define BOT_SKIN_LEN 32
 #define BOT_NAME_LEN 32
@@ -183,14 +185,6 @@ typedef struct
 
 class Game
 {
-public:
-	bool IsCTF() { return false; };
-	bool IsCombat() { return false; };
-	edict_t **GetHives() { return NULL; };
-protected:
-	// TODO: these should be in NSGame
-	edict_t *pCommandChair;
-	edict_t **pHives;
 };
 
 class GearboxGame : public Game
@@ -217,6 +211,9 @@ public:
 	{
 		return this->pHives;
 	}
+private:
+	edict_t *pCommandChair;
+	edict_t **pHives;
 };
 
 extern Game *pGame;
@@ -377,32 +374,6 @@ public:
 
 	bot_current_weapon_t current_weapon;  // one current weapon for each bot
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
-
-	// Gunman Chronicles
-	virtual void _Gunman_OnSpawn();
-
-	virtual int GetPistolMode();
-
-	virtual void UseGaussPistolPulse();
-	virtual void UseGaussPistolCharge();
-	virtual void UseGaussPistolRapid();
-	virtual void UseGaussPistolSniper();
-
-	// Natural Selection
-	virtual bool IsNearHive();
-
-	virtual bool HasWeaponDamage1();
-	virtual bool HasShotgun();
-	virtual bool HasHMG();
-	virtual void UpgradeToWeaponDamage1();
-	virtual void UpgradeToShotgun();
-	virtual void UpgradeToHMG();
-
-	virtual bool HasCarapace();
-	virtual void UpgradeToCarapace();
-	virtual void EvolveToFade();
-
-	virtual bool IsFade();
 };
 
 class GunmanBot : public bot_t
@@ -449,6 +420,8 @@ public:
 	const static int COMBAT_UPGRADE_CARAPACE = 101;	
 	const static int EVOLVE_TO_FADE = 116;
 };
+
+extern bot_t *pBots[];
 
 // Only one of these allowed per entity, stored in pev->iuser3.
 typedef enum

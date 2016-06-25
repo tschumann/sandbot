@@ -8,7 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
-bool bot_t::IsNearHive()
+// http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html
+// http://www.unknownworlds.com/oldwebsite/manuals/comm_manual/basic/index.htm
+
+bool NSBot::IsNearHive()
 {
 	edict_t *pent = NULL;
 
@@ -26,47 +29,47 @@ bool bot_t::IsNearHive()
 	return false;
 }
 
-bool bot_t::HasWeaponDamage1()
+bool NSBot::HasWeaponDamage1()
 {
 	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
 }
 
-bool bot_t::HasShotgun()
+bool NSBot::HasShotgun()
 {
 	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
 }
 
-bool bot_t::HasHMG()
+bool NSBot::HasHMG()
 {
 	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
 }
 
-void bot_t::UpgradeToWeaponDamage1()
+void NSBot::UpgradeToWeaponDamage1()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_WEAPON_DAMAGE_1;
 }
 
-void bot_t::UpgradeToShotgun()
+void NSBot::UpgradeToShotgun()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_SHOTGUN;
 }
 
-void bot_t::UpgradeToHMG()
+void NSBot::UpgradeToHMG()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_HMG;
 }
 
-bool bot_t::HasCarapace()
+bool NSBot::HasCarapace()
 {
 	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
 }
 
-void bot_t::UpgradeToCarapace()
+void NSBot::UpgradeToCarapace()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_CARAPACE;
 }
 
-void bot_t::EvolveToFade()
+void NSBot::EvolveToFade()
 {
 	if( ((NSGame *)pGame)->IsCombat() )
 	{
@@ -78,7 +81,7 @@ void bot_t::EvolveToFade()
 	}
 }
 
-bool bot_t::IsFade()
+bool NSBot::IsFade()
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4;
 }

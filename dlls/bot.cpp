@@ -49,7 +49,8 @@ static FILE *fp;
 #define FLF_PLAYER_SEARCH_RADIUS 60.0
 
 
-bot_t bots[32];   // max of 32 bots in a game
+// bot_t bots[32];   // max of 32 bots in a game
+bot_t *pBots[MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 bool b_botdontshoot = FALSE;
 
@@ -501,41 +502,41 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	int skill;
 	int start_action = 0;
 
-	bot_player_t *pBots;
+	bot_player_t *pBotData;
 
 	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
 	{
-		pBots = g_valveBots;
+		pBotData = g_valveBots;
 	}
 	else if( mod_id == GEARBOX_DLL )
 	{
-		pBots = g_gearboxBots;
+		pBotData = g_gearboxBots;
 	}
 	else if( mod_id == DOD_DLL )
 	{
-		pBots = g_dodBots;
+		pBotData = g_dodBots;
 	}
 	else if( mod_id == REWOLF_DLL )
 	{
-		pBots = g_gunmanBots;
+		pBotData = g_gunmanBots;
 	}
 	else if( mod_id == NS_DLL )
 	{
-		pBots = g_nsBots;
+		pBotData = g_nsBots;
 	}
 	else if( mod_id == HUNGER_DLL )
 	{
-		pBots = g_hungerBots;
+		pBotData = g_hungerBots;
 	}
 	else if( mod_id == SHIP_DLL )
 	{
-		pBots = g_shipBots;
+		pBotData = g_shipBots;
 	}
 
 	int iIndex = RANDOM_LONG( 0, 31 );
 
 	// find an unused bot slot
-	while( pBots[iIndex].bIsUsed == TRUE )
+	while( pBotData[iIndex].bIsUsed == TRUE )
 	{
 		iIndex++;
 
@@ -546,7 +547,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	}
 
 	// create the bot
-	pBots[iIndex].bIsUsed = true;
+	pBotData[iIndex].bIsUsed = true;
 
 	// TODO: make skill a per-round changeable cvar
    skill = default_bot_skill;
@@ -566,7 +567,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
    }
    */
 
-   BotEnt = CREATE_FAKE_CLIENT( pBots[iIndex].szName );
+   BotEnt = CREATE_FAKE_CLIENT( pBotData[iIndex].szName );
 
    if (FNullEnt( BotEnt ))
    {
@@ -588,10 +589,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
 
       index = 0;
-      while ((bots[index].is_used) && (index < 32))
+      while ((pBots[index]->is_used) && (index < MAX_PLAYERS))
          index++;
 
-      if (index == 32)
+      if (index == MAX_PLAYERS)
       {
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Can't create bot!\n");
          return;
@@ -607,7 +608,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 
       if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
-		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBots[iIndex].szModel );
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szModel );
       else // other mods
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "gina" );
 
@@ -625,7 +626,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "ah", "1");
       }
 
-      ClientConnect( BotEnt, pBots[iIndex].szName, "127.0.0.1", ptr );
+      ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
       ClientPutInServer( BotEnt );
@@ -634,7 +635,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       // initialize all the variables for this bot...
 
-      pBot = &bots[index];
+      pBot = pBots[index];
 
       pBot->is_used = TRUE;
       pBot->respawn_state = RESPAWN_IDLE;
@@ -642,9 +643,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       pBot->name[0] = 0;  // name not set by server yet
       pBot->bot_money = 0;
 
-	  if (pBots[iIndex].szModel)
+	  if (pBotData[iIndex].szModel)
 	  {
-		strcpy(pBot->skin, pBots[iIndex].szModel);
+		strcpy(pBot->skin, pBotData[iIndex].szModel);
 	  }
 	  else
 	  {
@@ -2066,11 +2067,6 @@ void BotThink( bot_t *pBot )
 
 void bot_t::OnSpawn()
 {
-	// TODO: this should be in its own subclass
-	if( mod_id == REWOLF_DLL )
-	{
-		this->_Gunman_OnSpawn();
-	}
 }
 
 int bot_t::GetTeam()

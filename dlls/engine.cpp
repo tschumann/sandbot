@@ -18,7 +18,7 @@
 
 
 extern enginefuncs_t g_engfuncs;
-extern bot_t bots[32];
+extern bot_t *pBots[];
 extern int mod_id;
 
 
@@ -106,13 +106,13 @@ void pfnChangeLevel(char* s1, char* s2)
 	// kick any bot off of the server after time/frag limit...
 	for (int index = 0; index < 32; index++)
 	{
-		if (bots[index].is_used)	// is this slot used?
+		if (pBots[index]->is_used)	// is this slot used?
 		{
 			char cmd[40];
 
-			sprintf(cmd, "kick \"%s\"\n", bots[index].name);
+			sprintf(cmd, "kick \"%s\"\n", pBots[index]->name);
 
-			bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
+			pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
 
 			SERVER_COMMAND(cmd);	// kick the bot using (kick "name")
 		}
@@ -162,7 +162,7 @@ edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszF
      {
         for (bot_index = 0; bot_index < 32; bot_index++)
         {
-           pBot = &bots[bot_index];
+           pBot = pBots[bot_index];
 
            if (pBot->is_used)
               BotSpawnInit (pBot); // reset bots for new round

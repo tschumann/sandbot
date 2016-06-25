@@ -34,7 +34,7 @@
 
 
 extern int mod_id;
-extern bot_t bots[32];
+extern bot_t *pBots[];
 extern edict_t *pent_info_ctfdetect;
 extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 extern int num_teams;
@@ -398,9 +398,9 @@ int UTIL_GetBotIndex(edict_t *pEdict)
 {
    int index;
 
-   for (index=0; index < 32; index++)
+   for (index=0; index < MAX_PLAYERS; index++)
    {
-      if (bots[index].pEdict == pEdict)
+      if (pBots[index]->pEdict == pEdict)
       {
          return index;
       }
@@ -414,16 +414,16 @@ bot_t *UTIL_GetBotPointer(edict_t *pEdict)
 {
    int index;
 
-   for (index=0; index < 32; index++)
+   for (index=0; index < MAX_PLAYERS; index++)
    {
-      if (bots[index].pEdict == pEdict)
+      if (pBots[index]->pEdict == pEdict)
       {
          break;
       }
    }
 
    if (index < 32)
-      return (&bots[index]);
+      return (pBots[index]);
 
    return NULL;  // return NULL if edict is not a bot
 }
@@ -431,8 +431,7 @@ bot_t *UTIL_GetBotPointer(edict_t *pEdict)
 
 bool IsAlive(edict_t *pEdict)
 {
-   return ((pEdict->v.deadflag == DEAD_NO) &&
-           (pEdict->v.health > 0) && !(pEdict->v.flags & FL_NOTARGET));
+   return ((pEdict->v.deadflag == DEAD_NO) && (pEdict->v.health > 0) && !(pEdict->v.flags & FL_NOTARGET));
 }
 
 

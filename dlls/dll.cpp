@@ -40,7 +40,7 @@ extern bool g_path_waypoint;
 extern int num_waypoints;  // number of waypoints currently in use
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern float wp_display_time[MAX_WAYPOINTS];
-extern bot_t bots[32];
+extern bot_t *pBots[];
 extern bool b_observer_mode;
 extern bool b_botdontshoot;
 
@@ -89,9 +89,7 @@ float bot_cfg_pause_time = 0.0;
 float respawn_time = 0.0;
 bool spawn_time_reset = FALSE;
 
-// cheap and hacky polymorphism
-Game game;
-Game *pGame = &game;
+Game *pGame = NULL;
 
 int flf_bug_fix;  // for FLF 1.1 capture point bug
 int flf_bug_check;  // for FLF 1.1 capture point bug
@@ -475,7 +473,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 
      for (i=0; i < 32; i++)
      {
-        if (bots[i].is_used)  // count the number of bots in use
+        if (pBots[i]->is_used)  // count the number of bots in use
            count++;
      }
 
@@ -485,11 +483,11 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
      {
         for (i=0; i < 32; i++)
         {
-           if (bots[i].is_used)  // is this slot used?
+           if (pBots[i]->is_used)  // is this slot used?
            {
               char cmd[80];
 
-              sprintf(cmd, "kick \"%s\"\n", bots[i].name);
+              sprintf(cmd, "kick \"%s\"\n", pBots[i]->name);
 
               SERVER_COMMAND(cmd);  // kick the bot using (kick "name")
 
@@ -509,22 +507,20 @@ void ClientDisconnect( edict_t *pEntity )
   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientDisconnect: %x\n",pEntity); fclose(fp); }
 
   i = 0;
-  while ((i < 32) && (clients[i] != pEntity))
+  while ((i < MAX_PLAYERS) && (clients[i] != pEntity))
      i++;
 
-  if (i < 32)
+  if (i < MAX_PLAYERS)
      clients[i] = NULL;
 
 
   for (i=0; i < 32; i++)
   {
-     if (bots[i].pEdict == pEntity)
+     if (pBots[i]->pEdict == pEntity)
      {
         // someone kicked this bot off of the server...
-
-        bots[i].is_used = FALSE;  // this slot is now free to use
-
-        bots[i].kick_time = gpGlobals->time;  // save the kicked time
+        pBots[i]->is_used = FALSE;  // this slot is now free to use
+        pBots[i]->kick_time = gpGlobals->time;  // save the kicked time
 
         break;
      }
@@ -967,11 +963,77 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
+	// make sure it's cleaned up (just in case)
+	if( pGame )
+	{
+		delete pGame;
+		pGame = NULL;
+	}
+	if( pBots )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			delete pBots[i];
+			pBots[i] = NULL;
+		}
+	}
+
+	if( mod_id == GEARBOX_DLL )
+	{
+		pGame = new GearboxGame();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new bot_t();
+		}
+	}
+	else if( mod_id == REWOLF_DLL )
+	{
+		pGame = new Game();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new GunmanBot();
+		}
+	}
+	else if( mod_id == NS_DLL )
+	{
+		pGame = new NSGame();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new NSBot();
+		}
+	}
+	else
+	{
+		pGame = new Game();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new bot_t();
+		}
+	}
 	(*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
 }
 
 void ServerDeactivate( void )
 {
+	// apparently this can be called more than once, so check before deleting
+	if( pGame )
+	{
+		delete pGame;
+		pGame = NULL;
+	}
+	if( pBots )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			delete pBots[i];
+			pBots[i] = NULL;
+		}
+	}
+
 	(*other_gFunctionTable.pfnServerDeactivate)();
 }
 
@@ -1040,11 +1102,11 @@ void StartFrame( void )
         sprintf(msg, "Executing %s\n", filename);
         ALERT( at_console, msg );
 
-        for (index = 0; index < 32; index++)
+        for (index = 0; index < MAX_PLAYERS; index++)
         {
-           bots[index].is_used = FALSE;
-           bots[index].respawn_state = 0;
-           bots[index].kick_time = 0.0;
+           pBots[index]->is_used = FALSE;
+           pBots[index]->respawn_state = 0;
+           pBots[index]->kick_time = 0.0;
         }
 
         if (IS_DEDICATED_SERVER())
@@ -1057,29 +1119,29 @@ void StartFrame( void )
         count = 0;
 
         // mark the bots as needing to be respawned...
-        for (index = 0; index < 32; index++)
+        for (index = 0; index < MAX_PLAYERS; index++)
         {
            if (count >= prev_num_bots)
            {
-              bots[index].is_used = FALSE;
-              bots[index].respawn_state = 0;
-              bots[index].kick_time = 0.0;
+              pBots[index]->is_used = FALSE;
+              pBots[index]->respawn_state = 0;
+              pBots[index]->kick_time = 0.0;
            }
 
-           if (bots[index].is_used)  // is this slot used?
+           if (pBots[index]->is_used)  // is this slot used?
            {
-              bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
+              pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
               count++;
            }
 
            // check for any bots that were very recently kicked...
-           if ((bots[index].kick_time + 5.0) > previous_time)
+           if ((pBots[index]->kick_time + 5.0) > previous_time)
            {
-              bots[index].respawn_state = RESPAWN_NEED_TO_RESPAWN;
+              pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
               count++;
            }
            else
-              bots[index].kick_time = 0.0;  // reset to prevent false spawns later
+              pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
         }
 
         // set the respawn time
@@ -1114,9 +1176,9 @@ void StartFrame( void )
   for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
   {
 	 // is this slot used AND not respawning
-     if (bots[bot_index].is_used && bots[bot_index].respawn_state == RESPAWN_IDLE)
+     if (pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
      {
-        BotThink(&bots[bot_index]);
+        BotThink(pBots[bot_index]);
 
         count++;
 
@@ -1176,22 +1238,22 @@ void StartFrame( void )
      int index = 0;
 
      // find bot needing to be respawned...
-     while ((index < 32) && (bots[index].respawn_state != RESPAWN_NEED_TO_RESPAWN))
+     while ((index < MAX_PLAYERS) && (pBots[index]->respawn_state != RESPAWN_NEED_TO_RESPAWN))
         index++;
 
-     if (index < 32)
+     if (index < MAX_PLAYERS)
      {
-        bots[index].respawn_state = RESPAWN_IS_RESPAWNING;
-        bots[index].is_used = FALSE;      // free up this slot
+        pBots[index]->respawn_state = RESPAWN_IS_RESPAWNING;
+        pBots[index]->is_used = FALSE;      // free up this slot
 
         // respawn 1 bot then wait a while (otherwise engine crashes)
         if ((mod_id == VALVE_DLL) || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL) || (mod_id == SHIP_DLL))
         {
            char c_skill[2];
 
-           sprintf(c_skill, "%d", bots[index].bot_skill);
+           sprintf(c_skill, "%d", pBots[index]->bot_skill);
 
-           BotCreate(NULL, bots[index].skin, bots[index].name, c_skill, NULL);
+           BotCreate(NULL, pBots[index]->skin, pBots[index]->name, c_skill, NULL);
         }
         else
         {
@@ -1199,14 +1261,14 @@ void StartFrame( void )
            char c_team[2];
            char c_class[3];
 
-           sprintf(c_skill, "%d", bots[index].bot_skill);
-           sprintf(c_team, "%d", bots[index].bot_team);
-           sprintf(c_class, "%d", bots[index].bot_class);
+           sprintf(c_skill, "%d", pBots[index]->bot_skill);
+           sprintf(c_team, "%d", pBots[index]->bot_team);
+           sprintf(c_class, "%d", pBots[index]->bot_class);
 
            if ((mod_id == TFC_DLL) || (mod_id == GEARBOX_DLL))
-              BotCreate(NULL, NULL, NULL, bots[index].name, c_skill);
+              BotCreate(NULL, NULL, NULL, pBots[index]->name, c_skill);
            else
-              BotCreate(NULL, c_team, c_class, bots[index].name, c_skill);
+              BotCreate(NULL, c_team, c_class, pBots[index]->name, c_skill);
         }
 
         respawn_time = gpGlobals->time + 2.0;  // set next respawn time
