@@ -29,6 +29,8 @@ A. Yes, but hold off for now - things are probably going to change in that space
 == Changelog ==
 
 v0.2.1 (??/??/??)
+- [Gunman Chronicles] Bots now use different gauss pistol modes.
+- [Gunman Chronicles] Bots now know the gauss pistol is fully automatic.
 - [Natural Selection] Marine bots will no longer upgrade when they have an enemy in combat mode.
 
 v0.2 (18/06/16)

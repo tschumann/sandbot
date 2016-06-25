@@ -1957,7 +1957,22 @@ void BotThink( bot_t *pBot )
    // save the previous speed (for checking if stuck)
    pBot->prev_speed = pBot->f_move_speed;
 
-   	if( mod_id == NS_DLL )
+	if( mod_id == REWOLF_DLL )
+	{
+		if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_PULSE )
+		{
+			((GunmanBot *)pBot)->UseGaussPistolPulse();
+		}
+		else if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_CHARGE )
+		{
+			((GunmanBot *)pBot)->UseGaussPistolCharge();
+		}
+		else if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_RAPID )
+		{
+			((GunmanBot *)pBot)->UseGaussPistolRapid();
+		}
+	}
+   	else if( mod_id == NS_DLL )
 	{
 		extern bool UTIL_IsEvolved( const bot_t *pBot );
 		extern bool UTIL_CanEvolve( const bot_t *pBot );
@@ -2051,6 +2066,11 @@ void BotThink( bot_t *pBot )
 
 void bot_t::OnSpawn()
 {
+	// TODO: this should be in its own subclass
+	if( mod_id == REWOLF_DLL )
+	{
+		this->_Gunman_OnSpawn();
+	}
 }
 
 int bot_t::GetTeam()
@@ -2061,111 +2081,4 @@ int bot_t::GetTeam()
 bool bot_t::HasEnemy()
 {
 	return this->pBotEnemy != NULL;
-}
-
-void GunmanBot::OnSpawn()
-{
-	if( RANDOM_LONG(1, 100) <= 50 )
-	{
-		this->UseGaussPistolPulse();
-	}
-	else
-	{
-		this->UseGaussPistolRapid();
-	}
-}
-
-void GunmanBot::UseGaussPistolPulse()
-{
-	// TODO:
-}
-
-void GunmanBot::UseGaussPistolCharge()
-{
-	// TODO:
-}
-
-void GunmanBot::UseGaussPistolRapid()
-{
-	// TODO:
-}
-
-void GunmanBot::UseGaussPistolSniper()
-{
-	// TODO:
-}
-
-bool NSBot::IsNearHive()
-{
-	edict_t *pent = NULL;
-
-	// TODO: cache the results of this in NSGame
-	while( pent = UTIL_FindEntityByClassname( pent, "team_hive" ) )
-	{
-		float distance = (pent->v.origin - this->pEdict->v.origin).Length();
-
-		if( distance <= 600 )
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool NSBot::HasWeaponDamage1()
-{
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
-}
-
-bool NSBot::HasShotgun()
-{
-	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
-}
-
-bool NSBot::HasHMG()
-{
-	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
-}
-
-void NSBot::UpgradeToWeaponDamage1()
-{
-	this->pEdict->v.impulse = this->COMBAT_UPGRADE_WEAPON_DAMAGE_1;
-}
-
-void NSBot::UpgradeToShotgun()
-{
-	this->pEdict->v.impulse = this->COMBAT_UPGRADE_SHOTGUN;
-}
-
-void NSBot::UpgradeToHMG()
-{
-	this->pEdict->v.impulse = this->COMBAT_UPGRADE_HMG;
-}
-
-bool NSBot::HasCarapace()
-{
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
-}
-
-void NSBot::UpgradeToCarapace()
-{
-	this->pEdict->v.impulse = this->COMBAT_UPGRADE_CARAPACE;
-}
-
-void NSBot::EvolveToFade()
-{
-	if( ((NSGame *)pGame)->IsCombat() )
-	{
-		this->pEdict->v.impulse = this->EVOLVE_TO_FADE;
-	}
-	else
-	{
-		// TODO:
-	}
-}
-
-bool NSBot::IsFade()
-{
-	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4;
 }

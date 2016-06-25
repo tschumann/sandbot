@@ -281,7 +281,7 @@ bot_weapon_select_t gunman_weapon_select[] = {
 	9999.0, 0.0, 0.0,
 	100, true, 100, 1, 0,
 	false, false, false, false, 0.0, 0.0},
-	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.2, 0.0,
+	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.0, 0.0,
 	0.0, 1024.0, 0.0, 0.0,
     100, true, 100, 1, 0,
 	true, FALSE, FALSE, FALSE, 0.0, 0.0},
@@ -363,7 +363,8 @@ bot_weapon_select_t ns_weapon_select[] = {
 	50.0, 9999.0, 0.0, 0.0,
     100, TRUE, 100, 0, 0,
 	true, FALSE, FALSE, FALSE, 0.0, 0.0},
-	{NS_WEAPON_ACIDROCKETGUN, "weapon_acidrocketgun", 1.0, 0.0, 0.0, 1200.0, 0.0, 0.0,
+	{NS_WEAPON_ACIDROCKETGUN, "weapon_acidrocketgun", 1.0, 0.0,
+	0.0, 1200.0, 0.0, 0.0,
     100, TRUE, 100, 0, 0,
 	FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 

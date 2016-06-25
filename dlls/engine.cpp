@@ -50,6 +50,13 @@ static FILE *fp;
 
 int pfnPrecacheModel(char* s)
 {
+	if( mod_id == REWOLF_DLL )
+	{
+		if( !strcmp(s, "sprites/glow_aicore_no.spr") )
+		{
+			return (*g_engfuncs.pfnPrecacheModel)("sprites/glow_beamgun_no.spr");
+		}
+	}
 	// TODO: The Ship crashes trying to precache these: is this Sandbot passing bad data?
 	// TODO: this doesn't fix it - work out what is causing the issue
 	if( mod_id == SHIP_DLL )

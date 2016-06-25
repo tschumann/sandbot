@@ -284,6 +284,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\bot_game.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\bot_gunman.cpp"
+				>
+			</File>
+			<File
 				RelativePath="bot_navigate.cpp"
 				>
 				<FileConfiguration
@@ -304,6 +312,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\bot_ns.cpp"
+				>
 			</File>
 			<File
 				RelativePath="bot_start.cpp"
