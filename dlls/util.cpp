@@ -34,7 +34,7 @@
 
 
 extern int mod_id;
-extern bot_t *pBots[];
+extern bot_t **pBots;
 extern edict_t *pent_info_ctfdetect;
 extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 extern int num_teams;
@@ -400,7 +400,7 @@ int UTIL_GetBotIndex(edict_t *pEdict)
 
    for (index=0; index < MAX_PLAYERS; index++)
    {
-      if (pBots[index]->pEdict == pEdict)
+      if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {
          return index;
       }
@@ -416,13 +416,13 @@ bot_t *UTIL_GetBotPointer(edict_t *pEdict)
 
    for (index=0; index < MAX_PLAYERS; index++)
    {
-      if (pBots[index]->pEdict == pEdict)
+      if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {
          break;
       }
    }
 
-   if (index < 32)
+   if (index < MAX_PLAYERS)
       return (pBots[index]);
 
    return NULL;  // return NULL if edict is not a bot

@@ -228,6 +228,7 @@ struct bot_player_t
 class bot_t
 {
 public:
+	bot_t();
 	virtual void OnSpawn();
 	virtual int GetTeam();
 	virtual bool HasEnemy();
@@ -421,7 +422,7 @@ public:
 	const static int EVOLVE_TO_FADE = 116;
 };
 
-extern bot_t *pBots[];
+extern bot_t **pBots;
 
 // Only one of these allowed per entity, stored in pev->iuser3.
 typedef enum

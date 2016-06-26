@@ -48,9 +48,11 @@ static FILE *fp;
 #define PLAYER_SEARCH_RADIUS     40.0
 #define FLF_PLAYER_SEARCH_RADIUS 60.0
 
+unsigned int iBotCount = 0;
+unsigned int iBotsNeeded = 0;
 
 // bot_t bots[32];   // max of 32 bots in a game
-bot_t *pBots[MAX_PLAYERS];
+bot_t **pBots; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 bool b_botdontshoot = FALSE;
 
@@ -589,7 +591,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
 
       index = 0;
-      while ((pBots[index]->is_used) && (index < MAX_PLAYERS))
+      while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
          index++;
 
       if (index == MAX_PLAYERS)
@@ -2063,6 +2065,11 @@ void BotThink( bot_t *pBot )
 	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
 	return;
+}
+
+bot_t::bot_t()
+{
+	this->is_used = false;
 }
 
 void bot_t::OnSpawn()

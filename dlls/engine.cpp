@@ -18,7 +18,7 @@
 
 
 extern enginefuncs_t g_engfuncs;
-extern bot_t *pBots[];
+extern bot_t **pBots;
 extern int mod_id;
 
 
