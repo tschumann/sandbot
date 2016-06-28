@@ -19,7 +19,6 @@ extern int mod_id;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 extern int team_allies[4];
-extern edict_t *pent_info_ctfdetect;
 extern float is_team_play;
 extern bool checked_teamplay;
 
@@ -517,7 +516,7 @@ bot_weapon_select_t frontline_weapon_select[] = {
 void BotCheckTeamplay(void)
 {
 	// is this a teamplay mod
-	if( ((mod_id == GEARBOX_DLL) && pent_info_ctfdetect) || (mod_id == DECAY_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == CZERO_DLL) || (mod_id == DOD_DLL) || (mod_id == TFC_DLL) || (mod_id == NS_DLL) || (mod_id == FRONTLINE_DLL))
+	if( ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()) || (mod_id == DECAY_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == CZERO_DLL) || (mod_id == DOD_DLL) || (mod_id == TFC_DLL) || (mod_id == NS_DLL) || (mod_id == FRONTLINE_DLL))
 	{
 		is_team_play = 1.0;
 	}

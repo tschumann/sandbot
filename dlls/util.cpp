@@ -35,7 +35,6 @@
 
 extern int mod_id;
 extern bot_t **pBots;
-extern edict_t *pent_info_ctfdetect;
 extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 extern int num_teams;
 
@@ -280,7 +279,7 @@ int UTIL_GetTeam(edict_t *pEntity)
 	{
 		return pEntity->v.team;
 	}
-   else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
+   else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
    {
       // OpFor CTF map...
 

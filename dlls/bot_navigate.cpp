@@ -21,7 +21,6 @@ extern int mod_id;
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 extern int team_allies[4];
-extern edict_t *pent_info_ctfdetect;
 extern float is_team_play;
 extern bool checked_teamplay;
 extern FLAG_S flags[MAX_FLAGS];
@@ -493,7 +492,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
       }
    }
-   else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
+   else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
    {
       pent = NULL;
 

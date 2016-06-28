@@ -16,7 +16,6 @@
 #include "bot_weapons.h"
 
 extern int mod_id;
-extern edict_t *pent_info_ctfdetect;
 
 extern int max_team_players[4];
 extern int team_class_limits[4];
@@ -311,7 +310,7 @@ void BotStartGame( bot_t *pBot )
 			 return;
 		  }
    }
-   else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
+   else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
    {
       // handle Opposing Force CTF stuff here...
 

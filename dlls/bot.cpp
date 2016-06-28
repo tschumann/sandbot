@@ -32,7 +32,6 @@ extern int mod_id;
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 extern int default_bot_skill;
-extern edict_t *pent_info_ctfdetect;
 
 extern int max_team_players[4];
 extern int team_class_limits[4];
@@ -664,7 +663,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          pBot->start_action = MSG_CS_IDLE;
 	  else if (mod_id == DOD_DLL)
          pBot->start_action = MSG_DOD_IDLE;
-      else if ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL))
+      else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
          pBot->start_action = MSG_OPFOR_IDLE;
       else if (mod_id == FRONTLINE_DLL)
          pBot->start_action = MSG_FLF_IDLE;
@@ -742,7 +741,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		}
 
 	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == DOD_DLL) ||
-          ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect != NULL)) || (mod_id == FRONTLINE_DLL))
+          ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()) || (mod_id == FRONTLINE_DLL))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
          {

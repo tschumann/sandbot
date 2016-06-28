@@ -1271,7 +1271,7 @@ void StartFrame( void )
         pBots[index]->is_used = FALSE;      // free up this slot
 
         // respawn 1 bot then wait a while (otherwise engine crashes)
-        if ((mod_id == VALVE_DLL) || ((mod_id == GEARBOX_DLL) && (pent_info_ctfdetect == NULL)) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL) || (mod_id == SHIP_DLL))
+        if ((mod_id == VALVE_DLL) || ((mod_id == GEARBOX_DLL) && !((GearboxGame *)pGame)->IsCTF()) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL) || (mod_id == SHIP_DLL))
         { 
            char c_skill[2];
 
