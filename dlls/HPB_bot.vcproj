@@ -318,6 +318,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\bot_ship.cpp"
+				>
+			</File>
+			<File
 				RelativePath="bot_start.cpp"
 				>
 				<FileConfiguration

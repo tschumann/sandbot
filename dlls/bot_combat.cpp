@@ -727,7 +727,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 			if( mod_id == SHIP_DLL )
 			{
 				// if the bot has no quarry or the quarry isn't this player
-				if( !pBot->pQuarry || ( pBot->pQuarry != pPlayer ) )
+				if( !((ShipBot *)pBot)->HasQuarry() || ( ((ShipBot *)pBot)->GetQuarry() != pPlayer ) )
 				{
 					continue;
 				}

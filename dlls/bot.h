@@ -369,7 +369,6 @@ public:
 	bool bEvolved;
 
 	// The Ship
-	edict_t *pQuarry;
 	bool bUseDoor;
 	float fUseDoorTime;
 
@@ -420,6 +419,16 @@ public:
 	const static int COMBAT_UPGRADE_HMG = 65;
 	const static int COMBAT_UPGRADE_CARAPACE = 101;	
 	const static int EVOLVE_TO_FADE = 116;
+};
+
+class ShipBot : public bot_t
+{
+protected:
+	edict_t *pQuarry;
+public:
+	virtual void SetQuarry( int iEntIndex );
+	virtual edict_t* GetQuarry();
+	virtual bool HasQuarry();
 };
 
 extern bot_t **pBots;
