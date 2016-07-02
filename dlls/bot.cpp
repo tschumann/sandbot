@@ -653,45 +653,45 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		  strcpy(pBot->skin, "");
 	  }
 
-      pBot->pEdict = BotEnt;
+		pBot->pEdict = BotEnt;
 
-      pBot->not_started = 1;  // hasn't joined game yet
+		pBot->not_started = 1;  // hasn't joined game yet
 
-      if (mod_id == TFC_DLL)
-         pBot->start_action = MSG_TFC_IDLE;
-      else if (mod_id == CSTRIKE_DLL)
-         pBot->start_action = MSG_CS_IDLE;
-	  else if (mod_id == DOD_DLL)
-         pBot->start_action = MSG_DOD_IDLE;
-      else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
-         pBot->start_action = MSG_OPFOR_IDLE;
-      else if (mod_id == FRONTLINE_DLL)
-         pBot->start_action = MSG_FLF_IDLE;
-	  else if (mod_id == NS_DLL && start_action != 0)
-		  pBot->start_action = start_action;
-      else
-         pBot->start_action = 0;  // not needed for non-team MODs
+		if (mod_id == TFC_DLL)
+			pBot->start_action = MSG_TFC_IDLE;
+		else if (mod_id == CSTRIKE_DLL)
+			pBot->start_action = MSG_CS_IDLE;
+		else if (mod_id == DOD_DLL)
+			pBot->start_action = MSG_DOD_IDLE;
+		else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
+			pBot->start_action = MSG_OPFOR_IDLE;
+		else if (mod_id == FRONTLINE_DLL)
+			pBot->start_action = MSG_FLF_IDLE;
+		else if (mod_id == NS_DLL && start_action != 0)
+			pBot->start_action = start_action;
+		else
+			pBot->start_action = 0;  // not needed for non-team MODs
 
 
-      BotSpawnInit(pBot);
+		BotSpawnInit(pBot);
 
-      pBot->need_to_initialize = FALSE;  // don't need to initialize yet
+		pBot->need_to_initialize = FALSE;  // don't need to initialize yet
 
-      BotEnt->v.idealpitch = BotEnt->v.v_angle.x;
-      BotEnt->v.ideal_yaw = BotEnt->v.v_angle.y;
-      BotEnt->v.pitch_speed = BOT_PITCH_SPEED;
-      BotEnt->v.yaw_speed = BOT_YAW_SPEED;
+		BotEnt->v.idealpitch = BotEnt->v.v_angle.x;
+		BotEnt->v.ideal_yaw = BotEnt->v.v_angle.y;
+		BotEnt->v.pitch_speed = BOT_PITCH_SPEED;
+		BotEnt->v.yaw_speed = BOT_YAW_SPEED;
 
-      pBot->warmup = 0;  // for Front Line Force
-      pBot->idle_angle = 0.0;
-      pBot->idle_angle_time = 0.0;
-      pBot->round_end = 0;
-      pBot->defender = 0;
+		pBot->warmup = 0;  // for Front Line Force
+		pBot->idle_angle = 0.0;
+		pBot->idle_angle_time = 0.0;
+		pBot->round_end = 0;
+		pBot->defender = 0;
 
-      pBot->bot_skill = skill - 1;  // 0 based for array indexes
+		pBot->bot_skill = skill - 1;  // 0 based for array indexes
 
-      pBot->bot_team = -1;
-      pBot->bot_class = -1;
+		pBot->bot_team = -1;
+		pBot->bot_class = -1;
 
 	  	if ((arg1 != NULL) && (*arg1 != 0))
 		{
@@ -708,24 +708,24 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 					{
 					case 0:
 					case 1:
-						pBot->desired_class = AVH_USER3_ALIEN_PLAYER1;
+						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER1 );
 						break;
 					case 2:
 					case 3:
 					case 4:
 					case 5:
-						pBot->desired_class = AVH_USER3_ALIEN_PLAYER2;
+						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER2 );
 						break;
 					case 6:
-						pBot->desired_class = AVH_USER3_ALIEN_PLAYER3;
+						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER3 );
 						break;
 					case 7:
 					case 8:
 					case 9:
-						pBot->desired_class = AVH_USER3_ALIEN_PLAYER4;
+						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER4 );
 						break;
 					case 10:
-						pBot->desired_class = AVH_USER3_ALIEN_PLAYER5;
+						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER5 );
 						break;
 					}
 				}
@@ -1997,25 +1997,25 @@ void BotThink( bot_t *pBot )
 				// start evolving
 				if( UTIL_CanEvolve( pBot ) )
 				{
-					if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
+					if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
 					{
 						pBot->f_move_speed = 0.0;
 						pBot->pEdict->v.impulse = 114;
 						pBot->bEvolving = true;
 					}
-					else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
+					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
 					{
 						pBot->f_move_speed = 0.0;
 						pBot->pEdict->v.impulse = 115;
 						pBot->bEvolving = true;
 					}
-					else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
+					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
 					{
 						pBot->f_move_speed = 0.0;
 						pBot->pEdict->v.impulse = 116;
 						pBot->bEvolving = true;
 					}
-					else if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
+					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
 					{
 						pBot->f_move_speed = 0.0;
 						pBot->pEdict->v.impulse = 117;

@@ -29,6 +29,16 @@ bool NSBot::IsNearHive()
 	return false;
 }
 
+int NSBot::GetDesiredClass()
+{
+	return this->iDesiredClass;
+}
+
+void NSBot::SetDesiredClass( int iDesiredClass )
+{
+	this->iDesiredClass = iDesiredClass;
+}
+
 bool NSBot::HasWeaponDamage1()
 {
 	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;

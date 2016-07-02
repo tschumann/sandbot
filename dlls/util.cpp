@@ -736,7 +736,7 @@ bool UTIL_CanEvolve( const bot_t *pBot )
 	}
 
 	// if the bot should always be a skulk, it can't evolve
-	if( pBot->desired_class == AVH_USER3_ALIEN_PLAYER1 )
+	if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER1 )
 	{
 		return false;
 	}

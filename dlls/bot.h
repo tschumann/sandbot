@@ -357,8 +357,6 @@ public:
 	float fUseArmoryTime;
 	int points_spent;
 
-	int desired_class;
-
 	bool bBuild;
 	float fBuildTime;
 	bool bBuildAlienResourceTower;
@@ -395,8 +393,12 @@ public:
 
 class NSBot : public bot_t
 {
+protected:
+	int iDesiredClass;
 public:
 	virtual bool IsNearHive();
+	virtual int GetDesiredClass();
+	virtual void SetDesiredClass( int iDesiredClass );
 
 	virtual bool HasWeaponDamage1();
 	virtual bool HasShotgun();
