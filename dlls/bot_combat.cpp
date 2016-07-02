@@ -363,7 +363,7 @@ bot_weapon_select_t ns_weapon_select[] = {
     100, TRUE, 100, 0, 0,
 	true, FALSE, FALSE, FALSE, 0.0, 0.0},
 	{NS_WEAPON_ACIDROCKETGUN, "weapon_acidrocketgun", 1.0, 0.0,
-	0.0, 1200.0, 0.0, 0.0,
+	50.0, 1200.0, 0.0, 0.0,
     100, TRUE, 100, 0, 0,
 	FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 
@@ -684,6 +684,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
       }
    }
 
+   // look for an enemy from players
    if (pNewEnemy == NULL)
    {
       nearestdistance = 2500;
@@ -694,7 +695,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
          edict_t *pPlayer = INDEXENT(i);
 
          // skip invalid players and skip self (i.e. this bot)
-         if ((pPlayer) && (!pPlayer->free) && (pPlayer != pEdict))
+         if (pPlayer && !pPlayer->free && (pPlayer != pEdict))
          {
             // skip this player if not alive (i.e. dead or dying)
             if (!IsAlive(pPlayer))
@@ -726,7 +727,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 
 			if( mod_id == SHIP_DLL )
 			{
-				// if the bot has no quarry or the quarry isn't this player
+				// if the bot has no quarry or the quarry isn't this player, keep looking
 				if( !((ShipBot *)pBot)->HasQuarry() || ( ((ShipBot *)pBot)->GetQuarry() != pPlayer ) )
 				{
 					continue;

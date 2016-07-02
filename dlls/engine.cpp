@@ -44,6 +44,7 @@ int message_WinMessage = 0;  // for Front Line Force
 int message_ScreenFade = 0;
 int message_HLTV = 0; // for Counter-Strike
 int gmsgCountdown = 0;	// Natural Selection
+int gmsgQuarry = 0;		// The Ship
 
 static FILE *fp;
 
@@ -561,7 +562,13 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 	 else if (mod_id == SHIP_DLL)
      {
         if (msg_type == message_DeathMsg)
+		{
            botMsgFunction = BotClient_Valve_DeathMsg;
+		}
+		else if (msg_type == gmsgQuarry)
+		{
+           botMsgFunction = BotClient_Ship_Quarry;
+		}
      }
      else if (mod_id == FRONTLINE_DLL)
      {
@@ -1028,6 +1035,11 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 			message_DeathMsg = msg;
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
+		// TODO: check the name
+		else if( !strcmp( pszName, "Quarry" ) )
+		{
+			gmsgQuarry = msg;
+		}
 	}
 	else if( mod_id == FRONTLINE_DLL )
 	{
