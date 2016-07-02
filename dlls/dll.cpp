@@ -1010,6 +1010,15 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 			pBots[i] = new NSBot();
 		}
 	}
+	else if( mod_id == SHIP_DLL )
+	{
+		pGame = new Game();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new ShipBot();
+		}
+	}
 	else
 	{
 		pGame = new Game();
