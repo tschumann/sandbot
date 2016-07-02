@@ -2033,6 +2033,14 @@ void BotThink( bot_t *pBot )
 				{
 					((NSBot *)pBot)->UpgradeToCarapace();					
 				}
+				if( !((NSBot *)pBot)->HasRegeneration() )
+				{
+					((NSBot *)pBot)->UpgradeToRegeneration();					
+				}
+				if( !((NSBot *)pBot)->HasCelerity() )
+				{
+					((NSBot *)pBot)->UpgradeToCelerity();					
+				}
 				else if( !((NSBot *)pBot)->IsFade() )
 				{
 					((NSBot *)pBot)->EvolveToFade();

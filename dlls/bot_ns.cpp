@@ -69,6 +69,26 @@ void NSBot::UpgradeToCarapace()
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_CARAPACE;
 }
 
+bool NSBot::HasRegeneration()
+{
+	return this->pEdict->v.iuser4 & MASK_UPGRADE_2;
+}
+
+void NSBot::UpgradeToRegeneration()
+{
+	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_REGENERATION;
+}
+
+bool NSBot::HasCelerity()
+{
+	return this->pEdict->v.iuser4 & MASK_UPGRADE_4;
+}
+
+void NSBot::UpgradeToCelerity()
+{
+	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_CELERITY;
+}
+
 void NSBot::EvolveToFade()
 {
 	if( ((NSGame *)pGame)->IsCombat() )

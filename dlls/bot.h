@@ -407,6 +407,10 @@ public:
 
 	virtual bool HasCarapace();
 	virtual void UpgradeToCarapace();
+	virtual bool HasRegeneration();
+	virtual void UpgradeToRegeneration();
+	virtual bool HasCelerity();
+	virtual void UpgradeToCelerity();
 	virtual void EvolveToFade();
 
 	virtual bool IsFade();
@@ -414,10 +418,16 @@ public:
 	// TODO: possibly make these equal to the exact names of things in the Natural
 	// Selection code so they can be traced back if necessary (ideally use the exact
 	// names used in Natural Selection but they can be vague at times)
+	const static int ALIEN_EVOLUTION_ONE = 101;
+	const static int ALIEN_EVOLUTION_TWO = 102;
+	const static int ALIEN_EVOLUTION_SEVEN = 107;
+
 	const static int COMBAT_UPGRADE_WEAPON_DAMAGE_1 = 23;
 	const static int COMBAT_UPGRADE_SHOTGUN = 64;
 	const static int COMBAT_UPGRADE_HMG = 65;
-	const static int COMBAT_UPGRADE_CARAPACE = 101;	
+	const static int COMBAT_UPGRADE_CARAPACE = ALIEN_EVOLUTION_ONE;
+	const static int COMBAT_UPGRADE_REGENERATION = ALIEN_EVOLUTION_TWO;
+	const static int COMBAT_UPGRADE_CELERITY = ALIEN_EVOLUTION_SEVEN;
 	const static int EVOLVE_TO_FADE = 116;
 };
 
