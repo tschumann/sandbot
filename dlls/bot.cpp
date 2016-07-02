@@ -2056,6 +2056,10 @@ void BotThink( bot_t *pBot )
 				{
 					((NSBot *)pBot)->UpgradeToShotgun();
 				}
+				else if( !((NSBot *)pBot)->HasArmor1() )
+				{
+					((NSBot *)pBot)->UpgradeToArmor1();
+				}
 				else if( !((NSBot *)pBot)->HasHMG() )
 				{
 					((NSBot *)pBot)->UpgradeToHMG();

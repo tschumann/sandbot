@@ -923,6 +923,12 @@ void ClientCommand( edict_t *pEntity )
 
 			edict_t *player = g_engfuncs.pfnPEntityOfEntIndex( playerIndex );
 
+			if( !player )
+			{
+				ALERT( at_console, "Player not found\n" );
+				return;
+			}
+
 			if( mod_id == NS_DLL )
 			{
 				extern float UTIL_GetResources( edict_t *player );
@@ -939,13 +945,31 @@ void ClientCommand( edict_t *pEntity )
 				ALERT( at_console, "Resources: %f\n", UTIL_GetResources( player ) );
 				ALERT( at_console, "Experience: %f\n", UTIL_GetExperience( player ) );
 
-				if( (player->v.iuser4 & MASK_UPGRADE_1) && (player->v.team == TEAM_MARINE))
+				if( player->v.team == TEAM_MARINE )
 				{
-					ALERT( at_console, "Marine Weapons 1\n" );
+					if( player->v.iuser4 & MASK_UPGRADE_1 )
+					{
+						ALERT( at_console, "Marine Weapons 1\n" );
+					}
+					if( player->v.iuser4 & MASK_UPGRADE_4 )
+					{
+						ALERT( at_console, "Marine Armor 1\n" );
+					}
 				}
-				if( (player->v.iuser4 & MASK_UPGRADE_1) && (player->v.team == TEAM_ALIEN))
+				else if( player->v.team == TEAM_ALIEN )
 				{
-					ALERT( at_console, "Carapace\n" );
+					if( player->v.iuser4 & MASK_UPGRADE_1 )
+					{
+						ALERT( at_console, "Carapace\n" );
+					}
+					if( player->v.iuser4 & MASK_UPGRADE_2 )
+					{
+						ALERT( at_console, "Regeneration\n" );
+					}
+					if( player->v.iuser4 & MASK_UPGRADE_4 )
+					{
+						ALERT( at_console, "Celerity\n" );
+					}
 				}
 			}
 

@@ -44,19 +44,24 @@ bool NSBot::HasWeaponDamage1()
 	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
 }
 
-bool NSBot::HasShotgun()
-{
-	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
-}
-
-bool NSBot::HasHMG()
-{
-	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
-}
-
 void NSBot::UpgradeToWeaponDamage1()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_WEAPON_DAMAGE_1;
+}
+
+bool NSBot::HasArmor1()
+{
+	return this->pEdict->v.iuser4 & MASK_UPGRADE_4;
+}
+
+void NSBot::UpgradeToArmor1()
+{
+	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_ARMOR_1;
+}
+
+bool NSBot::HasShotgun()
+{
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
 }
 
 void NSBot::UpgradeToShotgun()
@@ -64,10 +69,16 @@ void NSBot::UpgradeToShotgun()
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_SHOTGUN;
 }
 
+bool NSBot::HasHMG()
+{
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
+}
+
 void NSBot::UpgradeToHMG()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_HMG;
 }
+
 
 bool NSBot::HasCarapace()
 {

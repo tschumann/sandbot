@@ -401,10 +401,12 @@ public:
 	virtual void SetDesiredClass( int iDesiredClass );
 
 	virtual bool HasWeaponDamage1();
-	virtual bool HasShotgun();
-	virtual bool HasHMG();
 	virtual void UpgradeToWeaponDamage1();
+	virtual bool HasArmor1();
+	virtual void UpgradeToArmor1();
+	virtual bool HasShotgun();
 	virtual void UpgradeToShotgun();
+	virtual bool HasHMG();
 	virtual void UpgradeToHMG();
 
 	virtual bool HasCarapace();
@@ -417,14 +419,19 @@ public:
 
 	virtual bool IsFade();
 
-	// TODO: possibly make these equal to the exact names of things in the Natural
-	// Selection code so they can be traced back if necessary (ideally use the exact
-	// names used in Natural Selection but they can be vague at times)
+	// from AvHMessage.h
+	const static int RESEARCH_ARMOR_ONE = 20;
+	const static int RESEARCH_ARMOR_TWO = 21;
+	const static int RESEARCH_ARMOR_THREE = 22;
 	const static int ALIEN_EVOLUTION_ONE = 101;
 	const static int ALIEN_EVOLUTION_TWO = 102;
 	const static int ALIEN_EVOLUTION_SEVEN = 107;
 
+	// TODO: possibly make these equal to the exact names of things in the Natural
+	// Selection code so they can be traced back if necessary (ideally use the exact
+	// names used in Natural Selection but they can be vague at times)
 	const static int COMBAT_UPGRADE_WEAPON_DAMAGE_1 = 23;
+	const static int COMBAT_UPGRADE_ARMOR_1 = RESEARCH_ARMOR_ONE;
 	const static int COMBAT_UPGRADE_SHOTGUN = 64;
 	const static int COMBAT_UPGRADE_HMG = 65;
 	const static int COMBAT_UPGRADE_CARAPACE = ALIEN_EVOLUTION_ONE;
