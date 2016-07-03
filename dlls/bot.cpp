@@ -1861,8 +1861,7 @@ void BotThink( bot_t *pBot )
 
             // should the bot pause for a while here?
             // (don't pause on ladders or while being "used"...
-            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->bot_skill]) && (pEdict->v.movetype != MOVETYPE_FLY) &&
-                (pBot->pBotUser == NULL))
+            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->bot_skill]) && (pEdict->v.movetype != MOVETYPE_FLY) && (pBot->pBotUser == NULL) && mod_id != NS_DLL )
             {
                // set the time that the bot will stop "pausing"
                pBot->f_pause_time = gpGlobals->time + RANDOM_FLOAT(pause_time[pBot->bot_skill][0], pause_time[pBot->bot_skill][1]);
