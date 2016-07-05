@@ -185,11 +185,18 @@ typedef struct
 
 class Game
 {
+public:
+	virtual bool IsTeamPlay();
 };
 
 class GearboxGame : public Game
 {
 public:
+	virtual bool IsTeamPlay()
+	{
+		return this->IsCTF() || Game::IsTeamPlay();
+	}
+
 	bool IsCTF()
 	{
 		extern edict_t *pent_info_ctfdetect;
@@ -197,9 +204,23 @@ public:
 	}
 };
 
+class DODGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
 class NSGame : public Game
 {
 public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+
 	bool IsCombat()
 	{
 		const char *szMap = STRING(gpGlobals->mapname);

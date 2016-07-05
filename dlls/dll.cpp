@@ -1016,6 +1016,15 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 			pBots[i] = new bot_t();
 		}
 	}
+	else if( mod_id == DOD_DLL )
+	{
+		pGame = new DODGame();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new bot_t();
+		}
+	}
 	else if( mod_id == REWOLF_DLL )
 	{
 		pGame = new Game();
