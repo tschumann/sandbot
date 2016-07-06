@@ -2095,3 +2095,7 @@ bool bot_t::HasEnemy()
 {
 	return this->pBotEnemy != NULL;
 }
+
+void bot_t::PickupItem()
+{
+}

@@ -8,6 +8,11 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+void ShipBot::PickupItem()
+{
+	FakeClientCommand( this->pEdict, "pickup", NULL, NULL );
+}
+
 void ShipBot::SetQuarry( int iEntIndex )
 {
 	// TODO: check that no quarry is -1

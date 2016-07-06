@@ -253,6 +253,7 @@ public:
 	virtual void OnSpawn();
 	virtual int GetTeam();
 	virtual bool HasEnemy();
+	virtual void PickupItem();
 
 	bool is_used;
 	int respawn_state;
@@ -466,6 +467,7 @@ class ShipBot : public bot_t
 protected:
 	edict_t *pQuarry;
 public:
+	virtual void PickupItem();
 	virtual void SetQuarry( int iEntIndex );
 	virtual edict_t* GetQuarry();
 	virtual bool HasQuarry();
