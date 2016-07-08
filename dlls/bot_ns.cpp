@@ -20,7 +20,7 @@ bool NSBot::IsNearHive()
 	{
 		float distance = (pent->v.origin - this->pEdict->v.origin).Length();
 
-		if( distance <= 600 )
+		if( distance <= 600.0 )
 		{
 			return true;
 		}

@@ -930,18 +930,18 @@ void ClientCommand( edict_t *pEntity )
 				extern float UTIL_GetResources( edict_t *player );
 				extern float UTIL_GetExperience( edict_t *player );
 
-				if( player->v.team == TEAM_MARINE )
+				if( player->v.team == NS_TEAM_MARINE )
 				{
 					ALERT( at_console, "Team: Marine\n" );
 				}
-				else if( player->v.team == TEAM_ALIEN )
+				else if( player->v.team == NS_TEAM_ALIEN )
 				{
 					ALERT( at_console, "Team: Alien\n" );
 				}
 				ALERT( at_console, "Resources: %f\n", UTIL_GetResources( player ) );
 				ALERT( at_console, "Experience: %f\n", UTIL_GetExperience( player ) );
 
-				if( player->v.team == TEAM_MARINE )
+				if( player->v.team == NS_TEAM_MARINE )
 				{
 					if( player->v.iuser4 & MASK_UPGRADE_1 )
 					{
@@ -952,7 +952,7 @@ void ClientCommand( edict_t *pEntity )
 						ALERT( at_console, "Marine Armor 1\n" );
 					}
 				}
-				else if( player->v.team == TEAM_ALIEN )
+				else if( player->v.team == NS_TEAM_ALIEN )
 				{
 					if( player->v.iuser4 & MASK_UPGRADE_1 )
 					{

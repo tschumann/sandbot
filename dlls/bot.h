@@ -94,19 +94,6 @@ int Cmd_Argc( void );
 #define RESPAWN_NEED_TO_RESPAWN  2
 #define RESPAWN_IS_RESPAWNING    3
 
-// Natural Selection
-#define TEAM_NONE	0
-#define TEAM_MARINE	1
-#define TEAM_ALIEN	2
-
-#define kGorgeCost 10
-#define kLerkCost 30
-#define kFadeCost 50
-#define kOnosCost 75
-
-#define kAlienResourceTowerCost 15
-#define kHiveCost 40
-
 // game start messages for TFC...
 #define MSG_TFC_IDLE          1
 #define MSG_TFC_TEAM_SELECT   2
@@ -144,7 +131,11 @@ int Cmd_Argc( void );
 #define MSG_FLF_SUBMACHINE_SELECT   8
 #define MSG_FLF_HEAVYWEAPONS_SELECT 9
 
+// Day of Defeat
+#define DOD_TEAM_ALLIES
+#define DOD_TEAM_AXIS
 
+// Team Fortress Classic
 #define TFC_CLASS_CIVILIAN  0
 #define TFC_CLASS_SCOUT     1
 #define TFC_CLASS_SNIPER    2
@@ -155,6 +146,19 @@ int Cmd_Argc( void );
 #define TFC_CLASS_PYRO      7
 #define TFC_CLASS_SPY       8
 #define TFC_CLASS_ENGINEER  9
+
+// Natural Selection
+#define NS_TEAM_NONE	0
+#define NS_TEAM_MARINE	1
+#define NS_TEAM_ALIEN	2
+
+#define kGorgeCost 10
+#define kLerkCost 30
+#define kFadeCost 50
+#define kOnosCost 75
+
+#define kAlienResourceTowerCost 15
+#define kHiveCost 40
 
 #define MAX_PLAYERS	32
 

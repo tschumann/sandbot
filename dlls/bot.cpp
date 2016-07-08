@@ -1983,7 +1983,7 @@ void BotThink( bot_t *pBot )
 
 		if( g_bInGame && !((NSGame *)pGame)->IsCombat() )
 		{
-			if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+			if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_ALIEN )
 			{
 				// finish evolving
 				if( UTIL_IsEvolved( pBot ) )
@@ -2026,7 +2026,7 @@ void BotThink( bot_t *pBot )
 		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
 		{
 			// find out what impulses mean what (check AvHMessage.h)
-			if( pBot->GetTeam() == TEAM_ALIEN && !pBot->HasEnemy() && ((NSBot *)pBot)->IsNearHive() )
+			if( pBot->GetTeam() == NS_TEAM_ALIEN && !pBot->HasEnemy() && ((NSBot *)pBot)->IsNearHive() )
 			{
 				if( !((NSBot *)pBot)->HasCarapace() )
 				{
@@ -2045,7 +2045,7 @@ void BotThink( bot_t *pBot )
 					((NSBot *)pBot)->EvolveToFade();
 				}
 			}
-			else if( pBot->GetTeam() == TEAM_MARINE && !pBot->HasEnemy() )
+			else if( pBot->GetTeam() == NS_TEAM_MARINE && !pBot->HasEnemy() )
 			{
 				if( !((NSBot *)pBot)->HasWeaponDamage1() )
 				{

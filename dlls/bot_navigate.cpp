@@ -35,12 +35,16 @@ static FILE *fp;
 
 void BotFixIdealPitch(edict_t *pEdict)
 {
-   // check for wrap around of angle...
-   if (pEdict->v.idealpitch >= 180)
-      pEdict->v.idealpitch -= 360 * ((int) (pEdict->v.idealpitch / 360) + 1);
+	// check for wrap around of angle
+	if( pEdict->v.idealpitch >= 180 )
+	{
+		pEdict->v.idealpitch -= 360 * ((int) (pEdict->v.idealpitch / 360) + 1);
+	}
 
-   if (pEdict->v.idealpitch < -180)
-      pEdict->v.idealpitch += 360 * ((int) (-pEdict->v.idealpitch / 360) + 1);
+	if( pEdict->v.idealpitch < -180 )
+	{
+		pEdict->v.idealpitch += 360 * ((int) (-pEdict->v.idealpitch / 360) + 1);
+	}
 }
 
 
@@ -582,7 +586,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    {
 	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
 	   {
-		   if( UTIL_GetTeam( pBot->pEdict ) == TEAM_ALIEN )
+		   if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_ALIEN )
 		   {
 			   pent = NULL;
 
@@ -604,7 +608,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					}
 				}
 		   }
-		   else if( UTIL_GetTeam( pBot->pEdict ) == TEAM_MARINE )
+		   else if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_MARINE )
 		   {
 			   pent = NULL;
 
@@ -1192,12 +1196,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
 		 else if (mod_id == NS_DLL)
 		 {
-			 if( pBot->pEdict->v.team == TEAM_ALIEN )
+			 if( pBot->pEdict->v.team == NS_TEAM_ALIEN )
 			 {
 				 ALERT(at_console, "looking for command chair\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_COMMAND_CHAIR);
              }
-			 else if( pBot->pEdict->v.team == TEAM_MARINE )
+			 else if( pBot->pEdict->v.team == NS_TEAM_MARINE )
 			 {
 				 ALERT(at_console, "looking for hive\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_HIVE);
@@ -1448,8 +1452,7 @@ void BotOnLadder( bot_t *pBot, float moved_distance )
          v_src = pEdict->v.origin + pEdict->v.view_ofs;
          v_dest = v_src + gpGlobals->v_forward * 30;
 
-         UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters,
-                         pEdict->v.pContainingEntity, &tr);
+         UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
          if (tr.flFraction < 1.0)  // hit something?
          {
@@ -1487,8 +1490,7 @@ void BotOnLadder( bot_t *pBot, float moved_distance )
             v_src = pEdict->v.origin + pEdict->v.view_ofs;
             v_dest = v_src + gpGlobals->v_forward * 30;
 
-            UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters,
-                            pEdict->v.pContainingEntity, &tr);
+            UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
             if (tr.flFraction < 1.0)  // hit something?
             {
@@ -1748,31 +1750,35 @@ void BotUseLift( bot_t *pBot, float moved_distance )
 
 bool BotStuckInCorner( bot_t *pBot )
 {
-   TraceResult tr;
-   Vector v_src, v_dest;
-   edict_t *pEdict = pBot->pEdict;
-   
-   UTIL_MakeVectors( pEdict->v.v_angle );
+	TraceResult tr;
+	Vector v_src, v_dest;
+	edict_t *pEdict = pBot->pEdict;
 
-   // trace 45 degrees to the right...
-   v_src = pEdict->v.origin;
-   v_dest = v_src + gpGlobals->v_forward*20 + gpGlobals->v_right*20;
+	UTIL_MakeVectors( pEdict->v.v_angle );
 
-   UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+	// trace 45 degrees to the right...
+	v_src = pEdict->v.origin;
+	v_dest = v_src + gpGlobals->v_forward*20 + gpGlobals->v_right*20;
 
-   if (tr.flFraction >= 1.0)
-      return FALSE;  // no wall, so not in a corner
+	UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
-   // trace 45 degrees to the left...
-   v_src = pEdict->v.origin;
-   v_dest = v_src + gpGlobals->v_forward*20 - gpGlobals->v_right*20;
+	if (tr.flFraction >= 1.0)
+	{
+		return false;  // no wall, so not in a corner
+	}
 
-   UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+	// trace 45 degrees to the left...
+	v_src = pEdict->v.origin;
+	v_dest = v_src + gpGlobals->v_forward*20 - gpGlobals->v_right*20;
 
-   if (tr.flFraction >= 1.0)
-      return FALSE;  // no wall, so not in a corner
+	UTIL_TraceLine( v_src, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
-   return TRUE;  // bot is in a corner
+	if (tr.flFraction >= 1.0)
+	{
+		return false;  // no wall, so not in a corner
+	}
+
+	return true;  // bot is in a corner
 }
 
 
@@ -1793,7 +1799,8 @@ void BotTurnAtWall( bot_t *pBot, TraceResult *tr )
 
    Y = pEdict->v.v_angle.y;
    Y = Y + 180;
-   if (Y > 359) Y -= 360;
+   if (Y > 359)
+		Y -= 360;
 
    // Turn the normal vector around 180 degrees (i.e. make it point towards
    // the wall not away from it.  That makes finding the angles that the
@@ -1801,7 +1808,7 @@ void BotTurnAtWall( bot_t *pBot, TraceResult *tr )
 
    Normal.y = Normal.y - 180;
    if (Normal.y < 0)
-   Normal.y += 360;
+		Normal.y += 360;
 
    // Here we compare the bots view angle (Y) to the Normal - 90 degrees (Y1)
    // and the Normal + 90 degrees (Y2).  These two angles (Y1 & Y2) represent
@@ -1828,9 +1835,11 @@ void BotTurnAtWall( bot_t *pBot, TraceResult *tr )
    // angle and Y1 or Y2 (respectively).
 
    D1 = abs(Y - Y1);
-   if (D1 > 179) D1 = abs(D1 - 360);
+   if (D1 > 179)
+	   D1 = abs(D1 - 360);
    D2 = abs(Y - Y2);
-   if (D2 > 179) D2 = abs(D2 - 360);
+   if (D2 > 179)
+	   D2 = abs(D2 - 360);
 
    // If difference 1 (D1) is more than difference 2 (D2) then the bot will
    // have to turn LESS if it heads in direction Y1 otherwise, head in
@@ -1878,7 +1887,7 @@ bool BotCantMoveForward( bot_t *pBot, TraceResult *tr )
    // check if the trace hit something...
    if (tr->flFraction < 1.0)
    {
-      return TRUE;  // bot's head will hit something
+      return true;  // bot's head will hit something
    }
 
    // bot's head is clear, check at waist level...
@@ -1892,10 +1901,10 @@ bool BotCantMoveForward( bot_t *pBot, TraceResult *tr )
    // check if the trace hit something...
    if (tr->flFraction < 1.0)
    {
-      return TRUE;  // bot's body will hit something
+      return true;  // bot's body will hit something
    }
 
-   return FALSE;  // bot can move forward, return false
+   return false;  // bot can move forward, return false
 }
 
 
@@ -1935,7 +1944,7 @@ bool BotCanJumpUp( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now check same height to one side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * 16 + Vector(0, 0, -36 + 46);
@@ -1947,7 +1956,7 @@ bool BotCanJumpUp( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now check same height on the other side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * -16 + Vector(0, 0, -36 + 46);
@@ -1958,7 +1967,7 @@ bool BotCanJumpUp( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now trace from head level downward to check for obstructions...
 
@@ -1977,7 +1986,7 @@ bool BotCanJumpUp( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now check same height to one side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * 16 + gpGlobals->v_forward * 24;
@@ -1989,7 +1998,7 @@ bool BotCanJumpUp( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now check same height on the other side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * -16 + gpGlobals->v_forward * 24;
@@ -2001,9 +2010,9 @@ bool BotCanJumpUp( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
-   return TRUE;
+   return true;
 }
 
 
@@ -2036,12 +2045,11 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at duck height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now check same height to one side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * 16 + Vector(0, 0, -36 + 37);
@@ -2053,19 +2061,18 @@ bool BotCanDuckUnder( bot_t *pBot )
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now check same height on the other side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * -16 + Vector(0, 0, -36 + 37);
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at duck height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
-      return FALSE;
+      return false;
 
    // now trace from the ground up to check for object to duck under...
 
@@ -2077,12 +2084,11 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, 72);
 
    // trace a line straight up in the air...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace didn't hit something, return FALSE
    if (tr.flFraction >= 1.0)
-      return FALSE;
+      return false;
 
    // now check same height to one side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * 16 + gpGlobals->v_forward * 24;
@@ -2095,7 +2101,7 @@ bool BotCanDuckUnder( bot_t *pBot )
 
    // if trace didn't hit something, return FALSE
    if (tr.flFraction >= 1.0)
-      return FALSE;
+      return false;
 
    // now check same height on the other side of the bot...
    v_source = pEdict->v.origin + gpGlobals->v_right * -16 + gpGlobals->v_forward * 24;
@@ -2103,14 +2109,13 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, 72);
 
    // trace a line straight up in the air...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // if trace didn't hit something, return FALSE
    if (tr.flFraction >= 1.0)
-      return FALSE;
+      return false;
 
-   return TRUE;
+   return true;
 }
 
 
@@ -2160,8 +2165,7 @@ bool BotFollowUser( bot_t *pBot )
       return FALSE;
    }
 
-   user_visible = FInViewCone( &vecEnd, pEdict ) &&
-                  FVisible( vecEnd, pEdict );
+   user_visible = FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict );
 
    // check if the "user" is still visible or if the user has been visible
    // in the last 5 seconds (or the player just starting "using" the bot)
@@ -2213,8 +2217,7 @@ bool BotCheckWallOnLeft( bot_t *pBot )
    v_src = pEdict->v.origin;
    v_left = v_src + gpGlobals->v_right * -40;  // 40 units to the left
 
-   UTIL_TraceLine( v_src, v_left, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_src, v_left, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // check if the trace hit something...
    if (tr.flFraction < 1.0)
@@ -2242,8 +2245,7 @@ bool BotCheckWallOnRight( bot_t *pBot )
    v_src = pEdict->v.origin;
    v_right = v_src + gpGlobals->v_right * 40;  // 40 units to the right
 
-   UTIL_TraceLine( v_src, v_right, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_src, v_right, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
    // check if the trace hit something...
    if (tr.flFraction < 1.0)

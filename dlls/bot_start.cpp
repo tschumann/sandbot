@@ -49,8 +49,7 @@ void BotStartGame( bot_t *pBot )
          pBot->create_time = gpGlobals->time;  // reset
 
          if ((pBot->bot_team != 1) && (pBot->bot_team != 2) &&
-             (pBot->bot_team != 3) && (pBot->bot_team != 4) &&
-             (pBot->bot_team != 5))
+             (pBot->bot_team != 3) && (pBot->bot_team != 4) && (pBot->bot_team != 5))
             pBot->bot_team = -1;
 
          if (pBot->bot_team == -1)
@@ -183,8 +182,7 @@ void BotStartGame( bot_t *pBot )
       {
          pBot->start_action = MSG_CS_IDLE;  // switch back to idle
 
-         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) &&
-             (pBot->bot_team != 5))
+         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) && (pBot->bot_team != 5))
             pBot->bot_team = -1;
 
          if (pBot->bot_team == -1)
@@ -263,53 +261,6 @@ void BotStartGame( bot_t *pBot )
          return;
       }
    }
-   else if( mod_id == DOD_DLL )
-   {
-	   if (pBot->start_action == MSG_DOD_TEAM_SELECT)
-       {
-		 pBot->start_action = MSG_OPFOR_IDLE;  // switch back to idle
-
-         if ((pBot->bot_team != 1) && (pBot->bot_team != 2))
-            pBot->bot_team = -1;
-
-         if (pBot->bot_team == -1)
-            pBot->bot_team = RANDOM_LONG(1, 2);
-
-         // select the team the bot wishes to join...
-         if (pBot->bot_team == 1)
-            strcpy(c_team, "1");
-         else if (pBot->bot_team == 2)
-            strcpy(c_team, "2");
-
-         FakeClientCommand(pEdict, "jointeam", c_team, NULL);
-
-         return;
-	   }
-	   if (pBot->start_action == MSG_DOD_ALLIED_SELECT)
-		  {
-			 pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
-
-			 // TODO: add proper class selection
-			 FakeClientCommand(pEdict, "cls_random", c_class, NULL);
-
-			 // bot has now joined the game (doesn't need to be started)
-			 pBot->not_started = 0;
-
-			 return;
-		  }
-	   if (pBot->start_action == MSG_DOD_AXIS_SELECT)
-		  {
-			 pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
-
-			 // TODO: add proper class selection
-			 FakeClientCommand(pEdict, "cls_random", c_class, NULL);
-
-			 // bot has now joined the game (doesn't need to be started)
-			 pBot->not_started = 0;
-
-			 return;
-		  }
-   }
    else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
    {
       // handle Opposing Force CTF stuff here...
@@ -372,6 +323,53 @@ void BotStartGame( bot_t *pBot )
          return;
       }
    }
+	else if( mod_id == DOD_DLL )
+	{
+		if (pBot->start_action == MSG_DOD_TEAM_SELECT)
+		{
+			pBot->start_action = MSG_OPFOR_IDLE;  // switch back to idle
+
+			if ((pBot->bot_team != 1) && (pBot->bot_team != 2))
+				pBot->bot_team = -1;
+
+			if (pBot->bot_team == -1)
+				pBot->bot_team = RANDOM_LONG(1, 2);
+
+			// select the team the bot wishes to join...
+			if (pBot->bot_team == 1)
+				strcpy(c_team, "1");
+			else if (pBot->bot_team == 2)
+				strcpy(c_team, "2");
+
+			FakeClientCommand(pEdict, "jointeam", c_team, NULL);
+
+			return;
+		}
+		if (pBot->start_action == MSG_DOD_ALLIED_SELECT)
+		{
+			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
+
+			// TODO: add proper class selection
+			FakeClientCommand(pEdict, "cls_random", c_class, NULL);
+
+			// bot has now joined the game (doesn't need to be started)
+			pBot->not_started = 0;
+
+			return;
+		}
+		if (pBot->start_action == MSG_DOD_AXIS_SELECT)
+		{
+			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
+
+			// TODO: add proper class selection
+			FakeClientCommand(pEdict, "cls_random", c_class, NULL);
+
+			// bot has now joined the game (doesn't need to be started)
+			pBot->not_started = 0;
+
+			return;
+		}
+	}
    else if (mod_id == NS_DLL)
    {
 		switch( pBot->start_action )
@@ -401,8 +399,7 @@ void BotStartGame( bot_t *pBot )
       {
          pBot->start_action = MSG_FLF_IDLE;  // switch back to idle
 
-         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) &&
-             (pBot->bot_team != 5))
+         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) && (pBot->bot_team != 5))
             pBot->bot_team = -1;
 
          if (pBot->bot_team == -1)
@@ -710,13 +707,11 @@ void BotStartGame( bot_t *pBot )
          if (weapon_class == FLF_WEAPON_SPAS12)  // shotguns
             strcpy(c_item, "shotgun");
          else if ((weapon_class == FLF_WEAPON_MP5A2) ||  // submachine
-                  (weapon_class == FLF_WEAPON_MP5SD) ||
-                  (weapon_class == FLF_WEAPON_MAC10) ||
+                  (weapon_class == FLF_WEAPON_MP5SD) || (weapon_class == FLF_WEAPON_MAC10) ||
                   (weapon_class == FLF_WEAPON_UMP45))
             strcpy(c_item, "submachine");
          else if ((weapon_class == FLF_WEAPON_M4) ||
-                  (weapon_class == FLF_WEAPON_FAMAS) ||
-                  (weapon_class == FLF_WEAPON_AK5) ||
+                  (weapon_class == FLF_WEAPON_FAMAS) || (weapon_class == FLF_WEAPON_AK5) ||
                   (weapon_class == FLF_WEAPON_MSG90))
             strcpy(c_item, "rifles");
          else
