@@ -204,7 +204,34 @@ public:
 	}
 };
 
+class DecayGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
+class CStrikeGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
 class DODGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
+class TFCGame : public Game
 {
 public:
 	virtual bool IsTeamPlay()

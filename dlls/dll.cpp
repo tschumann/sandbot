@@ -68,10 +68,8 @@ edict_t *listenserver_edict = NULL;
 int g_menu_waypoint;
 int g_menu_state = 0;
 
-float is_team_play = 0.0;
 char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 int num_teams = 0;
-bool checked_teamplay = FALSE;
 edict_t *pent_info_tfdetect = NULL;
 edict_t *pent_info_ctfdetect = NULL;
 edict_t *pent_info_frontline = NULL;
@@ -261,10 +259,8 @@ int DispatchSpawn( edict_t *pent )
 
      g_GameRules = TRUE;
 
-     is_team_play = 0.0;
      memset(team_names, 0, sizeof(team_names));
      num_teams = 0;
-     checked_teamplay = FALSE;
 
      bot_cfg_pause_time = 0.0;
      respawn_time = 0.0;
@@ -1016,9 +1012,36 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 			pBots[i] = new bot_t();
 		}
 	}
+	else if( mod_id == DECAY_DLL )
+	{
+		pGame = new DecayGame();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new bot_t();
+		}
+	}
+	else if( mod_id == CSTRIKE_DLL || mod_id == CZERO_DLL )
+	{
+		pGame = new CStrikeGame();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new bot_t();
+		}
+	}
 	else if( mod_id == DOD_DLL )
 	{
 		pGame = new DODGame();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new bot_t();
+		}
+	}
+	else if( mod_id == TFC_DLL )
+	{
+		pGame = new TFCGame();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{

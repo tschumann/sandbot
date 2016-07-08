@@ -21,8 +21,6 @@ extern int mod_id;
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 extern int team_allies[4];
-extern float is_team_play;
-extern bool checked_teamplay;
 extern FLAG_S flags[MAX_FLAGS];
 extern int num_flags;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
@@ -33,8 +31,6 @@ int holywars_gamemode;
 extern int flf_bug_fix;
 
 static FILE *fp;
-
-extern void BotCheckTeamplay(void);
 
 
 void BotFixIdealPitch(edict_t *pEdict)
@@ -382,11 +378,8 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
    edict_t *pEdict = pBot->pEdict;
 
-   if (!checked_teamplay)  // check for team play...
-      BotCheckTeamplay();
-
    // is team play enabled (or is it Counter-Strike)?
-   if (is_team_play)
+   if (pGame->IsTeamPlay())
       team = UTIL_GetTeam(pEdict);
    else
       team = -1;  // not team play (all waypoints are valid for everyone)

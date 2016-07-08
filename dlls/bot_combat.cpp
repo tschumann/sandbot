@@ -20,7 +20,6 @@ extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 extern int team_allies[4];
 extern float is_team_play;
-extern bool checked_teamplay;
 
 FILE *fp;
 
@@ -512,24 +511,6 @@ bot_weapon_select_t frontline_weapon_select[] = {
    {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
-
-void BotCheckTeamplay(void)
-{
-	// is this a teamplay mod
-	if( ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()) || (mod_id == DECAY_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == CZERO_DLL) || (mod_id == DOD_DLL) || (mod_id == TFC_DLL) || (mod_id == NS_DLL) || (mod_id == FRONTLINE_DLL))
-	{
-		is_team_play = 1.0;
-	}
-	// otherwise fall back on the mp_teamplay cvar
-	else
-	{
-		is_team_play = CVAR_GET_FLOAT("mp_teamplay");  // teamplay enabled?
-	}
-
-	checked_teamplay = TRUE;
-}
-
-
 edict_t *BotFindEnemy( bot_t *pBot )
 {
 	Vector vecEnd;
@@ -704,11 +685,8 @@ edict_t *BotFindEnemy( bot_t *pBot )
             if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
                continue;
 
-            if (!checked_teamplay)  // check for team play...
-               BotCheckTeamplay();
-
             // is team play enabled?
-            if (is_team_play > 0.0)
+			if (pGame->IsTeamPlay())
             {
                int player_team = UTIL_GetTeam(pPlayer);
                int bot_team = UTIL_GetTeam(pEdict);
