@@ -1273,8 +1273,7 @@ void BotThink( bot_t *pBot )
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
 
-      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, 0.0,
-                                   0, 0, pEdict->v.button, 0, msecval);
+      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, 0.0, 0, 0, pEdict->v.button, 0, msecval);
 
       return;
    }
@@ -1980,6 +1979,23 @@ void BotThink( bot_t *pBot )
 		extern float UTIL_GetResources( edict_t *player );
 
 		extern bool g_bInGame;
+
+		// TODO: add some sort of reset function to game object?
+		// how does the game say that a round has finished?
+		if( pBot->pEdict->v.playerclass == PLAYMODE_READYROOM )
+		{
+			// g_bInGame = false;
+			pBot->not_started = true;
+
+			if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_ALIEN )
+			{
+				pBot->start_action = MSG_NS_JOIN_ALIEN;
+			}
+			else if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_MARINE )
+			{
+				pBot->start_action = MSG_NS_JOIN_MARINE;
+			}
+		}
 
 		if( g_bInGame && !((NSGame *)pGame)->IsCombat() )
 		{
