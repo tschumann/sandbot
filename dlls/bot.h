@@ -160,6 +160,11 @@ int Cmd_Argc( void );
 #define kAlienResourceTowerCost 15
 #define kHiveCost 40
 
+const int kGameStatusReset = 0;
+const int kGameStatusResetNewMap = 1;
+const int kGameStatusEnded = 2;
+const int kGameStatusGameTime = 3;
+
 #define MAX_PLAYERS	32
 
 

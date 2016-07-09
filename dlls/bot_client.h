@@ -97,5 +97,6 @@ void BotClient_FLF_ScreenFade(void *p, int bot_index);
 void BotClient_CS_HLTV(void *p, int bot_index);
 
 void BotClient_NS_CountDown( void *p, int bot_index );
+void BotClient_NS_GameStatus( void *p, int bot_index );
 
 void BotClient_Ship_Quarry( void *p, int bot_index );

@@ -44,6 +44,7 @@ int message_WinMessage = 0;  // for Front Line Force
 int message_ScreenFade = 0;
 int message_HLTV = 0; // for Counter-Strike
 int gmsgCountdown = 0;	// Natural Selection
+int gmsgGameStatus = 0; // Natural Selection
 int gmsgQuarry = 0;		// The Ship
 
 static FILE *fp;
@@ -553,6 +554,10 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 		{
 			botMsgFunction = BotClient_NS_CountDown;
 		}
+		else if( msg_type == gmsgGameStatus )
+		{
+			botMsgFunction = BotClient_NS_GameStatus;
+		}
      }
 	 else if (mod_id == HUNGER_DLL)
      {
@@ -633,7 +638,13 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 	 else if (mod_id == SHIP_DLL)
      {
         if (msg_type == message_WeaponList)
+		{
            botMsgFunction = BotClient_Ship_WeaponList;
+		}
+		else if (msg_type == gmsgQuarry)
+		{
+           botMsgFunction = BotClient_Ship_Quarry;
+		}
      }
      else if (mod_id == FRONTLINE_DLL)
      {
@@ -1000,6 +1011,10 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if( !strcmp( pszName, "Countdown" ) )
 		{
 			gmsgCountdown = msg;
+		}
+		else if( !strcmp( pszName, "GameStatus" ) )
+		{
+			gmsgGameStatus = msg;
 		}
 	}
 	if( mod_id == HUNGER_DLL )

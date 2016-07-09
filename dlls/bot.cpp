@@ -1982,6 +1982,7 @@ void BotThink( bot_t *pBot )
 
 		// TODO: add some sort of reset function to game object?
 		// how does the game say that a round has finished?
+		// TODO: don't do it this way - listen for GameStatus message
 		if( pBot->pEdict->v.playerclass == PLAYMODE_READYROOM )
 		{
 			// g_bInGame = false;

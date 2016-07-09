@@ -1043,6 +1043,12 @@ void BotClient_NS_CountDown( void *p, int bot_index )
 	g_iCountDown = *(int *)p;
 }
 
+void BotClient_NS_GameStatus( void *p, int bot_index )
+{
+	int status = *(int *)p;
+	int mapMode = *(int *)p;
+}
+
 void BotClient_Ship_Quarry( void *p, int bot_index )
 {
 	int quarryId = *(int *)p;
