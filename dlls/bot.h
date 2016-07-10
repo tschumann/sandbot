@@ -164,6 +164,7 @@ const int kGameStatusReset = 0;
 const int kGameStatusResetNewMap = 1;
 const int kGameStatusEnded = 2;
 const int kGameStatusGameTime = 3;
+const int kGameStatusUnspentLevels = 4;
 
 #define MAX_PLAYERS	32
 
@@ -191,89 +192,6 @@ typedef struct
 	int  iAmmo1;  // amount of ammo in primary reserve
 	int  iAmmo2;  // amount of ammo in secondary reserve
 } bot_current_weapon_t;
-
-class Game
-{
-public:
-	virtual bool IsTeamPlay();
-};
-
-class GearboxGame : public Game
-{
-public:
-	virtual bool IsTeamPlay()
-	{
-		return this->IsCTF() || Game::IsTeamPlay();
-	}
-
-	bool IsCTF()
-	{
-		extern edict_t *pent_info_ctfdetect;
-		return pent_info_ctfdetect != NULL;
-	}
-};
-
-class DecayGame : public Game
-{
-public:
-	virtual bool IsTeamPlay()
-	{
-		return true;
-	}
-};
-
-class CStrikeGame : public Game
-{
-public:
-	virtual bool IsTeamPlay()
-	{
-		return true;
-	}
-};
-
-class DODGame : public Game
-{
-public:
-	virtual bool IsTeamPlay()
-	{
-		return true;
-	}
-};
-
-class TFCGame : public Game
-{
-public:
-	virtual bool IsTeamPlay()
-	{
-		return true;
-	}
-};
-
-class NSGame : public Game
-{
-public:
-	virtual bool IsTeamPlay()
-	{
-		return true;
-	}
-
-	bool IsCombat()
-	{
-		const char *szMap = STRING(gpGlobals->mapname);
-
-		return (szMap[0] == 'c') && (szMap[1] == 'o');
-	}
-
-	edict_t **GetHives()
-	{
-		return this->pHives;
-	}
-private:
-	edict_t *pCommandChair;
-	edict_t **pHives;
-};
-
-extern Game *pGame;
 
 struct bot_player_t
 {
@@ -458,6 +376,7 @@ public:
 	virtual int GetDesiredClass();
 	virtual void SetDesiredClass( int iDesiredClass );
 
+	virtual bool IsMarine();
 	virtual bool HasWeaponDamage1();
 	virtual void UpgradeToWeaponDamage1();
 	virtual bool HasArmor1();
@@ -467,6 +386,7 @@ public:
 	virtual bool HasHMG();
 	virtual void UpgradeToHMG();
 
+	virtual bool IsAlien();
 	virtual bool HasCarapace();
 	virtual void UpgradeToCarapace();
 	virtual bool HasRegeneration();
@@ -510,6 +430,107 @@ public:
 };
 
 extern bot_t **pBots;
+
+class Game
+{
+public:
+	virtual bool IsTeamPlay();
+};
+
+class GearboxGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return this->IsCTF() || Game::IsTeamPlay();
+	}
+
+	bool IsCTF()
+	{
+		extern edict_t *pent_info_ctfdetect;
+		return pent_info_ctfdetect != NULL;
+	}
+};
+
+class DecayGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
+class CStrikeGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
+class DODGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
+class TFCGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+};
+
+class NSGame : public Game
+{
+public:
+	virtual bool IsTeamPlay()
+	{
+		return true;
+	}
+
+	bool IsCombat()
+	{
+		const char *szMap = STRING(gpGlobals->mapname);
+
+		return (szMap[0] == 'c') && (szMap[1] == 'o');
+	}
+
+	edict_t **GetHives()
+	{
+		return this->pHives;
+	}
+
+	void StartRound()
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i]->not_started = true;
+
+			// TODO: check that getting the team at this point works
+			if( ((NSBot *)pBots[i])->IsAlien() )
+			{
+				pBots[i]->start_action = MSG_NS_JOIN_ALIEN;
+			}
+			else if( ((NSBot *)pBots[i])->IsMarine() )
+			{
+				pBots[i]->start_action = MSG_NS_JOIN_MARINE;
+			}
+		}
+	}
+private:
+	edict_t *pCommandChair;
+	edict_t **pHives;
+};
+
+extern Game *pGame;
 
 // Only one of these allowed per entity, stored in pev->iuser3.
 typedef enum

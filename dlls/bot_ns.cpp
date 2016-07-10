@@ -39,6 +39,11 @@ void NSBot::SetDesiredClass( int iDesiredClass )
 	this->iDesiredClass = iDesiredClass;
 }
 
+bool NSBot::IsMarine()
+{
+	return this->pEdict->v.team == NS_TEAM_MARINE;
+}
+
 bool NSBot::HasWeaponDamage1()
 {
 	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
@@ -79,6 +84,11 @@ void NSBot::UpgradeToHMG()
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_HMG;
 }
 
+
+bool NSBot::IsAlien()
+{
+	return this->pEdict->v.team == NS_TEAM_ALIEN;
+}
 
 bool NSBot::HasCarapace()
 {

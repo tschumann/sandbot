@@ -1045,8 +1045,51 @@ void BotClient_NS_CountDown( void *p, int bot_index )
 
 void BotClient_NS_GameStatus( void *p, int bot_index )
 {
-	int status = *(int *)p;
-	int mapMode = *(int *)p;
+	static int state = 0;   // current state machine state
+	int status = -1;
+	int mapMode = 0;
+	int gameTime = 0;
+	int timeLimit = 0;
+	int data = 0;
+
+	if (state == 0)
+	{
+		status = *(int *) p;
+	}
+	else if (state == 1)
+	{
+		state++;
+		mapMode = *(int *) p;
+	}
+	else if (state == 2 && (status == kGameStatusReset || status == kGameStatusResetNewMap || status == kGameStatusEnded))
+	{
+		state = 0;
+	}
+	else if (state == 2 && status == kGameStatusGameTime)
+	{
+		state++;
+		gameTime = *(int *) p;
+	}
+	else if (state == 2 && status == kGameStatusUnspentLevels)
+	{
+		state++;
+		data = *(int *) p;
+	}
+	else if (state == 3 && status == kGameStatusGameTime)
+	{
+		state++;
+		timeLimit = *(int *) p;
+	}
+	else if (state == 4 && status == kGameStatusGameTime)
+	{
+		state++;
+		data = *(int *) p;
+	}
+	else
+	{
+		state = 0;
+	}
+	ALERT( at_console, "status %d\n", status );
 }
 
 void BotClient_Ship_Quarry( void *p, int bot_index )
