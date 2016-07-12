@@ -1055,6 +1055,11 @@ void BotClient_NS_GameStatus( void *p, int bot_index )
 	if (state == 0)
 	{
 		status = *(int *) p;
+
+		if( status == kGameStatusReset || status == kGameStatusResetNewMap || status == kGameStatusEnded )
+		{
+			pBots[bot_index]->not_started = true;
+		}
 	}
 	else if (state == 1)
 	{
