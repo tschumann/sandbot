@@ -375,6 +375,7 @@ public:
 	virtual bool IsNearHive();
 	virtual int GetDesiredClass();
 	virtual void SetDesiredClass( int iDesiredClass );
+	virtual void CombatUpgrade();
 
 	virtual bool IsMarine();
 	virtual bool HasWeaponDamage1();

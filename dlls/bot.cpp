@@ -1329,8 +1329,7 @@ void BotThink( bot_t *pBot )
 
          // did another player kill this bot AND bot whine messages loaded AND
          // has the bot been alive for at least 15 seconds AND
-         if ((pBot->killer_edict != NULL) && (whine_count > 0) &&
-             ((pBot->f_bot_spawn_time + 15.0) <= gpGlobals->time))
+         if ((pBot->killer_edict != NULL) && (whine_count > 0) && ((pBot->f_bot_spawn_time + 15.0) <= gpGlobals->time))
          {
             if ((RANDOM_LONG(1,100) <= 10))
             {
@@ -1343,7 +1342,9 @@ void BotThink( bot_t *pBot )
       }
 
       if (RANDOM_LONG(1, 100) > 50)
+	  {
          pEdict->v.button = IN_ATTACK;
+	  }
 
       BotFixIdealPitch (pEdict);
       BotFixIdealYaw (pEdict);
@@ -1483,8 +1484,7 @@ void BotThink( bot_t *pBot )
    }
 
    // if the bot is under water, adjust pitch by pitch_speed degrees
-   if ((pEdict->v.waterlevel == 2) ||
-       (pEdict->v.waterlevel == 3))
+   if ((pEdict->v.waterlevel == 2) || (pEdict->v.waterlevel == 3))
    {
       // turn towards ideal_pitch by pitch_speed degrees
       pitch_degrees = BotChangePitch( pBot, pEdict->v.pitch_speed );
@@ -1495,13 +1495,11 @@ void BotThink( bot_t *pBot )
    // turn towards ideal_yaw by yaw_speed degrees
    yaw_degrees = BotChangeYaw( pBot, pEdict->v.yaw_speed );
 
-   if ((pitch_degrees >= pEdict->v.pitch_speed) ||
-       (yaw_degrees >= pEdict->v.yaw_speed))
+   if ((pitch_degrees >= pEdict->v.pitch_speed) || (yaw_degrees >= pEdict->v.yaw_speed))
    {
       pBot->f_move_speed = 0.0;  // don't move while turning a lot
    }
-   else if ((pitch_degrees >= 10) || 
-            (yaw_degrees >= 10))  // turning more than 10 degrees?
+   else if ((pitch_degrees >= 10) || (yaw_degrees >= 10))  // turning more than 10 degrees?
    {
       pBot->f_move_speed = pBot->f_move_speed / 4;  // slow down while turning
    }
@@ -1657,8 +1655,7 @@ void BotThink( bot_t *pBot )
                team = 1 - team;  // BACKWARDS bug fix!
 
             // still capturing and hasn't captured yet...
-            if ((pBot->f_use_capture_time > gpGlobals->time) &&
-                (pBot->pCaptureEdict->v.skin == team))
+            if ((pBot->f_use_capture_time > gpGlobals->time) && (pBot->pCaptureEdict->v.skin == team))
             {
                pBot->f_move_speed = 0;  // don't move while capturing
 
@@ -1949,7 +1946,9 @@ void BotThink( bot_t *pBot )
    }
 
    if (pBot->f_pause_time > gpGlobals->time)  // is the bot "paused"?
+   {
       pBot->f_move_speed = 0;  // don't move while pausing
+   }
 
    // make the body face the same way the bot is looking
    pEdict->v.angles.y = pEdict->v.v_angle.y;
@@ -1982,7 +1981,7 @@ void BotThink( bot_t *pBot )
 
 		if( g_bInGame && !((NSGame *)pGame)->IsCombat() )
 		{
-			if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_ALIEN )
+			if( ((NSBot *)pBot)->IsAlien() )
 			{
 				// finish evolving
 				if( UTIL_IsEvolved( pBot ) )
@@ -2024,45 +2023,7 @@ void BotThink( bot_t *pBot )
 		}
 		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
 		{
-			// find out what impulses mean what (check AvHMessage.h)
-			if( pBot->GetTeam() == NS_TEAM_ALIEN && !pBot->HasEnemy() && ((NSBot *)pBot)->IsNearHive() )
-			{
-				if( !((NSBot *)pBot)->HasCarapace() )
-				{
-					((NSBot *)pBot)->UpgradeToCarapace();					
-				}
-				if( !((NSBot *)pBot)->HasRegeneration() )
-				{
-					((NSBot *)pBot)->UpgradeToRegeneration();					
-				}
-				if( !((NSBot *)pBot)->HasCelerity() )
-				{
-					((NSBot *)pBot)->UpgradeToCelerity();					
-				}
-				else if( !((NSBot *)pBot)->IsFade() )
-				{
-					((NSBot *)pBot)->EvolveToFade();
-				}
-			}
-			else if( pBot->GetTeam() == NS_TEAM_MARINE && !pBot->HasEnemy() )
-			{
-				if( !((NSBot *)pBot)->HasWeaponDamage1() )
-				{
-					((NSBot *)pBot)->UpgradeToWeaponDamage1();
-				}
-				else if( !((NSBot *)pBot)->HasShotgun() )
-				{
-					((NSBot *)pBot)->UpgradeToShotgun();
-				}
-				else if( !((NSBot *)pBot)->HasArmor1() )
-				{
-					((NSBot *)pBot)->UpgradeToArmor1();
-				}
-				else if( !((NSBot *)pBot)->HasHMG() )
-				{
-					((NSBot *)pBot)->UpgradeToHMG();
-				}
-			}
+			((NSBot *)pBot)->CombatUpgrade();
 		}
 	}
 

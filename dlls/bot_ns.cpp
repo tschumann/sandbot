@@ -39,6 +39,55 @@ void NSBot::SetDesiredClass( int iDesiredClass )
 	this->iDesiredClass = iDesiredClass;
 }
 
+void NSBot::CombatUpgrade()
+{
+	if( this->HasEnemy() )
+	{
+		return;
+	}
+
+	// find out what impulses mean what (check AvHMessage.h)
+	if( this->IsAlien() && this->IsNearHive() )
+	{
+		if( !this->HasCarapace() )
+		{
+			this->UpgradeToCarapace();					
+		}
+		if( !this->HasRegeneration() )
+		{
+			this->UpgradeToRegeneration();					
+		}
+		if( !this->HasCelerity() )
+		{
+			this->UpgradeToCelerity();					
+		}
+		else if( !this->IsFade() )
+		{
+			this->EvolveToFade();
+		}
+	}
+	else if( this->IsMarine() )
+	{
+		if( !this->HasWeaponDamage1() )
+		{
+			this->UpgradeToWeaponDamage1();
+		}
+		else if( !this->HasShotgun() )
+		{
+			this->UpgradeToShotgun();
+		}
+		else if( !this->HasArmor1() )
+		{
+			this->UpgradeToArmor1();
+		}
+		else if( !this->HasHMG() )
+		{
+			this->UpgradeToHMG();
+		}
+	}
+}
+
+
 bool NSBot::IsMarine()
 {
 	return this->pEdict->v.team == NS_TEAM_MARINE;
