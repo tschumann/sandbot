@@ -702,32 +702,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 					start_action = MSG_NS_JOIN_ALIEN;
 
 					// decide randomly which class to become
-					int iClass = RANDOM_LONG( 0, 10 );
-
-					switch( iClass )
-					{
-					case 0:
-					case 1:
-						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER1 );
-						break;
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER2 );
-						break;
-					case 6:
-						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER3 );
-						break;
-					case 7:
-					case 8:
-					case 9:
-						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER4 );
-						break;
-					case 10:
-						((NSBot *)pBot)->SetDesiredClass( AVH_USER3_ALIEN_PLAYER5 );
-						break;
-					}
+					((NSBot *)pBot)->ChooseDesiredClass();
 				}
 				else if( !strcmp(arg1, "marine") )
 				{
@@ -2027,10 +2002,10 @@ void BotThink( bot_t *pBot )
 		}
 	}
 
-	BotFixIdealPitch (pEdict);
-	BotFixIdealYaw (pEdict);
-	BotFixBodyAngles (pEdict);
-	BotFixViewAngles (pEdict);
+	BotFixIdealPitch( pEdict );
+	BotFixIdealYaw( pEdict );
+	BotFixBodyAngles( pEdict );
+	BotFixViewAngles( pEdict );
 
 	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 

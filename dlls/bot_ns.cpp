@@ -39,6 +39,66 @@ void NSBot::SetDesiredClass( int iDesiredClass )
 	this->iDesiredClass = iDesiredClass;
 }
 
+void NSBot::ChooseDesiredClass()
+{
+	int iClass = RANDOM_LONG( 0, 10 );
+
+	if( ((NSGame *)pGame)->IsClassic() )
+	{
+		switch( iClass )
+		{
+		case 0:
+		case 1:
+			this->SetDesiredClass( NSBot::NS_CLASS_SKULK );
+			break;
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			this->SetDesiredClass( NSBot::NS_CLASS_GORGE );
+			break;
+		case 6:
+			this->SetDesiredClass( NSBot::NS_CLASS_LERK );
+			break;
+		case 7:
+		case 8:
+		case 9:
+			this->SetDesiredClass( NSBot::NS_CLASS_FADE );
+			break;
+		case 10:
+			this->SetDesiredClass( NSBot::NS_CLASS_ONOS );
+			break;
+		}
+	}
+	else
+	{
+		switch( iClass )
+		{
+		case 0:
+			this->SetDesiredClass( NSBot::NS_CLASS_SKULK );
+			break;
+		case 1:
+			this->SetDesiredClass( NSBot::NS_CLASS_GORGE );
+			break;
+		case 2:
+			this->SetDesiredClass( NSBot::NS_CLASS_LERK );
+			break;
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+			this->SetDesiredClass( NSBot::NS_CLASS_FADE );
+			break;
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+			this->SetDesiredClass( NSBot::NS_CLASS_ONOS );
+			break;
+		}
+	}
+}
+
 void NSBot::CombatUpgrade()
 {
 	if( this->HasEnemy() )
@@ -61,9 +121,13 @@ void NSBot::CombatUpgrade()
 		{
 			this->UpgradeToCelerity();					
 		}
-		else if( !this->IsFade() )
+		if( !this->IsFade() && this->ShouldBecomeFade() )
 		{
 			this->EvolveToFade();
+		}
+		if( !this->IsOnos() && this->ShouldBecomeOnos() )
+		{
+			this->EvolveToOnos();
 		}
 	}
 	else if( this->IsMarine() )
@@ -169,6 +233,50 @@ void NSBot::UpgradeToCelerity()
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_CELERITY;
 }
 
+void NSBot::EvolveToGorge()
+{
+	if( ((NSGame *)pGame)->IsCombat() )
+	{
+		this->pEdict->v.impulse = NSBot::EVOLVE_TO_GORGE;
+	}
+	else
+	{
+		// TODO: check that it's the same in Classic
+	}
+}
+
+bool NSBot::ShouldBecomeGorge()
+{
+	return this->GetDesiredClass() == NSBot::NS_CLASS_GORGE;
+}
+
+bool NSBot::IsGorge()
+{
+	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2;
+}
+
+void NSBot::EvolveToLerk()
+{
+	if( ((NSGame *)pGame)->IsCombat() )
+	{
+		this->pEdict->v.impulse = NSBot::EVOLVE_TO_LERK;
+	}
+	else
+	{
+		// TODO: check that it's the same in Classic
+	}
+}
+
+bool NSBot::ShouldBecomeLerk()
+{
+	return this->GetDesiredClass() == NSBot::NS_CLASS_LERK;
+}
+
+bool NSBot::IsLerk()
+{
+	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3;
+}
+
 void NSBot::EvolveToFade()
 {
 	if( ((NSGame *)pGame)->IsCombat() )
@@ -177,11 +285,38 @@ void NSBot::EvolveToFade()
 	}
 	else
 	{
-		// TODO:
+		// TODO: check that it's the same in Classic
 	}
+}
+
+bool NSBot::ShouldBecomeFade()
+{
+	return this->GetDesiredClass() == NSBot::NS_CLASS_FADE;
 }
 
 bool NSBot::IsFade()
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4;
+}
+
+void NSBot::EvolveToOnos()
+{
+	if( ((NSGame *)pGame)->IsCombat() )
+	{
+		this->pEdict->v.impulse = NSBot::EVOLVE_TO_ONOS;
+	}
+	else
+	{
+		// TODO: check that it's the same in Classic
+	}
+}
+
+bool NSBot::ShouldBecomeOnos()
+{
+	return this->GetDesiredClass() == NSBot::NS_CLASS_ONOS;
+}
+
+bool NSBot::IsOnos()
+{
+	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5;
 }
