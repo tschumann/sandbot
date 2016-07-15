@@ -167,7 +167,7 @@ bool NSBot::IsMarine()
 
 bool NSBot::HasWeaponDamage1()
 {
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
+	return (this->pEdict->v.iuser4 & MASK_UPGRADE_1) != 0;
 }
 
 void NSBot::UpgradeToWeaponDamage1()
@@ -177,7 +177,7 @@ void NSBot::UpgradeToWeaponDamage1()
 
 bool NSBot::HasArmor1()
 {
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_4;
+	return (this->pEdict->v.iuser4 & MASK_UPGRADE_4) != 0;
 }
 
 void NSBot::UpgradeToArmor1()
@@ -187,7 +187,7 @@ void NSBot::UpgradeToArmor1()
 
 bool NSBot::HasShotgun()
 {
-	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN));
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_SHOTGUN)) != 0;
 }
 
 void NSBot::UpgradeToShotgun()
@@ -197,7 +197,7 @@ void NSBot::UpgradeToShotgun()
 
 bool NSBot::HasHMG()
 {
-	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN));
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_HEAVYMACHINEGUN)) != 0;
 }
 
 void NSBot::UpgradeToHMG()
@@ -213,7 +213,7 @@ bool NSBot::IsAlien()
 
 bool NSBot::HasCarapace()
 {
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_1;
+	return (this->pEdict->v.iuser4 & MASK_UPGRADE_1) != 0;
 }
 
 void NSBot::UpgradeToCarapace()
@@ -223,7 +223,7 @@ void NSBot::UpgradeToCarapace()
 
 bool NSBot::HasRegeneration()
 {
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_2;
+	return (this->pEdict->v.iuser4 & MASK_UPGRADE_2) != 0;
 }
 
 void NSBot::UpgradeToRegeneration()
@@ -233,7 +233,7 @@ void NSBot::UpgradeToRegeneration()
 
 bool NSBot::HasCelerity()
 {
-	return this->pEdict->v.iuser4 & MASK_UPGRADE_4;
+	return (this->pEdict->v.iuser4 & MASK_UPGRADE_4) != 0;
 }
 
 void NSBot::UpgradeToCelerity()
