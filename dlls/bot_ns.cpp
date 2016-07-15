@@ -113,19 +113,27 @@ void NSBot::CombatUpgrade()
 		{
 			this->UpgradeToCarapace();					
 		}
-		if( !this->HasRegeneration() )
+		else if( !this->HasRegeneration() )
 		{
 			this->UpgradeToRegeneration();					
 		}
-		if( !this->HasCelerity() )
+		else if( !this->HasCelerity() )
 		{
 			this->UpgradeToCelerity();					
 		}
-		if( !this->IsFade() && this->ShouldBecomeFade() )
+		else if( !this->IsGorge() && this->ShouldBecomeGorge() )
+		{
+			this->EvolveToGorge();
+		}
+		else if( !this->IsLerk() && this->ShouldBecomeLerk() )
+		{
+			this->EvolveToLerk();
+		}
+		else if( !this->IsFade() && this->ShouldBecomeFade() )
 		{
 			this->EvolveToFade();
 		}
-		if( !this->IsOnos() && this->ShouldBecomeOnos() )
+		else if( !this->IsOnos() && this->ShouldBecomeOnos() )
 		{
 			this->EvolveToOnos();
 		}
