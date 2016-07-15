@@ -11,6 +11,12 @@
 // http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html
 // http://www.unknownworlds.com/oldwebsite/manuals/comm_manual/basic/index.htm
 
+void NSBot::Reset()
+{
+	this->SetDesiredClass( NSBot::CLASS_SKULK );
+	this->bIsEvolving = false;
+}
+
 bool NSBot::IsNearHive()
 {
 	edict_t *pent = NULL;
@@ -49,24 +55,24 @@ void NSBot::ChooseDesiredClass()
 		{
 		case 0:
 		case 1:
-			this->SetDesiredClass( NSBot::NS_CLASS_SKULK );
+			this->SetDesiredClass( NSBot::CLASS_SKULK );
 			break;
 		case 2:
 		case 3:
 		case 4:
 		case 5:
-			this->SetDesiredClass( NSBot::NS_CLASS_GORGE );
+			this->SetDesiredClass( NSBot::CLASS_GORGE );
 			break;
 		case 6:
-			this->SetDesiredClass( NSBot::NS_CLASS_LERK );
+			this->SetDesiredClass( NSBot::CLASS_LERK );
 			break;
 		case 7:
 		case 8:
 		case 9:
-			this->SetDesiredClass( NSBot::NS_CLASS_FADE );
+			this->SetDesiredClass( NSBot::CLASS_FADE );
 			break;
 		case 10:
-			this->SetDesiredClass( NSBot::NS_CLASS_ONOS );
+			this->SetDesiredClass( NSBot::CLASS_ONOS );
 			break;
 		}
 	}
@@ -75,39 +81,49 @@ void NSBot::ChooseDesiredClass()
 		switch( iClass )
 		{
 		case 0:
-			this->SetDesiredClass( NSBot::NS_CLASS_SKULK );
+			this->SetDesiredClass( NSBot::CLASS_SKULK );
 			break;
 		case 1:
-			this->SetDesiredClass( NSBot::NS_CLASS_GORGE );
+			this->SetDesiredClass( NSBot::CLASS_GORGE );
 			break;
 		case 2:
-			this->SetDesiredClass( NSBot::NS_CLASS_LERK );
+			this->SetDesiredClass( NSBot::CLASS_LERK );
 			break;
 		case 3:
 		case 4:
 		case 5:
 		case 6:
-			this->SetDesiredClass( NSBot::NS_CLASS_FADE );
+			this->SetDesiredClass( NSBot::CLASS_FADE );
 			break;
 		case 7:
 		case 8:
 		case 9:
 		case 10:
-			this->SetDesiredClass( NSBot::NS_CLASS_ONOS );
+			this->SetDesiredClass( NSBot::CLASS_ONOS );
 			break;
 		}
 	}
 }
 
-void NSBot::CombatUpgrade()
+bool NSBot::ShouldCombatUpgrade()
 {
 	if( this->HasEnemy() )
 	{
-		return;
+		return false;
 	}
 
+	if( this->IsAlien() && !this->IsNearHive() )
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void NSBot::CombatUpgrade()
+{
 	// find out what impulses mean what (check AvHMessage.h)
-	if( this->IsAlien() && this->IsNearHive() )
+	if( this->IsAlien() )
 	{
 		if( !this->HasCarapace() )
 		{
@@ -255,7 +271,7 @@ void NSBot::EvolveToGorge()
 
 bool NSBot::ShouldBecomeGorge()
 {
-	return this->GetDesiredClass() == NSBot::NS_CLASS_GORGE;
+	return this->GetDesiredClass() == NSBot::CLASS_GORGE;
 }
 
 bool NSBot::IsGorge()
@@ -277,7 +293,7 @@ void NSBot::EvolveToLerk()
 
 bool NSBot::ShouldBecomeLerk()
 {
-	return this->GetDesiredClass() == NSBot::NS_CLASS_LERK;
+	return this->GetDesiredClass() == NSBot::CLASS_LERK;
 }
 
 bool NSBot::IsLerk()
@@ -299,7 +315,7 @@ void NSBot::EvolveToFade()
 
 bool NSBot::ShouldBecomeFade()
 {
-	return this->GetDesiredClass() == NSBot::NS_CLASS_FADE;
+	return this->GetDesiredClass() == NSBot::CLASS_FADE;
 }
 
 bool NSBot::IsFade()
@@ -321,7 +337,7 @@ void NSBot::EvolveToOnos()
 
 bool NSBot::ShouldBecomeOnos()
 {
-	return this->GetDesiredClass() == NSBot::NS_CLASS_ONOS;
+	return this->GetDesiredClass() == NSBot::CLASS_ONOS;
 }
 
 bool NSBot::IsOnos()

@@ -1996,7 +1996,7 @@ void BotThink( bot_t *pBot )
 				}
 			}
 		}
-		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() )
+		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() && ((NSBot *)pBot)->ShouldCombatUpgrade() )
 		{
 			((NSBot *)pBot)->CombatUpgrade();
 		}

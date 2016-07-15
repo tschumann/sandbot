@@ -372,6 +372,7 @@ void BotStartGame( bot_t *pBot )
 	}
    else if (mod_id == NS_DLL)
    {
+	   ((NSBot *)pBot)->Reset();
 		switch( pBot->start_action )
 		{
 		case MSG_NS_JOIN_ALIEN:

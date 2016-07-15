@@ -483,11 +483,14 @@ class NSBot : public bot_t
 {
 protected:
 	int iDesiredClass;
+	bool bIsEvolving;
 public:
+	virtual void Reset();
 	virtual bool IsNearHive();
 	virtual int GetDesiredClass();
 	virtual void SetDesiredClass( int iDesiredClass );
 	virtual void ChooseDesiredClass();
+	virtual bool ShouldCombatUpgrade();
 	virtual void CombatUpgrade();
 
 	virtual bool IsMarine();
@@ -521,11 +524,11 @@ public:
 	virtual bool ShouldBecomeOnos();
 	virtual bool IsOnos();
 
-	const static int NS_CLASS_SKULK = AVH_USER3_ALIEN_PLAYER1;
-	const static int NS_CLASS_GORGE = AVH_USER3_ALIEN_PLAYER2;
-	const static int NS_CLASS_LERK = AVH_USER3_ALIEN_PLAYER3;
-	const static int NS_CLASS_FADE = AVH_USER3_ALIEN_PLAYER4;
-	const static int NS_CLASS_ONOS = AVH_USER3_ALIEN_PLAYER5;
+	const static int CLASS_SKULK = AVH_USER3_ALIEN_PLAYER1;
+	const static int CLASS_GORGE = AVH_USER3_ALIEN_PLAYER2;
+	const static int CLASS_LERK = AVH_USER3_ALIEN_PLAYER3;
+	const static int CLASS_FADE = AVH_USER3_ALIEN_PLAYER4;
+	const static int CLASS_ONOS = AVH_USER3_ALIEN_PLAYER5;
 
 	// from AvHMessage.h
 	const static int RESEARCH_ARMOR_ONE = 20;
