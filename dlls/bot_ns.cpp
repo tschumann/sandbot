@@ -175,6 +175,11 @@ void NSBot::CombatUpgrade()
 	}
 }
 
+int NSBot::GetResources()
+{
+	return pEdict->v.vuser4.z / 100.0;
+}
+
 
 bool NSBot::IsMarine()
 {
@@ -255,6 +260,26 @@ bool NSBot::HasCelerity()
 void NSBot::UpgradeToCelerity()
 {
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_CELERITY;
+}
+
+bool NSBot::CanEvolve()
+{
+	if( this->HasEnemy() )
+	{
+		return false;
+	}
+
+	if( this->bIsEvolving )
+	{
+		return false;
+	}
+
+	if( this->GetDesiredClass() == NSBot::CLASS_SKULK )
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void NSBot::EvolveToGorge()

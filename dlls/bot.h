@@ -492,6 +492,7 @@ public:
 	virtual void ChooseDesiredClass();
 	virtual bool ShouldCombatUpgrade();
 	virtual void CombatUpgrade();
+	virtual int GetResources();
 
 	virtual bool IsMarine();
 	virtual bool HasWeaponDamage1();
@@ -510,6 +511,7 @@ public:
 	virtual void UpgradeToRegeneration();
 	virtual bool HasCelerity();
 	virtual void UpgradeToCelerity();
+	virtual bool CanEvolve();
 	virtual void EvolveToGorge();
 	virtual void EvolveToLerk();
 	virtual void EvolveToFade();
