@@ -668,7 +668,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		else if (mod_id == FRONTLINE_DLL)
 			pBot->start_action = MSG_FLF_IDLE;
 		else if (mod_id == NS_DLL && start_action != 0)
+		{
 			pBot->start_action = start_action;
+		}
 		else
 			pBot->start_action = 0;  // not needed for non-team MODs
 
@@ -693,6 +695,12 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		pBot->bot_team = -1;
 		pBot->bot_class = -1;
 
+		if( mod_id == NS_DLL )
+		{
+			// decide randomly which class to become
+			((NSBot *)pBot)->ChooseDesiredClass();
+		}
+
 	  	if ((arg1 != NULL) && (*arg1 != 0))
 		{
 			if( mod_id == NS_DLL )
@@ -700,9 +708,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 				if( !strcmp(arg1, "alien") )
 				{
 					start_action = MSG_NS_JOIN_ALIEN;
-
-					// decide randomly which class to become
-					((NSBot *)pBot)->ChooseDesiredClass();
 				}
 				else if( !strcmp(arg1, "marine") )
 				{
@@ -1251,6 +1256,12 @@ void BotThink( bot_t *pBot )
 		g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, 0.0, 0, 0, pEdict->v.button, 0, msecval);
 
 		return;
+   }
+
+   if( mod_id == NS_DLL && pBot->pEdict->v.playerclass == PLAYMODE_READYROOM )
+   {
+	   ALERT( at_console, "in the ready room, ready to restart\n" );
+	   pBot->not_started = true;
    }
 
    if ((pBot->b_bot_say_killed) && (pBot->f_bot_say_killed < gpGlobals->time))

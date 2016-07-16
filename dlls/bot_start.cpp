@@ -385,7 +385,7 @@ void BotStartGame( bot_t *pBot )
 		default:
 			FakeClientCommand(pEdict, "autoassign", NULL, NULL);
 			break;
-		}	   
+		}
 
 		pBot->start_action = 0;
 		pBot->not_started = 0;

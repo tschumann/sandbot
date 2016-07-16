@@ -13,7 +13,7 @@
 
 void NSBot::Reset()
 {
-	this->SetDesiredClass( NSBot::CLASS_SKULK );
+	// this->SetDesiredClass( NSBot::CLASS_SKULK );
 	this->bIsEvolving = false;
 }
 
