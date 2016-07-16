@@ -31,6 +31,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 v0.2.1 (??/??/??)
 - [Gunman Chronicles] Bots now use different gauss pistol modes.
 - [Gunman Chronicles] Bots now know the gauss pistol is fully automatic.
+- [Natural Selection] Bots will now rejoin after a round has ended.
 - [Natural Selection] Alien bots will now become all different lifeforms.
 - [Natural Selection] Stopped bots randomly pausing from time to time.
 - [Natural Selection] Combat bots now upgrade more abilities.
