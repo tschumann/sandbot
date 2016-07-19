@@ -1235,9 +1235,9 @@ void BotThink( bot_t *pBot )
       strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
    if (mod_id == CSTRIKE_DLL)
-      pBot->f_max_speed = pEdict->v.maxspeed;
+      pBot->SetMaxSpeed( pEdict->v.maxspeed );
    else
-      pBot->f_max_speed = CVAR_GET_FLOAT("sv_maxspeed");
+      pBot->SetMaxSpeed( CVAR_GET_FLOAT("sv_maxspeed") );
 
    pEdict->v.button = 0;
    pBot->f_move_speed = 0.0;
@@ -1451,7 +1451,7 @@ void BotThink( bot_t *pBot )
       }
    }
 
-   pBot->f_move_speed = pBot->f_max_speed;  // set to max speed
+   pBot->f_move_speed = pBot->GetMaxSpeed();  // set to max speed
 
    if (pBot->prev_time <= gpGlobals->time)
    {
@@ -1856,7 +1856,7 @@ void BotThink( bot_t *pBot )
       // check if the next waypoint is a door waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOOR)
       {
-         pBot->f_move_speed = pBot->f_max_speed / 3;  // slow down for doors
+         pBot->f_move_speed = pBot->GetMaxSpeed() / 3;  // slow down for doors
       }
 
       // check if the next waypoint is a ladder waypoint...
@@ -1881,7 +1881,7 @@ void BotThink( bot_t *pBot )
             }
             else  // bot must be in mid-air, go BACKWARDS to touch ladder...
             {
-               pBot->f_move_speed = -pBot->f_max_speed;
+               pBot->f_move_speed = -pBot->GetMaxSpeed();
             }
          }
          else
@@ -2001,4 +2001,14 @@ bool bot_t::HasEnemy()
 
 void bot_t::PickupItem()
 {
+}
+
+void bot_t::SetMaxSpeed( float fMaxSpeed )
+{
+	this->fMaxSpeed = fMaxSpeed;
+}
+
+float bot_t::GetMaxSpeed()
+{
+	return this->fMaxSpeed;
 }

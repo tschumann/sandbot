@@ -320,6 +320,8 @@ public:
 	virtual int GetTeam();
 	virtual bool HasEnemy();
 	virtual void PickupItem();
+	virtual void SetMaxSpeed( float fMaxSpeed );
+	virtual float GetMaxSpeed();
 
 	bool is_used;
 	int respawn_state;
@@ -346,7 +348,6 @@ public:
 	int round_end;        // round has ended (in round based games)
 	float blinded_time;
 
-	float f_max_speed;
 	float prev_speed;
 	float prev_time;
 	Vector v_prev_origin;
@@ -458,6 +459,8 @@ public:
 
 	bot_current_weapon_t current_weapon;  // one current weapon for each bot
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
+protected:
+	float fMaxSpeed;
 };
 
 class GunmanBot : public bot_t

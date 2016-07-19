@@ -1668,7 +1668,7 @@ void BotUseLift( bot_t *pBot, float moved_distance )
       // bot doesn't have to set f_find_item since the bot
       // should already be facing away from the button
 
-      pBot->f_move_speed = pBot->f_max_speed;
+      pBot->f_move_speed = pBot->GetMaxSpeed();
    }
 
    // check if lift has started moving...
@@ -1743,7 +1743,7 @@ void BotUseLift( bot_t *pBot, float moved_distance )
 
       BotChangeYaw( pBot, pEdict->v.yaw_speed );
 
-      pBot->f_move_speed = pBot->f_max_speed;
+      pBot->f_move_speed = pBot->GetMaxSpeed();
    }
 }
 
@@ -2186,9 +2186,9 @@ bool BotFollowUser( bot_t *pBot )
       f_distance = v_user.Length( );  // how far away is the "user"?
 
       if (f_distance > 200)      // run if distance to enemy is far
-         pBot->f_move_speed = pBot->f_max_speed;
+         pBot->f_move_speed = pBot->GetMaxSpeed();
       else if (f_distance > 50)  // walk if distance is closer
-         pBot->f_move_speed = pBot->f_max_speed / 2;
+         pBot->f_move_speed = pBot->GetMaxSpeed() / 2;
       else                     // don't move if close enough
          pBot->f_move_speed = 0.0;
 
@@ -2276,5 +2276,5 @@ void BotUseDoor( bot_t *pBot )
 
 	pBot->bUseDoor = false;
 
-	pBot->f_move_speed = pBot->f_max_speed;
+	pBot->f_move_speed = pBot->GetMaxSpeed();
 }

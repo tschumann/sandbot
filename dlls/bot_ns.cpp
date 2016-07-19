@@ -327,7 +327,7 @@ void NSBot::StartEvolving()
 
 void NSBot::FinishEvolving()
 {
-	this->f_move_speed = this->f_max_speed;
+	this->f_move_speed = this->GetMaxSpeed();
 	this->bEvolving = false;
 }
 
