@@ -927,7 +927,6 @@ void ClientCommand( edict_t *pEntity )
 
 			if( mod_id == NS_DLL )
 			{
-				extern float UTIL_GetResources( edict_t *player );
 				extern float UTIL_GetExperience( edict_t *player );
 
 				if( player->v.team == NS_TEAM_MARINE )
@@ -938,7 +937,7 @@ void ClientCommand( edict_t *pEntity )
 				{
 					ALERT( at_console, "Team: Alien\n" );
 				}
-				ALERT( at_console, "Resources: %f\n", UTIL_GetResources( player ) );
+				ALERT( at_console, "Resources: %f\n", player->v.vuser4.z / 100.0 );
 				ALERT( at_console, "Experience: %f\n", UTIL_GetExperience( player ) );
 
 				if( player->v.team == NS_TEAM_MARINE )

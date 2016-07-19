@@ -701,11 +701,6 @@ bool UTIL_IsBuilt( edict_t *pent )
     return true;
 }
 
-float UTIL_GetResources( edict_t *player )
-{
-	return player->v.vuser4.z / 100.0;
-}
-
 float UTIL_GetExperience( edict_t *player )
 {
     return player->v.vuser4.z / 100.0;
@@ -720,9 +715,4 @@ int UTIL_GetPoints( bot_t *player )
 
 	// return iSpent;
 	return (int)(UTIL_GetExperience(player->pEdict) / 100.0) - player->points_spent;
-}
-
-bool UTIL_IsEvolved( const bot_t *pBot )
-{
-	return ( ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5 ) ) && pBot->bEvolving;
 }

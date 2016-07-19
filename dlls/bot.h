@@ -488,9 +488,10 @@ public:
 	virtual int GetDesiredClass();
 	virtual void SetDesiredClass( int iDesiredClass );
 	virtual void ChooseDesiredClass();
+	virtual void ClassicUpgrade();
 	virtual bool ShouldCombatUpgrade();
 	virtual void CombatUpgrade();
-	virtual int GetResources();
+	virtual float GetResources();
 
 	virtual bool IsMarine();
 	virtual bool HasWeaponDamage1();

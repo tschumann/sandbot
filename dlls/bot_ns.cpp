@@ -105,6 +105,38 @@ void NSBot::ChooseDesiredClass()
 	}
 }
 
+void NSBot::ClassicUpgrade()
+{
+	if( this->IsAlien() )
+	{
+		if( this->IsEvolved() )
+		{
+			this->FinishEvolving();
+		}
+
+		// start evolving
+		if( this->CanEvolve() )
+		{
+			if( this->ShouldBecomeGorge() && this->GetResources() > (float)kGorgeCost )
+			{
+				this->EvolveToGorge();
+			}
+			else if( this->ShouldBecomeLerk() && this->GetResources() > (float)kLerkCost )
+			{
+				this->EvolveToLerk();
+			}
+			else if( this->ShouldBecomeFade() && this->GetResources() > (float)kFadeCost )
+			{
+				this->EvolveToFade();
+			}
+			else if( this->ShouldBecomeOnos() && this->GetResources() > (float)kOnosCost )
+			{
+				this->EvolveToOnos();
+			}
+		}
+	}
+}
+
 bool NSBot::ShouldCombatUpgrade()
 {
 	if( this->HasEnemy() )
@@ -175,7 +207,7 @@ void NSBot::CombatUpgrade()
 	}
 }
 
-int NSBot::GetResources()
+float NSBot::GetResources()
 {
 	return pEdict->v.vuser4.z / 100.0;
 }
@@ -302,15 +334,7 @@ void NSBot::FinishEvolving()
 void NSBot::EvolveToGorge()
 {
 	this->StartEvolving();
-
-	if( ((NSGame *)pGame)->IsCombat() )
-	{
-		this->pEdict->v.impulse = NSBot::EVOLVE_TO_GORGE;
-	}
-	else
-	{
-		// TODO: check that it's the same in Classic
-	}
+	this->pEdict->v.impulse = NSBot::EVOLVE_TO_GORGE;
 }
 
 bool NSBot::ShouldBecomeGorge()
@@ -326,15 +350,7 @@ bool NSBot::IsGorge()
 void NSBot::EvolveToLerk()
 {
 	this->StartEvolving();
-
-	if( ((NSGame *)pGame)->IsCombat() )
-	{
-		this->pEdict->v.impulse = NSBot::EVOLVE_TO_LERK;
-	}
-	else
-	{
-		// TODO: check that it's the same in Classic
-	}
+	this->pEdict->v.impulse = NSBot::EVOLVE_TO_LERK;
 }
 
 bool NSBot::ShouldBecomeLerk()
@@ -350,15 +366,7 @@ bool NSBot::IsLerk()
 void NSBot::EvolveToFade()
 {
 	this->StartEvolving();
-
-	if( ((NSGame *)pGame)->IsCombat() )
-	{
-		this->pEdict->v.impulse = NSBot::EVOLVE_TO_FADE;
-	}
-	else
-	{
-		// TODO: check that it's the same in Classic
-	}
+	this->pEdict->v.impulse = NSBot::EVOLVE_TO_FADE;
 }
 
 bool NSBot::ShouldBecomeFade()
@@ -374,15 +382,7 @@ bool NSBot::IsFade()
 void NSBot::EvolveToOnos()
 {
 	this->StartEvolving();
-
-	if( ((NSGame *)pGame)->IsCombat() )
-	{
-		this->pEdict->v.impulse = NSBot::EVOLVE_TO_ONOS;
-	}
-	else
-	{
-		// TODO: check that it's the same in Classic
-	}
+	this->pEdict->v.impulse = NSBot::EVOLVE_TO_ONOS;
 }
 
 bool NSBot::ShouldBecomeOnos()

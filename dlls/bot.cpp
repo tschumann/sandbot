@@ -1958,42 +1958,11 @@ void BotThink( bot_t *pBot )
 	}
    	else if( mod_id == NS_DLL )
 	{
-		extern bool UTIL_IsEvolved( const bot_t *pBot );
-		extern float UTIL_GetResources( edict_t *player );
-
 		extern bool g_bInGame;
 
-		if( g_bInGame && !((NSGame *)pGame)->IsCombat() )
+		if( g_bInGame && ((NSGame *)pGame)->IsClassic() )
 		{
-			if( ((NSBot *)pBot)->IsAlien() )
-			{
-				// finish evolving
-				if( ((NSBot *)pBot)->IsEvolved() )
-				{
-					((NSBot *)pBot)->FinishEvolving();
-				}
-
-				// start evolving
-				if( ((NSBot *)pBot)->CanEvolve() )
-				{
-					if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
-					{
-						((NSBot *)pBot)->EvolveToGorge();
-					}
-					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
-					{
-						((NSBot *)pBot)->EvolveToLerk();
-					}
-					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
-					{
-						((NSBot *)pBot)->EvolveToFade();
-					}
-					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
-					{
-						((NSBot *)pBot)->EvolveToOnos();
-					}
-				}
-			}
+			((NSBot *)pBot)->ClassicUpgrade();
 		}
 		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() && ((NSBot *)pBot)->ShouldCombatUpgrade() )
 		{
