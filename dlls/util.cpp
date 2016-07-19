@@ -724,27 +724,5 @@ int UTIL_GetPoints( bot_t *player )
 
 bool UTIL_IsEvolved( const bot_t *pBot )
 {
-	return ( ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5 ) ) && !pBot->bEvolved && pBot->bEvolving;
-}
-
-bool UTIL_CanEvolve( const bot_t *pBot )
-{
-	// don't evolve while in combat
-	if( pBot->pBotEnemy )
-	{
-		return false;
-	}
-
-	// if the bot should always be a skulk, it can't evolve
-	if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER1 )
-	{
-		return false;
-	}
-
-	if( pBot->bEvolved && pBot->bEvolving )
-	{
-		return false;
-	}
-
-	return true;
+	return ( ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4 ) || ( pBot->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5 ) ) && pBot->bEvolving;
 }

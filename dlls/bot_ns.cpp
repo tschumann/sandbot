@@ -282,8 +282,27 @@ bool NSBot::CanEvolve()
 	return true;
 }
 
+bool NSBot::IsEvolved()
+{
+	return this->IsGorge() || this->IsLerk() || this->IsFade() || this->IsOnos();
+}
+
+void NSBot::StartEvolving()
+{
+	this->f_move_speed = 0.0;
+	this->bEvolving = true;
+}
+
+void NSBot::FinishEvolving()
+{
+	this->f_move_speed = this->f_max_speed;
+	this->bEvolving = false;
+}
+
 void NSBot::EvolveToGorge()
 {
+	this->StartEvolving();
+
 	if( ((NSGame *)pGame)->IsCombat() )
 	{
 		this->pEdict->v.impulse = NSBot::EVOLVE_TO_GORGE;
@@ -306,6 +325,8 @@ bool NSBot::IsGorge()
 
 void NSBot::EvolveToLerk()
 {
+	this->StartEvolving();
+
 	if( ((NSGame *)pGame)->IsCombat() )
 	{
 		this->pEdict->v.impulse = NSBot::EVOLVE_TO_LERK;
@@ -328,6 +349,8 @@ bool NSBot::IsLerk()
 
 void NSBot::EvolveToFade()
 {
+	this->StartEvolving();
+
 	if( ((NSGame *)pGame)->IsCombat() )
 	{
 		this->pEdict->v.impulse = NSBot::EVOLVE_TO_FADE;
@@ -350,6 +373,8 @@ bool NSBot::IsFade()
 
 void NSBot::EvolveToOnos()
 {
+	this->StartEvolving();
+
 	if( ((NSGame *)pGame)->IsCombat() )
 	{
 		this->pEdict->v.impulse = NSBot::EVOLVE_TO_ONOS;

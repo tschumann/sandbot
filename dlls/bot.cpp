@@ -476,7 +476,6 @@ void BotSpawnInit( bot_t *pBot )
 	pBot->bBuildHive = false;
 
 	pBot->bEvolving = false;
-	pBot->bEvolved = false;
 
 	// The Ship
 	pBot->bUseDoor = false;
@@ -1960,7 +1959,6 @@ void BotThink( bot_t *pBot )
    	else if( mod_id == NS_DLL )
 	{
 		extern bool UTIL_IsEvolved( const bot_t *pBot );
-		extern bool UTIL_CanEvolve( const bot_t *pBot );
 		extern float UTIL_GetResources( edict_t *player );
 
 		extern bool g_bInGame;
@@ -1970,39 +1968,29 @@ void BotThink( bot_t *pBot )
 			if( ((NSBot *)pBot)->IsAlien() )
 			{
 				// finish evolving
-				if( UTIL_IsEvolved( pBot ) )
+				if( ((NSBot *)pBot)->IsEvolved() )
 				{
-					pBot->f_move_speed = pBot->f_max_speed;
-					pBot->bEvolving = false;
-					pBot->bEvolved = true;
+					((NSBot *)pBot)->FinishEvolving();
 				}
 
 				// start evolving
-				if( UTIL_CanEvolve( pBot ) )
+				if( ((NSBot *)pBot)->CanEvolve() )
 				{
 					if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER2 && UTIL_GetResources( pBot->pEdict ) > (float)kGorgeCost )
 					{
-						pBot->f_move_speed = 0.0;
-						pBot->pEdict->v.impulse = 114;
-						pBot->bEvolving = true;
+						((NSBot *)pBot)->EvolveToGorge();
 					}
 					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER3 && UTIL_GetResources( pBot->pEdict ) > (float)kLerkCost )
 					{
-						pBot->f_move_speed = 0.0;
-						pBot->pEdict->v.impulse = 115;
-						pBot->bEvolving = true;
+						((NSBot *)pBot)->EvolveToLerk();
 					}
 					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER4 && UTIL_GetResources( pBot->pEdict ) > (float)kFadeCost )
 					{
-						pBot->f_move_speed = 0.0;
-						pBot->pEdict->v.impulse = 116;
-						pBot->bEvolving = true;
+						((NSBot *)pBot)->EvolveToFade();
 					}
 					else if( ((NSBot *)pBot)->GetDesiredClass() == AVH_USER3_ALIEN_PLAYER5 && UTIL_GetResources( pBot->pEdict ) > (float)kOnosCost )
 					{
-						pBot->f_move_speed = 0.0;
-						pBot->pEdict->v.impulse = 117;
-						pBot->bEvolving = true;
+						((NSBot *)pBot)->EvolveToOnos();
 					}
 				}
 			}

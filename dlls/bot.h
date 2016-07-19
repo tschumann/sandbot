@@ -450,9 +450,7 @@ public:
 	bool bBuildAlienResourceTower;
 	bool bBuildHive;
 
-	// int iClass;
 	bool bEvolving;
-	bool bEvolved;
 
 	// The Ship
 	bool bUseDoor;
@@ -512,6 +510,9 @@ public:
 	virtual bool HasCelerity();
 	virtual void UpgradeToCelerity();
 	virtual bool CanEvolve();
+	virtual bool IsEvolved();
+	virtual void StartEvolving();
+	virtual void FinishEvolving();
 	virtual void EvolveToGorge();
 	virtual void EvolveToLerk();
 	virtual void EvolveToFade();
