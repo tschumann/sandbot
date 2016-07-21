@@ -1211,6 +1211,7 @@ void BotShootAtEnemy( bot_t *pBot )
    // Paulo-La-Frite - END
 
    float x = pEdict->v.v_angle.y;
+
    if (x > 180)
 	   x -= 360;
    if (abs(pEdict->v.ideal_yaw - x) > 2.0)
@@ -1220,7 +1221,6 @@ void BotShootAtEnemy( bot_t *pBot )
 
    BotFixIdealYaw(pEdict);
 
-
    v_enemy.z = 0;  // ignore z component (up & down)
 
    f_distance = v_enemy.Length();  // how far away is the enemy scum?
@@ -1228,10 +1228,20 @@ void BotShootAtEnemy( bot_t *pBot )
    if (f_distance > 200)      // run if distance to enemy is far
       pBot->f_move_speed = pBot->GetMaxSpeed();
    else if (f_distance > 20)  // walk if distance is closer
-      pBot->f_move_speed = pBot->GetMaxSpeed() / 2;
+   {
+	   // TODO: this check should more generally look at whether the bot has a melee weapon or not
+	   if (mod_id == NS_DLL && ((NSBot *)pBot)->IsAlien())
+	   {
+		   // alien's should charge ahead due to their strong close-range attacks
+		   pBot->f_move_speed = pBot->GetMaxSpeed();
+	   }
+	   else
+	   {
+			pBot->f_move_speed = pBot->GetMaxSpeed() / 2;
+	   }
+   }
    else                     // don't move if close enough
       pBot->f_move_speed = 0.0;
-
 
    // is it time to shoot yet?
    if (pBot->f_shoot_time <= gpGlobals->time)
@@ -1252,7 +1262,6 @@ bool BotShootTripmine( bot_t *pBot )
 	}
 
 	// aim at the tripmine and fire the glock...
-
 	Vector v_enemy = pBot->v_tripmine - GetGunPosition( pEdict );
 
 	pEdict->v.v_angle = UTIL_VecToAngles( v_enemy );
