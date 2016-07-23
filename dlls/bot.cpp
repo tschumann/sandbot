@@ -1257,9 +1257,10 @@ void BotThink( bot_t *pBot )
 		return;
    }
 
+   // this forces the bot to attempt to join a team each frame - it's easier than trying to
+   // handle the conditional messages and work out how long until it's possible to rejoin
    if( mod_id == NS_DLL && pBot->pEdict->v.playerclass == PLAYMODE_READYROOM )
    {
-	   ALERT( at_console, "in the ready room, ready to restart\n" );
 	   pBot->not_started = true;
    }
 

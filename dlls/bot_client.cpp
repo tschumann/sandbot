@@ -200,54 +200,67 @@ void BotClient_DOD_WeaponList(void *p, int bot_index)
    if (state == 0)
    {
       state++;
+	  // number of primary ammo clips?
       // strcpy(bot_weapon.szClassname, (char *)p);
    }
    else if (state == 1)
    {
       state++;
-      bot_weapon.iAmmo1 = *(int *)p;  // ammo index 1
+      // bot_weapon.iAmmo1 = *(int *)p;  // ammo index 1
    }
    else if (state == 2)
    {
       state++;
-      bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
+	  // number of secondary ammo clips?
+      // bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
    }
    else if (state == 3)
    {
       state++;
-      bot_weapon.iAmmo2 = *(int *)p;  // ammo index 2
+      // bot_weapon.iAmmo2 = *(int *)p;  // ammo index 2
    }
    else if (state == 4)
    {
       state++;
-      bot_weapon.iAmmo2Max = *(int *)p;  // max ammo2
+      // bot_weapon.iAmmo2Max = *(int *)p;  // max ammo2
    }
    else if (state == 5)
    {
       state++;
-      bot_weapon.iSlot = *(int *)p;  // slot for this weapon
+      // bot_weapon.iSlot = *(int *)p;  // slot for this weapon
    }
    else if (state == 6)
    {
       state++;
       // bot_weapon.iPosition = *(int *)p;  // position in slot
-	  bot_weapon.iId = *(int *)p;  // weapon ID???
+	  // bot_weapon.iId = *(int *)p;  // weapon ID???
    }
    else if (state == 7)
    {
       state++;
       bot_weapon.iId = *(int *)p;  // weapon ID
+
+		switch(bot_weapon.iId)
+		{
+		case DOD_WEAPON_COLT:
+			strcpy(bot_weapon.szClassname, "weapon_colt");
+			break;
+		case DOD_WEAPON_LUGER:
+			strcpy(bot_weapon.szClassname, "weapon_luger");
+			break;
+		}
    }
    else if (state == 8)
    {
       state++;
-      bot_weapon.iId = *(int *)p;  // weapon ID
+      // bot_weapon.iId = *(int *)p;  // weapon ID
    }
    else if (state == 9)
    {
       state = 0;
 
-      bot_weapon.iFlags = *(int *)p;  // flags for weapon (WTF???)
+	  // clip size?
+      // bot_weapon.iFlags = *(int *)p;  // flags for weapon (WTF???)
 
       // store away this weapon with it's ammo information...
       // weapon_defs[bot_weapon.iId] = bot_weapon;
