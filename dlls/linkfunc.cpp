@@ -902,6 +902,30 @@ REMAP_ENTITY_TO_FUNC(monster_t_jungle_kamikaze, monster_terrorist_jungle_kamikaz
 REMAP_ENTITY_TO_FUNC(monster_t_russian_kamikaze, monster_terrorist_russian_kamikaze);
 
 // additional entities for Day of Defeat
+LINK_ENTITY_TO_FUNC(ammo_30cal);
+LINK_ENTITY_TO_FUNC(ammo_bar);
+LINK_ENTITY_TO_FUNC(ammo_bazooka);
+LINK_ENTITY_TO_FUNC(ammo_bren);
+LINK_ENTITY_TO_FUNC(ammo_colt);
+LINK_ENTITY_TO_FUNC(ammo_enfield);
+LINK_ENTITY_TO_FUNC(ammo_fg42);
+LINK_ENTITY_TO_FUNC(ammo_garand);
+LINK_ENTITY_TO_FUNC(ammo_greasegun);
+LINK_ENTITY_TO_FUNC(ammo_k43);
+LINK_ENTITY_TO_FUNC(ammo_kar);
+LINK_ENTITY_TO_FUNC(ammo_luger);
+LINK_ENTITY_TO_FUNC(ammo_m1carbine);
+LINK_ENTITY_TO_FUNC(ammo_mg34);
+LINK_ENTITY_TO_FUNC(ammo_mg42);
+LINK_ENTITY_TO_FUNC(ammo_mp40);
+LINK_ENTITY_TO_FUNC(ammo_mp44);
+LINK_ENTITY_TO_FUNC(ammo_piat);
+LINK_ENTITY_TO_FUNC(ammo_pschreck);
+LINK_ENTITY_TO_FUNC(ammo_scopedkar);
+LINK_ENTITY_TO_FUNC(ammo_spring);
+LINK_ENTITY_TO_FUNC(ammo_sten);
+LINK_ENTITY_TO_FUNC(ammo_thompson);
+LINK_ENTITY_TO_FUNC(ammo_webley);
 LINK_ENTITY_TO_FUNC(dod_camera);
 LINK_ENTITY_TO_FUNC(dod_capture_area);
 LINK_ENTITY_TO_FUNC(dod_control_point);

@@ -46,7 +46,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 	{
 		if( h_Library )
 		{
-		FreeLibrary(h_Library);
+			FreeLibrary(h_Library);
 		}
 	}
 
@@ -384,7 +384,7 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
 {
    // check if engine's pointer is valid and version is correct...
    if ((pFunctionTable == NULL) || (interfaceVersion != INTERFACE_VERSION))
-      return (FALSE);
+      return FALSE;
 
    // pass gamedll functions table to engine (in fact it's our own functions we are passing
    // here, but the engine won't notice)...
@@ -445,7 +445,7 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
 
    // was the call NOT successful ?
    if (!(*(GETENTITYAPI) GetProcAddress (h_Library, "GetEntityAPI")) (&other_gFunctionTable, INTERFACE_VERSION))
-      return (FALSE);  // error initializing function table!!!
+      return FALSE;  // error initializing function table!!!
 
    return (TRUE); // finished, interfacing from engine to gamedll complete
 }
@@ -462,7 +462,7 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
 
    // if the new DLL functions interface has been formerly reported as missing, give up
    if (missing)
-      return (FALSE);
+      return FALSE;
 
    // do we NOT know if the new DLL functions interface is provided ? if so, look for its address
    if (other_GetNewDLLFunctions == NULL)
@@ -472,7 +472,7 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
    if (other_GetNewDLLFunctions == NULL)
    {
       missing = TRUE; // then mark it as missing, no use to look for it again in the future
-      return (FALSE); // and give up
+      return FALSE; // and give up
    }
 
    // else call the function that provides the new DLL functions interface on request

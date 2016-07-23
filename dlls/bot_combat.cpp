@@ -195,6 +195,15 @@ bot_weapon_select_t dod_weapon_select[] = {
 	 0.0, 50.0, 0.0, 0.0,
 	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
 	/* terminator */
+	{DOD_WEAPON_COLT, "weapon_colt", 0.3, 0.2,
+	 0.0, 1200.0, 0.0, 1200.0,
+	 100, TRUE, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+
+	{DOD_WEAPON_LUGER, "weapon_luger", 0.3, 0.2,
+	 0.0, 1200.0, 0.0, 1200.0,
+	 100, TRUE, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
