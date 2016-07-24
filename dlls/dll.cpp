@@ -15,6 +15,7 @@
 
 #include "bot.h"
 #include "bot_func.h"
+#include "bot_weapons.h"
 #include "waypoint.h"
 
 
@@ -925,6 +926,28 @@ void ClientCommand( edict_t *pEntity )
 				return;
 			}
 
+			if( mod_id == DOD_DLL )
+			{
+				if( player->v.team == DOD_TEAM_ALLIES )
+				{
+					ALERT( at_console, "Team: Allies\n" );
+				}
+				else if( player->v.team == DOD_TEAM_AXIS )
+				{
+					ALERT( at_console, "Team: Axis\n" );
+				}
+
+				ALERT( at_console, "%d\n", player->v.weapons );
+
+				if( player->v.weapons & (1<<DOD_WEAPON_GARAND) )
+				{
+					ALERT( at_console, "Weapon: weapon_garand\n" );
+				}
+				if( player->v.weapons & (1<<DOD_WEAPON_KAR) )
+				{
+					ALERT( at_console, "Weapon: weapon_kar\n" );
+				}
+			}
 			if( mod_id == NS_DLL )
 			{
 				extern float UTIL_GetExperience( edict_t *player );

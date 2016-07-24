@@ -332,6 +332,7 @@ void BotStartGame( bot_t *pBot )
 			if ((pBot->bot_team != 1) && (pBot->bot_team != 2))
 				pBot->bot_team = -1;
 
+			// TODO: count how many each team has because even teams seems to be off by default
 			if (pBot->bot_team == -1)
 				pBot->bot_team = RANDOM_LONG(1, 2);
 
@@ -361,6 +362,7 @@ void BotStartGame( bot_t *pBot )
 		{
 			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
+			// cl_k98 is class 1 for Axis
 			// TODO: add proper class selection
 			FakeClientCommand(pEdict, "cls_random", c_class, NULL);
 

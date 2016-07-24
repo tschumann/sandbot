@@ -275,7 +275,7 @@ int UTIL_GetTeam(edict_t *pEntity)
 
       return 0;  // return zero if team is unknown
    }
-   else if( mod_id == NS_DLL )
+	else if( mod_id == DOD_DLL || mod_id == NS_DLL )
 	{
 		return pEntity->v.team;
 	}

@@ -9,6 +9,31 @@
 #ifndef BOT_WEAPONS_H
 #define BOT_WEAPONS_H
 
+typedef struct
+{
+	int iId;  // the weapon ID value
+	char weapon_name[64];  // name of the weapon when selecting it
+	float fPrimaryRate;			// primary rate of fire
+	float fSecondaryRate;		// secondary rate of fire
+	float primary_min_distance;    // 0 = no minimum
+	float primary_max_distance;    // 9999 = no maximum
+	float secondary_min_distance; // 0 = no minimum
+	float secondary_max_distance; // 9999 = no maximum
+	int use_percent;    // times out of 100 to use this weapon when available
+	bool can_use_underwater;      // can use this weapon underwater
+	int primary_fire_percent;    // times out of 100 to use primary fire
+	int min_primary_ammo;         // minimum ammout of primary ammo needed to fire
+	int min_secondary_ammo;      // minimum ammout of seconday ammo needed to fire
+	bool primary_fire_hold;        // hold down primary fire button to use?
+	bool secondary_fire_hold;     // hold down secondary fire button to use?
+	bool primary_fire_charge;     // charge weapon using primary fire?
+	bool secondary_fire_charge;  // charge weapon using secondary fire?
+	float primary_charge_delay;    // time to charge weapon
+	float secondary_charge_delay; // time to charge weapon
+	// int iPrimaryAmmoIndex;
+	// int iSecondaryAmmoIndex;
+} bot_weapon_select_t;
+
 // weapon ID values for Half-Life
 #define VALVE_WEAPON_CROWBAR		1
 #define VALVE_WEAPON_GLOCK			2
@@ -89,33 +114,33 @@
 #define CS_WEAPON_P90				30
 
 // weapon ID values for Day of Defeat
+#define DOD_WEAPON_GARAND			5
+#define DOD_WEAPON_KAR				10
+#define DOD_WEAPON_HANDGRENADE		13
+#define DOD_WEAPON_STICKGRENADE		14
+#define DOD_WEAPON_M1CARBINE		20
+#define DOD_WEAPON_K43				24
+#define DOD_WEAPON_BAZOOKA			29
+#define DOD_WEAPON_PSCHRECK			30
 #define DOD_WEAPON_30CAL
 #define DOD_WEAPON_AMERKNIFE
 #define DOD_WEAPON_BAR
-#define DOD_WEAPON_BAZOOKA
 #define DOD_WEAPON_BREN
-#define DOD_WEAPON_COLT				5
+#define DOD_WEAPON_COLT
 #define DOD_WEAPON_ENFIELD
 #define DOD_WEAPON_FG42
-#define DOD_WEAPON_GARAND
 #define DOD_WEAPON_GERKNIFE
 #define DOD_WEAPON_GREASEGUN
-#define DOD_WEAPON_HANDGRENADE
-#define DOD_WEAPON_K43
-#define DOD_WEAPON_KAR
-#define DOD_WEAPON_LUGER			4
-#define DOD_WEAPON_M1CARBINE
+#define DOD_WEAPON_LUGER
 #define DOD_WEAPON_MG34
 #define DOD_WEAPON_MG42
 #define DOD_WEAPON_MP40
 #define DOD_WEAPON_MP44
 #define DOD_WEAPON_PIAT
-#define DOD_WEAPON_PSCHRECK
 #define DOD_WEAPON_SCOPEDKAR
 #define DOD_WEAPON_SPADE
 #define DOD_WEAPON_SPRING
 #define DOD_WEAPON_STEN
-#define DOD_WEAPON_STICKGRENADE
 #define DOD_WEAPON_THOMPSON
 #define DOD_WEAPON_WEBLEY
 

@@ -200,29 +200,33 @@ void BotClient_DOD_WeaponList(void *p, int bot_index)
    if (state == 0)
    {
       state++;
-	  // number of primary ammo clips?
-      // strcpy(bot_weapon.szClassname, (char *)p);
+	  // strcpy(bot_weapon.szClassname, (char *)p);
+	  bot_weapon.iAmmo1 = *(int *)p;  // ammo index 1
    }
    else if (state == 1)
    {
       state++;
       // bot_weapon.iAmmo1 = *(int *)p;  // ammo index 1
+	  bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
    }
    else if (state == 2)
    {
       state++;
-	  // number of secondary ammo clips?
-      // bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
+	  // bot_weapon.iAmmo1Max = *(int *)p;  // max ammo1
+	  bot_weapon.iAmmo2 = *(int *)p;  // ammo index 2
    }
    else if (state == 3)
    {
       state++;
       // bot_weapon.iAmmo2 = *(int *)p;  // ammo index 2
+	  bot_weapon.iAmmo2Max = *(int *)p;  // max ammo2
    }
    else if (state == 4)
    {
       state++;
       // bot_weapon.iAmmo2Max = *(int *)p;  // max ammo2
+	  // maybe slot?
+	  bot_weapon.iSlot = *(int *)p;  // slot for this weapon
    }
    else if (state == 5)
    {
@@ -232,30 +236,43 @@ void BotClient_DOD_WeaponList(void *p, int bot_index)
    else if (state == 6)
    {
       state++;
-      // bot_weapon.iPosition = *(int *)p;  // position in slot
-	  // bot_weapon.iId = *(int *)p;  // weapon ID???
-   }
-   else if (state == 7)
-   {
-      state++;
       bot_weapon.iId = *(int *)p;  // weapon ID
 
 		switch(bot_weapon.iId)
 		{
-		case DOD_WEAPON_COLT:
-			strcpy(bot_weapon.szClassname, "weapon_colt");
+		case DOD_WEAPON_GARAND:
+			strcpy(bot_weapon.szClassname, "weapon_garand");
 			break;
-		case DOD_WEAPON_LUGER:
-			strcpy(bot_weapon.szClassname, "weapon_luger");
+		case DOD_WEAPON_KAR:
+			strcpy(bot_weapon.szClassname, "weapon_kar");
+			break;
+		case DOD_WEAPON_HANDGRENADE:
+			strcpy(bot_weapon.szClassname, "weapon_handgrenade");
+			break;
+		case DOD_WEAPON_STICKGRENADE:
+			strcpy(bot_weapon.szClassname, "weapon_stickgrenade");
+			break;
+		case DOD_WEAPON_M1CARBINE:
+			strcpy(bot_weapon.szClassname, "weapon_m1carbine");
+			break;
+		case DOD_WEAPON_K43:
+			strcpy(bot_weapon.szClassname, "weapon_k43");
+			break;
+		case DOD_WEAPON_BAZOOKA:
+			strcpy(bot_weapon.szClassname, "weapon_bazooka");
+			break;
+		case DOD_WEAPON_PSCHRECK:
+			strcpy(bot_weapon.szClassname, "weapon_pschreck");
 			break;
 		}
    }
-   else if (state == 8)
+   else if (state == 7)
    {
       state++;
+	  // flags?
       // bot_weapon.iId = *(int *)p;  // weapon ID
    }
-   else if (state == 9)
+   else if (state == 8)
    {
       state = 0;
 
@@ -263,7 +280,7 @@ void BotClient_DOD_WeaponList(void *p, int bot_index)
       // bot_weapon.iFlags = *(int *)p;  // flags for weapon (WTF???)
 
       // store away this weapon with it's ammo information...
-      // weapon_defs[bot_weapon.iId] = bot_weapon;
+      weapon_defs[bot_weapon.iId] = bot_weapon;
    }
 }
 

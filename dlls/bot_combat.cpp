@@ -23,31 +23,6 @@ extern float is_team_play;
 
 FILE *fp;
 
-typedef struct
-{
-	int iId;  // the weapon ID value
-	char weapon_name[64];  // name of the weapon when selecting it
-	float fPrimaryRate;			// primary rate of fire
-	float fSecondaryRate;		// secondary rate of fire
-	float primary_min_distance;    // 0 = no minimum
-	float primary_max_distance;    // 9999 = no maximum
-	float secondary_min_distance; // 0 = no minimum
-	float secondary_max_distance; // 9999 = no maximum
-	int use_percent;    // times out of 100 to use this weapon when available
-	bool can_use_underwater;      // can use this weapon underwater
-	int primary_fire_percent;    // times out of 100 to use primary fire
-	int min_primary_ammo;         // minimum ammout of primary ammo needed to fire
-	int min_secondary_ammo;      // minimum ammout of seconday ammo needed to fire
-	bool primary_fire_hold;        // hold down primary fire button to use?
-	bool secondary_fire_hold;     // hold down secondary fire button to use?
-	bool primary_fire_charge;     // charge weapon using primary fire?
-	bool secondary_fire_charge;  // charge weapon using secondary fire?
-	float primary_charge_delay;    // time to charge weapon
-	float secondary_charge_delay; // time to charge weapon
-	// int iPrimaryAmmoIndex;
-	// int iSecondaryAmmoIndex;
-} bot_weapon_select_t;
-
 // weapons are stored in priority order, most desired weapon should be at
 // the start of the array and least desired should be at the end
 // presumably the no ammo ones are at the top so they can always be selected
@@ -193,17 +168,50 @@ bot_weapon_select_t dod_weapon_select[] = {
 	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 	{DOD_WEAPON_GERKNIFE, "weapon_gerknife", 0.3, 0.0,
 	 0.0, 50.0, 0.0, 0.0,
-	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
-	/* terminator */
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 	{DOD_WEAPON_COLT, "weapon_colt", 0.3, 0.2,
-	 0.0, 1200.0, 0.0, 1200.0,
+	 0.0, 1200.0, 0.0, 0.0,
 	 100, TRUE, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_LUGER, "weapon_luger", 0.3, 0.2,
+	 0.0, 1200.0, 0.0, 0.0,
+	 100, TRUE, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
+	{DOD_WEAPON_HANDGRENADE, "weapon_handgrenade", 1.0, 0.0,
+	 0.0, 100.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
 	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 
-	{DOD_WEAPON_LUGER, "weapon_luger", 0.3, 0.2,
-	 0.0, 1200.0, 0.0, 1200.0,
-	 100, TRUE, 100, 1, 0,
+	{DOD_WEAPON_GARAND, "weapon_garand", 0.3, 0.0,
+	 0.0, 2000.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
 	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_M1CARBINE, "weapon_m1carbine", 0.3, 0.0,
+	 0.0, 2000.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_BAZOOKA, "weapon_bazooka", 1.5, 0.0,
+	 0.0, 2000.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+
+	{DOD_WEAPON_STICKGRENADE, "weapon_stickgrenade", 1.0, 0.0,
+	 0.0, 100.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_KAR, "weapon_kar", 0.3, 0.0,
+	 0.0, 2000.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_K43, "weapon_k43", 0.3, 0.0,
+	 0.0, 2000.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	{DOD_WEAPON_PSCHRECK, "weapon_pschreck", 1.5, 0.0,
+	 0.0, 2000.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	/* terminator */
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
@@ -1224,6 +1232,7 @@ void BotShootAtEnemy( bot_t *pBot )
    if (x > 180)
 	   x -= 360;
    if (abs(pEdict->v.ideal_yaw - x) > 2.0)
+	   // TODO: this looks like a bug - fp is a file pointer
       fp = NULL;
 
    pEdict->v.ideal_yaw = pEdict->v.v_angle.y;

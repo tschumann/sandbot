@@ -132,8 +132,8 @@ int Cmd_Argc( void );
 #define MSG_FLF_HEAVYWEAPONS_SELECT 9
 
 // Day of Defeat
-#define DOD_TEAM_ALLIES
-#define DOD_TEAM_AXIS
+#define DOD_TEAM_ALLIES		1
+#define DOD_TEAM_AXIS		2
 
 // Team Fortress Classic
 #define TFC_CLASS_CIVILIAN  0
