@@ -284,6 +284,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\bot_dod.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\bot_game.cpp"
 				>
 			</File>

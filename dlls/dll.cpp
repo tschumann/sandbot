@@ -1058,7 +1058,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
-			pBots[i] = new bot_t();
+			pBots[i] = new DODBot();
 		}
 	}
 	else if( mod_id == TFC_DLL )

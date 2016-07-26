@@ -463,6 +463,10 @@ protected:
 	float fMaxSpeed;
 };
 
+class DODBot : public bot_t
+{
+};
+
 class GunmanBot : public bot_t
 {
 public:
