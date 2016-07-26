@@ -338,9 +338,9 @@ void BotStartGame( bot_t *pBot )
 
 			// select the team the bot wishes to join...
 			if (pBot->bot_team == 1)
-				strcpy(c_team, "1");
+				FakeClientCommand(pEdict, "jointeam", "1", NULL);
 			else if (pBot->bot_team == 2)
-				strcpy(c_team, "2");
+				FakeClientCommand(pEdict, "jointeam", "2", NULL);
 
 			FakeClientCommand(pEdict, "jointeam", c_team, NULL);
 
@@ -350,8 +350,21 @@ void BotStartGame( bot_t *pBot )
 		{
 			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-			// TODO: add proper class selection
-			FakeClientCommand(pEdict, "cls_random", c_class, NULL);
+			// do this to control what classes bots will spawn as (not everything is supported yet)
+			int playerClass = RANDOM_LONG(1, 2);
+
+			switch(playerClass)
+			{
+			case 1:
+				FakeClientCommand(pEdict, "cls_garand", NULL, NULL);
+				break;
+			case 2:
+				FakeClientCommand(pEdict, "cls_carbine", NULL, NULL);
+				break;
+			default:
+				FakeClientCommand(pEdict, "cls_random", NULL, NULL);
+				break;
+			}
 
 			// bot has now joined the game (doesn't need to be started)
 			pBot->not_started = 0;
@@ -362,9 +375,20 @@ void BotStartGame( bot_t *pBot )
 		{
 			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-			// cl_k98 is class 1 for Axis
-			// TODO: add proper class selection
-			FakeClientCommand(pEdict, "cls_random", c_class, NULL);
+			int playerClass = RANDOM_LONG(1, 2);
+
+			switch(playerClass)
+			{
+			case 1:
+				FakeClientCommand(pEdict, "cls_k98", NULL, NULL);
+				break;
+			case 2:
+				FakeClientCommand(pEdict, "cls_k43", NULL, NULL);
+				break;
+			default:
+				FakeClientCommand(pEdict, "cls_random", NULL, NULL);
+				break;
+			}
 
 			// bot has now joined the game (doesn't need to be started)
 			pBot->not_started = 0;
