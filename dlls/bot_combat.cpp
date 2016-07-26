@@ -163,25 +163,6 @@ bot_weapon_select_t cs_weapon_select[] = {
 };
 
 bot_weapon_select_t dod_weapon_select[] = {
-	/*{DOD_WEAPON_AMERKNIFE, "weapon_amerknife", 0.3, 0.0,
-	 0.0, 50.0, 0.0, 0.0,
-	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-	{DOD_WEAPON_GERKNIFE, "weapon_gerknife", 0.3, 0.0,
-	 0.0, 50.0, 0.0, 0.0,
-	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-	{DOD_WEAPON_COLT, "weapon_colt", 0.3, 0.2,
-	 0.0, 1200.0, 0.0, 0.0,
-	 100, TRUE, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-	{DOD_WEAPON_LUGER, "weapon_luger", 0.3, 0.2,
-	 0.0, 1200.0, 0.0, 0.0,
-	 100, TRUE, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
-	{DOD_WEAPON_HANDGRENADE, "weapon_handgrenade", 1.0, 0.0,
-	 0.0, 100.0, 0.0, 0.0,
-	 100, false, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-
 	{DOD_WEAPON_GARAND, "weapon_garand", 0.3, 0.0,
 	 0.0, 2000.0, 0.0, 0.0,
 	 100, false, 100, 1, 0,
@@ -195,10 +176,18 @@ bot_weapon_select_t dod_weapon_select[] = {
 	 100, false, 100, 1, 0,
 	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 
-	{DOD_WEAPON_STICKGRENADE, "weapon_stickgrenade", 1.0, 0.0,
+	/*{DOD_WEAPON_COLT, "weapon_colt", 0.3, 0.2,
+	 0.0, 1200.0, 0.0, 0.0,
+	 100, TRUE, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
+	{DOD_WEAPON_HANDGRENADE, "weapon_handgrenade", 1.0, 0.0,
 	 0.0, 100.0, 0.0, 0.0,
 	 100, false, 100, 1, 0,
 	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	/*{DOD_WEAPON_AMERKNIFE, "weapon_amerknife", 0.3, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
+
 	{DOD_WEAPON_KAR, "weapon_kar", 0.3, 0.0,
 	 0.0, 2000.0, 0.0, 0.0,
 	 100, false, 100, 1, 0,
@@ -211,6 +200,18 @@ bot_weapon_select_t dod_weapon_select[] = {
 	 0.0, 2000.0, 0.0, 0.0,
 	 100, false, 100, 1, 0,
 	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+
+	/*{DOD_WEAPON_LUGER, "weapon_luger", 0.3, 0.2,
+	 0.0, 1200.0, 0.0, 0.0,
+	 100, TRUE, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
+	{DOD_WEAPON_STICKGRENADE, "weapon_stickgrenade", 1.0, 0.0,
+	 0.0, 100.0, 0.0, 0.0,
+	 100, false, 100, 1, 0,
+	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	/*{DOD_WEAPON_GERKNIFE, "weapon_gerknife", 0.3, 0.0,
+	 0.0, 50.0, 0.0, 0.0,
+	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},*/
 	/* terminator */
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
