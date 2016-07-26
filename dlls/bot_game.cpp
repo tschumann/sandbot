@@ -10,5 +10,5 @@
 
 bool Game::IsTeamPlay()
 {
-	return CVAR_GET_FLOAT("mp_teamplay") > 0;
+	return CVAR_GET_FLOAT( "mp_teamplay" ) > 0;
 }

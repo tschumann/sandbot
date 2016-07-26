@@ -1175,27 +1175,28 @@ void pfnGetGameDir(char *szGetGameDir)
 }
 void pfnCvar_RegisterVariable(cvar_t *variable)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCvar_RegisterVariable:\n"); fclose(fp); }
-   (*g_engfuncs.pfnCvar_RegisterVariable)(variable);
+	UTIL_LogDPrintf("pfnCvar_RegisterVariable: variable->name=%s\n", variable->name );
+	(*g_engfuncs.pfnCvar_RegisterVariable)(variable);
 }
 void pfnFadeClientVolume(const edict_t *pEdict, int fadePercent, int fadeOutSeconds, int holdTime, int fadeInSeconds)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFadeClientVolume:\n"); fclose(fp); }
-   (*g_engfuncs.pfnFadeClientVolume)(pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
+	UTIL_LogDPrintf("pfnFadeClientVolume: pEdict=%x fadePercent=%d fadeOutSeconds=%d holdTime=%d fadeInSeconds=%d\n", pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
+	(*g_engfuncs.pfnFadeClientVolume)(pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
 }
 void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetClientMaxspeed: edict=%x %f\n",pEdict,fNewMaxspeed); fclose(fp); }
+	UTIL_LogDPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
-  if (mod_id == CSTRIKE_DLL)
-  {
-     bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
-     if (pBot != NULL)
-     {
-        pBot->SetMaxSpeed( fNewMaxspeed );
-        pBot->pEdict->v.maxspeed = fNewMaxspeed;
-     }
-  }
+	if( mod_id == CSTRIKE_DLL )
+	{
+		bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
+
+		if ( pBot )
+		{
+			pBot->SetMaxSpeed( fNewMaxspeed );
+			pBot->pEdict->v.maxspeed = fNewMaxspeed;
+		}
+	}
 
    (*g_engfuncs.pfnSetClientMaxspeed)(pEdict, fNewMaxspeed);
 }
@@ -1210,8 +1211,7 @@ void pfnRunPlayerMove(edict_t *fakeclient, const float *viewangles, float forwar
 }
 int pfnNumberOfEntities(void)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnNumberOfEntities:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnNumberOfEntities)();
+	return (*g_engfuncs.pfnNumberOfEntities)();
 }
 char* pfnGetInfoKeyBuffer(edict_t *e)
 {

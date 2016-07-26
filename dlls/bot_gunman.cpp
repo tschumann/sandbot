@@ -10,7 +10,7 @@
 
 void GunmanBot::OnSpawn()
 {
-	this->iPistolMode = RANDOM_LONG(1, 3);
+	this->iPistolMode = RANDOM_LONG(GunmanBot::PISTOL_PULSE, GunmanBot::PISTOL_CHARGE);
 }
 
 int GunmanBot::GetPistolMode()
