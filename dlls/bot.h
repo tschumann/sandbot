@@ -319,6 +319,7 @@ public:
 	virtual void OnSpawn();
 	virtual int GetTeam();
 	virtual bool HasEnemy();
+	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual void PickupItem();
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
@@ -575,6 +576,7 @@ class ShipBot : public bot_t
 protected:
 	edict_t *pQuarry;
 public:
+	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual void PickupItem();
 	virtual void SetQuarry( int iEntIndex );
 	virtual edict_t* GetQuarry();

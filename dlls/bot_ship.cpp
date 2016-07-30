@@ -8,6 +8,21 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+bool ShipBot::IsValidEnemy( edict_t *pEdict )
+{
+	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );
+	bool bShipIsValid = bBaseIsValid;
+
+	// if the bot has a quarry but this isn't the
+	//  quarry, it shouldn't be targetted as an enemy
+	if( this->HasQuarry() && this->GetQuarry() != pEdict )
+	{
+		bShipIsValid = false;
+	}
+
+	return bBaseIsValid && bShipIsValid;
+}
+
 void ShipBot::PickupItem()
 {
 	FakeClientCommand( this->pEdict, "pickup", NULL, NULL );

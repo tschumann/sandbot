@@ -2000,6 +2000,28 @@ bool bot_t::HasEnemy()
 	return this->pBotEnemy != NULL;
 }
 
+bool bot_t::IsValidEnemy( edict_t *pEdict )
+{
+	if( !pEdict )
+	{
+		return false;
+	}
+	if( pEdict->free )
+	{
+		return false;
+	}
+	if( pEdict == this->pEdict )
+	{
+		return false;
+	}
+	if( !IsAlive( pEdict ) )
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void bot_t::PickupItem()
 {
 }
