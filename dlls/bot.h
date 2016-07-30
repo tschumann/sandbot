@@ -105,10 +105,10 @@ int Cmd_Argc( void );
 #define MSG_CS_CT_SELECT    3
 #define MSG_CS_T_SELECT     4
 
-#define MSG_DOD_IDLE		1
+#define MSG_DOD_IDLE			1
 #define MSG_DOD_TEAM_SELECT		2
 #define MSG_DOD_ALLIED_SELECT	3
-#define MSG_DOD_AXIS_SELECT	4
+#define MSG_DOD_AXIS_SELECT		4
 
 // game start messages for OpFor...
 #define MSG_OPFOR_IDLE          1

@@ -243,8 +243,17 @@ void BotClient_DOD_WeaponList(void *p, int bot_index)
 		case DOD_WEAPON_GARAND:
 			strcpy(bot_weapon.szClassname, "weapon_garand");
 			break;
+		case DOD_WEAPON_THOMPSON:
+			strcpy(bot_weapon.szClassname, "weapon_thompson");
+			break;
+		case DOD_WEAPON_MP44:
+			strcpy(bot_weapon.szClassname, "weapon_mp44");
+			break;
 		case DOD_WEAPON_KAR:
 			strcpy(bot_weapon.szClassname, "weapon_kar");
+			break;
+		case DOD_WEAPON_MP40:
+			strcpy(bot_weapon.szClassname, "weapon_mp40");
 			break;
 		case DOD_WEAPON_HANDGRENADE:
 			strcpy(bot_weapon.szClassname, "weapon_handgrenade");
@@ -254,6 +263,9 @@ void BotClient_DOD_WeaponList(void *p, int bot_index)
 			break;
 		case DOD_WEAPON_M1CARBINE:
 			strcpy(bot_weapon.szClassname, "weapon_m1carbine");
+			break;
+		case DOD_WEAPON_GREASEGUN:
+			strcpy(bot_weapon.szClassname, "weapon_greasegun");
 			break;
 		case DOD_WEAPON_K43:
 			strcpy(bot_weapon.szClassname, "weapon_k43");

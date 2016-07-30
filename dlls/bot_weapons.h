@@ -115,10 +115,14 @@ typedef struct
 
 // weapon ID values for Day of Defeat
 #define DOD_WEAPON_GARAND			5
+#define DOD_WEAPON_THOMPSON			7
+#define DOD_WEAPON_MP44				8
 #define DOD_WEAPON_KAR				10
+#define DOD_WEAPON_MP40				12
 #define DOD_WEAPON_HANDGRENADE		13
 #define DOD_WEAPON_STICKGRENADE		14
 #define DOD_WEAPON_M1CARBINE		20
+#define DOD_WEAPON_GREASEGUN		22
 #define DOD_WEAPON_K43				24
 #define DOD_WEAPON_BAZOOKA			29
 #define DOD_WEAPON_PSCHRECK			30
@@ -130,18 +134,14 @@ typedef struct
 #define DOD_WEAPON_ENFIELD
 #define DOD_WEAPON_FG42
 #define DOD_WEAPON_GERKNIFE
-#define DOD_WEAPON_GREASEGUN
 #define DOD_WEAPON_LUGER
 #define DOD_WEAPON_MG34
 #define DOD_WEAPON_MG42
-#define DOD_WEAPON_MP40
-#define DOD_WEAPON_MP44
 #define DOD_WEAPON_PIAT
 #define DOD_WEAPON_SCOPEDKAR
 #define DOD_WEAPON_SPADE
 #define DOD_WEAPON_SPRING
 #define DOD_WEAPON_STEN
-#define DOD_WEAPON_THOMPSON
 #define DOD_WEAPON_WEBLEY
 
 // weapon ID values for Team Fortress Classic

@@ -937,7 +937,15 @@ void ClientCommand( edict_t *pEntity )
 					ALERT( at_console, "Team: Axis\n" );
 				}
 
-				ALERT( at_console, "%d\n", player->v.weapons );
+#if 0
+				for( int i = 0; i < 32; i++ )
+				{
+					if( player->v.weapons & (1<<i) )
+					{
+						ALERT( at_console, "weapon %d\n", i );
+					}
+				}
+#endif
 
 				if( player->v.weapons & (1<<DOD_WEAPON_GARAND) )
 				{

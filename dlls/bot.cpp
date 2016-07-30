@@ -700,9 +700,24 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			((NSBot *)pBot)->ChooseDesiredClass();
 		}
 
-	  	if ((arg1 != NULL) && (*arg1 != 0))
+	  	if( arg1 && (*arg1 != 0) )
 		{
-			if( mod_id == NS_DLL )
+			if( mod_id == DOD_DLL )
+			{
+				if( !strcmp(arg1, "allies") )
+				{
+					pBot->bot_team = DOD_TEAM_ALLIES;
+				}
+				else if( !strcmp(arg1, "axis") )
+				{
+					pBot->bot_team = DOD_TEAM_AXIS;
+				}
+				else
+				{
+					ALERT( at_error, "Unknown team name %s\n", arg1 );
+				}
+			}
+			else if( mod_id == NS_DLL )
 			{
 				if( !strcmp(arg1, "alien") )
 				{
@@ -719,7 +734,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || (mod_id == DOD_DLL) ||
+	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
           ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()) || (mod_id == FRONTLINE_DLL))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
@@ -1234,7 +1249,7 @@ void BotThink( bot_t *pBot )
    if (pBot->name[0] == 0)  // name filled in yet?
       strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
-   if (mod_id == CSTRIKE_DLL)
+   if (mod_id == CSTRIKE_DLL || mod_id == DOD_DLL)
       pBot->SetMaxSpeed( pEdict->v.maxspeed );
    else
       pBot->SetMaxSpeed( CVAR_GET_FLOAT("sv_maxspeed") );

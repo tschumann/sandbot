@@ -327,9 +327,9 @@ void BotStartGame( bot_t *pBot )
 	{
 		if (pBot->start_action == MSG_DOD_TEAM_SELECT)
 		{
-			pBot->start_action = MSG_OPFOR_IDLE;  // switch back to idle
+			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-			if ((pBot->bot_team != 1) && (pBot->bot_team != 2))
+			if ((pBot->bot_team != DOD_TEAM_ALLIES) && (pBot->bot_team != DOD_TEAM_AXIS))
 				pBot->bot_team = -1;
 
 			// TODO: count how many each team has because even teams seems to be off by default
@@ -337,12 +337,10 @@ void BotStartGame( bot_t *pBot )
 				pBot->bot_team = RANDOM_LONG(1, 2);
 
 			// select the team the bot wishes to join...
-			if (pBot->bot_team == 1)
+			if (pBot->bot_team == DOD_TEAM_ALLIES)
 				FakeClientCommand(pEdict, "jointeam", "1", NULL);
-			else if (pBot->bot_team == 2)
+			else if (pBot->bot_team == DOD_TEAM_AXIS)
 				FakeClientCommand(pEdict, "jointeam", "2", NULL);
-
-			FakeClientCommand(pEdict, "jointeam", c_team, NULL);
 
 			return;
 		}
@@ -351,7 +349,7 @@ void BotStartGame( bot_t *pBot )
 			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
 			// do this to control what classes bots will spawn as (not everything is supported yet)
-			int playerClass = RANDOM_LONG(1, 2);
+			int playerClass = RANDOM_LONG(1, 4);
 
 			switch(playerClass)
 			{
@@ -360,6 +358,12 @@ void BotStartGame( bot_t *pBot )
 				break;
 			case 2:
 				FakeClientCommand(pEdict, "cls_carbine", NULL, NULL);
+				break;
+			case 3:
+				FakeClientCommand(pEdict, "cls_tommy", NULL, NULL);
+				break;
+			case 4:
+				FakeClientCommand(pEdict, "cls_grease", NULL, NULL);
 				break;
 			default:
 				FakeClientCommand(pEdict, "cls_random", NULL, NULL);
@@ -375,7 +379,7 @@ void BotStartGame( bot_t *pBot )
 		{
 			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-			int playerClass = RANDOM_LONG(1, 2);
+			int playerClass = RANDOM_LONG(1, 4);
 
 			switch(playerClass)
 			{
@@ -384,6 +388,12 @@ void BotStartGame( bot_t *pBot )
 				break;
 			case 2:
 				FakeClientCommand(pEdict, "cls_k43", NULL, NULL);
+				break;
+			case 3:
+				FakeClientCommand(pEdict, "cls_mp40", NULL, NULL);
+				break;
+			case 4:
+				FakeClientCommand(pEdict, "cls_mp44", NULL, NULL);
 				break;
 			default:
 				FakeClientCommand(pEdict, "cls_random", NULL, NULL);

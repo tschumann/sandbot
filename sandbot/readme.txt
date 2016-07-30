@@ -29,6 +29,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 == Changelog ==
 
 v0.2.1 (??/??/??)
+- [Day of Defeat] Bots now spawn as Allies and Axis (only the first four classes of each team) and attack each other.
 - [Gunman Chronicles] Bots now use different gauss pistol modes.
 - [Gunman Chronicles] Bots now know the gauss pistol is fully automatic.
 - [Natural Selection] Alien bots no longer slow down when getting close to an enemy to attack.

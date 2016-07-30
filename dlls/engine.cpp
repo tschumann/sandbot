@@ -1187,7 +1187,7 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 {
 	UTIL_LogDPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
-	if( mod_id == CSTRIKE_DLL )
+	if( mod_id == CSTRIKE_DLL || mod_id == DOD_DLL )
 	{
 		bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
 
