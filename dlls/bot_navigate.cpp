@@ -586,7 +586,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    {
 	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
 	   {
-		   if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_ALIEN )
+		   if( UTIL_GetTeam( pBot->pEdict ) == NSBot::TEAM_ALIEN )
 		   {
 			   pent = NULL;
 
@@ -608,7 +608,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					}
 				}
 		   }
-		   else if( UTIL_GetTeam( pBot->pEdict ) == NS_TEAM_MARINE )
+		   else if( UTIL_GetTeam( pBot->pEdict ) == NSBot::TEAM_MARINE )
 		   {
 			   pent = NULL;
 
@@ -1196,12 +1196,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
 		 else if (mod_id == NS_DLL)
 		 {
-			 if( pBot->pEdict->v.team == NS_TEAM_ALIEN )
+			 if( pBot->pEdict->v.team == NSBot::TEAM_ALIEN )
 			 {
 				 ALERT(at_console, "looking for command chair\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_COMMAND_CHAIR);
              }
-			 else if( pBot->pEdict->v.team == NS_TEAM_MARINE )
+			 else if( pBot->pEdict->v.team == NSBot::TEAM_MARINE )
 			 {
 				 ALERT(at_console, "looking for hive\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_HIVE);

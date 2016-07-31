@@ -329,7 +329,7 @@ void BotStartGame( bot_t *pBot )
 		{
 			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-			if ((pBot->bot_team != DOD_TEAM_ALLIES) && (pBot->bot_team != DOD_TEAM_AXIS))
+			if ((pBot->bot_team != DODBot::TEAM_ALLIES) && (pBot->bot_team != DODBot::TEAM_AXIS))
 				pBot->bot_team = -1;
 
 			// TODO: count how many each team has because even teams seems to be off by default
@@ -337,9 +337,9 @@ void BotStartGame( bot_t *pBot )
 				pBot->bot_team = RANDOM_LONG(1, 2);
 
 			// select the team the bot wishes to join...
-			if (pBot->bot_team == DOD_TEAM_ALLIES)
+			if (pBot->bot_team == DODBot::TEAM_ALLIES)
 				FakeClientCommand(pEdict, "jointeam", "1", NULL);
-			else if (pBot->bot_team == DOD_TEAM_AXIS)
+			else if (pBot->bot_team == DODBot::TEAM_AXIS)
 				FakeClientCommand(pEdict, "jointeam", "2", NULL);
 
 			return;

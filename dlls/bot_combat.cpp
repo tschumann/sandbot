@@ -783,7 +783,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 
 		if( mod_id == NS_DLL && ((NSGame *)pGame)->IsCombat() )
 		{
-			if( pBot->pEdict->v.team == NS_TEAM_MARINE )
+			if( pBot->pEdict->v.team == NSBot::TEAM_MARINE )
 			{
 				while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
 				{
@@ -804,7 +804,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 					}
 				}
 			}
-			else if( pBot->pEdict->v.team == NS_TEAM_ALIEN )
+			else if( pBot->pEdict->v.team == NSBot::TEAM_ALIEN )
 			{
 				while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
 				{
@@ -1028,7 +1028,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
             while ((pSelect[select_index].iId) && (pSelect[select_index].iId != iId))
                select_index++;
 
-            pBot->f_shoot_time = gpGlobals->time +  pSelect[select_index].fSecondaryRate;
+            pBot->f_shoot_time = gpGlobals->time + pSelect[select_index].fSecondaryRate;
 
             return TRUE;
          }

@@ -706,11 +706,11 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			{
 				if( !strcmp(arg1, "allies") )
 				{
-					pBot->bot_team = DOD_TEAM_ALLIES;
+					pBot->bot_team = DODBot::TEAM_ALLIES;
 				}
 				else if( !strcmp(arg1, "axis") )
 				{
-					pBot->bot_team = DOD_TEAM_AXIS;
+					pBot->bot_team = DODBot::TEAM_AXIS;
 				}
 				else
 				{

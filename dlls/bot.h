@@ -131,10 +131,6 @@ int Cmd_Argc( void );
 #define MSG_FLF_SUBMACHINE_SELECT   8
 #define MSG_FLF_HEAVYWEAPONS_SELECT 9
 
-// Day of Defeat
-#define DOD_TEAM_ALLIES		1
-#define DOD_TEAM_AXIS		2
-
 // Team Fortress Classic
 #define TFC_CLASS_CIVILIAN  0
 #define TFC_CLASS_SCOUT     1
@@ -146,11 +142,6 @@ int Cmd_Argc( void );
 #define TFC_CLASS_PYRO      7
 #define TFC_CLASS_SPY       8
 #define TFC_CLASS_ENGINEER  9
-
-// Natural Selection
-#define NS_TEAM_NONE	0
-#define NS_TEAM_MARINE	1
-#define NS_TEAM_ALIEN	2
 
 #define kGorgeCost 10
 #define kLerkCost 30
@@ -466,6 +457,9 @@ protected:
 
 class DODBot : public bot_t
 {
+public:
+	const static int TEAM_ALLIES = 1;
+	const static int TEAM_AXIS = 2;
 };
 
 class GunmanBot : public bot_t
@@ -535,6 +529,10 @@ public:
 	virtual bool IsFade();
 	virtual bool ShouldBecomeOnos();
 	virtual bool IsOnos();
+
+	const static int TEAM_NONE = 0;
+	const static int TEAM_MARINE = 1;
+	const static int TEAM_ALIEN = 2;
 
 	const static int CLASS_SKULK = AVH_USER3_ALIEN_PLAYER1;
 	const static int CLASS_GORGE = AVH_USER3_ALIEN_PLAYER2;

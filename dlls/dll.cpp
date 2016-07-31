@@ -928,11 +928,11 @@ void ClientCommand( edict_t *pEntity )
 
 			if( mod_id == DOD_DLL )
 			{
-				if( player->v.team == DOD_TEAM_ALLIES )
+				if( player->v.team == DODBot::TEAM_ALLIES )
 				{
 					ALERT( at_console, "Team: Allies\n" );
 				}
-				else if( player->v.team == DOD_TEAM_AXIS )
+				else if( player->v.team == DODBot::TEAM_AXIS )
 				{
 					ALERT( at_console, "Team: Axis\n" );
 				}
@@ -960,18 +960,18 @@ void ClientCommand( edict_t *pEntity )
 			{
 				extern float UTIL_GetExperience( edict_t *player );
 
-				if( player->v.team == NS_TEAM_MARINE )
+				if( player->v.team == NSBot::TEAM_MARINE )
 				{
 					ALERT( at_console, "Team: Marine\n" );
 				}
-				else if( player->v.team == NS_TEAM_ALIEN )
+				else if( player->v.team == NSBot::TEAM_ALIEN )
 				{
 					ALERT( at_console, "Team: Alien\n" );
 				}
 				ALERT( at_console, "Resources: %f\n", player->v.vuser4.z / 100.0 );
 				ALERT( at_console, "Experience: %f\n", UTIL_GetExperience( player ) );
 
-				if( player->v.team == NS_TEAM_MARINE )
+				if( player->v.team == NSBot::TEAM_MARINE )
 				{
 					if( player->v.iuser4 & MASK_UPGRADE_1 )
 					{
@@ -982,7 +982,7 @@ void ClientCommand( edict_t *pEntity )
 						ALERT( at_console, "Marine Armor 1\n" );
 					}
 				}
-				else if( player->v.team == NS_TEAM_ALIEN )
+				else if( player->v.team == NSBot::TEAM_ALIEN )
 				{
 					if( player->v.iuser4 & MASK_UPGRADE_1 )
 					{

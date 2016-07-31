@@ -215,7 +215,7 @@ float NSBot::GetResources()
 
 bool NSBot::IsMarine()
 {
-	return this->pEdict->v.team == NS_TEAM_MARINE;
+	return this->pEdict->v.team == NSBot::TEAM_MARINE;
 }
 
 bool NSBot::HasWeaponDamage1()
@@ -261,7 +261,7 @@ void NSBot::UpgradeToHMG()
 
 bool NSBot::IsAlien()
 {
-	return this->pEdict->v.team == NS_TEAM_ALIEN;
+	return this->pEdict->v.team == NSBot::TEAM_ALIEN;
 }
 
 bool NSBot::HasCarapace()
