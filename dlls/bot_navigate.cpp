@@ -816,7 +816,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       // check if the waypoint is a sniper waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER)
       {
-         if (((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_SNIPER)) || (mod_id != TFC_DLL))
+         if (((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_SNIPER)) || (mod_id != TFC_DLL))
          {
             int aim_index;
 
@@ -865,7 +865,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
          // see if this waypoint is a sentry gun waypoint...
          if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SENTRYGUN) &&
-             (mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_ENGINEER))
+             (mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
          {
             if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 130)
             {
@@ -896,7 +896,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
          // see if this waypoint is a dispenser waypoint...
          if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DISPENSER) &&
-             (mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_ENGINEER))
+             (mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
          {
             // does bot have enough metal to build a dispenser?
             if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 100)
@@ -1090,7 +1090,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
          else if (mod_id == TFC_DLL)
          {
-            if (pEdict->v.playerclass == TFC_CLASS_SNIPER)
+            if (pEdict->v.playerclass == TFCBot::CLASS_SNIPER)
             {
                if (RANDOM_LONG(1, 100) <= 10)
                {
@@ -1108,15 +1108,14 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                if (index != -1)
                   pBot->waypoint_goal = index;
             }
-            else if (pEdict->v.playerclass == TFC_CLASS_ENGINEER)
+            else if (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER)
             {
                // is it time to build sentry gun or dispenser yet?
                if (pBot->f_engineer_build_time <= gpGlobals->time)
                {
                   int value = RANDOM_LONG(1, 100);
 
-                  if (((value <= 70) && (pBot->sentrygun_level < 3)) ||
-                      (value <= 40))
+                  if (((value <= 70) && (pBot->sentrygun_level < 3)) || (value <= 40))
                   {
                      // build or upgrade a sentry gun...
 

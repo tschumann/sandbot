@@ -131,17 +131,6 @@ int Cmd_Argc( void );
 #define MSG_FLF_SUBMACHINE_SELECT   8
 #define MSG_FLF_HEAVYWEAPONS_SELECT 9
 
-// Team Fortress Classic
-#define TFC_CLASS_CIVILIAN  0
-#define TFC_CLASS_SCOUT     1
-#define TFC_CLASS_SNIPER    2
-#define TFC_CLASS_SOLDIER   3
-#define TFC_CLASS_DEMOMAN   4
-#define TFC_CLASS_MEDIC     5
-#define TFC_CLASS_HWGUY     6
-#define TFC_CLASS_PYRO      7
-#define TFC_CLASS_SPY       8
-#define TFC_CLASS_ENGINEER  9
 
 #define kGorgeCost 10
 #define kLerkCost 30
@@ -460,6 +449,21 @@ class DODBot : public bot_t
 public:
 	const static int TEAM_ALLIES = 1;
 	const static int TEAM_AXIS = 2;
+};
+
+class TFCBot : public bot_t
+{
+public:
+	const static int CLASS_CIVILIAN = 0;
+	const static int CLASS_SCOUT = 1;
+	const static int CLASS_SNIPER = 2;
+	const static int CLASS_SOLDIER = 3;
+	const static int CLASS_DEMOMAN = 4;
+	const static int CLASS_MEDIC = 5;
+	const static int CLASS_HWGUY = 6;
+	const static int CLASS_PYRO = 7;
+	const static int CLASS_SPY = 8;
+	const static int CLASS_ENGINEER = 9;
 };
 
 class GunmanBot : public bot_t

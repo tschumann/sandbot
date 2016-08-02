@@ -926,6 +926,8 @@ void ClientCommand( edict_t *pEntity )
 				return;
 			}
 
+			ALERT( at_console, "Light level: %d\n", player->v.light_level );
+
 			if( mod_id == DOD_DLL )
 			{
 				if( player->v.team == DODBot::TEAM_ALLIES )

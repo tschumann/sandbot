@@ -575,7 +575,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		}
 		else if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 		{
-			if ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFC_CLASS_MEDIC))
+			if ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_MEDIC))
 			{
 				if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
 				{
@@ -608,7 +608,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 
    if (mod_id == TFC_DLL)
    {
-      if (pEdict->v.playerclass == TFC_CLASS_MEDIC)
+      if (pEdict->v.playerclass == TFCBot::CLASS_MEDIC)
       {
          // search the world for players...
          for (i = 1; i <= gpGlobals->maxClients; i++)
@@ -1142,7 +1142,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                }
             }
 
-            if (pEdict->v.playerclass == TFC_CLASS_MEDIC)
+            if (pEdict->v.playerclass == TFCBot::CLASS_MEDIC)
             {
                int player_team = UTIL_GetTeam(pBot->pBotEnemy);
                int bot_team = UTIL_GetTeam(pEdict);
