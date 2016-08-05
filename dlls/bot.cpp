@@ -2025,6 +2025,7 @@ bool bot_t::IsValidEnemy( edict_t *pEdict )
 	{
 		return false;
 	}
+	// a bot can't be its own enemy
 	if( pEdict == this->pEdict )
 	{
 		return false;
@@ -2037,7 +2038,12 @@ bool bot_t::IsValidEnemy( edict_t *pEdict )
 	return true;
 }
 
-void bot_t::PickupItem()
+float bot_t::DistanceToEnemy()
+{
+	return (this->pBotEnemy->v.origin - GetGunPosition( this->pEdict )).Length();
+}
+
+void bot_t::PickUpItem()
 {
 }
 

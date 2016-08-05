@@ -296,6 +296,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\bot_halflife.cpp"
+				>
+			</File>
+			<File
 				RelativePath="bot_navigate.cpp"
 				>
 				<FileConfiguration
@@ -346,6 +350,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\bot_tfc.cpp"
+				>
 			</File>
 			<File
 				RelativePath="dll.cpp"

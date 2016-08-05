@@ -300,7 +300,8 @@ public:
 	virtual int GetTeam();
 	virtual bool HasEnemy();
 	virtual bool IsValidEnemy( edict_t *pEdict );
-	virtual void PickupItem();
+	virtual float DistanceToEnemy();
+	virtual void PickUpItem();
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
 
@@ -389,7 +390,6 @@ public:
 	int   dispenser_built;
 	int   dispenser_attack_count;
 
-
 	float f_shoot_time;
 	float f_primary_charging;
 	float f_secondary_charging;
@@ -442,6 +442,25 @@ public:
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 protected:
 	float fMaxSpeed;
+};
+
+typedef bool (bot_t::*CanUseWeapon)();
+
+struct weapon_t
+{
+	int iWeaponId;
+	const char *szWeaponName;
+	CanUseWeapon pfnCanUseWeapon;
+};
+
+class HalfLifeBot: public bot_t
+{
+public:
+	HalfLifeBot();
+	virtual bool CanUseCrowbar();
+	virtual bool CanUseGlock();
+protected:
+	weapon_t weapons[MAX_WEAPONS];
 };
 
 class DODBot : public bot_t
@@ -579,7 +598,7 @@ protected:
 	edict_t *pQuarry;
 public:
 	virtual bool IsValidEnemy( edict_t *pEdict );
-	virtual void PickupItem();
+	virtual void PickUpItem();
 	virtual void SetQuarry( int iEntIndex );
 	virtual edict_t* GetQuarry();
 	virtual bool HasQuarry();

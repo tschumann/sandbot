@@ -14,7 +14,7 @@ bool ShipBot::IsValidEnemy( edict_t *pEdict )
 	bool bShipIsValid = bBaseIsValid;
 
 	// if the bot has a quarry but this isn't the
-	//  quarry, it shouldn't be targetted as an enemy
+	// quarry, it shouldn't be targetted as an enemy
 	if( this->HasQuarry() && this->GetQuarry() != pEdict )
 	{
 		bShipIsValid = false;
@@ -23,7 +23,7 @@ bool ShipBot::IsValidEnemy( edict_t *pEdict )
 	return bBaseIsValid && bShipIsValid;
 }
 
-void ShipBot::PickupItem()
+void ShipBot::PickUpItem()
 {
 	FakeClientCommand( this->pEdict, "pickup", NULL, NULL );
 }
