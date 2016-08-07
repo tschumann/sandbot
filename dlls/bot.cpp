@@ -2056,3 +2056,8 @@ float bot_t::GetMaxSpeed()
 {
 	return this->fMaxSpeed;
 }
+
+bool bot_t::IsUnderWater()
+{
+	return this->pEdict->v.waterlevel == 3;
+}

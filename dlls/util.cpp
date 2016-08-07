@@ -487,19 +487,19 @@ bool FVisible( const Vector &vecOrigin, edict_t *pEdict )
 
 Vector GetGunPosition(edict_t *pEdict)
 {
-   return (pEdict->v.origin + pEdict->v.view_ofs);
+	return (pEdict->v.origin + pEdict->v.view_ofs);
 }
 
 
 void UTIL_SelectItem(edict_t *pEdict, char *item_name)
 {
-   FakeClientCommand(pEdict, item_name, NULL, NULL);
+	FakeClientCommand(pEdict, item_name, NULL, NULL);
 }
 
 
 Vector VecBModelOrigin(edict_t *pEdict)
 {
-   return pEdict->v.absmin + (pEdict->v.size * 0.5);
+	return pEdict->v.absmin + (pEdict->v.size * 0.5);
 }
 
 

@@ -928,7 +928,19 @@ void ClientCommand( edict_t *pEntity )
 
 			ALERT( at_console, "Light level: %d\n", player->v.light_level );
 
-			if( mod_id == DOD_DLL )
+			if( mod_id == VALVE_DLL )
+			{
+				if( player->v.flags & FL_FAKECLIENT )
+				{
+					bot_t *pBot = UTIL_GetBotPointer( player );
+
+					if ( pBot->HasEnemy() )
+					{
+						((HalfLifeBot *)pBot)->GetUsableWeapons();
+					}
+				}
+			}
+			else if( mod_id == DOD_DLL )
 			{
 				if( player->v.team == DODBot::TEAM_ALLIES )
 				{
@@ -958,7 +970,7 @@ void ClientCommand( edict_t *pEntity )
 					ALERT( at_console, "Weapon: weapon_kar\n" );
 				}
 			}
-			if( mod_id == NS_DLL )
+			else if( mod_id == NS_DLL )
 			{
 				extern float UTIL_GetExperience( edict_t *player );
 
@@ -1035,7 +1047,16 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 	pBots = new bot_t*[MAX_PLAYERS];
 
-	if( mod_id == GEARBOX_DLL )
+	if( mod_id == VALVE_DLL )
+	{
+		pGame = new Game();
+
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBots[i] = new HalfLifeBot();
+		}
+	}
+	else if( mod_id == GEARBOX_DLL )
 	{
 		pGame = new GearboxGame();
 

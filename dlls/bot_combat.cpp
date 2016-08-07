@@ -19,7 +19,6 @@ extern int mod_id;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 extern int team_allies[4];
-extern float is_team_play;
 
 FILE *fp;
 

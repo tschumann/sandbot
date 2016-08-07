@@ -9,6 +9,8 @@
 #ifndef BOT_H
 #define BOT_H
 
+#include <vector>
+
 // stuff for Win32 vs. Linux builds
 
 #ifndef __linux__
@@ -304,6 +306,7 @@ public:
 	virtual void PickUpItem();
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
+	virtual bool IsUnderWater();
 
 	bool is_used;
 	int respawn_state;
@@ -418,7 +421,6 @@ public:
 
    	// Gunman Chronicles
 	bool bFists;
-	int iPistolMode;
 	int iShotgunMode;
 	bool bMinigunSpin;
 
@@ -457,10 +459,12 @@ class HalfLifeBot: public bot_t
 {
 public:
 	HalfLifeBot();
+	virtual std::vector<weapon_t> GetUsableWeapons();
 	virtual bool CanUseCrowbar();
 	virtual bool CanUseGlock();
+	virtual bool CanUseMP5Primary();
 protected:
-	weapon_t weapons[MAX_WEAPONS];
+	std::vector<weapon_t> weapons;
 };
 
 class DODBot : public bot_t
@@ -500,6 +504,8 @@ public:
 	const static int PISTOL_PULSE = 1;
 	const static int PISTOL_CHARGE = 2;
 	const static int PISTOL_RAPID = 3;
+protected:
+	int iPistolMode;
 };
 
 class NSBot : public bot_t
