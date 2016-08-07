@@ -32,10 +32,10 @@ bot_weapon_t weapon_defs[MAX_WEAPONS]; // array of weapon definitions
 // This message is sent when the TFC VGUI menu is displayed.
 void BotClient_TFC_VGUI(void *p, int bot_index)
 {
-   if ((*(int *)p) == 2)  // is it a team select menu?
-      pBots[bot_index]->start_action = MSG_TFC_TEAM_SELECT;
-   else if ((*(int *)p) == 3)  // is is a class selection menu?
-      pBots[bot_index]->start_action = MSG_TFC_CLASS_SELECT;
+	if ((*(int *)p) == 2)  // is it a team select menu?
+		pBots[bot_index]->start_action = MSG_TFC_TEAM_SELECT;
+	else if ((*(int *)p) == 3)  // is is a class selection menu?
+		pBots[bot_index]->start_action = MSG_TFC_CLASS_SELECT;
 }
 
 

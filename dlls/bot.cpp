@@ -2061,3 +2061,36 @@ bool bot_t::IsUnderWater()
 {
 	return this->pEdict->v.waterlevel == 3;
 }
+
+std::vector<weapon_t> bot_t::GetUsableWeapons()
+{
+	std::vector<weapon_t> usableWeapons;
+
+	if( !this->HasEnemy() )
+	{
+		ALERT( at_error, "Call to GetUsableWeapons with no enemy!\n" );
+		return usableWeapons;
+	}
+
+	for( unsigned int i = 0; i < this->weapons.size(); i++ )
+	{
+		weapon_t weapon = this->weapons[i];
+
+		CanUseWeapon pfnCanUseWeapon = weapon.pfnCanUseWeapon;
+
+		// check if the bot actually has the weapon
+		if(!(this->pEdict->v.weapons & (1<<weapon.iWeaponId)))
+		{
+			continue;
+		}
+
+		// check if the bot can use the weapon
+		if( (this->*pfnCanUseWeapon)() )
+		{
+			ALERT( at_console, "can use %s\n", this->weapons[i].szWeaponName );
+			usableWeapons.push_back( weapon );
+		}
+	}
+
+	return usableWeapons;
+}

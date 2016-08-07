@@ -294,19 +294,36 @@ struct bot_player_t
 	BOOL bIsUsed;
 };
 
+class bot_t;
+
+typedef bool (bot_t::*CanUseWeapon)();
+
+struct weapon_t
+{
+	int iWeaponId;
+	const char *szWeaponName;
+	CanUseWeapon pfnCanUseWeapon;
+};
+
 class bot_t
 {
 public:
 	bot_t();
 	virtual void OnSpawn();
 	virtual int GetTeam();
+
 	virtual bool HasEnemy();
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual float DistanceToEnemy();
+
 	virtual void PickUpItem();
+
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
+
 	virtual bool IsUnderWater();
+
+	virtual std::vector<weapon_t> GetUsableWeapons();
 
 	bool is_used;
 	int respawn_state;
@@ -444,27 +461,16 @@ public:
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 protected:
 	float fMaxSpeed;
-};
-
-typedef bool (bot_t::*CanUseWeapon)();
-
-struct weapon_t
-{
-	int iWeaponId;
-	const char *szWeaponName;
-	CanUseWeapon pfnCanUseWeapon;
+	std::vector<weapon_t> weapons;
 };
 
 class HalfLifeBot: public bot_t
 {
 public:
 	HalfLifeBot();
-	virtual std::vector<weapon_t> GetUsableWeapons();
 	virtual bool CanUseCrowbar();
 	virtual bool CanUseGlock();
 	virtual bool CanUseMP5Primary();
-protected:
-	std::vector<weapon_t> weapons;
 };
 
 class DODBot : public bot_t

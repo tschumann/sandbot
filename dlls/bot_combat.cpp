@@ -1218,71 +1218,79 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 
 void BotShootAtEnemy( bot_t *pBot )
 {
-   float f_distance;
+	float f_distance;
 
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   // aim for the head and/or body
-   Vector v_enemy = BotBodyTarget( pBot->pBotEnemy, pBot ) - GetGunPosition(pEdict);
+	// aim for the head and/or body
+	Vector v_enemy = BotBodyTarget( pBot->pBotEnemy, pBot ) - GetGunPosition(pEdict);
 
-   pEdict->v.v_angle = UTIL_VecToAngles( v_enemy );
+	pEdict->v.v_angle = UTIL_VecToAngles( v_enemy );
 
-   if (pEdict->v.v_angle.y > 180)
-      pEdict->v.v_angle.y -=360;
+	if (pEdict->v.v_angle.y > 180)
+		pEdict->v.v_angle.y -=360;
 
-   // Paulo-La-Frite - START bot aiming bug fix
-   if (pEdict->v.v_angle.x > 180)
-      pEdict->v.v_angle.x -=360;
+	// Paulo-La-Frite - START bot aiming bug fix
+	if (pEdict->v.v_angle.x > 180)
+		pEdict->v.v_angle.x -=360;
 
-   // set the body angles to point the gun correctly
-   pEdict->v.angles.x = pEdict->v.v_angle.x / 3;
-   pEdict->v.angles.y = pEdict->v.v_angle.y;
-   pEdict->v.angles.z = 0;
+	// set the body angles to point the gun correctly
+	pEdict->v.angles.x = pEdict->v.v_angle.x / 3;
+	pEdict->v.angles.y = pEdict->v.v_angle.y;
+	pEdict->v.angles.z = 0;
 
-   // adjust the view angle pitch to aim correctly (MUST be after body v.angles stuff)
-   pEdict->v.v_angle.x = -pEdict->v.v_angle.x;
-   // Paulo-La-Frite - END
+	// adjust the view angle pitch to aim correctly (MUST be after body v.angles stuff)
+	pEdict->v.v_angle.x = -pEdict->v.v_angle.x;
+	// Paulo-La-Frite - END
 
-   float x = pEdict->v.v_angle.y;
+	float x = pEdict->v.v_angle.y;
 
-   if (x > 180)
-	   x -= 360;
-   if (abs(pEdict->v.ideal_yaw - x) > 2.0)
-	   // TODO: this looks like a bug - fp is a file pointer
-      fp = NULL;
+	if (x > 180)
+		x -= 360;
+	if (abs(pEdict->v.ideal_yaw - x) > 2.0)
+		// TODO: this looks like a bug - fp is a file pointer
+		fp = NULL;
 
-   pEdict->v.ideal_yaw = pEdict->v.v_angle.y;
+	pEdict->v.ideal_yaw = pEdict->v.v_angle.y;
 
-   BotFixIdealYaw(pEdict);
+	BotFixIdealYaw(pEdict);
 
-   v_enemy.z = 0;  // ignore z component (up & down)
+	v_enemy.z = 0;  // ignore z component (up & down)
 
-   f_distance = v_enemy.Length();  // how far away is the enemy scum?
+	f_distance = v_enemy.Length();  // how far away is the enemy scum?
 
-   if (f_distance > 200)      // run if distance to enemy is far
-      pBot->f_move_speed = pBot->GetMaxSpeed();
-   else if (f_distance > 20)  // walk if distance is closer
-   {
-	   // TODO: this check should more generally look at whether the bot has a melee weapon or not
-	   if (mod_id == NS_DLL && ((NSBot *)pBot)->IsAlien())
-	   {
-		   // alien's should charge ahead due to their strong close-range attacks
-		   pBot->f_move_speed = pBot->GetMaxSpeed();
-	   }
-	   else
-	   {
+	// run if distance to enemy is far
+	if (f_distance > 200.0)
+	{
+		pBot->f_move_speed = pBot->GetMaxSpeed();
+	}
+	// walk if distance is closer
+	else if (f_distance > 20.0)
+	{
+		// TODO: this check should more generally look at whether the bot has a melee weapon or not
+		if (mod_id == NS_DLL && ((NSBot *)pBot)->IsAlien())
+		{
+			// alien's should charge ahead due to their strong close-range attacks
+			pBot->f_move_speed = pBot->GetMaxSpeed();
+		}
+		else
+		{
 			pBot->f_move_speed = pBot->GetMaxSpeed() / 2;
-	   }
-   }
-   else                     // don't move if close enough
-      pBot->f_move_speed = 0.0;
+		}
+	}
+	// don't move if close enough
+	else
+	{
+		pBot->f_move_speed = 0.0;
+	}
 
-   // is it time to shoot yet?
-   if (pBot->f_shoot_time <= gpGlobals->time)
-   {
-      // select the best weapon to use at this distance and fire...
-      BotFireWeapon(v_enemy, pBot, 0);
-   }
+	// is it time to shoot yet?
+	if (pBot->f_shoot_time <= gpGlobals->time)
+	{
+		std::vector<weapon_t> usableWeapons = pBot->GetUsableWeapons();
+		// select the best weapon to use at this distance and fire...
+		BotFireWeapon(v_enemy, pBot, 0);
+	}
 }
 
 

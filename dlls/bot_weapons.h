@@ -279,6 +279,7 @@ typedef struct
 	int iUnknown[3];		// TODO: what is this?
 } bot_weapon_t;
 
+extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 
 #endif // BOT_WEAPONS_H
 
