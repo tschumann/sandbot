@@ -11,6 +11,9 @@
 
 #include <vector>
 
+using std::vector;
+using std::min;
+
 // stuff for Win32 vs. Linux builds
 
 #ifndef __linux__
