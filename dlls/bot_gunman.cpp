@@ -10,7 +10,13 @@
 
 void GunmanBot::OnSpawn()
 {
-	this->iPistolMode = RANDOM_LONG(GunmanBot::PISTOL_PULSE, GunmanBot::PISTOL_CHARGE);
+	this->iPistolMode = RANDOM_LONG(GunmanBot::PISTOL_PULSE, GunmanBot::PISTOL_RAPID);
+
+	// currently the bots don't know that the charge requires 10 ammo
+	if( this->iPistolMode == PISTOL_CHARGE )
+	{
+		this->iPistolMode = GunmanBot::PISTOL_PULSE;
+	}
 }
 
 int GunmanBot::GetPistolMode()

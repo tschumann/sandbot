@@ -461,7 +461,6 @@ void BotSpawnInit( bot_t *pBot )
 
 	// Gunman Chronicles
 	pBot->bFists = false;
-	// pBot->iPistolMode = PISTOL_PULSE;
 	// pBot->iShotgunMode = SHOTGUN_SHOTGUN;
 	pBot->bMinigunSpin = false;
 
@@ -2087,7 +2086,7 @@ std::vector<weapon_t> bot_t::GetUsableWeapons()
 		// check if the bot can use the weapon
 		if( (this->*pfnCanUseWeapon)() )
 		{
-			ALERT( at_console, "can use %s\n", this->weapons[i].szWeaponName );
+			// ALERT( at_console, "can use %s\n", this->weapons[i].szWeaponName );
 			usableWeapons.push_back( weapon );
 		}
 	}
