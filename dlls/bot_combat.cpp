@@ -308,8 +308,8 @@ bot_weapon_select_t gunman_weapon_select[] = {
 	100.0, 400.0, 0.0, 0.0,
 	100, true, 100, 2, 0,
 	false, false, false, false, 0.0, 0.0},
-	{GUNMAN_WEAPON_DML, "weapon_dml", 1.5, 0.0, 250.0,
-	9999.0, 0.0, 0.0,
+	{GUNMAN_WEAPON_DML, "weapon_dml", 1.5, 0.0,
+	250.0, 9999.0, 0.0, 0.0,
 	100, true, 100, 1, 0,
 	false, false, false, false, 0.0, 0.0},
 	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.0, 0.0,
@@ -1288,8 +1288,17 @@ void BotShootAtEnemy( bot_t *pBot )
 	if (pBot->f_shoot_time <= gpGlobals->time)
 	{
 		std::vector<weapon_t> usableWeapons = pBot->GetUsableWeapons();
+		std::sort( usableWeapons.begin(), usableWeapons.end() );
+
+		int choice = 0;
+
+		if( mod_id == REWOLF_DLL )
+		{
+			choice = usableWeapons.back().iWeaponId;
+		}
+
 		// select the best weapon to use at this distance and fire...
-		BotFireWeapon(v_enemy, pBot, 0);
+		BotFireWeapon(v_enemy, pBot, choice);
 	}
 }
 

@@ -11,6 +11,11 @@
 // http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html
 // http://www.unknownworlds.com/oldwebsite/manuals/comm_manual/basic/index.htm
 
+void NSBot::OnSpawn()
+{
+	this->bIsEvolving = false;
+}
+
 void NSBot::Reset()
 {
 	// this->SetDesiredClass( NSBot::CLASS_SKULK );
@@ -322,13 +327,13 @@ bool NSBot::IsEvolved()
 void NSBot::StartEvolving()
 {
 	this->f_move_speed = 0.0;
-	this->bEvolving = true;
+	this->bIsEvolving = true;
 }
 
 void NSBot::FinishEvolving()
 {
 	this->f_move_speed = this->GetMaxSpeed();
-	this->bEvolving = false;
+	this->bIsEvolving = false;
 }
 
 void NSBot::EvolveToGorge()

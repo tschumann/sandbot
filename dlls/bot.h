@@ -9,6 +9,7 @@
 #ifndef BOT_H
 #define BOT_H
 
+#include <algorithm>
 #include <vector>
 
 using std::vector;
@@ -306,6 +307,13 @@ struct weapon_t
 	int iWeaponId;
 	const char *szWeaponName;
 	CanUseWeapon pfnCanUseWeapon;
+	// TODO: a function might be better here?
+	int iPreference;
+
+	bool operator < (const weapon_t& weapon) const
+    {
+        return (this->iPreference < weapon.iPreference);
+    }
 };
 
 class bot_t
@@ -318,6 +326,7 @@ public:
 	virtual bool HasEnemy();
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual float DistanceToEnemy();
+	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
 
 	virtual void PickUpItem();
 
@@ -326,6 +335,7 @@ public:
 
 	virtual bool IsUnderWater();
 
+	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons();
 
 	bool is_used;
@@ -454,8 +464,6 @@ public:
 	bool bBuildAlienResourceTower;
 	bool bBuildHive;
 
-	bool bEvolving;
-
 	// The Ship
 	bool bUseDoor;
 	float fUseDoorTime;
@@ -501,6 +509,7 @@ public:
 class GunmanBot : public bot_t
 {
 public:
+	GunmanBot();
 	virtual void OnSpawn();
 
 	virtual int GetPistolMode();
@@ -509,6 +518,18 @@ public:
 	virtual void UseGaussPistolCharge();
 	virtual void UseGaussPistolRapid();
 	virtual void UseGaussPistolSniper();
+
+	virtual bool CanUseFists();
+	virtual bool CanUseGaussPistolPulse();
+	virtual bool CanUseGaussPistolCharge();
+	virtual bool CanUseGaussPistolRapid();
+	virtual bool CanUseShotgun();
+	virtual bool CanUseMinigun();
+	virtual bool CanUseBeamgun();
+	virtual bool CanUseChemgun();
+	virtual bool CanUseDML();
+	virtual bool CanUseDMLGrenade();
+	virtual bool CanUseAICore();
 
 	const static int PISTOL_PULSE = 1;
 	const static int PISTOL_CHARGE = 2;
@@ -523,6 +544,7 @@ protected:
 	int iDesiredClass;
 	bool bIsEvolving;
 public:
+	virtual void OnSpawn();
 	virtual void Reset();
 	virtual bool IsNearHive();
 	virtual int GetDesiredClass();

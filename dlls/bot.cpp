@@ -474,8 +474,6 @@ void BotSpawnInit( bot_t *pBot )
 	pBot->bBuildAlienResourceTower = false;
 	pBot->bBuildHive = false;
 
-	pBot->bEvolving = false;
-
 	// The Ship
 	pBot->bUseDoor = false;
 	pBot->fUseDoorTime = 0.0;
@@ -2042,6 +2040,23 @@ float bot_t::DistanceToEnemy()
 	return (this->pBotEnemy->v.origin - GetGunPosition( this->pEdict )).Length();
 }
 
+int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )
+{
+	int iEnemiesInLineOfSight = 0;
+
+	for( int i = 1; i <= gpGlobals->maxClients; i++ )
+	{
+		edict_t *pPlayer = INDEXENT(i);
+
+		if( !this->IsValidEnemy( pPlayer ) )
+		{
+			continue;
+		}
+	}
+
+	return iEnemiesInLineOfSight;
+}
+
 void bot_t::PickUpItem()
 {
 }
@@ -2061,15 +2076,14 @@ bool bot_t::IsUnderWater()
 	return this->pEdict->v.waterlevel == 3;
 }
 
+bool bot_t::BaseCanUseWeapon()
+{
+	return this->HasEnemy();
+}
+
 std::vector<weapon_t> bot_t::GetUsableWeapons()
 {
 	std::vector<weapon_t> usableWeapons;
-
-	if( !this->HasEnemy() )
-	{
-		ALERT( at_error, "Call to GetUsableWeapons with no enemy!\n" );
-		return usableWeapons;
-	}
 
 	for( unsigned int i = 0; i < this->weapons.size(); i++ )
 	{
@@ -2086,7 +2100,6 @@ std::vector<weapon_t> bot_t::GetUsableWeapons()
 		// check if the bot can use the weapon
 		if( (this->*pfnCanUseWeapon)() )
 		{
-			// ALERT( at_console, "can use %s\n", this->weapons[i].szWeaponName );
 			usableWeapons.push_back( weapon );
 		}
 	}
