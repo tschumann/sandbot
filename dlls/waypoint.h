@@ -57,6 +57,8 @@ typedef unsigned __int64 uint64_t;
 #define W_FL_NS_COMMAND_CHAIR	(1<<21)
 #define W_FL_NS_RESNODE		(1<<22)
 
+#define W_FL_DOD_CAP		(((uint64_t)1)<<40)
+
 #define W_FL_DELETED		(1<<31) /* used by waypoint allocation code */
 
 
@@ -102,12 +104,12 @@ void WaypointInit(void);
 int  WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int team);
 int  WaypointFindNearest(edict_t *pEntity, float distance, int team);
 int  WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team);
-int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags);
-int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags, int exclude[]);
-int  WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags);
-int  WaypointFindRandomGoal(edict_t *pEntity, int team, int flags);
-int  WaypointFindRandomGoal(edict_t *pEntity, int team, int flags, int exclude[]);
-int  WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags);
+int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags);
+int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int exclude[]);
+int  WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags);
+int  WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags);
+int  WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags, int exclude[]);
+int  WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags);
 int  WaypointFindNearestAiming(Vector v_origin);
 void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index);
 void WaypointAdd(edict_t *pEntity);

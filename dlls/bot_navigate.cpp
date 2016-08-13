@@ -1193,6 +1193,20 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                }
             }
          }
+		 else if (mod_id == DOD_DLL)
+		 {
+
+			ALERT(at_console, "looking for a capture point\n");
+			// TODO: make the empty array an array of capture points that are currently captured
+			std::vector<int> capturedPoints;
+			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, (uint64_t)W_FL_DOD_CAP, &capturedPoints[0]);
+
+            if (index != -1)
+            {
+				ALERT(at_console, "an ns bot is heading for a goal\n");
+               pBot->waypoint_goal = index;
+			}
+		 }
 		 else if (mod_id == NS_DLL)
 		 {
 			 if( pBot->pEdict->v.team == NSBot::TEAM_ALIEN )

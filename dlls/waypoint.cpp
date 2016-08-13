@@ -428,7 +428,7 @@ int WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team)
 }
 
 
-int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags)
+int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
 {
    int index, min_index;
    int distance, min_distance;
@@ -472,7 +472,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags)
 }
 
 
-int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags, int exclude[])
+int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int exclude[])
 {
    int index, min_index;
    int distance, min_distance;
@@ -529,7 +529,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, int flags, int 
 }
 
 
-int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags)
+int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags)
 {
    int index, min_index;
    int distance, min_distance;
@@ -571,7 +571,7 @@ int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int tea
 }
 
 
-int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags)
+int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags)
 {
    int index;
    int indexes[200];
@@ -615,7 +615,7 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags)
 }
 
 
-int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags, int exclude[])
+int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags, int exclude[])
 {
    int index;
    int indexes[200];
@@ -672,7 +672,7 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, int flags, int exclude[])
 }
 
 
-int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, int flags)
+int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags)
 {
    int index;
    int indexes[200];
@@ -897,6 +897,13 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          if (pEntity)
             ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a weapon!\n");
          waypoints[wpt_index].flags |= W_FL_WEAPON;
+      }
+
+	  if ((strcmp("dod_capture_point", nearest_name) == 0))
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a capture point!\n");
+         waypoints[wpt_index].flags |= (uint64_t)W_FL_DOD_CAP;
       }
 
 	  if ((strcmp("team_hive", nearest_name) == 0))
@@ -1745,6 +1752,10 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if (flags & W_FL_DISPENSER)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
 
+	if( flags & (uint64_t)W_FL_DOD_CAP )
+	{
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+	}
 	if( flags & W_FL_NS_HIVE )
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a hive near this waypoint\n");
