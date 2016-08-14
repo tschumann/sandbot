@@ -664,7 +664,7 @@ void UTIL_LogDPrintf( char *fmt, ... )
 {
 	extern cvar_t *developer;
 
-	if (DEBUG_CODE /*developer->value*/)
+	if (0) // DEBUG_CODE /*developer->value*/)
     {
 		va_list        argptr;
 		static char    string[1024];

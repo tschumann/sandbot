@@ -1195,15 +1195,47 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
 		 else if (mod_id == DOD_DLL)
 		 {
-
-			ALERT(at_console, "looking for a capture point\n");
-			// TODO: make the empty array an array of capture points that are currently captured
+			edict_t *pent = NULL;
+			edict_t *pUncapturedPoint = NULL;
 			std::vector<int> capturedPoints;
-			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, (uint64_t)W_FL_DOD_CAP, &capturedPoints[0]);
+
+			while( pent = UTIL_FindEntityByClassname( pent, "dod_control_point" ) )
+			{
+				// models/mapmodels/flags.mdl has skins 4 and 8 for the uncaptured flag
+				if( pent->v.skin == 4 || pent->v.skin == 8 )
+				{
+					pUncapturedPoint = pent;
+				}
+				else
+				{
+					int index = WaypointFindNearestWaypoint( pent, W_FL_DOD_CAP );
+
+					if( index == -1 )
+					{
+						ALERT( at_error, "Found a dod_control_point with no waypoint!\n" );
+					}
+					else
+					{
+						capturedPoints.push_back( index );
+					}
+				}
+			}
+
+			ALERT(at_console, "looking for a control point\n");
+
+			if( capturedPoints.size() > 0 )
+			{
+				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_DOD_CAP, &capturedPoints[0]);
+			}
+			else
+			{
+				index = -1;
+				ALERT(at_console, "couldn't find captured points to ignore\n");
+			}
 
             if (index != -1)
             {
-				ALERT(at_console, "an ns bot is heading for a goal\n");
+				ALERT(at_console, "a dod bot is heading for a goal\n");
                pBot->waypoint_goal = index;
 			}
 		 }

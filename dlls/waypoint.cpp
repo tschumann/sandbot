@@ -750,6 +750,42 @@ int WaypointFindNearestAiming(Vector v_origin)
    return min_index;
 }
 
+int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
+{
+   int index;
+   int min_index = -1;
+   int min_distance = 9999.0;
+   float distance;
+
+   if (num_waypoints < 1)
+      return -1;
+
+   // search for nearby waypoint...
+   for (index=0; index < num_waypoints; index++)
+   {
+      if (waypoints[index].flags & W_FL_DELETED)
+         continue;  // skip any deleted waypoints
+
+	  if (!type || !(waypoints[index].flags & type))
+	  {
+		  ALERT( at_console, "skipping here %d %d\n", type, waypoints[index].flags );
+		  continue;
+	  }
+
+      distance = (pEntity->v.origin - waypoints[index].origin).Length();
+
+	  ALERT( at_console, "%f\n", distance );
+
+      if (distance < min_distance)
+      {
+         min_index = index;
+         min_distance = distance;
+      }
+   }
+
+   return min_index;
+}
+
 
 void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
         int noise, int red, int green, int blue, int brightness, int speed)
@@ -819,13 +855,12 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          strcpy(item_name, STRING(pent->v.classname));
 		 ALERT( at_console, "%s is visible\n", item_name );
 
-         if (!strncmp("item_health", item_name, 11) ||
-             !strncmp("item_armor", item_name, 10) ||
-             !strncmp("ammo_", item_name, 5) ||
-             !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
+         if (!strncmp("item_health", item_name, 11) || !strncmp("item_armor", item_name, 10) ||
+             !strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
              !strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
 			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) ||
-             !strncmp("weapon_", item_name, 7) && (pent->v.owner == NULL))
+             !strncmp("weapon_", item_name, 7) && (pent->v.owner == NULL)
+			 )
          {
             distance = (pent->v.origin - origin).Length();
 
@@ -847,8 +882,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
             {
                distance = (pent->v.origin - origin).Length();
 
-               if ((backpacks[bck_index].edict == pent) &&
-                   (distance < min_distance))
+               if ((backpacks[bck_index].edict == pent) && (distance < min_distance))
                {
                   tfc_backpack_index = bck_index;
 
@@ -899,10 +933,10 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          waypoints[wpt_index].flags |= W_FL_WEAPON;
       }
 
-	  if ((strcmp("dod_capture_point", nearest_name) == 0))
+	  if ((strcmp("dod_control_point", nearest_name) == 0))
       {
          if (pEntity)
-            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a capture point!\n");
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a control point!\n");
          waypoints[wpt_index].flags |= (uint64_t)W_FL_DOD_CAP;
       }
 
@@ -1754,7 +1788,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 
 	if( flags & (uint64_t)W_FL_DOD_CAP )
 	{
-		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a control point near this waypoint\n");
 	}
 	if( flags & W_FL_NS_HIVE )
 	{
