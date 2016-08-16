@@ -89,6 +89,25 @@ int pfnPrecacheSound(char* s)
 }
 void pfnSetModel(edict_t *e, const char *m)
 {
+	if( mod_id == SHIP_DLL )
+	{
+		if( !strcmp(m, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
+		{
+			return (*g_engfuncs.pfnSetModel)(e, "models/player/Jane.mdl");
+		}
+		else if( !strcmp(m, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
+		{
+			return (*g_engfuncs.pfnSetModel)(e, "models/player/John.mdl");
+		}
+		else if( !strcmp(m, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
+		{
+			return (*g_engfuncs.pfnSetModel)(e, "models/player/john2.mdl");
+		}
+		else if( !strcmp(m, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
+		{
+			return (*g_engfuncs.pfnSetModel)(e, "models/player/Holliday.mdl");
+		}
+	}
 	(*g_engfuncs.pfnSetModel)(e, m);
 }
 int pfnModelIndex(const char *m)
@@ -106,7 +125,7 @@ void pfnSetSize(edict_t *e, const float *rgflMin, const float *rgflMax)
 void pfnChangeLevel(char* s1, char* s2)
 {
 	// kick any bot off of the server after time/frag limit...
-	for (int index = 0; index < 32; index++)
+	for (int index = 0; index < MAX_PLAYERS; index++)
 	{
 		if (pBots[index]->is_used)	// is this slot used?
 		{
