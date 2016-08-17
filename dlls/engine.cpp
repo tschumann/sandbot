@@ -49,39 +49,44 @@ int gmsgQuarry = 0;		// The Ship
 
 static FILE *fp;
 
-
-int pfnPrecacheModel(char* s)
+const char *AssetRemap( const char *szPath )
 {
 	if( mod_id == REWOLF_DLL )
 	{
-		if( !strcmp(s, "sprites/glow_aicore_no.spr") )
+		// this seems to be precached but not used
+		if( !strcmp(szPath, "sprites/glow_aicore_no.spr") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("sprites/glow_beamgun_no.spr");
+			return "sprites/glow_beamgun_no.spr";
 		}
 	}
-	// TODO: The Ship crashes trying to precache these: is this Sandbot passing bad data?
-	// TODO: this doesn't fix it - work out what is causing the issue
-	if( mod_id == SHIP_DLL )
+	else if( mod_id == SHIP_DLL )
 	{
-		if( !strcmp(s, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
+		// it's unclear where these invalid model names come from
+		if( !strcmp(szPath, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/Jane.mdl");
+			return "models/player/Jane.mdl";
 		}
-		else if( !strcmp(s, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
+		else if( !strcmp(szPath, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/John.mdl");
+			return "models/player/John.mdl";
 		}
-		else if( !strcmp(s, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
+		else if( !strcmp(szPath, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/john2.mdl");
+			return "models/player/john2.mdl";
 		}
-		else if( !strcmp(s, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
+		else if( !strcmp(szPath, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
 		{
-			return (*g_engfuncs.pfnPrecacheModel)("models/player/Holliday.mdl");
+			return "models/player/Holliday.mdl";
 		}
 	}
 
-	return (*g_engfuncs.pfnPrecacheModel)(s);
+	return szPath;
+}
+
+
+int pfnPrecacheModel(char* s)
+{
+	return (*g_engfuncs.pfnPrecacheModel)((char *)AssetRemap(s));
 }
 int pfnPrecacheSound(char* s)
 {
@@ -89,26 +94,7 @@ int pfnPrecacheSound(char* s)
 }
 void pfnSetModel(edict_t *e, const char *m)
 {
-	if( mod_id == SHIP_DLL )
-	{
-		if( !strcmp(m, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
-		{
-			return (*g_engfuncs.pfnSetModel)(e, "models/player/Jane.mdl");
-		}
-		else if( !strcmp(m, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
-		{
-			return (*g_engfuncs.pfnSetModel)(e, "models/player/John.mdl");
-		}
-		else if( !strcmp(m, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
-		{
-			return (*g_engfuncs.pfnSetModel)(e, "models/player/john2.mdl");
-		}
-		else if( !strcmp(m, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
-		{
-			return (*g_engfuncs.pfnSetModel)(e, "models/player/Holliday.mdl");
-		}
-	}
-	(*g_engfuncs.pfnSetModel)(e, m);
+	(*g_engfuncs.pfnSetModel)(e, AssetRemap(m));
 }
 int pfnModelIndex(const char *m)
 {
