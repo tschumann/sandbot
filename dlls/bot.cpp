@@ -1482,7 +1482,7 @@ void BotThink( bot_t *pBot )
    }
 
    // if the bot is under water, adjust pitch by pitch_speed degrees
-   if ((pEdict->v.waterlevel == 2) || (pEdict->v.waterlevel == 3))
+   if ((pEdict->v.waterlevel == 2) || (pBot->IsUnderWater()))
    {
       // turn towards ideal_pitch by pitch_speed degrees
       pitch_degrees = BotChangePitch( pBot, pEdict->v.pitch_speed );
@@ -1550,7 +1550,7 @@ void BotThink( bot_t *pBot )
          // no enemy, let's just wander around...
 
 		  // is bot NOT under water?
-         if ((pEdict->v.waterlevel != 2) && (pEdict->v.waterlevel != 3))
+         if ((pEdict->v.waterlevel != 2) && (!pBot->IsUnderWater()))
          {
             // reset pitch to 0 (level horizontally)
             pEdict->v.idealpitch = 0;
@@ -1685,7 +1685,7 @@ void BotThink( bot_t *pBot )
 
          else
          {
-            if (pEdict->v.waterlevel == 3)  // check if the bot is underwater...
+            if (pBot->IsUnderWater())  // check if the bot is underwater...
             {
                BotUnderWater( pBot );
             }

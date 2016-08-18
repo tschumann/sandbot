@@ -1069,7 +1069,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 #endif
 
          // is the bot underwater and does this weapon NOT work under water?
-         if ((pEdict->v.waterlevel == 3) && !(pSelect[select_index].can_use_underwater))
+         if ((pBot->IsUnderWater()) && !(pSelect[select_index].can_use_underwater))
          {
             select_index++;  // skip to next weapon
             continue;
@@ -1275,7 +1275,7 @@ void BotShootAtEnemy( bot_t *pBot )
 		}
 		else
 		{
-			pBot->f_move_speed = pBot->GetMaxSpeed() / 2;
+			pBot->f_move_speed = pBot->GetMaxSpeed() / 2.0;
 		}
 	}
 	// don't move if close enough

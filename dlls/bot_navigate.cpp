@@ -30,8 +30,6 @@ int holywars_gamemode;
 
 extern int flf_bug_fix;
 
-static FILE *fp;
-
 
 void BotFixIdealPitch(edict_t *pEdict)
 {
@@ -405,7 +403,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          if (pent->v.owner == pEdict)  // is this bot carrying the item?
          {
             // we are carrying the flag/card/ball
-
             bot_has_flag = TRUE;
 
             break;  // break out of while loop
@@ -582,7 +579,10 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
       }
    }
-   else if (mod_id == NS_DLL )
+   else if( mod_id == DOD_DLL )
+   {
+   }
+   else if( mod_id == NS_DLL )
    {
 	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
 	   {
@@ -600,7 +600,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest command chair?
-						if (distance < 100)
+						if (distance < 100.0)
 						{
 							ALERT( at_console, "bot seeing a command chair; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
@@ -622,7 +622,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest hive?
-						if (distance < 300)
+						if (distance < 300.0)
 						{
 							ALERT( at_console, "bot seeing a hive; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
@@ -673,7 +673,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       pBot->waypoint_top_of_ladder = FALSE;
 
       // did we just come off of a ladder or are we underwater?
-      if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->pEdict->v.waterlevel == 3))
+      if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->IsUnderWater()))
       {
          // find the nearest visible waypoint
          if (mod_id == FRONTLINE_DLL)
@@ -719,7 +719,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          if (tr.flFraction < 1.0)
          {
             // did we just come off of a ladder or are we under water?
-            if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->pEdict->v.waterlevel == 3))
+            if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->IsUnderWater()))
             {
                // find the nearest visible waypoint
                if (mod_id == FRONTLINE_DLL)
@@ -999,7 +999,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       }
 
       // test special case of bot underwater and close to surface...
-      if (pBot->pEdict->v.waterlevel == 3)
+      if (pBot->IsUnderWater())
       {
          Vector v_src, v_dest;
          TraceResult tr;
@@ -2194,7 +2194,7 @@ bool BotFollowUser( bot_t *pBot )
 
    Vector vecEnd = pBot->pBotUser->v.origin + pBot->pBotUser->v.view_ofs;
 
-   if (pBot->pEdict->v.waterlevel != 3)  // is bot NOT under water?
+   if (!pBot->IsUnderWater())  // is bot NOT under water?
       pEdict->v.v_angle.x = 0;  // reset pitch to 0 (level horizontally)
 
    pEdict->v.v_angle.z = 0;  // reset roll to 0 (straight up and down)
@@ -2230,10 +2230,10 @@ bool BotFollowUser( bot_t *pBot )
 
       f_distance = v_user.Length( );  // how far away is the "user"?
 
-      if (f_distance > 200)      // run if distance to enemy is far
+      if (f_distance > 200.0)      // run if distance to enemy is far
          pBot->f_move_speed = pBot->GetMaxSpeed();
-      else if (f_distance > 50)  // walk if distance is closer
-         pBot->f_move_speed = pBot->GetMaxSpeed() / 2;
+      else if (f_distance > 50.0)  // walk if distance is closer
+         pBot->f_move_speed = pBot->GetMaxSpeed() / 2.0;
       else                     // don't move if close enough
          pBot->f_move_speed = 0.0;
 
