@@ -1246,7 +1246,7 @@ void BotThink( bot_t *pBot )
    if (pBot->name[0] == 0)  // name filled in yet?
       strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
-   if (mod_id == CSTRIKE_DLL || mod_id == DOD_DLL)
+   if (mod_id == CSTRIKE_DLL || (mod_id == DOD_DLL && !((DODBot *)pBot)->bCapturing))
       pBot->SetMaxSpeed( pEdict->v.maxspeed );
    else
       pBot->SetMaxSpeed( CVAR_GET_FLOAT("sv_maxspeed") );
@@ -1544,6 +1544,11 @@ void BotThink( bot_t *pBot )
          // do nothing here!
          ;
       }
+
+	  else if (mod_id == DOD_DLL && ((DODBot *)pBot)->bCapturing)
+	  {
+		  BotHeadTowardWaypoint(pBot);
+	  }
 
       else
       {

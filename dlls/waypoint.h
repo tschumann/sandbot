@@ -57,7 +57,7 @@ typedef unsigned __int64 uint64_t;
 #define W_FL_NS_COMMAND_CHAIR	(1<<21)
 #define W_FL_NS_RESNODE		(1<<22)
 
-#define W_FL_DOD_CAP		(((uint64_t)1)<<40)
+#define W_FL_DOD_CAP		(1<<30)
 
 #define W_FL_DELETED		(1<<31) /* used by waypoint allocation code */
 

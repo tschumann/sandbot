@@ -487,6 +487,9 @@ public:
 class DODBot : public bot_t
 {
 public:
+	virtual void OnSpawn();
+	bool bCapturing;
+
 	const static int TEAM_ALLIES = 1;
 	const static int TEAM_AXIS = 2;
 };

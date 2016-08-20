@@ -581,6 +581,26 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    }
    else if( mod_id == DOD_DLL )
    {
+	   pent = NULL;
+
+	   while( (pent = UTIL_FindEntityByClassname( pent, "dod_control_point" )) != NULL )
+		{
+			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
+
+			// is this control point visible?
+			// if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+			// {
+				float distance = (pent->v.origin - pEdict->v.origin).Length();
+
+				// is the bot close enough and is the control point capturable?
+				if (distance < 100.0 && (pent->v.body == 3))
+				{
+					ALERT( at_console, "bot at a control point; camping\n" );
+					((DODBot *)pBot)->bCapturing = true;
+					pBot->SetMaxSpeed( 0.0 );
+				}
+			// }
+		}
    }
    else if( mod_id == NS_DLL )
    {
@@ -1201,8 +1221,8 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
 			while( pent = UTIL_FindEntityByClassname( pent, "dod_control_point" ) )
 			{
-				// models/mapmodels/flags.mdl has skins 4 and 8 for the uncaptured flag
-				if( pent->v.skin == 4 || pent->v.skin == 8 )
+				// 3 is uncaptured? 0 and 1 are axis/allies?
+				if( pent->v.body == 3 )
 				{
 					pUncapturedPoint = pent;
 				}
@@ -1235,7 +1255,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             if (index != -1)
             {
-				ALERT(at_console, "a dod bot is heading for a goal\n");
+				ALERT(at_console, "a dod bot (team %d) is heading for a goal\n", UTIL_GetTeam( pBot->pEdict ));
                pBot->waypoint_goal = index;
 			}
 		 }

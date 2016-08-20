@@ -768,13 +768,10 @@ int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
 
 	  if (!type || !(waypoints[index].flags & type))
 	  {
-		  ALERT( at_console, "skipping here %d %d\n", type, waypoints[index].flags );
 		  continue;
 	  }
 
       distance = (pEntity->v.origin - waypoints[index].origin).Length();
-
-	  ALERT( at_console, "%f\n", distance );
 
       if (distance < min_distance)
       {
@@ -858,7 +855,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          if (!strncmp("item_health", item_name, 11) || !strncmp("item_armor", item_name, 10) ||
              !strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
              !strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
-			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) ||
+			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
              !strncmp("weapon_", item_name, 7) && (pent->v.owner == NULL)
 			 )
          {
