@@ -1913,11 +1913,13 @@ void BotThink( bot_t *pBot )
 
       // check if the next waypoint is a crouch waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_CROUCH)
+	  {
          pEdict->v.button |= IN_DUCK;  // duck down while moving forward
+	  }
 
       // check if the waypoint is a sniper waypoint AND
       // bot isn't currently aiming at an ememy...
-      if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) && (pBot->pBotEnemy == NULL))
+      if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) && !pBot->pBotEnemy)
       {
 		  if ((mod_id != TFC_DLL) || ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_SNIPER)))
          {
@@ -1946,6 +1948,12 @@ void BotThink( bot_t *pBot )
             }
          }
       }
+
+	  // TODO: is curr_waypoint_index the waypoint closest to the bot?
+	  if (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP)
+	  {
+		  pBot->f_move_speed = 0.0;
+	  }
    }
 
    if (pBot->f_pause_time > gpGlobals->time)  // is the bot "paused"?
