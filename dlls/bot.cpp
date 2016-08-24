@@ -630,6 +630,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       BotEnt->v.flags |= FL_FAKECLIENT;
 
+	  pBot->index = clientIndex;
+
       // initialize all the variables for this bot...
 
       pBot = pBots[index];
@@ -2009,6 +2011,7 @@ void BotThink( bot_t *pBot )
 bot_t::bot_t()
 {
 	this->is_used = false;
+	this->index = -1;
 }
 
 void bot_t::OnSpawn()

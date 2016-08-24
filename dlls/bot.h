@@ -340,6 +340,7 @@ public:
 
 	bool is_used;
 	int respawn_state;
+	int index;
 	edict_t *pEdict;
 	bool need_to_initialize;
 	char name[BOT_NAME_LEN+1];

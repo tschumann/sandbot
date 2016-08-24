@@ -1320,6 +1320,7 @@ void StartFrame( void )
 	 // is this slot used AND not respawning
      if (pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
      {
+		 // TODO: get the edict_t* from pBots[bot_index]->index and check if it's still valid
         BotThink(pBots[bot_index]);
 
         count++;
