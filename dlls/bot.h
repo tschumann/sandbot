@@ -307,13 +307,6 @@ struct weapon_t
 	int iWeaponId;
 	const char *szWeaponName;
 	CanUseWeapon pfnCanUseWeapon;
-	// TODO: a function might be better here?
-	int iPreference;
-
-	bool operator < (const weapon_t& weapon) const
-    {
-        return (this->iPreference < weapon.iPreference);
-    }
 };
 
 class bot_t

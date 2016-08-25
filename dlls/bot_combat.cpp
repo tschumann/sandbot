@@ -1288,7 +1288,6 @@ void BotShootAtEnemy( bot_t *pBot )
 	if (pBot->f_shoot_time <= gpGlobals->time)
 	{
 		std::vector<weapon_t> usableWeapons = pBot->GetUsableWeapons();
-		std::sort( usableWeapons.begin(), usableWeapons.end() );
 
 		int choice = 0;
 

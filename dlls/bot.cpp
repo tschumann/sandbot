@@ -630,11 +630,11 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       BotEnt->v.flags |= FL_FAKECLIENT;
 
-	  pBot->index = clientIndex;
-
       // initialize all the variables for this bot...
 
       pBot = pBots[index];
+
+	  pBot->index = clientIndex;
 
       pBot->is_used = TRUE;
       pBot->respawn_state = RESPAWN_IDLE;
@@ -786,8 +786,7 @@ bool BotEntityIsVisible( bot_t *pBot, Vector dest )
    TraceResult tr;
 
    // trace a line from bot's eyes to destination...
-   UTIL_TraceLine( pBot->pEdict->v.origin + pBot->pEdict->v.view_ofs,
-                   dest, ignore_monsters,
+   UTIL_TraceLine( pBot->pEdict->v.origin + pBot->pEdict->v.view_ofs, dest, ignore_monsters,
                    pBot->pEdict->v.pContainingEntity, &tr );
 
    // check if line of sight to object is not blocked (i.e. visible)
@@ -858,8 +857,7 @@ void BotFindItem( bot_t *pBot )
             vecEnd = entity_origin;
 
             // trace a line from bot's eyes to func_ladder entity...
-            UTIL_TraceLine( vecStart, vecEnd, dont_ignore_monsters,
-                            pEdict->v.pContainingEntity, &tr);
+            UTIL_TraceLine( vecStart, vecEnd, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
             // check if traced all the way up to the entity (didn't hit wall)
             if (tr.flFraction >= 1.0)
@@ -869,8 +867,7 @@ void BotFindItem( bot_t *pBot )
 
                // use the ladder about 100% of the time, if haven't
                // used a ladder in at least 5 seconds...
-               if ((RANDOM_LONG(1, 100) <= 100) &&
-                   ((pBot->f_end_use_ladder_time + 5.0) < gpGlobals->time))
+               if ((RANDOM_LONG(1, 100) <= 100) && ((pBot->f_end_use_ladder_time + 5.0) < gpGlobals->time))
                {
                   // if close to ladder...
                   if (distance < 100)
@@ -886,8 +883,7 @@ void BotFindItem( bot_t *pBot )
          else
          {
             // trace a line from bot's eyes to func_ entity...
-            UTIL_TraceLine( vecStart, vecEnd, dont_ignore_monsters,
-                            pEdict->v.pContainingEntity, &tr);
+            UTIL_TraceLine( vecStart, vecEnd, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
 
             // check if traced all the way up to the entity (didn't hit wall)
             if (strcmp(item_name, STRING(tr.pHit->v.classname)) == 0)
@@ -906,8 +902,7 @@ void BotFindItem( bot_t *pBot )
                      if (!pBot->b_use_health_station)
                      {
                         // check if close enough and facing it directly...
-                        if ((distance < PLAYER_SEARCH_RADIUS) &&
-                            (angle_to_entity <= 10))
+                        if ((distance < PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
                         {
                            pBot->b_use_health_station = TRUE;
                            pBot->f_use_health_time = gpGlobals->time;
@@ -935,15 +930,13 @@ void BotFindItem( bot_t *pBot )
                {
                   // check if the bot can use this item and
                   // check if the recharger is ready to use (has power left)...
-                  if ((pEdict->v.armorvalue < VALVE_MAX_NORMAL_BATTERY) &&
-                      (pent->v.frame == 0))
+                  if ((pEdict->v.armorvalue < VALVE_MAX_NORMAL_BATTERY) && (pent->v.frame == 0))
                   {
                      // check if flag not set and facing it...
                      if (!pBot->b_use_HEV_station)
                      {
                         // check if close enough and facing it directly...
-                        if ((distance < PLAYER_SEARCH_RADIUS) &&
-                            (angle_to_entity <= 10))
+                        if ((distance < PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
                         {
                            pBot->b_use_HEV_station = TRUE;
                            pBot->f_use_HEV_time = gpGlobals->time;
@@ -971,15 +964,13 @@ void BotFindItem( bot_t *pBot )
                {
                   // use the button about 100% of the time, if haven't
                   // used a button in at least 5 seconds...
-                  if ((RANDOM_LONG(1, 100) <= 100) &&
-                      ((pBot->f_use_button_time + 5) < gpGlobals->time))
+                  if ((RANDOM_LONG(1, 100) <= 100) && ((pBot->f_use_button_time + 5) < gpGlobals->time))
                   {
                      // check if flag not set and facing it...
                      if (!pBot->b_use_button)
                      {
                         // check if close enough and facing it directly...
-                        if ((distance < PLAYER_SEARCH_RADIUS) &&
-                            (angle_to_entity <= 10))
+                        if ((distance < PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
                         {
                            pBot->b_use_button = TRUE;
                            pBot->b_lift_moving = FALSE;
@@ -1159,8 +1150,7 @@ void BotFindItem( bot_t *pBot )
             {
             }
 
-            else if ((mod_id == FRONTLINE_DLL) && (!pBot->defender) &&
-                     (strcmp("capture_point", item_name) == 0))
+            else if ((mod_id == FRONTLINE_DLL) && (!pBot->defender) && (strcmp("capture_point", item_name) == 0))
             {
                int team = UTIL_GetTeam(pEdict);  // skin and team must match
 
@@ -1173,8 +1163,7 @@ void BotFindItem( bot_t *pBot )
                   float distance = (pent->v.origin - pEdict->v.origin).Length( );
 
                   // check if close enough and facing it directly...
-                  if ((distance < FLF_PLAYER_SEARCH_RADIUS) &&
-                      (angle_to_entity <= 20))
+                  if ((distance < FLF_PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 20))
                   {
                      pBot->b_use_capture = TRUE;
                      pBot->f_use_capture_time = gpGlobals->time + 8.0;
@@ -1484,7 +1473,7 @@ void BotThink( bot_t *pBot )
    }
 
    // if the bot is under water, adjust pitch by pitch_speed degrees
-   if ((pEdict->v.waterlevel == 2) || (pBot->IsUnderWater()))
+   if ((pEdict->v.waterlevel == 2) || pBot->IsUnderWater())
    {
       // turn towards ideal_pitch by pitch_speed degrees
       pitch_degrees = BotChangePitch( pBot, pEdict->v.pitch_speed );
@@ -1557,7 +1546,7 @@ void BotThink( bot_t *pBot )
          // no enemy, let's just wander around...
 
 		  // is bot NOT under water?
-         if ((pEdict->v.waterlevel != 2) && (!pBot->IsUnderWater()))
+         if ((pEdict->v.waterlevel != 2) && !pBot->IsUnderWater())
          {
             // reset pitch to 0 (level horizontally)
             pEdict->v.idealpitch = 0;

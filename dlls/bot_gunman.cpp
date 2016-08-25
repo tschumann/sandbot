@@ -10,17 +10,17 @@
 
 GunmanBot::GunmanBot()
 {
-	weapon_t fists = {GUNMAN_WEAPON_FISTS, "weapon_fists", static_cast<CanUseWeapon>(&GunmanBot::CanUseFists), 1};
-	weapon_t gausspistol_pulse = {GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", static_cast<CanUseWeapon>(&GunmanBot::CanUseGaussPistolPulse), 5};
-	weapon_t gausspistol_charge = {GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", static_cast<CanUseWeapon>(&GunmanBot::CanUseGaussPistolCharge), 4};
-	weapon_t gausspistol_rapid = {GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", static_cast<CanUseWeapon>(&GunmanBot::CanUseGaussPistolRapid), 3};
-	weapon_t shotgun = {GUNMAN_WEAPON_SHOTGUN, "weapon_shotgun", static_cast<CanUseWeapon>(&GunmanBot::CanUseShotgun), 9};
-	weapon_t minigun = {GUNMAN_WEAPON_MINIGUN, "weapon_minigun", static_cast<CanUseWeapon>(&GunmanBot::CanUseMinigun), 10};
-	weapon_t beamgun = {GUNMAN_WEAPON_BEAMGUN, "weapon_beamgun", static_cast<CanUseWeapon>(&GunmanBot::CanUseBeamgun), 11};
+	weapon_t fists = {GUNMAN_WEAPON_FISTS, "weapon_fists", static_cast<CanUseWeapon>(&GunmanBot::CanUseFists)};
+	weapon_t gausspistol_pulse = {GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", static_cast<CanUseWeapon>(&GunmanBot::CanUseGaussPistolPulse)};
+	weapon_t gausspistol_charge = {GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", static_cast<CanUseWeapon>(&GunmanBot::CanUseGaussPistolCharge)};
+	weapon_t gausspistol_rapid = {GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", static_cast<CanUseWeapon>(&GunmanBot::CanUseGaussPistolRapid)};
+	weapon_t shotgun = {GUNMAN_WEAPON_SHOTGUN, "weapon_shotgun", static_cast<CanUseWeapon>(&GunmanBot::CanUseShotgun)};
+	weapon_t minigun = {GUNMAN_WEAPON_MINIGUN, "weapon_minigun", static_cast<CanUseWeapon>(&GunmanBot::CanUseMinigun)};
+	weapon_t beamgun = {GUNMAN_WEAPON_BEAMGUN, "weapon_beamgun", static_cast<CanUseWeapon>(&GunmanBot::CanUseBeamgun)};
 	weapon_t chemgun = {GUNMAN_WEAPON_CHEMGUN, "weapon_chemgun", static_cast<CanUseWeapon>(&GunmanBot::CanUseChemgun)};
-	weapon_t dml = {GUNMAN_WEAPON_DML, "weapon_dml", static_cast<CanUseWeapon>(&GunmanBot::CanUseDML), 8};
-	weapon_t dmlgrenade = {GUNMAN_WEAPON_DMLGRENADE, "weapon_dmlgrenade", static_cast<CanUseWeapon>(&GunmanBot::CanUseDMLGrenade), 2};
-	weapon_t aicore = {GUNMAN_WEAPON_AICORE, "weapon_aicore", static_cast<CanUseWeapon>(&GunmanBot::CanUseAICore), 0};
+	weapon_t dml = {GUNMAN_WEAPON_DML, "weapon_dml", static_cast<CanUseWeapon>(&GunmanBot::CanUseDML)};
+	weapon_t dmlgrenade = {GUNMAN_WEAPON_DMLGRENADE, "weapon_dmlgrenade", static_cast<CanUseWeapon>(&GunmanBot::CanUseDMLGrenade)};
+	weapon_t aicore = {GUNMAN_WEAPON_AICORE, "weapon_aicore", static_cast<CanUseWeapon>(&GunmanBot::CanUseAICore)};
 
 	this->weapons.push_back(fists);
 	this->weapons.push_back(gausspistol_pulse);
