@@ -249,15 +249,6 @@ int DispatchSpawn( edict_t *pent )
 
      m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
 
-	 if( mod_id == SHIP_DLL )
-	 {
-		 extern int pfnPrecacheModel(char* s);
-		pfnPrecacheModel("models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl");
-		pfnPrecacheModel("models/player/models/player/John.mdl/models/player/John.mdl.mdl");
-		pfnPrecacheModel("models/player/models/player/john2.mdl/models/player/john2.mdl.m");
-		pfnPrecacheModel("models/player/models/player/Holliday.mdl/models/player/Holliday");
-	 }
-
      g_GameRules = TRUE;
 
      memset(team_names, 0, sizeof(team_names));
