@@ -583,9 +583,13 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    {
 	   pent = NULL;
 
+	   // ALERT( at_console, "looking fir dod_control_point" );
+
 	   while( (pent = UTIL_FindEntityByClassname( pent, "dod_control_point" )) != NULL )
 		{
 			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
+
+			// ALERT( at_console, "found a dod_control_point (%d)\n", pent->v.body );
 
 			// is this control point visible?
 			// if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
@@ -1225,6 +1229,8 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 				if( pent->v.body == 3 )
 				{
 					pUncapturedPoint = pent;
+					int index = WaypointFindNearestWaypoint( pent, W_FL_DOD_CAP );
+					ALERT( at_console, "the uncaptured point is at %d\n", index );
 				}
 				else
 				{
@@ -1255,7 +1261,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             if (index != -1)
             {
-				ALERT(at_console, "a dod bot (team %d) is heading for a goal\n", UTIL_GetTeam( pBot->pEdict ));
+				ALERT(at_console, "a dod bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam( pBot->pEdict ), index);
                pBot->waypoint_goal = index;
 			}
 		 }

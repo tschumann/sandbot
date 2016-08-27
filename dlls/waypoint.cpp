@@ -1795,6 +1795,11 @@ void WaypointPrintInfo(edict_t *pEntity)
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a hive near this waypoint\n");
 	}
+
+	if( flags & W_FL_DOD_CAP )
+	{
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+	}
 }
 
 

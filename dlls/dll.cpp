@@ -917,18 +917,20 @@ void ClientCommand( edict_t *pEntity )
 				return;
 			}
 
+			bot_t *pBot = NULL;
+
+			if( player->v.flags & FL_FAKECLIENT )
+			{
+				pBot = UTIL_GetBotPointer( player );
+			}
+
 			ALERT( at_console, "Light level: %d\n", player->v.light_level );
 
 			if( mod_id == VALVE_DLL )
 			{
-				if( player->v.flags & FL_FAKECLIENT )
+				if( pBot && pBot->HasEnemy() )
 				{
-					bot_t *pBot = UTIL_GetBotPointer( player );
-
-					if ( pBot->HasEnemy() )
-					{
-						((HalfLifeBot *)pBot)->GetUsableWeapons();
-					}
+					((HalfLifeBot *)pBot)->GetUsableWeapons();
 				}
 			}
 			else if( mod_id == DOD_DLL )
@@ -940,6 +942,11 @@ void ClientCommand( edict_t *pEntity )
 				else if( player->v.team == DODBot::TEAM_AXIS )
 				{
 					ALERT( at_console, "Team: Axis\n" );
+				}
+
+				if( pBot )
+				{
+					ALERT( at_console, "Capturing: %d\n", ((DODBot *)pBot)->bCapturing );
 				}
 
 #if 0
@@ -1311,7 +1318,8 @@ void StartFrame( void )
 	 // is this slot used AND not respawning
      if (pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
      {
-		 // TODO: get the edict_t* from pBots[bot_index]->index and check if it's still valid
+
+		 // TODO: kicking a bot will result in this being called and the engine crashing - need to figure out how to detect it
         BotThink(pBots[bot_index]);
 
         count++;

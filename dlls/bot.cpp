@@ -1535,12 +1535,12 @@ void BotThink( bot_t *pBot )
          // do nothing here!
          ;
       }
-
+#if 0
 	  else if (mod_id == DOD_DLL && ((DODBot *)pBot)->bCapturing)
 	  {
 		  BotHeadTowardWaypoint(pBot);
 	  }
-
+#endif
       else
       {
          // no enemy, let's just wander around...
