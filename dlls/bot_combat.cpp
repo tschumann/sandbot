@@ -1243,14 +1243,6 @@ void BotShootAtEnemy( bot_t *pBot )
 	pEdict->v.v_angle.x = -pEdict->v.v_angle.x;
 	// Paulo-La-Frite - END
 
-	float x = pEdict->v.v_angle.y;
-
-	if (x > 180)
-		x -= 360;
-	if (abs(pEdict->v.ideal_yaw - x) > 2.0)
-		// TODO: this looks like a bug - fp is a file pointer
-		fp = NULL;
-
 	pEdict->v.ideal_yaw = pEdict->v.v_angle.y;
 
 	BotFixIdealYaw(pEdict);
