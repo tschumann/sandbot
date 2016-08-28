@@ -1695,7 +1695,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 	int flags;
 
 	// find the nearest waypoint...
-	index = WaypointFindNearest(pEntity, 50.0, -1);
+	index = WaypointFindNearest(pEntity, 100.0, -1);
 
 	if (index == -1)
 		return;
