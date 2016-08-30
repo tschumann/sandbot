@@ -48,8 +48,7 @@ void BotStartGame( bot_t *pBot )
          pBot->start_action = MSG_TFC_IDLE;  // switch back to idle
          pBot->create_time = gpGlobals->time;  // reset
 
-         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) &&
-             (pBot->bot_team != 3) && (pBot->bot_team != 4) && (pBot->bot_team != 5))
+         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) && (pBot->bot_team != 3) && (pBot->bot_team != 4) && (pBot->bot_team != 5))
             pBot->bot_team = -1;
 
          if (pBot->bot_team == -1)

@@ -40,6 +40,11 @@ bool NSBot::IsNearHive()
 	return false;
 }
 
+bool NSBot::IsInReadyRoom()
+{
+	return this->pEdict->v.playerclass == PLAYMODE_READYROOM;
+}
+
 int NSBot::GetDesiredClass()
 {
 	return this->iDesiredClass;

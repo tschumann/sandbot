@@ -1262,7 +1262,7 @@ void BotThink( bot_t *pBot )
 
    // this forces the bot to attempt to join a team each frame - it's easier than trying to
    // handle the conditional messages and work out how long until it's possible to rejoin
-   if( mod_id == NS_DLL && pBot->pEdict->v.playerclass == PLAYMODE_READYROOM )
+   if( mod_id == NS_DLL && ((NSBot *)pBot)->IsInReadyRoom() )
    {
 	   pBot->not_started = true;
    }
@@ -1310,7 +1310,7 @@ void BotThink( bot_t *pBot )
    }
 
    // if the bot is dead, randomly press fire to respawn...
-   if ((pEdict->v.health < 1) || (pEdict->v.deadflag != DEAD_NO))
+   if (pBot->IsDead())
    {
       if (pBot->need_to_initialize)
       {
@@ -2074,6 +2074,11 @@ void bot_t::SetMaxSpeed( float fMaxSpeed )
 float bot_t::GetMaxSpeed()
 {
 	return this->fMaxSpeed;
+}
+
+bool bot_t::IsDead()
+{
+	return this->pEdict->v.health < 1 || this->pEdict->v.deadflag != DEAD_NO;
 }
 
 bool bot_t::IsUnderWater()

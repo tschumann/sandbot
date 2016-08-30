@@ -331,6 +331,7 @@ public:
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
 
+	virtual bool IsDead();
 	virtual bool IsUnderWater();
 
 	virtual bool BaseCanUseWeapon();
@@ -549,6 +550,7 @@ public:
 	virtual void OnSpawn();
 	virtual void Reset();
 	virtual bool IsNearHive();
+	virtual bool IsInReadyRoom();
 	virtual int GetDesiredClass();
 	virtual void SetDesiredClass( int iDesiredClass );
 	virtual void ChooseDesiredClass();
