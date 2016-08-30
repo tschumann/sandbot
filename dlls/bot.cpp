@@ -2007,6 +2007,10 @@ void bot_t::OnSpawn()
 {
 }
 
+void bot_t::Join()
+{
+}
+
 int bot_t::GetTeam()
 {
 	return this->pEdict->v.team;

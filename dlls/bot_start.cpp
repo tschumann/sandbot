@@ -322,111 +322,11 @@ void BotStartGame( bot_t *pBot )
          return;
       }
    }
-	else if( mod_id == DOD_DLL )
+	else if( mod_id == DOD_DLL || mod_id == NS_DLL)
 	{
-		if (pBot->start_action == MSG_DOD_TEAM_SELECT)
-		{
-			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
-
-			if ((pBot->bot_team != DODBot::TEAM_ALLIES) && (pBot->bot_team != DODBot::TEAM_AXIS))
-				pBot->bot_team = -1;
-
-			// TODO: count how many each team has because even teams seems to be off by default
-			if (pBot->bot_team == -1)
-				pBot->bot_team = RANDOM_LONG(1, 2);
-
-			// select the team the bot wishes to join...
-			if (pBot->bot_team == DODBot::TEAM_ALLIES)
-				FakeClientCommand(pEdict, "jointeam", "1", NULL);
-			else if (pBot->bot_team == DODBot::TEAM_AXIS)
-				FakeClientCommand(pEdict, "jointeam", "2", NULL);
-
-			return;
-		}
-		if (pBot->start_action == MSG_DOD_ALLIED_SELECT)
-		{
-			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
-
-			// do this to control what classes bots will spawn as (not everything is supported yet)
-			int playerClass = RANDOM_LONG(1, 4);
-
-			switch(playerClass)
-			{
-			case 1:
-				FakeClientCommand(pEdict, "cls_garand", NULL, NULL);
-				break;
-			case 2:
-				FakeClientCommand(pEdict, "cls_carbine", NULL, NULL);
-				break;
-			case 3:
-				FakeClientCommand(pEdict, "cls_tommy", NULL, NULL);
-				break;
-			case 4:
-				FakeClientCommand(pEdict, "cls_grease", NULL, NULL);
-				break;
-			default:
-				FakeClientCommand(pEdict, "cls_random", NULL, NULL);
-				break;
-			}
-
-			// bot has now joined the game (doesn't need to be started)
-			pBot->not_started = 0;
-
-			return;
-		}
-		if (pBot->start_action == MSG_DOD_AXIS_SELECT)
-		{
-			pBot->start_action = MSG_DOD_IDLE;  // switch back to idle
-
-			int playerClass = RANDOM_LONG(1, 4);
-
-			switch(playerClass)
-			{
-			case 1:
-				FakeClientCommand(pEdict, "cls_k98", NULL, NULL);
-				break;
-			case 2:
-				FakeClientCommand(pEdict, "cls_k43", NULL, NULL);
-				break;
-			case 3:
-				FakeClientCommand(pEdict, "cls_mp40", NULL, NULL);
-				break;
-			case 4:
-				FakeClientCommand(pEdict, "cls_mp44", NULL, NULL);
-				break;
-			default:
-				FakeClientCommand(pEdict, "cls_random", NULL, NULL);
-				break;
-			}
-
-			// bot has now joined the game (doesn't need to be started)
-			pBot->not_started = 0;
-
-			return;
-		}
-	}
-   else if (mod_id == NS_DLL)
-   {
-	   ((NSBot *)pBot)->Reset();
-		switch( pBot->start_action )
-		{
-		case MSG_NS_JOIN_ALIEN:
-			FakeClientCommand(pEdict, "jointeamone", NULL, NULL);
-			break;
-		case MSG_NS_JOIN_MARINE:
-			FakeClientCommand(pEdict, "jointeamtwo", NULL, NULL);
-			break;
-		case MSG_NS_JOIN_AUTO:
-		default:
-			FakeClientCommand(pEdict, "autoassign", NULL, NULL);
-			break;
-		}
-
-		pBot->start_action = 0;
-		pBot->not_started = 0;
-
+		pBot->Join();
 		return;
-   }
+	}
    else if (mod_id == FRONTLINE_DLL)
    {
       // handle FrontLineForce stuff here...

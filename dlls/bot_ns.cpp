@@ -16,6 +16,28 @@ void NSBot::OnSpawn()
 	this->bIsEvolving = false;
 }
 
+void NSBot::Join()
+{
+	this->Reset();
+
+	switch( this->start_action )
+	{
+		case MSG_NS_JOIN_ALIEN:
+			FakeClientCommand( this->pEdict, "jointeamone", NULL, NULL );
+			break;
+		case MSG_NS_JOIN_MARINE:
+			FakeClientCommand( this->pEdict, "jointeamtwo", NULL, NULL );
+			break;
+		case MSG_NS_JOIN_AUTO:
+		default:
+			FakeClientCommand( this->pEdict, "autoassign", NULL, NULL );
+			break;
+	}
+
+	this->start_action = 0;
+	this->not_started = 0;
+}
+
 void NSBot::Reset()
 {
 	// this->SetDesiredClass( NSBot::CLASS_SKULK );

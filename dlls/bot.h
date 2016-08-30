@@ -319,6 +319,8 @@ class bot_t
 public:
 	bot_t();
 	virtual void OnSpawn();
+	virtual void Join();
+
 	virtual int GetTeam();
 
 	virtual bool HasEnemy();
@@ -488,6 +490,8 @@ class DODBot : public bot_t
 {
 public:
 	virtual void OnSpawn();
+	virtual void Join();
+
 	bool bCapturing;
 
 	const static int TEAM_ALLIES = 1;
@@ -548,6 +552,7 @@ protected:
 	bool bIsEvolving;
 public:
 	virtual void OnSpawn();
+	virtual void Join();
 	virtual void Reset();
 	virtual bool IsNearHive();
 	virtual bool IsInReadyRoom();
