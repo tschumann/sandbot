@@ -336,6 +336,8 @@ public:
 	virtual bool IsDead();
 	virtual bool IsUnderWater();
 
+	virtual void UpdateSounds();
+
 	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons();
 

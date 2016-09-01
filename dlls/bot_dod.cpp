@@ -17,8 +17,10 @@ void DODBot::Join()
 {
 	if( this->start_action == MSG_DOD_TEAM_SELECT )
 	{
-		this->start_action = MSG_DOD_IDLE;  // switch back to idle
+		// switch back to idle
+		this->start_action = MSG_DOD_IDLE;
 
+		// TODO: British?
 		if ((this->bot_team != DODBot::TEAM_ALLIES) && (this->bot_team != DODBot::TEAM_AXIS))
 		{
 			this->bot_team = -1;
@@ -49,7 +51,7 @@ void DODBot::Join()
 		// do this to control what classes bots will spawn as (not everything is supported yet)
 		int playerClass = RANDOM_LONG(1, 4);
 
-		switch(playerClass)
+		switch( playerClass )
 		{
 		case 1:
 			FakeClientCommand( this->pEdict, "cls_garand", NULL, NULL );
@@ -79,7 +81,7 @@ void DODBot::Join()
 
 		int playerClass = RANDOM_LONG(1, 4);
 
-		switch(playerClass)
+		switch( playerClass )
 		{
 		case 1:
 			FakeClientCommand( this->pEdict, "cls_k98", NULL, NULL );

@@ -1424,35 +1424,9 @@ void BotThink( bot_t *pBot )
    }
 
    // check if time to check for player sounds (if don't already have enemy)
-   if ((pBot->f_sound_update_time <= gpGlobals->time) && (pBot->pBotEnemy == NULL))
+   if ((pBot->f_sound_update_time <= gpGlobals->time) && !pBot->pBotEnemy)
    {
-      int ind;
-      edict_t *pPlayer;
-
-      pBot->f_sound_update_time = gpGlobals->time + 1.0;
-
-      for (ind = 1; ind <= gpGlobals->maxClients; ind++)
-      {
-         pPlayer = INDEXENT(ind);
-
-         // is this player slot is valid and it's not this bot...
-         if ((pPlayer) && (!pPlayer->free) && (pPlayer != pEdict))
-         {
-            // if observer mode enabled, don't listen to this player...
-            if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
-               continue;
-
-            if (IsAlive(pPlayer) && (FBitSet(pPlayer->v.flags, FL_CLIENT) || FBitSet(pPlayer->v.flags, FL_FAKECLIENT)))
-            {
-               // check for sounds being made by other players...
-               if (UpdateSounds(pEdict, pPlayer))
-               {
-                  // don't check for sounds for another 30 seconds
-                  pBot->f_sound_update_time = gpGlobals->time + 30.0;
-               }
-            }
-         }
-      }
+	   pBot->UpdateSounds();
    }
 
    pBot->f_move_speed = pBot->GetMaxSpeed();  // set to max speed
@@ -2088,6 +2062,36 @@ bool bot_t::IsDead()
 bool bot_t::IsUnderWater()
 {
 	return this->pEdict->v.waterlevel == 3;
+}
+
+void bot_t::UpdateSounds()
+{
+	edict_t *pPlayer;
+
+	this->f_sound_update_time = gpGlobals->time + 1.0;
+
+	for( int idx = 1; idx <= gpGlobals->maxClients; idx++ )
+	{
+		pPlayer = INDEXENT(idx);
+
+		// is this player slot is valid and it's not this bot...
+		if( pPlayer && !pPlayer->free && (pPlayer != pEdict) )
+		{
+			// if observer mode enabled, don't listen to this player...
+			if( b_observer_mode && !(pPlayer->v.flags & FL_FAKECLIENT) )
+				continue;
+
+			if( IsAlive(pPlayer) && (FBitSet(pPlayer->v.flags, FL_CLIENT) || FBitSet(pPlayer->v.flags, FL_FAKECLIENT)) )
+			{
+				// check for sounds being made by other players...
+				if( ::UpdateSounds(pEdict, pPlayer) )
+				{
+					// don't check for sounds for another 30 seconds
+					this->f_sound_update_time = gpGlobals->time + 30.0;
+				}
+			}
+		}
+	}
 }
 
 bool bot_t::BaseCanUseWeapon()
