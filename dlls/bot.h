@@ -70,11 +70,6 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 #define HUNGER_DLL		21
 #define SHIP_DLL		22
 
-#define DMC_DLL			30
-
-#define FRONTLINE_DLL	100
-#define HOLYWARS_DLL	101
-
 
 // define some function prototypes...
 BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128] );

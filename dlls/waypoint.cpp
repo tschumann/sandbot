@@ -1139,8 +1139,7 @@ void WaypointDelete(edict_t *pEntity)
       return;
 
    if ((waypoints[index].flags & W_FL_SNIPER) || (waypoints[index].flags & W_FL_SENTRYGUN) ||
-       (waypoints[index].flags & W_FL_DISPENSER) || (waypoints[index].flags & W_FL_JUMP) ||
-       ((mod_id == FRONTLINE_DLL) && (waypoints[index].flags & W_FL_FLF_DEFEND)))
+       (waypoints[index].flags & W_FL_DISPENSER) || (waypoints[index].flags & W_FL_JUMP))
    {
       int i;
       int min_index = -1;
@@ -1707,24 +1706,14 @@ void WaypointPrintInfo(edict_t *pEntity)
 
 	if (flags & W_FL_TEAM_SPECIFIC)
 	{
-		if (mod_id == FRONTLINE_DLL)
-		{
-			if ((flags & W_FL_TEAM) == 0)
-				strcpy(msg, "Waypoint is for Attackers\n");
-			else if ((flags & W_FL_TEAM) == 1)
-				strcpy(msg, "Waypoint is for Defenders\n");
-		}
-		else
-		{
-			if ((flags & W_FL_TEAM) == 0)
-				strcpy(msg, "Waypoint is for TEAM 1\n");
-			else if ((flags & W_FL_TEAM) == 1)
-				strcpy(msg, "Waypoint is for TEAM 2\n");
-			else if ((flags & W_FL_TEAM) == 2)
-				strcpy(msg, "Waypoint is for TEAM 3\n");
-			else if ((flags & W_FL_TEAM) == 3)
-				strcpy(msg, "Waypoint is for TEAM 4\n");
-		}
+		if ((flags & W_FL_TEAM) == 0)
+			strcpy(msg, "Waypoint is for TEAM 1\n");
+		else if ((flags & W_FL_TEAM) == 1)
+			strcpy(msg, "Waypoint is for TEAM 2\n");
+		else if ((flags & W_FL_TEAM) == 2)
+			strcpy(msg, "Waypoint is for TEAM 3\n");
+		else if ((flags & W_FL_TEAM) == 3)
+			strcpy(msg, "Waypoint is for TEAM 4\n");
 
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
 	}
@@ -1758,20 +1747,12 @@ void WaypointPrintInfo(edict_t *pEntity)
 
 	if (flags & W_FL_FLAG)
 	{
-		if (mod_id == FRONTLINE_DLL)
-			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
-		else if (mod_id == HOLYWARS_DLL)
-			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a halo spawn point near this waypoint\n");
-		else
-			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
 	}
 
 	if (flags & W_FL_FLAG_GOAL)
 	{
-		if (mod_id == FRONTLINE_DLL)
-			ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a defender location\n");
-		else
-			ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
 	}
 
 	if (flags & W_FL_PRONE)

@@ -142,8 +142,6 @@ void UTIL_SayText( const char *pText, edict_t *pEdict )
 
    pfnMessageBegin( MSG_ONE, gmsgSayText, NULL, pEdict );
       pfnWriteByte( ENTINDEX(pEdict) );
-      if (mod_id == FRONTLINE_DLL)
-         pfnWriteShort(0);
       pfnWriteString( pText );
    pfnMessageEnd();
 }
@@ -207,8 +205,6 @@ void UTIL_HostSay( edict_t *pEntity, int teamonly, char *message )
 
       pfnMessageBegin( MSG_ONE, gmsgSayText, NULL, client );
          pfnWriteByte( ENTINDEX(pEntity) );
-         if (mod_id == FRONTLINE_DLL)
-            pfnWriteShort(0);
          pfnWriteString( text );
       pfnMessageEnd();
    }
@@ -216,8 +212,6 @@ void UTIL_HostSay( edict_t *pEntity, int teamonly, char *message )
    // print to the sending client
    pfnMessageBegin( MSG_ONE, gmsgSayText, NULL, pEntity );
       pfnWriteByte( ENTINDEX(pEntity) );
-      if (mod_id == FRONTLINE_DLL)
-         pfnWriteShort(0);
       pfnWriteString( text );
    pfnMessageEnd();
    
@@ -310,10 +304,6 @@ int UTIL_GetTeam(edict_t *pEntity)
 
       return 0;  // return zero if team is unknown
    }
-   else if (mod_id == FRONTLINE_DLL)
-   {
-      return pEntity->v.team - 1;  // Front Line Force teams are 1-4 based
-   }
    else  // must be HL or OpFor deathmatch...
    {
       char *infobuffer;
@@ -372,21 +362,6 @@ int UTIL_GetClass(edict_t *pEntity)
 	{
 		// see AvHUser3
 		return pEntity->v.iuser3;
-	}
-	else if (mod_id == FRONTLINE_DLL)
-	{
-		if ((strcmp(model_name, "natorecon") == 0) || (strcmp(model_name, "axisrecon") == 0))
-		{
-			return 0;  // recon
-		}
-		else if ((strcmp(model_name, "natoassault") == 0) || (strcmp(model_name, "axisassault") == 0))
-		{
-			return 1;  // assault
-		}
-		else if ((strcmp(model_name, "natosupport") == 0) || (strcmp(model_name, "axissupport") == 0))
-		{
-			return 2;  // support
-		}
 	}
 
 	return 0;
@@ -616,10 +591,6 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 	else if (mod_id == SHIP_DLL)
 	{
 		strcpy(filename, "ship/");
-	}
-	else if (mod_id == FRONTLINE_DLL)
-	{
-		strcpy(filename, "frontline/");
 	}
 	else
 	{

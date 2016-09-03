@@ -262,10 +262,7 @@ bool BotFindWaypoint( bot_t *pBot )
 
    edict_t *pEdict = pBot->pEdict;
 
-   if (mod_id == FRONTLINE_DLL)
-      team = pBot->defender;
-   else
-      team = UTIL_GetTeam(pEdict);
+   team = UTIL_GetTeam(pEdict);
 
    for (index=0; index < 3; index++)
    {
@@ -656,40 +653,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		   }
 	   }
    }
-   else if (mod_id == FRONTLINE_DLL)
-   {
-	   // does bot have a goal?
-      if ((pBot->waypoint_goal != -1) && (pBot->pCaptureEdict))
-      {
-         int team = UTIL_GetTeam(pEdict);  // skin and team must match
-
-         if (!pBot->defender)  // if attacker...
-         {
-            if (pBot->pCaptureEdict->v.skin == team)  // was point captured?
-            {
-               pBot->waypoint_goal = -1;
-            }
-         }
-         else
-         {
-            if (pBot->pCaptureEdict->v.skin != team)  // was point captured?
-            {
-               pBot->waypoint_goal = -1;
-            }
-         }
-      }
-   }
-   else if (mod_id == HOLYWARS_DLL)
-   {
-      if (pBot->waypoint_goal != -1)
-      {
-         // is the bot currently heading toward halo AND halo is gone?
-         if ((waypoints[pBot->waypoint_goal].flags & W_FL_FLAG) && (holywars_saint != NULL) && (holywars_gamemode == 1))
-         {
-            pBot->waypoint_goal = -1;
-         }
-      }
-   }
 
    // check if we need to find a waypoint...
    if (pBot->curr_waypoint_index == -1)
@@ -700,18 +663,11 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->IsUnderWater()))
       {
          // find the nearest visible waypoint
-         if (mod_id == FRONTLINE_DLL)
-            i = WaypointFindNearest(pEdict, REACHABLE_RANGE, pBot->defender);
-         else
-            i = WaypointFindNearest(pEdict, REACHABLE_RANGE, team);
+         i = WaypointFindNearest(pEdict, REACHABLE_RANGE, team);
       }
       else
       {
-         // find the nearest reachable waypoint
-         if (mod_id == FRONTLINE_DLL)
-            i = WaypointFindReachable(pEdict, REACHABLE_RANGE, pBot->defender);
-         else
-            i = WaypointFindReachable(pEdict, REACHABLE_RANGE, team);
+         i = WaypointFindReachable(pEdict, REACHABLE_RANGE, team);
       }
 
       if (i == -1)
@@ -746,18 +702,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             if (((pBot->f_end_use_ladder_time + 2.0) > gpGlobals->time) || (pBot->IsUnderWater()))
             {
                // find the nearest visible waypoint
-               if (mod_id == FRONTLINE_DLL)
-                  i = WaypointFindNearest(pEdict, REACHABLE_RANGE, pBot->defender);
-               else
-                  i = WaypointFindNearest(pEdict, REACHABLE_RANGE, team);
+               i = WaypointFindNearest(pEdict, REACHABLE_RANGE, team);
             }
             else
             {
                // find the nearest reachable waypoint
-               if (mod_id == FRONTLINE_DLL)
-                  i = WaypointFindReachable(pEdict, REACHABLE_RANGE, pBot->defender);
-               else
-                  i = WaypointFindReachable(pEdict, REACHABLE_RANGE, team);
+               i = WaypointFindReachable(pEdict, REACHABLE_RANGE, team);
             }
 
             if (i == -1)
@@ -795,10 +745,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
    // if this is a ladder waypoint, bot must be fairly close to get on ladder
    if (waypoints[pBot->curr_waypoint_index].flags & W_FL_LADDER)
-      min_distance = 20.0;
-
-   // if this is a defenders waypoint, bot must be fairly close...
-   if ((mod_id == FRONTLINE_DLL) && (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_DEFEND))
       min_distance = 20.0;
 
    // if trying to get out of water, need to get very close to waypoint...
@@ -949,59 +895,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                }
             }
          }
-
-         if ((mod_id == FRONTLINE_DLL) && (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_CAP))
-         {
-            // it's a capture point
-            pent = NULL;
-
-            while ((pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 100.0 )) != NULL)
-            {
-               if (strcmp(STRING(pent->v.classname), "capture_point") == 0)
-               {
-                  if (pent->v.skin != (1 - team))  // already captured?
-                     return TRUE;  // can't do anything here, just return
-
-                  // turn to face the capture entity
-                  Vector v_aim = pent->v.origin - pEdict->v.origin;
-
-                  Vector aim_angles = UTIL_VecToAngles( v_aim );
-
-                  pEdict->v.ideal_yaw = aim_angles.y;
-
-                  BotFixIdealYaw(pEdict);
-
-                  return TRUE;
-               }
-            }
-         }
-
-         if ((mod_id == FRONTLINE_DLL) && (waypoints[pBot->curr_waypoint_index].flags & W_FL_FLF_DEFEND))
-         {
-            // it's a defend point
-
-            int aim_index;
-
-            aim_index = WaypointFindNearestAiming(waypoints[pBot->curr_waypoint_index].origin);
-
-            if (aim_index != -1)
-            {
-               Vector v_aim = waypoints[aim_index].origin - waypoints[pBot->curr_waypoint_index].origin;
-
-               Vector aim_angles = UTIL_VecToAngles( v_aim );
-
-               pEdict->v.ideal_yaw = aim_angles.y;
-
-               BotFixIdealYaw(pEdict);
-
-               pBot->f_pause_time = gpGlobals->time + RANDOM_FLOAT(30.0, 45.0);
-
-               // fix f_waypoint_time so bot won't think it is stuck
-               pBot->f_waypoint_time = pBot->f_pause_time;
-
-               return TRUE;
-            }
-         }
       }
 
       // check if the bot is carrying the flag/card/ball...
@@ -1046,10 +939,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             if (contents == CONTENTS_EMPTY)
             {
                // find the nearest visible waypoint
-               if (mod_id == FRONTLINE_DLL)
-                  i = WaypointFindNearest(tr.vecEndPos, pEdict, 100, pBot->defender);
-               else
-                  i = WaypointFindNearest(tr.vecEndPos, pEdict, 100, team);
+               i = WaypointFindNearest(tr.vecEndPos, pEdict, 100, team);
 
                if (i != -1)
                {
@@ -1082,7 +972,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 // GO FIND WEAPONS HERE!!!
 
 
-         if ((mod_id == VALVE_DLL) || (mod_id == DMC_DLL))
+         if (mod_id == VALVE_DLL)
          {
             if (RANDOM_LONG(1, 100) <= 50)
             {
@@ -1284,144 +1174,13 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                pBot->waypoint_goal = index;
 			}
 		 }
-         else if (mod_id == FRONTLINE_DLL)
-         {
-            edict_t *caps[20];
-            int select, index = 0;
-            int capture_color;
-
-            // find a capture point that hasn't been captured yet...
-
-            if (pBot->defender)
-               capture_color = team;  // defenders
-            else
-               capture_color = 1 - team;  // attackers
-
-            pent = NULL;
-
-            while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
-            {
-               if (pent->v.skin != capture_color)  // skip it if already captured
-                  continue;
-
-               caps[index++] = pent;
-            }
-
-            if (index > 0)  // are any capture points left?...
-            {
-               if (!pBot->defender)  // if attacker...
-               {
-                  select = RANDOM_LONG(0, index-1);
-
-                  index = WaypointFindNearestGoal(caps[select]->v.origin, pEdict, 100, pBot->defender, W_FL_FLF_CAP);
-
-                  if (index != -1)
-                  {
-                     pBot->waypoint_goal = index;
-                     pBot->pCaptureEdict = caps[select];
-                  }
-               }
-               else  // defender...
-               {
-                  select = RANDOM_LONG(0, index-1);
-
-                  index = WaypointFindRandomGoal(caps[select]->v.origin, pEdict, 800, pBot->defender, W_FL_FLF_DEFEND);
-
-                  if (index != -1)
-                  {
-                     pBot->waypoint_goal = index;
-                     pBot->pCaptureEdict = caps[select];
-                  }
-               }
-            }
-         }
-         else if (mod_id == HOLYWARS_DLL)
-         {
-            if (holywars_gamemode == 0)  // deathmatch?
-            {
-               if (RANDOM_LONG(1, 100) <= 50)
-               {
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON, pBot->weapon_points);
-               }
-               else
-               {
-                  index = WaypointFindRandomGoal(pEdict, team, W_FL_WEAPON, pBot->weapon_points);
-               }
-
-               if (index != -1)
-               {
-                  pBot->waypoint_goal = index;
-
-                  pBot->weapon_points[4] = pBot->weapon_points[3];
-                  pBot->weapon_points[3] = pBot->weapon_points[2];
-                  pBot->weapon_points[2] = pBot->weapon_points[1];
-                  pBot->weapon_points[1] = pBot->weapon_points[0];
-                  pBot->weapon_points[0] = pBot->waypoint_goal;
-               }
-            }
-            else if (holywars_gamemode == 1)  // halo mode?
-            {
-               // if waiting for halo to spawn then head for halo spawn point...
-               if (halo_status == HW_WAIT_SPAWN)
-               {
-                  // find the nearest flag waypoint...
-
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
-
-                  if (index != -1)
-                     pBot->waypoint_goal = index;
-                  else
-                  {
-                     // can't get to the halo from here, search for a weapon
-
-                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON);
-
-                     if (index != -1)
-                        pBot->waypoint_goal = index;
-                  }
-               }
-               else  // there's already a saint, search for a weapon...
-               {
-                  if (RANDOM_LONG(1, 100) <= 50)
-                  {
-                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_WEAPON, pBot->weapon_points);
-                  }
-                  else
-                  {
-                     index = WaypointFindRandomGoal(pEdict, team, W_FL_WEAPON, pBot->weapon_points);
-                  }
-
-                  if (index != -1)
-                  {
-                     pBot->waypoint_goal = index;
-
-                     pBot->weapon_points[4] = pBot->weapon_points[3];
-                     pBot->weapon_points[3] = pBot->weapon_points[2];
-                     pBot->weapon_points[2] = pBot->weapon_points[1];
-                     pBot->weapon_points[1] = pBot->weapon_points[0];
-                     pBot->weapon_points[0] = pBot->waypoint_goal;
-                  }
-               }
-            }
-            else  // assume instagib...
-            {
-               // don't do anything, just randomly wander around
-            }
-         }
       }
 
       // check if the bot has a goal waypoint...
       if (pBot->waypoint_goal != -1)
       {
          // get the next waypoint to reach goal...
-         if (mod_id == FRONTLINE_DLL)
-         {
-            i = WaypointRouteFromTo(pBot->curr_waypoint_index, pBot->waypoint_goal, pBot->defender);
-         }
-         else
-         {
-            i = WaypointRouteFromTo(pBot->curr_waypoint_index, pBot->waypoint_goal, team);
-         }
+         i = WaypointRouteFromTo(pBot->curr_waypoint_index, pBot->waypoint_goal, team);
 
          if (i != WAYPOINT_UNREACHABLE)  // can we get to the goal from here?
          {

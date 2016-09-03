@@ -769,10 +769,7 @@ void ClientCommand( edict_t *pEntity )
             {
                g_menu_state = MENU_2;  // display team specific menu...
 
-               if (mod_id == FRONTLINE_DLL)
-                  UTIL_ShowMenu(pEntity, 0x13, -1, FALSE, show_menu_2_flf);
-               else
-                  UTIL_ShowMenu(pEntity, 0x1F, -1, FALSE, show_menu_2);
+               UTIL_ShowMenu(pEntity, 0x1F, -1, FALSE, show_menu_2);
 
                return;
             }
@@ -807,10 +804,7 @@ void ClientCommand( edict_t *pEntity )
             {
                g_menu_state = MENU_3;
 
-               if (mod_id == FRONTLINE_DLL)
-                  UTIL_ShowMenu(pEntity, 0x17, -1, FALSE, show_menu_3_flf);
-               else
-                  UTIL_ShowMenu(pEntity, 0x13, -1, FALSE, show_menu_3);
+               UTIL_ShowMenu(pEntity, 0x13, -1, FALSE, show_menu_3);
 
                return;
             }
@@ -835,52 +829,19 @@ void ClientCommand( edict_t *pEntity )
          }
          else if (g_menu_state == MENU_3)  // second menu...
          {
-            if (mod_id == FRONTLINE_DLL)
+            if (FStrEq(arg1, "1"))  // flag location
             {
-               if (FStrEq(arg1, "1"))  // capture point
-               {
-                  if (waypoints[g_menu_waypoint].flags & W_FL_FLF_CAP)
-                     waypoints[g_menu_waypoint].flags &= ~W_FL_FLF_CAP;  // off
-                  else
-                     waypoints[g_menu_waypoint].flags |= W_FL_FLF_CAP;  // on
-               }
-               else if (FStrEq(arg1, "2"))  // defend point
-               {
-                  if (waypoints[g_menu_waypoint].flags & W_FL_FLF_DEFEND)
-                     waypoints[g_menu_waypoint].flags &= ~W_FL_FLF_DEFEND;  // off
-                  else
-                  {
-                     waypoints[g_menu_waypoint].flags |= W_FL_FLF_DEFEND;  // on
-
-                     // set the aiming waypoint...
-
-                     WaypointAddAiming(pEntity);
-                  }
-               }
-               else if (FStrEq(arg1, "3"))  // go prone
-               {
-                  if (waypoints[g_menu_waypoint].flags & W_FL_PRONE)
-                     waypoints[g_menu_waypoint].flags &= ~W_FL_PRONE;  // off
-                  else
-                     waypoints[g_menu_waypoint].flags |= W_FL_PRONE;  // on
-               }
+               if (waypoints[g_menu_waypoint].flags & W_FL_TFC_FLAG)
+                  waypoints[g_menu_waypoint].flags &= ~W_FL_TFC_FLAG;  // off
+               else
+                  waypoints[g_menu_waypoint].flags |= W_FL_TFC_FLAG;  // on
             }
-            else
+            else if (FStrEq(arg1, "2"))  // flag goal
             {
-               if (FStrEq(arg1, "1"))  // flag location
-               {
-                  if (waypoints[g_menu_waypoint].flags & W_FL_TFC_FLAG)
-                     waypoints[g_menu_waypoint].flags &= ~W_FL_TFC_FLAG;  // off
-                  else
-                     waypoints[g_menu_waypoint].flags |= W_FL_TFC_FLAG;  // on
-               }
-               else if (FStrEq(arg1, "2"))  // flag goal
-               {
-                  if (waypoints[g_menu_waypoint].flags & W_FL_TFC_FLAG_GOAL)
-                     waypoints[g_menu_waypoint].flags &= ~W_FL_TFC_FLAG_GOAL;  // off
-                  else
-                     waypoints[g_menu_waypoint].flags |= W_FL_TFC_FLAG_GOAL;  // on
-               }
+               if (waypoints[g_menu_waypoint].flags & W_FL_TFC_FLAG_GOAL)
+                  waypoints[g_menu_waypoint].flags &= ~W_FL_TFC_FLAG_GOAL;  // off
+               else
+                  waypoints[g_menu_waypoint].flags |= W_FL_TFC_FLAG_GOAL;  // on
             }
          }
 
@@ -1323,22 +1284,6 @@ void StartFrame( void )
         BotThink(pBots[bot_index]);
 
         count++;
-
-        if ((mod_id == FRONTLINE_DLL) && (flf_bug_check == 0))
-        {
-           edict_t *pent = NULL;
-           int fix_flag = 0;
-
-           flf_bug_check = 1;
-
-           while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
-           {
-              if (pent->v.skin != 0)  // not blue skin?
-              {
-                 flf_bug_fix = 1;  // need to use bug fix code
-              }
-           }
-        }
      }
   }
 
@@ -1354,22 +1299,6 @@ void StartFrame( void )
         if ((g_waypoint_on) && FBitSet(pPlayer->v.flags, FL_CLIENT))
         {
               WaypointThink(pPlayer);
-        }
-
-        if ((mod_id == FRONTLINE_DLL) && (flf_bug_check == 0))
-        {
-           edict_t *pent = NULL;
-           int fix_flag = 0;
-
-           flf_bug_check = 1;
-
-           while ((pent = UTIL_FindEntityByClassname( pent, "capture_point" )) != NULL)
-           {
-              if (pent->v.skin != 0)  // not blue skin?
-              {
-                 flf_bug_fix = 1;  // need to use bug fix code
-              }
-           }
         }
      }
   }

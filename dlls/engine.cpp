@@ -491,32 +491,6 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_NS_ScreenFade;
         }
-        else if (mod_id == FRONTLINE_DLL)
-        {
-           if (msg_type == message_VGUI)
-              botMsgFunction = BotClient_FLF_VGUI;
-           else if (msg_type == message_WeaponList)
-              botMsgFunction = BotClient_FLF_WeaponList;
-           else if (msg_type == message_CurWeapon)
-              botMsgFunction = BotClient_FLF_CurrentWeapon;
-           else if (msg_type == message_AmmoX)
-              botMsgFunction = BotClient_FLF_AmmoX;
-           else if (msg_type == message_AmmoPickup)
-              botMsgFunction = BotClient_FLF_AmmoPickup;
-           else if (msg_type == message_Damage)
-              botMsgFunction = BotClient_FLF_Damage;
-           else if (msg_type == message_TextMsg)
-              botMsgFunction = BotClient_FLF_TextMsg;
-           else if (msg_type == message_WarmUp)
-              botMsgFunction = BotClient_FLF_WarmUp;
-           else if (msg_type == message_ScreenFade)
-              botMsgFunction = BotClient_FLF_ScreenFade;
-           else if (msg_type == 23)                     // SVC_TEMPENTITY
-           {
-              botMsgFunction = BotClient_FLF_TempEntity;
-              botMsgEndFunction = BotClient_FLF_TempEntity;
-           }
-        }
      }
   }
   else if (msg_dest == MSG_ALL)
@@ -580,15 +554,6 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            botMsgFunction = BotClient_Ship_Quarry;
 		}
      }
-     else if (mod_id == FRONTLINE_DLL)
-     {
-        if (msg_type == message_DeathMsg)
-           botMsgFunction = BotClient_FLF_DeathMsg;
-        else if (msg_type == message_WarmUp)
-           botMsgFunction = BotClient_FLF_WarmUpAll;
-        else if (msg_type == message_WinMessage)
-           botMsgFunction = BotClient_FLF_WinMessage;
-     }
   }
   else
   {
@@ -650,11 +615,6 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 		{
            botMsgFunction = BotClient_Ship_Quarry;
 		}
-     }
-     else if (mod_id == FRONTLINE_DLL)
-     {
-        if (msg_type == message_WeaponList)
-           botMsgFunction = BotClient_FLF_WeaponList;
      }
   }
 
@@ -1060,31 +1020,6 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		{
 			gmsgQuarry = msg;
 		}
-	}
-	else if( mod_id == FRONTLINE_DLL )
-	{
-		if (strcmp(pszName, "VGUIMenu") == 0)
-			message_VGUI = msg;
-		else if (strcmp(pszName, "WeaponList") == 0)
-			message_WeaponList = msg;
-		else if (strcmp(pszName, "CurWeapon") == 0)
-			message_CurWeapon = msg;
-		else if (strcmp(pszName, "AmmoX") == 0)
-			message_AmmoX = msg;
-		else if (strcmp(pszName, "AmmoPickup") == 0)
-			message_AmmoPickup = msg;
-		else if (strcmp(pszName, "Damage") == 0)
-			message_Damage = msg;
-		else if (strcmp(pszName, "DeathMsg") == 0)
-			message_DeathMsg = msg;
-		else if (strcmp(pszName, "TextMsg") == 0)
-			message_TextMsg = msg;
-		else if (strcmp(pszName, "WarmUp") == 0)
-			message_WarmUp = msg;
-		else if (strcmp(pszName, "WinMessage") == 0)
-			message_WinMessage = msg;
-		else if (strcmp(pszName, "ScreenFade") == 0)
-			message_ScreenFade = msg;
 	}
 
 	return msg;

@@ -240,29 +240,6 @@ typedef struct
 // #define SHIP_WEAPON_TRIPMINE		13
 // #define SHIP_WEAPON_SNARK			15
 
-// weapon ID values for FrontLineForce
-#define FLF_WEAPON_AK5           10
-#define FLF_WEAPON_UNKNOWN11     11
-#define FLF_WEAPON_UNKNOWN12     12
-#define FLF_WEAPON_UNKNOWN13     13
-#define FLF_WEAPON_UNKNOWN14     14
-#define FLF_WEAPON_UNKNOWN15     15
-#define FLF_WEAPON_MP5SD         16
-#define FLF_WEAPON_M4            17
-#define FLF_WEAPON_FLASHBANG     18
-#define FLF_WEAPON_HEGRENADE     19
-#define FLF_WEAPON_MP5A2         20
-#define FLF_WEAPON_UMP45         21
-#define FLF_WEAPON_SPAS12        22
-#define FLF_WEAPON_BERETTA       23
-#define FLF_WEAPON_KNIFE         24
-#define FLF_WEAPON_MAC10         25
-#define FLF_WEAPON_MK23          26
-#define FLF_WEAPON_MSG90         27
-#define FLF_WEAPON_FAMAS         28
-#define FLF_WEAPON_HK21          29
-
-
 typedef struct
 {
 	char szClassname[64];

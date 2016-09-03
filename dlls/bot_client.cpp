@@ -99,29 +99,6 @@ void BotClient_Gearbox_VGUI(void *p, int bot_index)
       pBots[bot_index]->start_action = MSG_OPFOR_CLASS_SELECT;
 }
 
-
-// This message is sent when the FrontLineForce VGUI menu is displayed.
-void BotClient_FLF_VGUI(void *p, int bot_index)
-{
-   if ((*(int *)p) == 2)  // is it a team select menu?
-      pBots[bot_index]->start_action = MSG_FLF_TEAM_SELECT;
-   else if ((*(int *)p) == 3)  // is it a class selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_CLASS_SELECT;
-   else if ((*(int *)p) == 70)  // is it a weapon selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_WEAPON_SELECT;
-   else if ((*(int *)p) == 72)  // is it a submachine gun selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_SUBMACHINE_SELECT;
-   else if ((*(int *)p) == 73)  // is it a shotgun selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_SHOTGUN_SELECT;
-   else if ((*(int *)p) == 75)  // is it a rifle selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_RIFLE_SELECT;
-   else if ((*(int *)p) == 76)  // is it a pistol selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_PISTOL_SELECT;
-   else if ((*(int *)p) == 78)  // is it a heavyweapons selection menu?
-      pBots[bot_index]->start_action = MSG_FLF_HEAVYWEAPONS_SELECT;
-}
-
-
 // This message is sent when a client joins the game.  All of the weapons
 // are sent with the weapon ID and information about what ammo is used.
 void BotClient_Valve_WeaponList(void *p, int bot_index)
@@ -395,12 +372,6 @@ void BotClient_Ship_WeaponList(void *p, int bot_index)
 	BotClient_Valve_WeaponList(p, bot_index);
 }
 
-void BotClient_FLF_WeaponList(void *p, int bot_index)
-{
-	// this is just like the Valve Weapon List message
-	BotClient_Valve_WeaponList(p, bot_index);
-}
-
 
 // This message is sent when a weapon is selected (either by the bot chosing
 // a weapon or by the server auto assigning the bot a weapon).
@@ -484,12 +455,6 @@ void BotClient_Ship_CurrentWeapon( void *p, int bot_index )
     BotClient_Valve_CurrentWeapon(p, bot_index);
 }
 
-void BotClient_FLF_CurrentWeapon(void *p, int bot_index)
-{
-	// this is just like the Valve Current Weapon message
-	BotClient_Valve_CurrentWeapon(p, bot_index);
-}
-
 
 // This message is sent whenever ammo ammounts are adjusted (up or down).
 void BotClient_Valve_AmmoX(void *p, int bot_index)
@@ -557,12 +522,6 @@ void BotClient_Hunger_AmmoX(void *p, int bot_index)
 }
 
 void BotClient_Ship_AmmoX(void *p, int bot_index)
-{
-	// this is just like the Valve AmmoX message
-	BotClient_Valve_AmmoX(p, bot_index);
-}
-
-void BotClient_FLF_AmmoX(void *p, int bot_index)
 {
 	// this is just like the Valve AmmoX message
 	BotClient_Valve_AmmoX(p, bot_index);
@@ -638,12 +597,6 @@ void BotClient_Hunger_AmmoPickup(void *p, int bot_index)
 }
 
 void BotClient_Ship_AmmoPickup(void *p, int bot_index)
-{
-	// this is just like the Valve Ammo Pickup message
-	BotClient_Valve_AmmoPickup(p, bot_index);
-}
-
-void BotClient_FLF_AmmoPickup(void *p, int bot_index)
 {
 	// this is just like the Valve Ammo Pickup message
 	BotClient_Valve_AmmoPickup(p, bot_index);
@@ -759,12 +712,6 @@ void BotClient_Ship_Damage(void *p, int bot_index)
 	BotClient_Valve_Damage(p, bot_index);
 }
 
-void BotClient_FLF_Damage(void *p, int bot_index)
-{
-	// this is just like the Valve Battery message
-	BotClient_Valve_Damage(p, bot_index);
-}
-
 
 // This message gets sent when the bots money ammount changes (for CS)
 void BotClient_CS_Money(void *p, int bot_index)
@@ -864,12 +811,6 @@ void BotClient_Hunger_DeathMsg(void *p, int bot_index)
 	BotClient_Valve_DeathMsg(p, bot_index);
 }
 
-void BotClient_FLF_DeathMsg(void *p, int bot_index)
-{
-	// this is just like the Valve DeathMsg message
-	BotClient_Valve_DeathMsg(p, bot_index);
-}
-
 
 // This message gets sent when a text message is displayed
 void BotClient_FLF_TextMsg(void *p, int bot_index)
@@ -896,73 +837,6 @@ void BotClient_FLF_TextMsg(void *p, int bot_index)
       }
    }
 }
-
-
-// This message gets sent when the WarmUpTime is enabled/disabled
-void BotClient_FLF_WarmUp(void *p, int bot_index)
-{
-   pBots[bot_index]->warmup = *(int *)p;
-}
-
-
-// This message gets sent to ALL when the WarmUpTime is enabled/disabled
-void BotClient_FLF_WarmUpAll(void *p, int bot_index)
-{
-   for (int i=0; i < MAX_PLAYERS; i++)
-   {
-      if (pBots[i]->is_used)  // count the number of bots in use
-         pBots[i]->warmup = *(int *)p;
-   }
-}
-
-
-// This message gets sent when the round is over
-void BotClient_FLF_WinMessage(void *p, int bot_index)
-{
-   for (int i=0; i < MAX_PLAYERS; i++)
-   {
-      if (pBots[i]->is_used)  // count the number of bots in use
-         pBots[i]->round_end = 1;
-   }
-}
-
-
-// This message gets sent when a temp entity is created
-void BotClient_FLF_TempEntity(void *p, int bot_index)
-{
-   static int state = 0;   // current state machine state
-   static int te_type;     // TE_ message type
-
-   if (p == NULL)  // end of message?
-   {
-      state = 0;
-      return;
-   }
-
-   if (state == 0)
-   {
-      state++;
-      te_type = *(int *)p;
-
-      return;
-   }
-
-   if (te_type == TE_TEXTMESSAGE)
-   {
-      if (state == 16)
-      {
-         if (strncmp((char *)p, "Capturing ", 10) == 0)
-         {
-            // if bot is currently capturing, keep timer alive...
-            if (pBots[bot_index]->b_use_capture)
-               pBots[bot_index]->f_use_capture_time = gpGlobals->time + 2.0;
-         }
-      }
-
-      state++;
-   }
-}
-
 
 void BotClient_Valve_ScreenFade(void *p, int bot_index)
 {
@@ -1037,12 +911,6 @@ void BotClient_Hunger_ScreenFade(void *p, int bot_index)
 }
 
 void BotClient_Ship_ScreenFade(void *p, int bot_index)
-{
-	// this is just like the Valve ScreenFade message
-	BotClient_Valve_ScreenFade(p, bot_index);
-}
-
-void BotClient_FLF_ScreenFade(void *p, int bot_index)
 {
 	// this is just like the Valve ScreenFade message
 	BotClient_Valve_ScreenFade(p, bot_index);

@@ -663,8 +663,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			pBot->start_action = MSG_DOD_IDLE;
 		else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
 			pBot->start_action = MSG_OPFOR_IDLE;
-		else if (mod_id == FRONTLINE_DLL)
-			pBot->start_action = MSG_FLF_IDLE;
 		else if (mod_id == NS_DLL && start_action != 0)
 		{
 			pBot->start_action = start_action;
@@ -733,8 +731,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) ||
-          ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()) || (mod_id == FRONTLINE_DLL))
+	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
          {
@@ -1149,38 +1146,6 @@ void BotFindItem( bot_t *pBot )
             else if (strcmp("monster_snark", item_name) == 0)
             {
             }
-
-            else if ((mod_id == FRONTLINE_DLL) && (!pBot->defender) && (strcmp("capture_point", item_name) == 0))
-            {
-               int team = UTIL_GetTeam(pEdict);  // skin and team must match
-
-               if (flf_bug_fix)
-                  team = 1 - team;  // BACKWARDS bug!
-
-               // check if flag not set and point not captured...
-               if ((!pBot->b_use_capture) && (pent->v.skin == team))
-               {
-                  float distance = (pent->v.origin - pEdict->v.origin).Length( );
-
-                  // check if close enough and facing it directly...
-                  if ((distance < FLF_PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 20))
-                  {
-                     pBot->b_use_capture = TRUE;
-                     pBot->f_use_capture_time = gpGlobals->time + 8.0;
-                     pBot->pCaptureEdict = pent;
-                  }
-
-                  // if close to capture point...
-                  if (distance < 160)
-                  {
-                     // don't avoid walls for a while
-                     pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                  }
-
-                  can_pickup = TRUE;
-               }
-            }
-
          }  // end if object is visible
       }  // end else not "func_" entity
 
@@ -1353,42 +1318,6 @@ void BotThink( bot_t *pBot )
    }
 
    is_idle = FALSE;
-
-   if ((mod_id == FRONTLINE_DLL) && (pBot->round_end))
-   {
-      if (pBot->warmup)  // has warmup started (i.e. start of round?)
-      {
-         pBot->round_end = 0;
-
-         BotSpawnInit(pBot);
-      }
-
-      is_idle = TRUE;
-
-      flf_bug_fix = 0;  // BACKWARDS bug off now!
-   }
-
-   if ((mod_id == FRONTLINE_DLL) && (pBot->warmup) && (!pBot->defender))
-   {
-      if (pBot->curr_waypoint_index == -1)
-      {
-         // find the nearest visible waypoint
-         int i = WaypointFindNearest(pEdict, REACHABLE_RANGE, pBot->defender);
-
-         if (i != -1)
-         {
-            Vector v_direction = waypoints[i].origin - pEdict->v.origin;
-
-            Vector bot_angles = UTIL_VecToAngles( v_direction );
-
-            pBot->idle_angle = bot_angles.y;
-         }
-         else
-            pBot->idle_angle = pEdict->v.v_angle.y;
-      }
-
-      is_idle = TRUE;
-   }
 
    if (pBot->blinded_time > gpGlobals->time)
    {

@@ -494,56 +494,6 @@ bot_weapon_select_t ship_weapon_select[] = {
 	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
 };
 
-bot_weapon_select_t frontline_weapon_select[] = {
-   {FLF_WEAPON_HEGRENADE, "weapon_hegrenade", 0.3, 0.0,
-   200.0, 1000.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_FLASHBANG, "weapon_flashbang", 0.3, 0.0,
-   100.0, 800.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_KNIFE, "weapon_knife", 0.3, 0.2,
-   0.0, 60.0, 0.0, 0.0,
-    100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_HK21, "weapon_hk21", 0.0, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_UMP45, "weapon_ump45", 0.0, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_FAMAS, "weapon_famas", 0.0, 0.0,
-   0.0, 500.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MSG90, "weapon_msg90", 1.2, 0.0,
-   0.0, 2500.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MP5A2, "weapon_mp5a2", 0.0, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_AK5, "weapon_ak5", 0.0, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MP5SD, "weapon_mp5sd", 0.0, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_M4, "weapon_m4", 0.0, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_SPAS12, "weapon_spas12", 0.9, 0.0,
-   0.0, 900.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MAC10, "weapon_mac10", 0.0, 0.0,
-   0.0, 500.0, 0.0, 0.0,
-    100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_BERETTA, "weapon_beretta", 0.4, 0.0,
-   0.0, 1200.0, 0.0, 1200.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {FLF_WEAPON_MK23, "weapon_mk23", 0.4, 0.0,
-   0.0, 1200.0, 0.0, 1200.0,
-    100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   /* terminator */
-   {0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
-};
-
 edict_t *BotFindEnemy( bot_t *pBot )
 {
 	Vector vecEnd;
@@ -960,10 +910,6 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 	else if (mod_id == SHIP_DLL)
 	{
 		pSelect = &ship_weapon_select[0];
-	}
-	else if (mod_id == FRONTLINE_DLL)
-	{
-		pSelect = &frontline_weapon_select[0];
 	}
 
    if (pSelect)
