@@ -28,6 +28,9 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
+v0.x (??/??/??)
+- [Natural Selection] Bots will now reload after they haven't seen an enemy in a while.
+
 v0.2.1 (10/08/16)
 - [Day of Defeat] Bots now spawn as Allies and Axis (only the first four classes of each team) and attack each other.
 - [Gunman Chronicles] Bots now use different gauss pistol modes.

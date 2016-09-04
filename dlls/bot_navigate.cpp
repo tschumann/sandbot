@@ -1009,13 +1009,11 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                if (RANDOM_LONG(1, 100) <= 10)
                {
                   // find the nearest flag waypoint...
-
                   index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
                }
                else
                {
                   // find a random sniper waypoint...
-
                   index = WaypointFindRandomGoal(pEdict, team, W_FL_SNIPER);
                }
 
@@ -1032,7 +1030,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                   if (((value <= 70) && (pBot->sentrygun_level < 3)) || (value <= 40))
                   {
                      // build or upgrade a sentry gun...
-
                      index = -1;
 
                      // do we need more metal to build a sentry gun?
@@ -1046,7 +1043,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                         if (pBot->sentrygun_waypoint == -1)
                         {
                            // find a random sentry gun waypoint...
-
                            index = WaypointFindRandomGoal(pEdict, team, W_FL_SENTRYGUN);
                         }
                         else
@@ -1086,7 +1082,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                   if (RANDOM_LONG(1, 100) <= 20)
                   {
                      // find the nearest flag waypoint...
-
                      index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
 
                      if (index != -1)

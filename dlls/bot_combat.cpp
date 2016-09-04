@@ -509,7 +509,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 	{
 		vecEnd = pBot->pBotEnemy->v.origin + pBot->pBotEnemy->v.view_ofs;
 
-		// if the enemy is dead? if it is, assume the bot kill it
+		// if the enemy is dead? if it is, assume the bot killed it
 		if (!IsAlive(pBot->pBotEnemy))
 		{
 			// the enemy is dead, jump for joy about 10% of the time,
@@ -528,7 +528,8 @@ edict_t *BotFindEnemy( bot_t *pBot )
 			{
 				if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
 				{
-					pBot->pBotEnemy = NULL;  // player is healed, null out pointer
+					// player is healed, null out pointer
+					pBot->pBotEnemy = NULL;
 				}
 			}
 			else
@@ -782,8 +783,9 @@ edict_t *BotFindEnemy( bot_t *pBot )
 	{
 		pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
 
-		// TODO: is this check needed for all mods where players reload? check where else IN_RELOAD is set
-		if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
+		// TODO: does reloading cause ammo to be lost in Day of Defeat? is there reloading in Team Fortress Classic, Gunman Chonicles and The Ship?
+		// also, aliens in Natural Selection don't reload
+		if (true)
 		{
 			pEdict->v.button |= IN_RELOAD;  // press reload button
 		}
