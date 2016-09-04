@@ -785,7 +785,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 
 		// TODO: does reloading cause ammo to be lost in Day of Defeat? is there reloading in Team Fortress Classic, Gunman Chonicles and The Ship?
 		// also, aliens in Natural Selection don't reload
-		if (true)
+		if (pBot->ShouldReload())
 		{
 			pEdict->v.button |= IN_RELOAD;  // press reload button
 		}

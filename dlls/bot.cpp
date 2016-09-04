@@ -1969,6 +1969,11 @@ int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )
 	return iEnemiesInLineOfSight;
 }
 
+bool bot_t::ShouldReload()
+{
+	return true;
+}
+
 void bot_t::PickUpItem()
 {
 }

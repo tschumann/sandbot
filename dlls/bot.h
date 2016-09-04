@@ -322,6 +322,7 @@ public:
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual float DistanceToEnemy();
 	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
+	virtual bool ShouldReload();
 
 	virtual void PickUpItem();
 
