@@ -516,6 +516,7 @@ class GunmanBot : public bot_t
 public:
 	GunmanBot();
 	virtual void OnSpawn();
+	virtual bool ShouldReload();
 
 	virtual int GetPistolMode();
 
@@ -552,6 +553,8 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Reset();
+	virtual bool ShouldReload();
+
 	virtual bool IsNearHive();
 	virtual bool IsInReadyRoom();
 	virtual int GetDesiredClass();

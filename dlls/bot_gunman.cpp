@@ -46,6 +46,11 @@ void GunmanBot::OnSpawn()
 	}
 }
 
+bool GunmanBot::ShouldReload()
+{
+	return false;
+}
+
 int GunmanBot::GetPistolMode()
 {
 	return this->iPistolMode;

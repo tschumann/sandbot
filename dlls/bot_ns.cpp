@@ -44,6 +44,19 @@ void NSBot::Reset()
 	this->bIsEvolving = false;
 }
 
+bool NSBot::ShouldReload()
+{
+	if( this->IsAlien() )
+	{
+		return false;
+	}
+	else
+	{
+		// TODO: look at current weapon's clip
+		return true;
+	}
+}
+
 bool NSBot::IsNearHive()
 {
 	edict_t *pent = NULL;
