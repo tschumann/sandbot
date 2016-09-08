@@ -1905,6 +1905,8 @@ bot_t::bot_t()
 	// TODO: this seems like a dangerous thing to do
 	this->is_used = false;
 	this->index = -1;
+
+	this->bIsKicked = false;
 }
 
 void bot_t::OnSpawn()
@@ -1997,6 +1999,16 @@ bool bot_t::IsDead()
 bool bot_t::IsUnderWater()
 {
 	return this->pEdict->v.waterlevel == 3;
+}
+
+void bot_t::SetKicked()
+{
+	this->bIsKicked = true;
+}
+
+bool bot_t::IsKicked()
+{
+	return this->bIsKicked;
 }
 
 void bot_t::UpdateSounds()

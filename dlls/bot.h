@@ -332,6 +332,9 @@ public:
 	virtual bool IsDead();
 	virtual bool IsUnderWater();
 
+	virtual void SetKicked();
+	virtual bool IsKicked();
+
 	virtual void UpdateSounds();
 
 	virtual bool BaseCanUseWeapon();
@@ -471,6 +474,8 @@ public:
 	bot_current_weapon_t current_weapon;  // one current weapon for each bot
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
 protected:
+	bool bIsKicked;
+
 	float fMaxSpeed;
 	std::vector<weapon_t> weapons;
 };

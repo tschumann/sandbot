@@ -501,19 +501,20 @@ void ClientDisconnect( edict_t *pEntity )
      clients[i] = NULL;
 
   // TODO: why is this commented out? this is probably why kicking a bot causes a crash
-#if 0
+
   for (i=0; i < 32; i++)
   {
      if (pBots[i]->pEdict == pEntity)
      {
+		pBots[i]->SetKicked();
+#if 0
         // someone kicked this bot off of the server...
         pBots[i]->is_used = FALSE;  // this slot is now free to use
         pBots[i]->kick_time = gpGlobals->time;  // save the kicked time
-
+#endif
         break;
      }
   }
-#endif
 
    (*other_gFunctionTable.pfnClientDisconnect)(pEntity);
 }
@@ -1282,7 +1283,7 @@ void StartFrame( void )
   for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
   {
 	 // is this slot used AND not respawning
-     if (pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
+     if (!pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
      {
 
 		 // TODO: kicking a bot will result in this being called and the engine crashing - need to figure out how to detect it
