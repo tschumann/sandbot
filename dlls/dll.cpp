@@ -460,7 +460,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
      // don't try to add bots for 60 seconds, give client time to get added
      bot_check_time = gpGlobals->time + 60.0;
 
-     for (i=0; i < 32; i++)
+     for (i=0; i < MAX_PLAYERS; i++)
      {
         if (pBots[i]->is_used)  // count the number of bots in use
            count++;
@@ -470,7 +470,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
      // then kick one of the bots off the server...
      if ((count > min_bots) && (min_bots != -1))
      {
-        for (i=0; i < 32; i++)
+        for (i=0; i < MAX_PLAYERS; i++)
         {
            if (pBots[i]->is_used)  // is this slot used?
            {
@@ -491,17 +491,16 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 
 void ClientDisconnect( edict_t *pEntity )
 {
-  int i;
+	UTIL_LogDPrintf("ClientDisconnect: pEntity=%x\n", pEntity);
 
-  if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientDisconnect: %x\n",pEntity); fclose(fp); }
-
-  i = 0;
+  int i = 0;
   while ((i < MAX_PLAYERS) && (clients[i] != pEntity))
      i++;
 
   if (i < MAX_PLAYERS)
      clients[i] = NULL;
 
+  // TODO: why is this commented out? this is probably why kicking a bot causes a crash
 #if 0
   for (i=0; i < 32; i++)
   {
@@ -528,17 +527,22 @@ void ClientKill( edict_t *pEntity )
 
 void ClientPutInServer( edict_t *pEntity )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientPutInServer: %x\n",pEntity); fclose(fp); }
+	UTIL_LogDPrintf("ClientPutInServer: pEntity=%x\n", pEntity);
 
-   int i = 0;
+	int i = 0;
 
-   while ((i < 32) && (clients[i] != NULL))
-      i++;
+	while( (i < MAX_PLAYERS) && clients[i] )
+	{
+		i++;
+	}
 
-   if (i < 32)
-      clients[i] = pEntity;  // store this clients edict in the clients array
+	if( i < MAX_PLAYERS )
+	{
+		// store this clients edict in the clients array
+		clients[i] = pEntity;
+	}
 
-   (*other_gFunctionTable.pfnClientPutInServer)(pEntity);
+	(*other_gFunctionTable.pfnClientPutInServer)(pEntity);
 }
 
 void ClientCommand( edict_t *pEntity )
@@ -575,6 +579,7 @@ void ClientCommand( edict_t *pEntity )
 
          return;
       }
+	  // seems to be like a bots ignore real players setting?
       else if (FStrEq(pcmd, "observer"))
       {
          if ((arg1 != NULL) && (*arg1 != 0))

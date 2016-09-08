@@ -1902,6 +1902,7 @@ void BotThink( bot_t *pBot )
 
 bot_t::bot_t()
 {
+	// TODO: this seems like a dangerous thing to do
 	this->is_used = false;
 	this->index = -1;
 }
