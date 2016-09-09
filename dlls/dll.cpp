@@ -1291,6 +1291,10 @@ void StartFrame( void )
 
         count++;
      }
+	 else if( pBots[bot_index]->IsKicked() )
+	 {
+		 // TODO: set is_used to false? would also need to decrement iBotCount too?
+	 }
   }
 
   if (count > num_bots)
