@@ -24,12 +24,6 @@ extern int team_allies[4];
 extern FLAG_S flags[MAX_FLAGS];
 extern int num_flags;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
-edict_t *holywars_saint;
-int halo_status;
-int holywars_gamemode;
-
-extern int flf_bug_fix;
-
 
 void BotFixIdealPitch(edict_t *pEdict)
 {
@@ -1136,6 +1130,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
 			if( capturedPoints.size() > 0 )
 			{
+				// TODO: maybe move the skipping logic into WaypointFindNearestGoal - make it treat captured points as normal points?
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_DOD_CAP, &capturedPoints[0]);
 			}
 			else

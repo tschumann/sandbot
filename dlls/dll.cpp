@@ -92,10 +92,6 @@ bool spawn_time_reset = FALSE;
 
 Game *pGame = NULL;
 
-int flf_bug_fix;  // for FLF 1.1 capture point bug
-int flf_bug_check;  // for FLF 1.1 capture point bug
-
-
 // TheFatal's method for calculating the msecval
 int msecnum;
 float msecdel;
@@ -260,9 +256,6 @@ int DispatchSpawn( edict_t *pent )
 
      prev_num_bots = num_bots;
      num_bots = 0;
-
-     flf_bug_fix = 0;
-     flf_bug_check = 0;
 
      bot_check_time = gpGlobals->time + 30.0;
   }

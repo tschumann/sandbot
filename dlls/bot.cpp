@@ -39,8 +39,6 @@ extern int max_teams;
 extern char bot_whine[MAX_BOT_WHINE][81];
 extern int whine_count;
 
-extern int flf_bug_fix;
-
 static FILE *fp;
 
 
@@ -1547,9 +1545,6 @@ void BotThink( bot_t *pBot )
          else if (pBot->b_use_capture)
          {
             int team = UTIL_GetTeam(pEdict);  // skin and team must match
-
-            if (flf_bug_fix)
-               team = 1 - team;  // BACKWARDS bug fix!
 
             // still capturing and hasn't captured yet...
             if ((pBot->f_use_capture_time > gpGlobals->time) && (pBot->pCaptureEdict->v.skin == team))

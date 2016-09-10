@@ -934,7 +934,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       {
          if (pEntity)
             ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a control point!\n");
-         waypoints[wpt_index].flags |= (uint64_t)W_FL_DOD_CAP;
+         waypoints[wpt_index].flags |= W_FL_DOD_CAP;
       }
 
 	  if ((strcmp("team_hive", nearest_name) == 0))
