@@ -25,7 +25,6 @@
 
 extern int mod_id;
 extern int m_spriteTexture;
-extern int IsDedicatedServer;
 
 extern int num_backpacks;
 extern BACKPACK_S backpacks[MAX_BACKPACKS];
@@ -1030,6 +1029,7 @@ void WaypointAdd(edict_t *pEntity)
    // search the area near the waypoint for items (HEALTH, AMMO, WEAPON, etc.)
    WaypointSearchItems(pEntity, waypoints[index].origin, index);
 
+   // TODO: this isn't working
    if( waypoints[index].flags & W_FL_NS_HIVE )
    {
 	   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 0, 0);
@@ -1209,12 +1209,9 @@ void WaypointDelete(edict_t *pEntity)
 
 void WaypointUpdate(edict_t *pEntity)
 {
-   int index;
-   int mask;
+   int mask = W_FL_HEALTH | W_FL_ARMOR | W_FL_AMMO | W_FL_WEAPON;
 
-   mask = W_FL_HEALTH | W_FL_ARMOR | W_FL_AMMO | W_FL_WEAPON;
-
-   for (index=0; index < num_waypoints; index++)
+   for (int index=0; index < num_waypoints; index++)
    {
       waypoints[index].flags &= ~mask;  // clear the mask bits
 

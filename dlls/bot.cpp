@@ -43,12 +43,10 @@ static FILE *fp;
 
 
 #define PLAYER_SEARCH_RADIUS     40.0
-#define FLF_PLAYER_SEARCH_RADIUS 60.0
 
 unsigned int iBotCount = 0;
 unsigned int iBotsNeeded = 0;
 
-// bot_t bots[32];   // max of 32 bots in a game
 bot_t **pBots; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 bool b_botdontshoot = FALSE;

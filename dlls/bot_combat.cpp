@@ -20,8 +20,6 @@ extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 extern int team_allies[4];
 
-FILE *fp;
-
 // weapons are stored in priority order, most desired weapon should be at
 // the start of the array and least desired should be at the end
 // presumably the no ammo ones are at the top so they can always be selected
