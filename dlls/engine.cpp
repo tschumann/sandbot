@@ -157,7 +157,7 @@ void pfnChangePitch(edict_t* ent)
 }
 edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszField, const char *pszValue)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFindEntityByString: %s\n",pszValue); fclose(fp); }
+	UTIL_LogDPrintf("pfnFindEntityByString: pEdictStartSearchAfter=%x, pszField=%s, pszValue=%s\n", pEdictStartSearchAfter, pszField, pszValue);
 
   int bot_index;
   bot_t *pBot;
@@ -208,9 +208,9 @@ void pfnAngleVectors(const float *rgflVector, float *forward, float *right, floa
 }
 edict_t* pfnCreateEntity(void)
 {
-   edict_t *pent = (*g_engfuncs.pfnCreateEntity)();
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCreateEntity: %x\n",pent); fclose(fp); }
-   return pent;
+	edict_t *pent = (*g_engfuncs.pfnCreateEntity)();
+	UTIL_LogDPrintf("pfnCreateEntity\n");
+	return pent;
 }
 void pfnRemoveEntity(edict_t* e)
 {
@@ -228,9 +228,9 @@ void pfnRemoveEntity(edict_t* e)
 }
 edict_t* pfnCreateNamedEntity(int className)
 {
-   edict_t *pent = (*g_engfuncs.pfnCreateNamedEntity)(className);
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCreateNamedEntity: edict=%x name=%s\n",pent,STRING(className)); fclose(fp); }
-   return pent;
+	edict_t *pent = (*g_engfuncs.pfnCreateNamedEntity)(className);
+	UTIL_LogDPrintf("pfnCreateNamedEntity: className=%s\n", STRING(className));
+	return pent;
 }
 void pfnMakeStatic(edict_t *ent)
 {

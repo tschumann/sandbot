@@ -105,6 +105,7 @@ int  WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int tea
 int  WaypointFindNearest(edict_t *pEntity, float distance, int team);
 int  WaypointFindNearest(Vector v_src, edict_t *pEntity, float range, int team);
 int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags);
+int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int* pExclude[]);
 int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int exclude[]);
 int  WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags);
 int  WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags);

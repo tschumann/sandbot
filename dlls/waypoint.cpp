@@ -527,6 +527,61 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags,
    return min_index;
 }
 
+int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int* pExclude[])
+{
+   int index, min_index;
+   int distance, min_distance;
+   int exclude_index;
+
+   if (num_waypoints < 1)
+      return -1;
+
+   // find the nearest waypoint with the matching flags...
+
+   min_index = -1;
+   min_distance = 99999;
+
+   for (index=0; index < num_waypoints; index++)
+   {
+      if (index == src)
+         continue;  // skip the source waypoint
+
+      if (waypoints[index].flags & W_FL_DELETED)
+         continue;  // skip any deleted waypoints
+
+      if (waypoints[index].flags & W_FL_AIMING)
+         continue;  // skip any aiming waypoints
+
+      // skip this waypoint if it's team specific and teams don't match...
+      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[index].flags & W_FL_TEAM) != team))
+         continue;
+
+      if ((waypoints[index].flags & flags) != flags)
+         continue;  // skip this waypoint if the flags don't match
+
+      exclude_index = 0;
+      while (pExclude[exclude_index])
+      {
+         if (index == *pExclude[exclude_index])
+            break;  // found a match, break out of while loop
+
+         exclude_index++;
+      }
+
+      if (index == *pExclude[exclude_index])
+         continue;  // skip any index that matches exclude list
+
+      distance = WaypointDistanceFromTo(src, index, team);
+
+      if (distance < min_distance)
+      {
+         min_index = index;
+         min_distance = distance;
+      }
+   }
+
+   return min_index;
+}
 
 int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags)
 {
