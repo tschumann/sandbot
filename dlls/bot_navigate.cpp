@@ -427,7 +427,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                   if ((flags[i].edict == pent) && ((flags[i].team_no == (team+1)) || (flags[i].team_no == 0)))
                   {
                      // find the nearest waypoint to the ball...
-                     index = WaypointFindNearest(pent->v.origin, pEdict, 500, team);
+                     index = WaypointFindNearest(pEdict, 500, team, pent->v.origin);
 
                      if (index == -1)
                      {
@@ -521,7 +521,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                if (pent->v.owner == NULL)
                {
                   // find the nearest waypoint to the flag/card...
-                  index = WaypointFindNearest(pent->v.origin, pEdict, 500, team);
+                  index = WaypointFindNearest(pEdict, 500, team, pent->v.origin);
 
                   if (index == -1)
                   {
@@ -933,7 +933,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             if (contents == CONTENTS_EMPTY)
             {
                // find the nearest visible waypoint
-               i = WaypointFindNearest(tr.vecEndPos, pEdict, 100, team);
+               i = WaypointFindNearest(pEdict, 100, team, tr.vecEndPos);
 
                if (i != -1)
                {
