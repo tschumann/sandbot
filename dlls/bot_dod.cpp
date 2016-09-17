@@ -106,3 +106,26 @@ void DODBot::Join()
 		return;
 	}
 }
+
+bool DODBot::ShouldCapturePoint( edict_t * pControlPoint )
+{
+	// if it's currently captured by the Axis and the player is Allied
+	if( pControlPoint->v.body == 0 && this->GetTeam() == DODBot::TEAM_ALLIES )
+	{
+		return true;
+	}
+
+	// if it's currently captured by the Allies and the player is Axis
+	if( pControlPoint->v.body == 1 && this->GetTeam() == DODBot::TEAM_AXIS )
+	{
+		return true;
+	}
+
+	// if it's uncaptured
+	if( pControlPoint->v.body == 3 )
+	{
+		return true;
+	}
+
+	return false;
+}

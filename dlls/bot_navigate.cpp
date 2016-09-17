@@ -1098,46 +1098,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
 		 else if (mod_id == DOD_DLL)
 		 {
-			edict_t *pent = NULL;
-			edict_t *pUncapturedPoint = NULL;
-			std::vector<int> capturedPoints;
-
-			while( pent = UTIL_FindEntityByClassname( pent, "dod_control_point" ) )
-			{
-				// 3 is uncaptured? 0 and 1 are axis/allies?
-				if( pent->v.body == 3 )
-				{
-					pUncapturedPoint = pent;
-					int index = WaypointFindNearestWaypoint( pent, W_FL_DOD_CAP );
-					ALERT( at_console, "the uncaptured point is at %d\n", index );
-				}
-				else
-				{
-					int index = WaypointFindNearestWaypoint( pent, W_FL_DOD_CAP );
-
-					if( index == -1 )
-					{
-						ALERT( at_error, "Found a dod_control_point with no waypoint!\n" );
-					}
-					else
-					{
-						capturedPoints.push_back( index );
-					}
-				}
-			}
-
-			ALERT(at_console, "looking for a control point\n");
-
-			if( capturedPoints.size() > 0 )
-			{
-				// TODO: maybe move the skipping logic into WaypointFindNearestGoal - make it treat captured points as normal points?
-				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_DOD_CAP, &capturedPoints[0]);
-			}
-			else
-			{
-				index = -1;
-				ALERT(at_console, "couldn't find captured points to ignore\n");
-			}
+			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_DOD_CAP);
 
             if (index != -1)
             {

@@ -495,6 +495,8 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 
+	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
+
 	bool bCapturing;
 
 	const static int TEAM_ALLIES = 1;

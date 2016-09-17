@@ -458,6 +458,27 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
       if ((waypoints[index].flags & flags) != flags)
          continue;  // skip this waypoint if the flags don't match
 
+	  // TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
+	  if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
+	  {
+		  // TODO: assumes only one control point near this waypoint and within 100 units
+		  edict_t *nearest_control_point = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
+
+		  bot_t *pBot = UTIL_GetBotPointer( pEntity );
+
+		  if( pBot )
+		  {
+			  if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
+			  {
+				  continue;
+			  }
+		  }
+		  else
+		  {
+			  ALERT( at_console, "Got NULL pointer in WaypointFindNearestGoal\n" );
+		  }
+	  }
+
       distance = WaypointDistanceFromTo(src, index, team);
 
       if (distance < min_distance)
@@ -509,18 +530,18 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags,
 		  // TODO: assumes only one control point near this waypoint and within 100 units
 		  edict_t *nearest_control_point = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
 
-		  int player_team = UTIL_GetTeam(pEntity);
+		  bot_t *pBot = UTIL_GetBotPointer( pEntity );
 
-		  // if it's uncaptured or the opposing team has control
-		  if( nearest_control_point && (nearest_control_point->v.body == 3 ||
-			  (player_team == DODBot::TEAM_ALLIES && nearest_control_point->v.body != 1) ||
-			  (player_team == DODBot::TEAM_AXIS && nearest_control_point->v.body != 0)))
+		  if( pBot )
 		  {
-			  //
+			  if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
+			  {
+				  continue;
+			  }
 		  }
 		  else
 		  {
-			  continue;
+			  ALERT( at_console, "Got NULL pointer in WaypointFindNearestGoal\n" );
 		  }
 	  }
 
