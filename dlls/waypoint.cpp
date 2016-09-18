@@ -426,6 +426,55 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
    return min_index;
 }
 
+bool ShouldSkip(edict_t *pPlayer, int index)
+{
+	bot_t *pBot = UTIL_GetBotPointer( pPlayer );
+
+	if( !pBot )
+	{
+		ALERT( at_console, "Got NULL pointer in ShouldSkip\n" );
+
+		return false;
+	}
+
+	// TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
+	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
+	{
+		// TODO: assumes only one control point near this waypoint and within 100 units
+		edict_t *nearest_control_point = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
+
+		if( !nearest_control_point || !FStrEq("dod_control_point", STRING(nearest_control_point->v.classname) ) )
+		{
+			ALERT( at_console, "Couldn't find nearest dod_control_point in ShouldSkip\n" );
+
+			return false;
+		}
+
+		if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
+		{
+			return true;
+		}
+	}
+	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_HIVE )
+	{
+		edict_t *nearest_hive = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
+
+		if( !nearest_hive || !FStrEq("team_hive", STRING(nearest_hive->v.classname) ) )
+		{
+			ALERT( at_console, "Couldn't find nearest team_hive in ShouldSkip\n" );
+
+			return false;
+		}
+
+		if( !((NSBot *)pBot)->ShouldAttackHive( nearest_hive ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
 {
@@ -458,26 +507,10 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
       if ((waypoints[index].flags & flags) != flags)
          continue;  // skip this waypoint if the flags don't match
 
-	  // TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
-	  if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
-	  {
-		  // TODO: assumes only one control point near this waypoint and within 100 units
-		  edict_t *nearest_control_point = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
-
-		  bot_t *pBot = UTIL_GetBotPointer( pEntity );
-
-		  if( pBot )
-		  {
-			  if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
-			  {
-				  continue;
-			  }
-		  }
-		  else
-		  {
-			  ALERT( at_console, "Got NULL pointer in WaypointFindNearestGoal\n" );
-		  }
-	  }
+		if (ShouldSkip(pEntity, index))
+		{
+			continue;
+		}
 
       distance = WaypointDistanceFromTo(src, index, team);
 
@@ -524,26 +557,10 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags,
       if ((waypoints[index].flags & flags) != flags)
          continue;  // skip this waypoint if the flags don't match
 
-	  // TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
-	  if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
-	  {
-		  // TODO: assumes only one control point near this waypoint and within 100 units
-		  edict_t *nearest_control_point = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
-
-		  bot_t *pBot = UTIL_GetBotPointer( pEntity );
-
-		  if( pBot )
-		  {
-			  if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
-			  {
-				  continue;
-			  }
-		  }
-		  else
-		  {
-			  ALERT( at_console, "Got NULL pointer in WaypointFindNearestGoal\n" );
-		  }
-	  }
+		if (ShouldSkip(pEntity, index))
+		{
+			continue;
+		}
 
       exclude_index = 0;
       while (exclude[exclude_index])
@@ -598,6 +615,11 @@ int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int tea
       if ((waypoints[index].flags & flags) != flags)
          continue;  // skip this waypoint if the flags don't match
 
+		if (ShouldSkip(pEntity, index))
+		{
+			continue;
+		}
+
       distance = (waypoints[index].origin - v_src).Length();
 
       if ((distance < range) && (distance < min_distance))
@@ -609,7 +631,6 @@ int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int tea
 
    return min_index;
 }
-
 
 int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags)
 {
