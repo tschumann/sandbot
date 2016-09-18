@@ -190,13 +190,11 @@ edict_t* pfnFindEntityInSphere(edict_t *pEdictStartSearchAfter, const float *org
 }
 edict_t* pfnFindClientInPVS(edict_t *pEdict)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFindClientInPVS:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnFindClientInPVS)(pEdict);
+	return (*g_engfuncs.pfnFindClientInPVS)(pEdict);
 }
 edict_t* pfnEntitiesInPVS(edict_t *pplayer)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEntitiesInPVS:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnEntitiesInPVS)(pplayer);
+	return (*g_engfuncs.pfnEntitiesInPVS)(pplayer);
 }
 void pfnMakeVectors(const float *rgflVector)
 {
@@ -297,7 +295,7 @@ void pfnGetAimVector(edict_t* ent, float speed, float *rgflReturn)
 void pfnServerCommand(char* str)
 {
 	// Natural Selection 3.2 forces these every frame
-	if( !strncmp(str, "sv_airmove", strlen("sv_airmove")) && !strncmp(str, "sv_airaccelerate", strlen("sv_airaccelerate")) )
+	if( mod_id == NS_DLL && !strncmp(str, "sv_airmove", strlen("sv_airmove")) && !strncmp(str, "sv_airaccelerate", strlen("sv_airaccelerate")) )
 	{
 		UTIL_LogDPrintf("pfnServerCommand: str=%s\n", str);
 	}
@@ -1097,8 +1095,7 @@ byte *pfnLoadFileForMe(char *filename, int *pLength)
 }
 void pfnFreeFile(void *buffer)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFreeFile:\n"); fclose(fp); }
-   (*g_engfuncs.pfnFreeFile)(buffer);
+	(*g_engfuncs.pfnFreeFile)(buffer);
 }
 void pfnEndSection(const char *pszSectionName)
 {
@@ -1127,6 +1124,7 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 {
 	UTIL_LogDPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
+	// TODO: NS_DLL too? different Alien classes have different speeds
 	if( mod_id == CSTRIKE_DLL || mod_id == DOD_DLL )
 	{
 		bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
@@ -1146,8 +1144,7 @@ edict_t * pfnCreateFakeClient(const char *netname)
 }
 void pfnRunPlayerMove(edict_t *fakeclient, const float *viewangles, float forwardmove, float sidemove, float upmove, unsigned short buttons, byte impulse, byte msec )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnRunPlayerMove:\n"); fclose(fp); }
-   (*g_engfuncs.pfnRunPlayerMove)(fakeclient, viewangles, forwardmove, sidemove, upmove, buttons, impulse, msec);
+	(*g_engfuncs.pfnRunPlayerMove)(fakeclient, viewangles, forwardmove, sidemove, upmove, buttons, impulse, msec);
 }
 int pfnNumberOfEntities(void)
 {
@@ -1248,13 +1245,11 @@ void pfnPlaybackEvent(int flags, const edict_t *pInvoker, unsigned short eventin
 }
 unsigned char *pfnSetFatPVS(float *org)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetFatPVS:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnSetFatPVS)(org);
+	return (*g_engfuncs.pfnSetFatPVS)(org);
 }
 unsigned char *pfnSetFatPAS(float *org)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetFatPAS:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnSetFatPAS)(org);
+	return (*g_engfuncs.pfnSetFatPAS)(org);
 }
 int pfnCheckVisibility(const edict_t *entity, unsigned char *pset)
 {
@@ -1263,18 +1258,15 @@ int pfnCheckVisibility(const edict_t *entity, unsigned char *pset)
 }
 void pfnDeltaSetField(struct delta_s *pFields, const char *fieldname)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDeltaSetField:\n"); fclose(fp); }
-   (*g_engfuncs.pfnDeltaSetField)(pFields, fieldname);
+	(*g_engfuncs.pfnDeltaSetField)(pFields, fieldname);
 }
 void pfnDeltaUnsetField(struct delta_s *pFields, const char *fieldname)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDeltaUnsetField:\n"); fclose(fp); }
-   (*g_engfuncs.pfnDeltaUnsetField)(pFields, fieldname);
+	(*g_engfuncs.pfnDeltaUnsetField)(pFields, fieldname);
 }
 void pfnDeltaAddEncoder(char *name, void (*conditionalencode)( struct delta_s *pFields, const unsigned char *from, const unsigned char *to))
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDeltaAddEncoder:\n"); fclose(fp); }
-   (*g_engfuncs.pfnDeltaAddEncoder)(name, conditionalencode);
+	(*g_engfuncs.pfnDeltaAddEncoder)(name, conditionalencode);
 }
 int pfnGetCurrentPlayer(void)
 {
@@ -1288,18 +1280,15 @@ int pfnCanSkipPlayer(const edict_t *player)
 }
 int pfnDeltaFindField(struct delta_s *pFields, const char *fieldname)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDeltaFindField:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnDeltaFindField)(pFields, fieldname);
+	return (*g_engfuncs.pfnDeltaFindField)(pFields, fieldname);
 }
 void pfnDeltaSetFieldByIndex(struct delta_s *pFields, int fieldNumber)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDeltaSetFieldByIndex:\n"); fclose(fp); }
-   (*g_engfuncs.pfnDeltaSetFieldByIndex)(pFields, fieldNumber);
+	(*g_engfuncs.pfnDeltaSetFieldByIndex)(pFields, fieldNumber);
 }
 void pfnDeltaUnsetFieldByIndex(struct delta_s *pFields, int fieldNumber)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnDeltaUnsetFieldByIndex:\n"); fclose(fp); }
-   (*g_engfuncs.pfnDeltaUnsetFieldByIndex)(pFields, fieldNumber);
+	(*g_engfuncs.pfnDeltaUnsetFieldByIndex)(pFields, fieldNumber);
 }
 void pfnSetGroupMask(int mask, int op)
 {
@@ -1337,13 +1326,11 @@ void pfnAddServerCommand( char *cmd_name, void (*function) (void) )
 }
 qboolean pfnVoice_GetClientListening(int iReceiver, int iSender)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnVoice_GetClientListening:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnVoice_GetClientListening)(iReceiver, iSender);
+	return (*g_engfuncs.pfnVoice_GetClientListening)(iReceiver, iSender);
 }
 qboolean pfnVoice_SetClientListening(int iReceiver, int iSender, qboolean bListen)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnVoice_SetClientListening:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnVoice_SetClientListening)(iReceiver, iSender, bListen);
+	return (*g_engfuncs.pfnVoice_SetClientListening)(iReceiver, iSender, bListen);
 }
 const char *pfnGetPlayerAuthId( edict_t *e )
 {
@@ -1367,8 +1354,7 @@ int pfnGetFileSize( char *filename )
 }
 unsigned int pfnGetApproxWavePlayLen(const char *filepath)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetApproxWavePlayLen:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnGetApproxWavePlayLen)(filepath);
+	return (*g_engfuncs.pfnGetApproxWavePlayLen)(filepath);
 }
 int pfnIsCareerMatch( void )
 {
