@@ -303,6 +303,20 @@ void NSBot::UpgradeToHMG()
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_HMG;
 }
 
+bool NSBot::ShouldAttackHive( edict_t *pHive )
+{
+	if( ((NSGame *)pGame)->IsClassic() )
+	{
+		// TODO: check if the hive is currently built
+		return true;
+	}
+	else
+	{
+		// in Combat there's only one hive, so always go for it
+		return true;
+	}
+}
+
 
 bool NSBot::IsAlien()
 {

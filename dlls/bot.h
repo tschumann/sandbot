@@ -582,6 +582,8 @@ public:
 	virtual bool HasHMG();
 	virtual void UpgradeToHMG();
 
+	virtual bool ShouldAttackHive( edict_t *pHive );
+
 	virtual bool IsAlien();
 	virtual bool HasCarapace();
 	virtual void UpgradeToCarapace();
