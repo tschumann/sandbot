@@ -497,7 +497,7 @@ void ClientDisconnect( edict_t *pEntity )
 
   for (i=0; i < 32; i++)
   {
-     if (pBots[i]->pEdict == pEntity)
+     if (pBots && pBots[i] && pBots[i]->pEdict == pEntity)
      {
 		pBots[i]->SetKicked();
 #if 0
