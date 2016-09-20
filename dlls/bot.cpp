@@ -60,7 +60,7 @@ int number_names = 0;
 #define VALVE_MAX_SKINS    10
 #define GEARBOX_MAX_SKINS  20
 
-bot_player_t g_valveBots[32] =
+bot_player_t g_valveBots[MAX_PLAYERS] =
 {
 	{"Kelly", "barney", false},
 	{"Ted", "gina", false},
@@ -96,7 +96,7 @@ bot_player_t g_valveBots[32] =
 	{"Harry", "gina", false}
 };
 
-bot_player_t g_gearboxBots[32] = 
+bot_player_t g_gearboxBots[MAX_PLAYERS] = 
 {
 	{"Randy", "barney", false},
 	{"Brian", "beret", false},
@@ -132,13 +132,13 @@ bot_player_t g_gearboxBots[32] =
 	{"RichardC", "otis", false}
 };
 
-bot_player_t g_cstrikeBots[32] = 
+bot_player_t g_cstrikeBots[MAX_PLAYERS] = 
 {
 	{"Minh", NULL, false},
 	{"Jesse", NULL, false}
 };
 
-bot_player_t g_dodBots[32] = 
+bot_player_t g_dodBots[MAX_PLAYERS] = 
 {
 	{"Matt", NULL, false},		// mugsy
 	{"John", NULL, false},		// pickitup
@@ -174,7 +174,7 @@ bot_player_t g_dodBots[32] =
 	{"Unknown8", NULL, false},	// Kamikazi
 };
 
-bot_player_t g_gunmanBots[32] = 
+bot_player_t g_gunmanBots[MAX_PLAYERS] = 
 {
 	{"Herb", "bandit", false},		// BoneWolf
 	{"Steven", "general", false},	// Wipeoot
@@ -210,7 +210,7 @@ bot_player_t g_gunmanBots[32] =
 	{"Robin", "general", false}
 };
 
-bot_player_t g_nsBots[32] = 
+bot_player_t g_nsBots[MAX_PLAYERS] = 
 {
 	{"Charlie", NULL, false},
 	{"Jon", NULL, false},
@@ -246,7 +246,7 @@ bot_player_t g_nsBots[32] =
 	{"Nick", NULL, false}
 };
 
-bot_player_t g_hungerBots[32] =
+bot_player_t g_hungerBots[MAX_PLAYERS] =
 {
 	{"Bill", "civie", false},
 	{"Dave", "dave", false},
@@ -282,7 +282,7 @@ bot_player_t g_hungerBots[32] =
 	{"Ben", "zork", false}
 };
 
-bot_player_t g_shipBots[32] = 
+bot_player_t g_shipBots[MAX_PLAYERS] = 
 {
 	{"Chris", NULL, false},
 	{"Ailsa", NULL, false},

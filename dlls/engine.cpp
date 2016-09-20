@@ -167,7 +167,7 @@ edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszF
      // new round in CS 1.5
      if (strcmp ("info_map_parameters", pszValue) == 0)
      {
-        for (bot_index = 0; bot_index < 32; bot_index++)
+        for (bot_index = 0; bot_index < MAX_PLAYERS; bot_index++)
         {
            pBot = pBots[bot_index];
 

@@ -137,7 +137,7 @@ void GameDLLInit( void )
    CVAR_REGISTER(&bot_skill);
    developer = CVAR_GET_POINTER("developer");
 
-   for (i=0; i<32; i++)
+   for (i=0; i<MAX_PLAYERS; i++)
       clients[i] = NULL;
 
    whine_count = 0;
@@ -493,9 +493,7 @@ void ClientDisconnect( edict_t *pEntity )
   if (i < MAX_PLAYERS)
      clients[i] = NULL;
 
-  // TODO: why is this commented out? this is probably why kicking a bot causes a crash
-
-  for (i=0; i < 32; i++)
+  for (i=0; i < MAX_PLAYERS; i++)
   {
      if (pBots && pBots[i] && pBots[i]->pEdict == pEntity)
      {
@@ -503,6 +501,7 @@ void ClientDisconnect( edict_t *pEntity )
 #if 0
         // someone kicked this bot off of the server...
         pBots[i]->is_used = FALSE;  // this slot is now free to use
+		// TODO: is this still needed?
         pBots[i]->kick_time = gpGlobals->time;  // save the kicked time
 #endif
         break;
@@ -1519,7 +1518,7 @@ void StartFrame( void )
 
      bot_check_time = gpGlobals->time + 5.0;
 
-     for (i = 0; i < 32; i++)
+     for (i = 0; i < MAX_PLAYERS; i++)
      {
         if (clients[i] != NULL)
            count++;
