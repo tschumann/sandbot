@@ -1103,8 +1103,7 @@ void pfnEndSection(const char *pszSectionName)
 }
 int pfnCompareFileTime(char *filename1, char *filename2, int *iCompare)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCompareFileTime:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnCompareFileTime)(filename1, filename2, iCompare);
+	return (*g_engfuncs.pfnCompareFileTime)(filename1, filename2, iCompare);
 }
 void pfnGetGameDir(char *szGetGameDir)
 {
@@ -1200,8 +1199,7 @@ int pfnIsDedicatedServer(void)
 }
 cvar_t* pfnCVarGetPointer(const char *szVarName)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCVarGetPointer: %s\n",szVarName); fclose(fp); }
-   return (*g_engfuncs.pfnCVarGetPointer)(szVarName);
+	return (*g_engfuncs.pfnCVarGetPointer)(szVarName);
 }
 unsigned int pfnGetPlayerWONId(edict_t *e)
 {
@@ -1253,8 +1251,7 @@ unsigned char *pfnSetFatPAS(float *org)
 }
 int pfnCheckVisibility(const edict_t *entity, unsigned char *pset)
 {
-//   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCheckVisibility:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnCheckVisibility)(entity, pset);
+	return (*g_engfuncs.pfnCheckVisibility)(entity, pset);
 }
 void pfnDeltaSetField(struct delta_s *pFields, const char *fieldname)
 {
@@ -1339,18 +1336,15 @@ const char *pfnGetPlayerAuthId( edict_t *e )
 }
 void* pfnSequenceGet( const char* fileName, const char* entryName )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSequenceGet:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnSequenceGet)(fileName, entryName);
+	return (*g_engfuncs.pfnSequenceGet)(fileName, entryName);
 }
 void* pfnSequencePickSentence( const char* groupName, int pickMethod, int *picked )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSequencePickSentence:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnSequencePickSentence)(groupName, pickMethod, picked);
+	return (*g_engfuncs.pfnSequencePickSentence)(groupName, pickMethod, picked);
 }
 int pfnGetFileSize( char *filename )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetFileSize:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnGetFileSize)(filename);
+	return (*g_engfuncs.pfnGetFileSize)(filename);
 }
 unsigned int pfnGetApproxWavePlayLen(const char *filepath)
 {
@@ -1362,8 +1356,7 @@ int pfnIsCareerMatch( void )
 }
 int pfnGetLocalizedStringLength(const char *label)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetLocalizedStringLength:\n"); fclose(fp); }
-   return (*g_engfuncs.pfnGetLocalizedStringLength)(label);
+	return (*g_engfuncs.pfnGetLocalizedStringLength)(label);
 }
 void pfnRegisterTutorMessageShown(int mid)
 {

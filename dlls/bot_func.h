@@ -22,7 +22,6 @@ void BotFindItem( bot_t *pBot );
 void BotThink( bot_t *pBot );
 
 
-void BotFixIdealPitch( edict_t *pEdict );
 float BotChangePitch( bot_t *pBot, float speed );
 void BotFixIdealYaw( edict_t *pEdict );
 float BotChangeYaw( bot_t *pBot, float speed );

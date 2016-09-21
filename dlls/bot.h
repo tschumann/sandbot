@@ -473,6 +473,9 @@ public:
 
 	bot_current_weapon_t current_weapon;  // one current weapon for each bot
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
+
+	// TODO: should eventually be protected
+	void FixIdealPitch();
 protected:
 	bool bIsKicked;
 

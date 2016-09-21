@@ -1211,7 +1211,7 @@ void BotThink( bot_t *pBot )
    {
 		BotStartGame( pBot );
 
-		BotFixIdealPitch( pEdict );
+		pBot->FixIdealPitch();
 		BotFixIdealYaw( pEdict );
 		BotFixBodyAngles( pEdict );
 		BotFixViewAngles( pEdict );
@@ -1296,7 +1296,7 @@ void BotThink( bot_t *pBot )
          pEdict->v.button = IN_ATTACK;
 	  }
 
-      BotFixIdealPitch (pEdict);
+      pBot->FixIdealPitch();
       BotFixIdealYaw (pEdict);
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
@@ -1334,7 +1334,7 @@ void BotThink( bot_t *pBot )
       // turn towards ideal_yaw by yaw_speed degrees (slower than normal)
       BotChangeYaw( pBot, pEdict->v.yaw_speed / 2 );
 
-      BotFixIdealPitch (pEdict);
+      pBot->FixIdealPitch();
       BotFixIdealYaw (pEdict);
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
@@ -1883,7 +1883,7 @@ void BotThink( bot_t *pBot )
 		}
 	}
 
-	BotFixIdealPitch( pEdict );
+	pBot->FixIdealPitch();
 	BotFixIdealYaw( pEdict );
 	BotFixBodyAngles( pEdict );
 	BotFixViewAngles( pEdict );
@@ -2063,4 +2063,18 @@ std::vector<weapon_t> bot_t::GetUsableWeapons()
 	}
 
 	return usableWeapons;
+}
+
+void bot_t::FixIdealPitch()
+{
+	// check for wrap around of angle
+	if( this->pEdict->v.idealpitch >= 180.0 )
+	{
+		this->pEdict->v.idealpitch -= 360.0 * ((int)(this->pEdict->v.idealpitch / 360.0) + 1);
+	}
+
+	if( this->pEdict->v.idealpitch < -180 )
+	{
+		this->pEdict->v.idealpitch += 360.0 * ((int)(-this->pEdict->v.idealpitch / 360.0) + 1);
+	}
 }

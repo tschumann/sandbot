@@ -25,21 +25,6 @@ extern FLAG_S flags[MAX_FLAGS];
 extern int num_flags;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 
-void BotFixIdealPitch(edict_t *pEdict)
-{
-	// check for wrap around of angle
-	if( pEdict->v.idealpitch >= 180 )
-	{
-		pEdict->v.idealpitch -= 360 * ((int) (pEdict->v.idealpitch / 360) + 1);
-	}
-
-	if( pEdict->v.idealpitch < -180 )
-	{
-		pEdict->v.idealpitch += 360 * ((int) (-pEdict->v.idealpitch / 360) + 1);
-	}
-}
-
-
 float BotChangePitch( bot_t *pBot, float speed )
 {
    edict_t *pEdict = pBot->pEdict;
@@ -356,33 +341,38 @@ bool BotFindWaypoint( bot_t *pBot )
 
 bool BotHeadTowardWaypoint( bot_t *pBot )
 {
-   int i;
-   Vector v_src, v_dest;
-   TraceResult tr;
-   int index;
-   bool status;
-   float waypoint_distance, min_distance;
-   int team, skin;
-   float distance;
-   float pause_time = 0.0;
-   edict_t *pent;
-   bool bot_has_flag = FALSE;
-   bool touching;
+	int i;
+	Vector v_src, v_dest;
+	TraceResult tr;
+	int index;
+	bool status;
+	float waypoint_distance, min_distance;
+	int team, skin;
+	float distance;
+	float pause_time = 0.0;
+	edict_t *pent;
+	bool bot_has_flag = FALSE;
+	bool touching;
 
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   // is team play enabled (or is it Counter-Strike)?
-   if (pGame->IsTeamPlay())
-      team = UTIL_GetTeam(pEdict);
-   else
-      team = -1;  // not team play (all waypoints are valid for everyone)
+	// check if team play is enabled
+	if (pGame->IsTeamPlay())
+	{
+		team = UTIL_GetTeam(pEdict);
+	}
+	else
+	{
+		// not team play (all waypoints are valid for everyone)
+		team = -1;
+	}
 
-   // check if the bot has been trying to get to this waypoint for a while...
-   if ((pBot->f_waypoint_time + 5.0) < gpGlobals->time)
-   {
-      pBot->curr_waypoint_index = -1;  // forget about this waypoint
-      pBot->waypoint_goal = -1;  // also forget about a goal
-   }
+	// check if the bot has been trying to get to this waypoint for a while...
+	if ((pBot->f_waypoint_time + 5.0) < gpGlobals->time)
+	{
+		pBot->curr_waypoint_index = -1;  // forget about this waypoint
+		pBot->waypoint_goal = -1;  // also forget about a goal
+	}
 
    // check if a goal item exists...
    if (mod_id == TFC_DLL)
@@ -491,6 +481,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             break;  // break out of while loop
          }
+		 // if the flag is visible
          else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
          {
             // the bot can see it, check what type of model it is...
@@ -574,13 +565,9 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    {
 	   pent = NULL;
 
-	   // ALERT( at_console, "looking fir dod_control_point" );
-
 	   while( (pent = UTIL_FindEntityByClassname( pent, "dod_control_point" )) != NULL )
 		{
 			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
-
-			// ALERT( at_console, "found a dod_control_point (%d)\n", pent->v.body );
 
 			// is this control point visible?
 			// if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
@@ -1194,7 +1181,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    if (pEdict->v.movetype != MOVETYPE_FLY)
    {
       pEdict->v.idealpitch = -v_angles.x;
-      BotFixIdealPitch(pEdict);
+      pBot->FixIdealPitch();
 
       pEdict->v.ideal_yaw = v_angles.y;
       BotFixIdealYaw(pEdict);
