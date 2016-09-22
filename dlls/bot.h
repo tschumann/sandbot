@@ -483,13 +483,23 @@ protected:
 	std::vector<weapon_t> weapons;
 };
 
-class HalfLifeBot: public bot_t
+class HalfLifeBot : public bot_t
 {
 public:
 	HalfLifeBot();
 	virtual bool CanUseCrowbar();
 	virtual bool CanUseGlock();
 	virtual bool CanUseMP5Primary();
+};
+
+class OpposingForceBot : public HalfLifeBot
+{
+public:
+	virtual bool FindFlag();
+};
+
+class CStrikeBot : public bot_t
+{
 };
 
 class DODBot : public bot_t
@@ -661,6 +671,10 @@ public:
 	virtual void SetQuarry( int iEntIndex );
 	virtual edict_t* GetQuarry();
 	virtual bool HasQuarry();
+};
+
+class HungerBot : public HalfLifeBot
+{
 };
 
 extern bot_t **pBots;

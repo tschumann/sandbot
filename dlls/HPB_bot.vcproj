@@ -284,6 +284,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\bot_cstrike.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\bot_dod.cpp"
 				>
 			</File>
@@ -297,6 +301,10 @@
 			</File>
 			<File
 				RelativePath=".\bot_halflife.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\bot_hunger.cpp"
 				>
 			</File>
 			<File
@@ -323,6 +331,10 @@
 			</File>
 			<File
 				RelativePath=".\bot_ns.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\bot_opposingforce.cpp"
 				>
 			</File>
 			<File

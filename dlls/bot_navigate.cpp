@@ -347,7 +347,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	int index;
 	bool status;
 	float waypoint_distance, min_distance;
-	int team, skin;
+	int team;
 	float distance;
 	float pause_time = 0.0;
 	edict_t *pent;
@@ -469,97 +469,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    }
    else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
    {
-      pent = NULL;
+      bool success = ((OpposingForceBot *)pBot)->FindFlag();
 
-      while ((pent = UTIL_FindEntityByClassname( pent, "item_ctfflag" )) != NULL)
-      {
-         // is this bot carrying the item? (after capture bug fix by Whistler)
-         if ((pent->v.owner == pEdict) && (pent->v.origin == pEdict->v.origin))
-         {
-            // we are carrying the flag
-            bot_has_flag = TRUE;
-
-            break;  // break out of while loop
-         }
-		 // if the flag is visible
-         else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
-         {
-            // the bot can see it, check what type of model it is...
-            skin = pent->v.skin;
-
-            if (skin == 0) // Opposing Force team (these are BACKASSWARDS!)
-               skin = 1;
-            else if (skin == 1) // Black Mesa team
-               skin = 0;
-
-            // see if the flag matches the bot's team...
-            if (skin == team)
-            {
-               // is and enemy carrying our flag/card?
-               if (pent->v.owner != NULL)
-               {
-                  // kill the man with the flag/card!
-                  pBot->pBotEnemy = pent->v.owner;
-
-                  pBot->waypoint_goal = -1;  // forget the goal (if there is one)
-
-                  return TRUE;
-               }
-            }
-            else  // flag/card is for another team!
-            {
-               // check if someone is NOT carrying the flag/card...
-               if (pent->v.owner == NULL)
-               {
-                  // find the nearest waypoint to the flag/card...
-                  index = WaypointFindNearest(pEdict, 500, team, pent->v.origin);
-
-                  if (index == -1)
-                  {
-                     // no waypoint is close enough, just head straight towards the flag/card
-                     Vector v_flag = pent->v.origin - pEdict->v.origin;
-
-                     Vector bot_angles = UTIL_VecToAngles( v_flag );
-
-                     pEdict->v.ideal_yaw = bot_angles.y;
-
-                     BotFixIdealYaw(pEdict);
-
-                     return TRUE;
-                  }
-                  else
-                  {
-                     waypoint_distance = (waypoints[index].origin - pent->v.origin).Length();
-                     distance = (pent->v.origin - pEdict->v.origin).Length();
-
-                     // is the bot closer to the flag/card than the waypoint is?
-                     if (distance < waypoint_distance)
-                     {
-                        // just head towards the flag/card
-                        Vector v_flag = pent->v.origin - pEdict->v.origin;
-
-                        Vector bot_angles = UTIL_VecToAngles( v_flag );
-
-                        pEdict->v.ideal_yaw = bot_angles.y;
-
-                        BotFixIdealYaw(pEdict);
-
-                        return TRUE;
-                     }
-                     else
-                     {
-                        // head towards this waypoint
-                        pBot->waypoint_goal = index;
-
-                        // remember where the flag/card is located...
-                        pBot->waypoint_near_flag = TRUE;
-                        pBot->waypoint_flag_origin = pent->v.origin;
-                     }
-                  }
-               }
-            }
-         }
-      }
+	  if( success )
+	  {
+		  return true;
+	  }
    }
    else if( mod_id == DOD_DLL )
    {
@@ -572,10 +487,10 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			// is this control point visible?
 			// if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 			// {
-				float distance = (pent->v.origin - pEdict->v.origin).Length();
+				float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
 				// is the bot close enough and is the control point capturable?
-				if (distance < 100.0 && (pent->v.body == 3))
+				if (fdistance < 100.0 && (pent->v.body == 3))
 				{
 					ALERT( at_console, "bot at a control point; camping\n" );
 					((DODBot *)pBot)->bCapturing = true;
@@ -599,10 +514,10 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					// is this command chair visible?
 					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 					{
-						float distance = (pent->v.origin - pEdict->v.origin).Length();
+						float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest command chair?
-						if (distance < 100.0)
+						if (fdistance < 100.0)
 						{
 							ALERT( at_console, "bot seeing a command chair; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
@@ -621,10 +536,10 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					// is this hive visible?
 					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) && pent->v.solid != SOLID_NOT)
 					{
-						float distance = (pent->v.origin - pEdict->v.origin).Length();
+						float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest hive?
-						if (distance < 300.0)
+						if (fdistance < 300.0)
 						{
 							ALERT( at_console, "bot seeing a hive; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
