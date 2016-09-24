@@ -440,10 +440,19 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	// TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
 	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
-		// TODO: assumes only one control point near this waypoint and within 100 units
-		edict_t *nearest_control_point = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
+		edict_t *nearest_control_point = NULL;
 
-		if( !nearest_control_point || !FStrEq("dod_control_point", STRING(nearest_control_point->v.classname) ) )
+		while( nearest_control_point = UTIL_FindEntityInSphere(nearest_control_point, waypoints[index].origin, 100.0) )
+		{
+			if( nearest_control_point && FStrEq("dod_control_point", STRING(nearest_control_point->v.classname) ) )
+			{
+				ALERT( at_console, "Found a dod_control_point in ShouldSkip\n" );
+
+				break;
+			}
+		}
+
+		if( !nearest_control_point )
 		{
 			ALERT( at_console, "Couldn't find nearest dod_control_point in ShouldSkip\n" );
 
