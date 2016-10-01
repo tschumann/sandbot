@@ -490,11 +490,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 				float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
 				// is the bot close enough and is the control point capturable?
-				if (fdistance < 100.0 && (pent->v.body == 3))
+				if (fdistance < 75.0 && (pent->v.body == 3))
 				{
 					ALERT( at_console, "bot at a control point; camping\n" );
 					((DODBot *)pBot)->bCapturing = true;
 					pBot->SetMaxSpeed( 0.0 );
+					break;
 				}
 			// }
 		}

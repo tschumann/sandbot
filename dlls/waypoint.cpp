@@ -426,6 +426,27 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
    return min_index;
 }
 
+edict_t *FindNearest(WAYPOINT waypoint, const char *szClassname)
+{
+	edict_t *pent = NULL;
+	edict_t *pNearest = NULL;
+	float fMinimumDistance = 9999.99;
+
+	while( (pent = UTIL_FindEntityByClassname( pent, szClassname )) != NULL )
+	{
+		float fDistance = (pent->v.origin - waypoint.origin).Length();
+
+		// is this the closest?
+		if (fDistance < fMinimumDistance)
+		{
+			fMinimumDistance = fDistance;
+			pNearest = pent;
+		}
+	}
+
+	return pNearest;
+}
+
 bool ShouldSkip(edict_t *pPlayer, int index)
 {
 	bot_t *pBot = UTIL_GetBotPointer( pPlayer );
@@ -440,17 +461,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	// TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
 	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
-		edict_t *nearest_control_point = NULL;
-
-		while( nearest_control_point = UTIL_FindEntityInSphere(nearest_control_point, waypoints[index].origin, 100.0) )
-		{
-			if( nearest_control_point && FStrEq("dod_control_point", STRING(nearest_control_point->v.classname) ) )
-			{
-				ALERT( at_console, "Found a dod_control_point in ShouldSkip\n" );
-
-				break;
-			}
-		}
+		edict_t *nearest_control_point = FindNearest(waypoints[index], "dod_control_point");
 
 		if( !nearest_control_point )
 		{
@@ -466,14 +477,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	}
 	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_HIVE )
 	{
-		edict_t *nearest_hive = UTIL_FindEntityInSphere((edict_t *)NULL, waypoints[index].origin, 100.0);
-
-		if( !nearest_hive || !FStrEq("team_hive", STRING(nearest_hive->v.classname) ) )
-		{
-			ALERT( at_console, "Couldn't find nearest team_hive in ShouldSkip\n" );
-
-			return false;
-		}
+		edict_t *nearest_hive = FindNearest(waypoints[index], "team_hive");
 
 		if( !((NSBot *)pBot)->ShouldAttackHive( nearest_hive ) )
 		{
