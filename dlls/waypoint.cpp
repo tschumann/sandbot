@@ -1836,10 +1836,6 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if (flags & W_FL_DISPENSER)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
 
-	if( flags & (uint64_t)W_FL_DOD_CAP )
-	{
-		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a control point near this waypoint\n");
-	}
 	if( flags & W_FL_NS_HIVE )
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a hive near this waypoint\n");
@@ -1851,7 +1847,9 @@ void WaypointPrintInfo(edict_t *pEntity)
 
 	if( flags & W_FL_DOD_CAP )
 	{
-		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a control point near this waypoint\n");
+		edict_t *pControlPoint = FindNearest(waypoints[index], "dod_control_point");
+		ALERT( at_console, "Body %d\n", pControlPoint->v.body);
 	}
 }
 

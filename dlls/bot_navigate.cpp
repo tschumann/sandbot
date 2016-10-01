@@ -489,6 +489,11 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			// {
 				float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
+				if (fdistance < 250)
+				{
+					ALERT( at_console, "found a dod_control_point with body %d at distance %f\n", pent->v.body, fdistance );
+				}
+
 				// is the bot close enough and is the control point capturable?
 				if (fdistance < 75.0 && (pent->v.body == 3))
 				{
