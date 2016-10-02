@@ -491,7 +491,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
 				if (fdistance < 250)
 				{
-					ALERT( at_console, "found a dod_control_point with body %d at distance %f\n", pent->v.body, fdistance );
+					ALERT( at_console, "found a dod_control_point with body %d at distance %f at waypoint %d\n", pent->v.body, fdistance, pBot->curr_waypoint_index );
 				}
 
 				// is the bot close enough and is the control point capturable?
