@@ -497,7 +497,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 				// is the bot close enough and is the control point capturable?
 				if (fdistance < 75.0 && (pent->v.body == 3))
 				{
-					ALERT( at_console, "bot at a control point; camping\n" );
+					ALERT( at_console, "bot at a capturable control point; camping\n" );
 					((DODBot *)pBot)->bCapturing = true;
 					pBot->SetMaxSpeed( 0.0 );
 					break;
@@ -717,6 +717,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       // check if the bot has reached the goal waypoint...
       if (pBot->curr_waypoint_index == pBot->waypoint_goal)
       {
+		  ALERT( at_console, "bot is at goal waypoint %d\n", pBot->curr_waypoint_index);
          pBot->waypoint_goal = -1;  // forget this goal waypoint
 
          if (pBot->waypoint_near_flag)
