@@ -491,7 +491,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
 				if (fdistance < 250)
 				{
-					ALERT( at_console, "found a dod_control_point with body %d at distance %f at waypoint %d\n", pent->v.body, fdistance, pBot->curr_waypoint_index );
+					// ALERT( at_console, "found a dod_control_point with body %d at distance %f at waypoint %d\n", pent->v.body, fdistance, pBot->curr_waypoint_index );
 				}
 
 				// is the bot close enough and is the control point capturable?
@@ -628,6 +628,8 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
    // find the distance to the target waypoint
    waypoint_distance = (pEdict->v.origin - pBot->waypoint_origin).Length();
+
+   // ALERT( at_console, "bot is %f from waypoint\n", waypoint_distance);
 
    // set the minimum distance from waypoint to be considered "touching" it
    min_distance = 50.0;

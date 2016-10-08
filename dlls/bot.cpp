@@ -1836,8 +1836,8 @@ void BotThink( bot_t *pBot )
          }
       }
 
-	  // TODO: is curr_waypoint_index the waypoint closest to the bot?
-	  if (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP)
+	  // if the current waypoint is the goal and it's a Day of Defeat capture point
+	  if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index)
 	  {
 		  pBot->f_move_speed = 0.0;
 	  }
