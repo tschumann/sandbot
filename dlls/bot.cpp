@@ -1837,9 +1837,16 @@ void BotThink( bot_t *pBot )
       }
 
 	  // if the current waypoint is the goal and it's a Day of Defeat capture point
-	  if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index)
+	  if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
+		  pBot->waypoint_goal == pBot->curr_waypoint_index &&
+		  !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  pBot->f_move_speed = 0.0;
+	  }
+	  else
+	  {
+		  // TODO: look for another goal here?
+		  pBot->SetMaxSpeed(pEdict->v.maxspeed);
 	  }
    }
 

@@ -132,4 +132,6 @@ void WaypointRouteInit(void);
 unsigned short WaypointRouteFromTo(int src, int dest, int team);
 int  WaypointDistanceFromTo(int src, int dest, int team);
 
+bool ShouldSkip(edict_t *pPlayer, int index);
+
 #endif // WAYPOINT_H

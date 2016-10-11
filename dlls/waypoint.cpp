@@ -447,6 +447,9 @@ edict_t *FindNearest(WAYPOINT waypoint, const char *szClassname)
 	return pNearest;
 }
 
+/**
+ * index - the waypoint index
+ */
 bool ShouldSkip(edict_t *pPlayer, int index)
 {
 	bot_t *pBot = UTIL_GetBotPointer( pPlayer );
@@ -458,11 +461,12 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		return false;
 	}
 
-	// TODO: at this point check what team has captured the nearest dod_capture_point and skip it if necessary
+	// if the waypoint is for a dod_control_point
 	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
 		edict_t *nearest_control_point = FindNearest(waypoints[index], "dod_control_point");
 
+		// if there's not nearby dod_control_point
 		if( !nearest_control_point )
 		{
 			ALERT( at_console, "Couldn't find nearest dod_control_point in ShouldSkip\n" );
@@ -470,6 +474,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 			return false;
 		}
 
+		// if the dod_control_point nearest this waypoint already belongs to the same team as the player
 		if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
 		{
 			return true;
