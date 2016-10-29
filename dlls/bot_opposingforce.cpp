@@ -13,7 +13,7 @@ bool OpposingForceBot::FindFlag()
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];
 
 	int skin = 0;
-	int team = 0;
+	int team = UTIL_GetTeam(pEdict);
 	float waypoint_distance = 0.0;
 	float distance = 0.0;
 	edict_t *pent = NULL;

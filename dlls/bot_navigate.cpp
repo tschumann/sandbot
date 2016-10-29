@@ -377,104 +377,21 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    // check if a goal item exists...
    if (mod_id == TFC_DLL)
    {
-      pent = NULL;
+		bool success = ((TFCBot *)pBot)->FindFlag();
 
-      while ((pent = UTIL_FindEntityByClassname( pent, "item_tfgoal" )) != NULL)
-      {
-         if (pent->v.owner == pEdict)  // is this bot carrying the item?
-         {
-            // we are carrying the flag/card/ball
-            bot_has_flag = TRUE;
-
-            break;  // break out of while loop
-         }
-		 // can bot see it?
-         else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
-         {
-            // check if the flag has an owner...
-            if (pent->v.owner != NULL)
-            {
-               // get the team for the owner of the flag...
-               int player_team = UTIL_GetTeam(pent->v.owner);
-
-               // attack if not our team and not allies team...
-               if ((player_team != team) && !(team_allies[team] & (1<<player_team)))
-               {
-                  // kill the man with the flag!
-                  pBot->pBotEnemy = pent->v.owner;
-
-                  pBot->waypoint_goal = -1;  // forget the goal (if there is one)
-
-                  return TRUE;
-               }
-            }
-            else
-            {
-               // check if it matches one of the flags...
-               for (i=0; i < num_flags; i++)
-               {
-                  // is the flag for this team (or any team)?
-                  if ((flags[i].edict == pent) && ((flags[i].team_no == (team+1)) || (flags[i].team_no == 0)))
-                  {
-                     // find the nearest waypoint to the ball...
-                     index = WaypointFindNearest(pEdict, 500, team, pent->v.origin);
-
-                     if (index == -1)
-                     {
-                        // no waypoint is close enough, just head straight towards the ball
-                        Vector v_flag = pent->v.origin - pEdict->v.origin;
-
-                        Vector bot_angles = UTIL_VecToAngles( v_flag );
-
-                        pEdict->v.ideal_yaw = bot_angles.y;
-
-                        BotFixIdealYaw(pEdict);
-
-                        return TRUE;
-                     }
-                     else
-                     {
-                        waypoint_distance = (waypoints[index].origin - pent->v.origin).Length();
-                        distance = (pent->v.origin - pEdict->v.origin).Length();
-
-                        // is the bot closer to the ball than the waypoint is?
-                        if (distance < waypoint_distance)
-                        {
-                           // just head towards the ball
-                           Vector v_flag = pent->v.origin - pEdict->v.origin;
-
-                           Vector bot_angles = UTIL_VecToAngles( v_flag );
-
-                           pEdict->v.ideal_yaw = bot_angles.y;
-
-                           BotFixIdealYaw(pEdict);
-
-                           return TRUE;
-                        }
-                        else
-                        {
-                           // head towards this waypoint
-                           pBot->waypoint_goal = index;
-
-                           // remember where the ball is located...
-                           pBot->waypoint_near_flag = TRUE;
-                           pBot->waypoint_flag_origin = pent->v.origin;
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      }
+		if( success )
+		{
+			return true;
+		}
    }
    else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
    {
-      bool success = ((OpposingForceBot *)pBot)->FindFlag();
+		bool success = ((OpposingForceBot *)pBot)->FindFlag();
 
-	  if( success )
-	  {
-		  return true;
-	  }
+		if( success )
+		{
+			return true;
+		}
    }
    else if( mod_id == DOD_DLL )
    {

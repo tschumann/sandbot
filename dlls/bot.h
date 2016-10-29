@@ -523,6 +523,7 @@ public:
 class TFCBot : public bot_t
 {
 public:
+	virtual bool FindFlag();
 	virtual void Build();
 
 	const static int CLASS_CIVILIAN = 0;

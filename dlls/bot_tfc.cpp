@@ -8,6 +8,105 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+bool TFCBot::FindFlag()
+{
+	extern WAYPOINT waypoints[MAX_WAYPOINTS];
+	extern FLAG_S flags[MAX_FLAGS];
+	extern int num_flags;
+	extern int team_allies[4];
+
+	int team = UTIL_GetTeam(pEdict);
+	float waypoint_distance = 0.0;
+	float distance = 0.0;
+	edict_t *pent = NULL;
+
+	while ((pent = UTIL_FindEntityByClassname( pent, "item_tfgoal" )) != NULL)
+	{
+		if (pent->v.owner == pEdict)  // is this bot carrying the item?
+		{
+			// we are carrying the flag/card/ball
+			bot_has_flag = TRUE;
+			break;  // break out of while loop
+		}
+		// can bot see it?
+		else if (FInViewCone( &pent->v.origin, pEdict ) && FVisible( pent->v.origin, pEdict))
+		{
+			// check if the flag has an owner...
+			if (pent->v.owner != NULL)
+			{
+				// get the team for the owner of the flag...
+				int player_team = UTIL_GetTeam(pent->v.owner);
+
+				// attack if not our team and not allies team...
+				if ((player_team != team) && !(team_allies[team] & (1<<player_team)))
+				{
+					// kill the man with the flag!
+					this->pBotEnemy = pent->v.owner;
+					this->waypoint_goal = -1;  // forget the goal (if there is one)
+
+					return TRUE;
+				}
+			}
+			else
+			{
+				// check if it matches one of the flags...
+				for (int i=0; i < num_flags; i++)
+				{
+					// is the flag for this team (or any team)?
+					if ((flags[i].edict == pent) && ((flags[i].team_no == (team+1)) || (flags[i].team_no == 0)))
+					{
+						// find the nearest waypoint to the ball...
+						index = WaypointFindNearest(pEdict, 500, team, pent->v.origin);
+
+						if (index == -1)
+						{
+							// no waypoint is close enough, just head straight towards the ball
+							Vector v_flag = pent->v.origin - pEdict->v.origin;
+							Vector bot_angles = UTIL_VecToAngles( v_flag );
+
+							pEdict->v.ideal_yaw = bot_angles.y;
+
+							BotFixIdealYaw(pEdict);
+
+							return TRUE;
+						}
+						else
+						{
+							waypoint_distance = (waypoints[index].origin - pent->v.origin).Length();
+							distance = (pent->v.origin - pEdict->v.origin).Length();
+
+							// is the bot closer to the ball than the waypoint is?
+							if (distance < waypoint_distance)
+							{
+								// just head towards the ball
+								Vector v_flag = pent->v.origin - pEdict->v.origin;
+								Vector bot_angles = UTIL_VecToAngles( v_flag );
+
+								pEdict->v.ideal_yaw = bot_angles.y;
+
+								BotFixIdealYaw(pEdict);
+
+								return TRUE;
+							}
+							else
+							{
+								// head towards this waypoint
+								this->waypoint_goal = index;
+
+								// remember where the ball is located...
+								this->waypoint_near_flag = TRUE;
+								this->waypoint_flag_origin = pent->v.origin;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 void TFCBot::Build()
 {
 	int value = RANDOM_LONG(1, 100);
