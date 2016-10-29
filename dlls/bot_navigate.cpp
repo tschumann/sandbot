@@ -930,57 +930,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                // is it time to build sentry gun or dispenser yet?
                if (pBot->f_engineer_build_time <= gpGlobals->time)
                {
-                  int value = RANDOM_LONG(1, 100);
-
-                  if (((value <= 70) && (pBot->sentrygun_level < 3)) || (value <= 40))
-                  {
-                     // build or upgrade a sentry gun...
-                     index = -1;
-
-                     // do we need more metal to build a sentry gun?
-                     if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] < 130)
-                     {
-                        // go find some metal...
-                        index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_ARMOR);
-                     }
-                     else  // otherwise we have enough metal...
-                     {
-                        if (pBot->sentrygun_waypoint == -1)
-                        {
-                           // find a random sentry gun waypoint...
-                           index = WaypointFindRandomGoal(pEdict, team, W_FL_SENTRYGUN);
-                        }
-                        else
-                           index = pBot->sentrygun_waypoint;
-                     }
-
-                     if (index != -1)
-                        pBot->waypoint_goal = index;
-                  }
-                  else
-                  {
-                     // build a dispenser...
-                     index = -1;
-
-                     // do we need more metal to build a dispenser?
-                     if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] < 100)
-                     {
-                        // go find some metal...
-                        index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_ARMOR);
-                     }
-                     else  // otherwise we have enough metal...
-                     {
-                        if (pBot->dispenser_waypoint == -1)
-                        {
-                           index = WaypointFindRandomGoal(pEdict, team, W_FL_DISPENSER);
-                        }
-                        else
-                           index = pBot->dispenser_waypoint;
-                     }
-
-                     if (index != -1)
-                        pBot->waypoint_goal = index;
-                  }
+                  ((TFCBot *)pBot)->Build();
                }
                else
                {
@@ -1009,7 +959,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
 		 else if (mod_id == DOD_DLL)
 		 {
-			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_DOD_CAP);
+			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
             if (index != -1)
             {

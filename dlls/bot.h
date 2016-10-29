@@ -337,6 +337,8 @@ public:
 
 	virtual void UpdateSounds();
 
+	virtual int GetGoalType();
+
 	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons();
 
@@ -508,6 +510,8 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 
+	virtual int GetGoalType();
+
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
 
 	bool bCapturing;
@@ -519,6 +523,8 @@ public:
 class TFCBot : public bot_t
 {
 public:
+	virtual void Build();
+
 	const static int CLASS_CIVILIAN = 0;
 	const static int CLASS_SCOUT = 1;
 	const static int CLASS_SNIPER = 2;

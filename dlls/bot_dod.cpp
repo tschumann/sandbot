@@ -107,6 +107,11 @@ void DODBot::Join()
 	}
 }
 
+int DODBot::GetGoalType()
+{
+	return W_FL_DOD_CAP;
+}
+
 bool DODBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	// if it's currently captured by the Axis and the player is Allied
