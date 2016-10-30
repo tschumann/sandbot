@@ -337,6 +337,7 @@ public:
 
 	virtual void UpdateSounds();
 
+	virtual bool ShouldLookForNewGoal();
 	virtual int GetGoalType();
 
 	virtual bool BaseCanUseWeapon();
@@ -510,6 +511,7 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 
+	virtual bool ShouldLookForNewGoal();
 	virtual int GetGoalType();
 
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );

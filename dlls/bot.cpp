@@ -1228,48 +1228,6 @@ void BotThink( bot_t *pBot )
 	   pBot->not_started = true;
    }
 
-   if ((pBot->b_bot_say_killed) && (pBot->f_bot_say_killed < gpGlobals->time))
-   {
-      int whine_index;
-      bool used;
-      int i, recent_count;
-      char msg[120];
-
-      pBot->b_bot_say_killed = FALSE;
-            
-      recent_count = 0;
-
-      while (recent_count < 5)
-      {
-         whine_index = RANDOM_LONG(0, whine_count-1);
-
-         used = FALSE;
-
-         for (i=0; i < 5; i++)
-         {
-            if (recent_bot_whine[i] == whine_index)
-               used = TRUE;
-         }
-
-         if (used)
-            recent_count++;
-         else
-            break;
-      }
-
-      for (i=4; i > 0; i--)
-         recent_bot_whine[i] = recent_bot_whine[i-1];
-
-      recent_bot_whine[0] = whine_index;
-
-      if (strstr(bot_whine[whine_index], "%s") != NULL)  // is "%s" in whine text?
-         sprintf(msg, bot_whine[whine_index], STRING(pBot->killer_edict->v.netname));
-      else
-         sprintf(msg, bot_whine[whine_index]);
-
-      UTIL_HostSay(pEdict, 0, msg);
-   }
-
    // if the bot is dead, randomly press fire to respawn...
    if (pBot->IsDead())
    {
@@ -1437,6 +1395,7 @@ void BotThink( bot_t *pBot )
 	  else if (mod_id == DOD_DLL && ((DODBot *)pBot)->bCapturing)
 	  {
 		  // do nothing
+		  ALERT( at_console, "bot is capturing\n" );
 	  }
       else
       {
@@ -1846,7 +1805,14 @@ void BotThink( bot_t *pBot )
    // save the previous speed (for checking if stuck)
    pBot->prev_speed = pBot->f_move_speed;
 
-	if( mod_id == REWOLF_DLL )
+	if( mod_id == DOD_DLL )
+	{
+		if( ((DODBot *)pBot)->bCapturing )
+		{
+			pBot->f_move_speed = 0.0;
+		}
+	}
+	else if( mod_id == REWOLF_DLL )
 	{
 		if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_PULSE )
 		{
@@ -2024,6 +1990,11 @@ void bot_t::UpdateSounds()
 			}
 		}
 	}
+}
+
+bool bot_t::ShouldLookForNewGoal()
+{
+	return true;
 }
 
 int bot_t::GetGoalType()

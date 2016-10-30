@@ -107,6 +107,11 @@ void DODBot::Join()
 	}
 }
 
+bool DODBot::ShouldLookForNewGoal()
+{
+	return !this->bCapturing;
+}
+
 int DODBot::GetGoalType()
 {
 	return W_FL_DOD_CAP;
