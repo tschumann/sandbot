@@ -1807,7 +1807,11 @@ void BotThink( bot_t *pBot )
 
 	if( mod_id == DOD_DLL )
 	{
-		if( ((DODBot *)pBot)->bCapturing )
+		// TODO: possibly this will trigger before the bot is touching the capture point? shouldn't
+		// though because bCapturing is only true when the bot is close enough to the waypoint
+		// if the bot is capturing, and is at a capture point, and it's a point that should be captured
+		if( ((DODBot *)pBot)->bCapturing && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
+		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 		{
 			pBot->f_move_speed = 0.0;
 		}

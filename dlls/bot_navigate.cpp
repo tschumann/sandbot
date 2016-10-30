@@ -392,6 +392,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			return true;
 		}
    }
+   // TODO: is this still needed?
    else if( mod_id == DOD_DLL )
    {
 	   pent = NULL;
