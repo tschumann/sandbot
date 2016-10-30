@@ -1434,12 +1434,10 @@ void BotThink( bot_t *pBot )
          // do nothing here!
          ;
       }
-#if 0
 	  else if (mod_id == DOD_DLL && ((DODBot *)pBot)->bCapturing)
 	  {
-		  BotHeadTowardWaypoint(pBot);
+		  // do nothing
 	  }
-#endif
       else
       {
          // no enemy, let's just wander around...
@@ -1835,18 +1833,6 @@ void BotThink( bot_t *pBot )
             }
          }
       }
-
-	  // if the current waypoint is the goal and it's a Day of Defeat capture point
-	  if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
-		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
-	  {
-		  pBot->f_move_speed = 0.0;
-	  }
-	  else
-	  {
-		  // TODO: look for another goal here?
-		  pBot->SetMaxSpeed(pEdict->v.maxspeed);
-	  }
    }
 
    if (pBot->f_pause_time > gpGlobals->time)  // is the bot "paused"?

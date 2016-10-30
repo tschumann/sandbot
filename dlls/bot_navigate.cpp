@@ -348,7 +348,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	bool status;
 	float waypoint_distance, min_distance;
 	int team;
-	float distance;
 	float pause_time = 0.0;
 	edict_t *pent;
 	bool bot_has_flag = FALSE;
@@ -591,6 +590,20 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       bool waypoint_found = FALSE;
 
       pBot->prev_waypoint_distance = 0.0;
+
+	  // if the current waypoint is the goal and it's a Day of Defeat capture point
+	  if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
+		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
+	  {
+		  ALERT( at_console, "stopping near waypoint\n" );
+		  pBot->f_move_speed = 0.0;
+		  ((DODBot *)pBot)->bCapturing = true;
+	  }
+	  else if (mod_id == DOD_DLL)
+	  {
+		  pBot->SetMaxSpeed(pEdict->v.maxspeed);
+		  ((DODBot *)pBot)->bCapturing = false;
+	  }
 
       // check if the waypoint is a door waypoint
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOOR)
