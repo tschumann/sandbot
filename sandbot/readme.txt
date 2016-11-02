@@ -33,6 +33,9 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 v0.x (??/??/??)
 - [All] Fixed kicking a bot causing the game to crash.
+- [Opposing Force] Bots will look for random goals on maps with waypoints.
+- [Gunman Chronicles] Bots will look for random goals on maps with waypoints.
+- [They Hunger] Bots will look for random goals on maps with waypoints.
 - [Natural Selection] Bots will now reload after they haven't seen an enemy in a while.
 
 v0.2.1 (10/08/16)
