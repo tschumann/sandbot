@@ -527,6 +527,8 @@ class TFCBot : public bot_t
 public:
 	virtual bool FindFlag();
 	virtual void Build();
+	virtual bool CanBuildDispenser();
+	virtual bool CanBuildSentryGun();
 
 	const static int CLASS_CIVILIAN = 0;
 	const static int CLASS_SCOUT = 1;

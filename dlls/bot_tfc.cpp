@@ -163,6 +163,18 @@ void TFCBot::Build()
 		}
 
 		if (index != -1)
+		{
 			this->waypoint_goal = index;
+		}
 	}
+}
+
+bool TFCBot::CanBuildDispenser()
+{
+	return this->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 100;
+}
+
+bool TFCBot::CanBuildSentryGun()
+{
+	return this->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 130;
 }

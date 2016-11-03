@@ -669,68 +669,71 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             return TRUE;
          }
 
-         // see if this waypoint is a sentry gun waypoint...
-         if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SENTRYGUN) &&
-             (mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
-         {
-            if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 130)
-            {
-               int aim_index;
+		 if (mod_id == TFC_DLL)
+		 {
+			 // see if this waypoint is a sentry gun waypoint...
+			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SENTRYGUN) &&
+				 (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
+			 {
+				if (((TFCBot *)pBot)->CanBuildSentryGun())
+				{
+				   int aim_index;
 
-               aim_index = WaypointFindNearestAiming(waypoints[pBot->curr_waypoint_index].origin);
+				   aim_index = WaypointFindNearestAiming(waypoints[pBot->curr_waypoint_index].origin);
 
-               if (aim_index != -1)
-               {
-                  Vector v_aim = waypoints[aim_index].origin - waypoints[pBot->curr_waypoint_index].origin;
+				   if (aim_index != -1)
+				   {
+					  Vector v_aim = waypoints[aim_index].origin - waypoints[pBot->curr_waypoint_index].origin;
 
-                  Vector aim_angles = UTIL_VecToAngles( v_aim );
+					  Vector aim_angles = UTIL_VecToAngles( v_aim );
 
-                  pEdict->v.ideal_yaw = aim_angles.y;
+					  pEdict->v.ideal_yaw = aim_angles.y;
 
-                  BotFixIdealYaw(pEdict);
+					  BotFixIdealYaw(pEdict);
 
-                  pBot->b_build_sentrygun = TRUE;
+					  pBot->b_build_sentrygun = TRUE;
 
-                  pBot->sentrygun_waypoint = pBot->curr_waypoint_index;
+					  pBot->sentrygun_waypoint = pBot->curr_waypoint_index;
 
-                  pBot->f_look_for_waypoint_time = gpGlobals->time + 5.0;
+					  pBot->f_look_for_waypoint_time = gpGlobals->time + 5.0;
 
-                  return TRUE;
-               }
-            }
-         }
+					  return TRUE;
+				   }
+				}
+			 }
 
-         // see if this waypoint is a dispenser waypoint...
-         if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DISPENSER) &&
-             (mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
-         {
-            // does bot have enough metal to build a dispenser?
-            if (pBot->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 100)
-            {
-               int aim_index;
+			 // see if this waypoint is a dispenser waypoint...
+			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DISPENSER) &&
+				(pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
+			 {
+				// does bot have enough metal to build a dispenser?
+				if (((TFCBot *)pBot)->CanBuildDispenser())
+				{
+				   int aim_index;
 
-               aim_index = WaypointFindNearestAiming(waypoints[pBot->curr_waypoint_index].origin);
+				   aim_index = WaypointFindNearestAiming(waypoints[pBot->curr_waypoint_index].origin);
 
-               if (aim_index != -1)
-               {
-                  Vector v_aim = waypoints[aim_index].origin - waypoints[pBot->curr_waypoint_index].origin;
+				   if (aim_index != -1)
+				   {
+					  Vector v_aim = waypoints[aim_index].origin - waypoints[pBot->curr_waypoint_index].origin;
 
-                  Vector aim_angles = UTIL_VecToAngles( v_aim );
+					  Vector aim_angles = UTIL_VecToAngles( v_aim );
 
-                  pEdict->v.ideal_yaw = aim_angles.y;
+					  pEdict->v.ideal_yaw = aim_angles.y;
 
-                  BotFixIdealYaw(pEdict);
+					  BotFixIdealYaw(pEdict);
 
-                  pBot->b_build_dispenser = TRUE;
+					  pBot->b_build_dispenser = TRUE;
 
-                  pBot->dispenser_waypoint = pBot->curr_waypoint_index;
+					  pBot->dispenser_waypoint = pBot->curr_waypoint_index;
 
-                  pBot->f_look_for_waypoint_time = gpGlobals->time + 5.0;
+					  pBot->f_look_for_waypoint_time = gpGlobals->time + 5.0;
 
-                  return TRUE;
-               }
-            }
-         }
+					  return TRUE;
+				   }
+				}
+			 }
+		 }
       }
 
       // check if the bot is carrying the flag/card/ball...
