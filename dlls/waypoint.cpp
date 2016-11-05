@@ -426,7 +426,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
    return min_index;
 }
 
-edict_t *FindNearest(WAYPOINT waypoint, const char *szClassname)
+edict_t *FindNearest(Vector point, const char *szClassname)
 {
 	edict_t *pent = NULL;
 	edict_t *pNearest = NULL;
@@ -434,7 +434,7 @@ edict_t *FindNearest(WAYPOINT waypoint, const char *szClassname)
 
 	while( (pent = UTIL_FindEntityByClassname( pent, szClassname )) != NULL )
 	{
-		float fDistance = (pent->v.origin - waypoint.origin).Length();
+		float fDistance = (pent->v.origin - point).Length();
 
 		// is this the closest?
 		if (fDistance < fMinimumDistance)
@@ -445,6 +445,25 @@ edict_t *FindNearest(WAYPOINT waypoint, const char *szClassname)
 	}
 
 	return pNearest;
+}
+
+float DistanceToNearest(Vector point, const char *szClassname)
+{
+	edict_t *pent = NULL;
+	float fMinimumDistance = 9999.99;
+
+	while( (pent = UTIL_FindEntityByClassname( pent, szClassname )) != NULL )
+	{
+		float fDistance = (pent->v.origin - point).Length();
+
+		// is this the closest?
+		if (fDistance < fMinimumDistance)
+		{
+			fMinimumDistance = fDistance;
+		}
+	}
+
+	return fMinimumDistance;
 }
 
 /**
@@ -464,7 +483,8 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	// if the waypoint is for a dod_control_point
 	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
-		edict_t *nearest_control_point = FindNearest(waypoints[index], "dod_control_point");
+		ALERT( at_console, "looking near a control point waypoint\n" );
+		edict_t *nearest_control_point = FindNearest(waypoints[index].origin, "dod_control_point");
 
 		// if there's not nearby dod_control_point
 		if( !nearest_control_point )
@@ -482,7 +502,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	}
 	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_HIVE )
 	{
-		edict_t *nearest_hive = FindNearest(waypoints[index], "team_hive");
+		edict_t *nearest_hive = FindNearest(waypoints[index].origin, "team_hive");
 
 		if( !((NSBot *)pBot)->ShouldAttackHive( nearest_hive ) )
 		{
@@ -1853,7 +1873,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if( flags & W_FL_DOD_CAP )
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a control point near this waypoint\n");
-		edict_t *pControlPoint = FindNearest(waypoints[index], "dod_control_point");
+		edict_t *pControlPoint = FindNearest(waypoints[index].origin, "dod_control_point");
 		ALERT( at_console, "Body %d\n", pControlPoint->v.body);
 	}
 }

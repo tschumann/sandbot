@@ -393,6 +393,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		}
    }
    // TODO: is this still needed?
+#if 0
    else if( mod_id == DOD_DLL )
    {
 	   pent = NULL;
@@ -422,6 +423,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			// }
 		}
    }
+#endif
    else if( mod_id == NS_DLL )
    {
 	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
@@ -599,9 +601,12 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		  ALERT( at_console, "stopping near waypoint\n" );
 		  pBot->f_move_speed = 0.0;
 		  ((DODBot *)pBot)->bCapturing = true;
+		  pBot->iGoalIndex = pBot->waypoint_goal;
 	  }
-	  else if (mod_id == DOD_DLL)
+	  else if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
+		  pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
+		  ALERT( at_console, "moving away from waypoint\n" );
 		  pBot->SetMaxSpeed(pEdict->v.maxspeed);
 		  ((DODBot *)pBot)->bCapturing = false;
 	  }

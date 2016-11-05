@@ -134,4 +134,6 @@ int  WaypointDistanceFromTo(int src, int dest, int team);
 
 bool ShouldSkip(edict_t *pPlayer, int index);
 
+float DistanceToNearest(Vector point, const char *szClassname);
+
 #endif // WAYPOINT_H

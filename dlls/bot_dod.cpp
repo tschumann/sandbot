@@ -11,6 +11,7 @@
 void DODBot::OnSpawn()
 {
 	this->bCapturing = false;
+	this->iGoalIndex = 0;
 }
 
 void DODBot::Join()
