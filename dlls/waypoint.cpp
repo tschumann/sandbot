@@ -913,7 +913,7 @@ void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
 void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
 {
    edict_t *pent = NULL;
-   float radius = 200;	// increased from 40 as team_hive hangs from the ceiling and isn't close enough by default
+   float radius = 300;	// increased from 40 as team_hive hangs from the ceiling and isn't close enough by default
    TraceResult tr;
    float distance;
    float min_distance;

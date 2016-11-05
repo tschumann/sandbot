@@ -307,7 +307,12 @@ bool NSBot::ShouldAttackHive( edict_t *pHive )
 {
 	if( ((NSGame *)pGame)->IsClassic() )
 	{
-		// TODO: check if the hive is currently built
+		// TODO: check if pev->effects & EF_NODRAW and return false too?
+		if( pHive->v.solid == SOLID_NOT )
+		{
+			return false;
+		}
+
 		return true;
 	}
 	else
