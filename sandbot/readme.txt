@@ -33,6 +33,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 v0.x (??/??/??)
 - [All] Fixed kicking a bot causing the game to crash.
+- [Day of Defeat] Bots will now capture points.
 - [Opposing Force] Bots will look for random goals on maps with waypoints.
 - [Gunman Chronicles] Bots will look for random goals on maps with waypoints.
 - [They Hunger] Bots will look for random goals on maps with waypoints.

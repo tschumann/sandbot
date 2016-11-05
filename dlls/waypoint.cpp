@@ -483,7 +483,6 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	// if the waypoint is for a dod_control_point
 	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
-		ALERT( at_console, "looking near a control point waypoint\n" );
 		edict_t *nearest_control_point = FindNearest(waypoints[index].origin, "dod_control_point");
 
 		// if there's not nearby dod_control_point
@@ -1791,7 +1790,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 	int flags;
 
 	// find the nearest waypoint...
-	index = WaypointFindNearest(pEntity, 100.0, -1);
+	index = WaypointFindNearest(pEntity, 300.0, -1);
 
 	if (index == -1)
 		return;
@@ -1876,6 +1875,8 @@ void WaypointPrintInfo(edict_t *pEntity)
 		edict_t *pControlPoint = FindNearest(waypoints[index].origin, "dod_control_point");
 		ALERT( at_console, "Body %d\n", pControlPoint->v.body);
 	}
+
+	ALERT( at_console, "Distance to waypoint %f\n", (pEntity->v.origin - waypoints[index].origin).Length());
 }
 
 

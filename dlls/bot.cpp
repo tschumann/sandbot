@@ -1810,21 +1810,20 @@ void BotThink( bot_t *pBot )
 		// TODO: possibly this will trigger before the bot is touching the capture point? shouldn't
 		// though because bCapturing is only true when the bot is close enough to the waypoint
 		// if the bot is capturing, and is at a capture point, and it's a point that should be captured
-		if( ((DODBot *)pBot)->bCapturing /*&& (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
-		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal)*/)
+		if( ((DODBot *)pBot)->bCapturing)
 		{
 			// ALERT( at_console, "here\n" );
 			pBot->f_move_speed = 0.0;
 
-			/*if( DistanceToNearest(pBot->pEdict->v.origin, "dod_control_point") > 100 )
+			// TODO: this is very rough - probably something is set in pev if the bot is
+			// on or near a dod_control_point - should check if it's a brush entity...
+			if( DistanceToNearest(pBot->pEdict->v.origin, "dod_control_point") > 200 )
 			{
 				ALERT( at_console, "too far from capture point while capturing; resetting\n" );
 				pBot->f_move_speed = pEdict->v.maxspeed;
 				((DODBot *)pBot)->bCapturing = false;
-			}*/
+			}
 		}
-
-		ALERT( at_console, "%d\n", ShouldSkip(pBot->pEdict, pBot->iGoalIndex) );
 
 		// TODO: waypoint goal changes once it's capturing?
 		// if the current waypoint is a capture point and it is now captured
@@ -1834,22 +1833,6 @@ void BotThink( bot_t *pBot )
 			pBot->f_move_speed = pEdict->v.maxspeed;
 			((DODBot *)pBot)->bCapturing = false;
 		}
-
-#if 0
-		// if the current waypoint is the goal and it's a Day of Defeat capture point
-	  if (((DODBot *)pBot)->bCapturing && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
-		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
-	  {
-		  ALERT( at_console, "at waypoint\n" );
-		  pBot->f_move_speed = 0.0;
-		  // ((DODBot *)pBot)->bCapturing = true;
-	  }
-	  else
-	  {
-		  pBot->SetMaxSpeed(pEdict->v.maxspeed);
-		  ((DODBot *)pBot)->bCapturing = false;
-	  }
-#endif
 	}
 	else if( mod_id == REWOLF_DLL )
 	{

@@ -392,38 +392,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			return true;
 		}
    }
-   // TODO: is this still needed?
-#if 0
-   else if( mod_id == DOD_DLL )
-   {
-	   pent = NULL;
-
-	   while( (pent = UTIL_FindEntityByClassname( pent, "dod_control_point" )) != NULL )
-		{
-			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
-
-			// is this control point visible?
-			// if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
-			// {
-				float fdistance = (pent->v.origin - pEdict->v.origin).Length();
-
-				if (fdistance < 250)
-				{
-					// ALERT( at_console, "found a dod_control_point with body %d at distance %f at waypoint %d\n", pent->v.body, fdistance, pBot->curr_waypoint_index );
-				}
-
-				// is the bot close enough and is the control point capturable?
-				if (fdistance < 75.0 && (pent->v.body == 3))
-				{
-					ALERT( at_console, "bot at a capturable control point; camping\n" );
-					((DODBot *)pBot)->bCapturing = true;
-					pBot->SetMaxSpeed( 0.0 );
-					break;
-				}
-			// }
-		}
-   }
-#endif
    else if( mod_id == NS_DLL )
    {
 	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
