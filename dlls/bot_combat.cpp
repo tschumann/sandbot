@@ -610,13 +610,13 @@ edict_t *BotFindEnemy( bot_t *pBot )
             int sentry_team = -1;
             int bot_team = UTIL_GetTeam(pEdict);
 
-            if (pent->v.colormap == 0xA096)
+			if (pent->v.colormap == TFCBot::TEAM_BLUE)
                sentry_team = 0;  // blue team's sentry
-            else if (pent->v.colormap == 0x04FA)
+			else if (pent->v.colormap == TFCBot::TEAM_RED)
                sentry_team = 1;  // red team's sentry
-            else if (pent->v.colormap == 0x372D)
+			else if (pent->v.colormap == TFCBot::TEAM_YELLOW)
                sentry_team = 2;  // yellow team's sentry
-            else if (pent->v.colormap == 0x6E64)
+			else if (pent->v.colormap == TFCBot::TEAM_GREEN)
                sentry_team = 3;  // green team's sentry
 
             // don't target your own team's sentry guns...
@@ -1207,7 +1207,7 @@ void BotShootAtEnemy( bot_t *pBot )
 		// TODO: this check should more generally look at whether the bot has a melee weapon or not
 		if (mod_id == NS_DLL && ((NSBot *)pBot)->IsAlien())
 		{
-			// alien's should charge ahead due to their strong close-range attacks
+			// alien's should charge ahead due to the strength of their close-range attacks
 			pBot->f_move_speed = pBot->GetMaxSpeed();
 		}
 		else

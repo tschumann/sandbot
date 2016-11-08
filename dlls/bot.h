@@ -542,6 +542,11 @@ public:
 	const static int CLASS_PYRO = 7;
 	const static int CLASS_SPY = 8;
 	const static int CLASS_ENGINEER = 9;
+
+	const static int TEAM_BLUE = 0xA096;
+	const static int TEAM_RED = 0x04FA;
+	const static int TEAM_YELLOW = 0x372D;
+	const static int TEAM_GREEN = 0x6E64;
 };
 
 class GunmanBot : public bot_t

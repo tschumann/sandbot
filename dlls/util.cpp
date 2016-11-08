@@ -370,9 +370,7 @@ int UTIL_GetClass(edict_t *pEntity)
 
 int UTIL_GetBotIndex(edict_t *pEdict)
 {
-   int index;
-
-   for (index=0; index < MAX_PLAYERS; index++)
+   for (int index=0; index < MAX_PLAYERS; index++)
    {
       if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {

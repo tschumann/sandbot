@@ -1361,7 +1361,9 @@ void BotThink( bot_t *pBot )
                pBot->f_bot_find_enemy_time = gpGlobals->time + 5.0;
 
                if (RANDOM_LONG(1, 100) <= 40)
+			   {
                   pBot->pBotEnemy = BotFindEnemy( pBot );
+			   }
             }
          }
          else
@@ -1370,7 +1372,9 @@ void BotThink( bot_t *pBot )
          }
       }
       else
+	  {
          pBot->pBotEnemy = NULL;  // clear enemy pointer (no ememy for you!)
+	  }
 
       if (pBot->pBotEnemy != NULL)  // does an enemy exist?
       {
@@ -1378,25 +1382,18 @@ void BotThink( bot_t *pBot )
 
          pBot->f_pause_time = 0;  // dont't pause if enemy exists
       }
-
       else if (pBot->f_pause_time > gpGlobals->time)  // is bot "paused"?
       {
          // you could make the bot look left then right, or look up
          // and down, to make it appear that the bot is hunting for
          // something (don't do anything right now)
       }
-
       // is bot being "used" and can still follow "user"?
       else if ((pBot->pBotUser != NULL) && BotFollowUser( pBot ))
       {
          // do nothing here!
          ;
       }
-	  else if (mod_id == DOD_DLL && ((DODBot *)pBot)->bCapturing)
-	  {
-		  // do nothing
-		  // ALERT( at_console, "bot is capturing\n" );
-	  }
       else
       {
          // no enemy, let's just wander around...
@@ -1430,7 +1427,6 @@ void BotThink( bot_t *pBot )
                // shot at tripmine, may or may not have hit it, clear
                // flags anyway, next BotFindItem will see it again if
                // it is still there...
-
                pBot->b_shoot_tripmine = FALSE;
                pBot->b_see_tripmine = FALSE;
 
@@ -1466,7 +1462,6 @@ void BotThink( bot_t *pBot )
             else
             {
                // bot is stuck trying to "use" a health station...
-
                pBot->b_use_health_station = FALSE;
 
                // don't look for items for a while since the bot
@@ -1487,7 +1482,6 @@ void BotThink( bot_t *pBot )
             else
             {
                // bot is stuck trying to "use" a HEV station...
-
                pBot->b_use_HEV_station = FALSE;
 
                // don't look for items for a while since the bot
@@ -1511,7 +1505,6 @@ void BotThink( bot_t *pBot )
             else
             {
                // bot is stuck trying to "use" a capture point...
-
                pBot->b_use_capture = FALSE;
 
                // don't look for items for a while since the bot
@@ -1599,7 +1592,6 @@ void BotThink( bot_t *pBot )
                      {
                         // if there was a wall on the left over 1/2 a second ago then
                         // 20% of the time randomly turn between 45 and 60 degrees
-            
                         if ((pBot->f_wall_on_left != 0) && (pBot->f_wall_on_left <= gpGlobals->time - 0.5) &&
                             (RANDOM_LONG(1, 100) <= 20))
                         {
@@ -1617,7 +1609,6 @@ void BotThink( bot_t *pBot )
                      {
                         // if there was a wall on the right over 1/2 a second ago then
                         // 20% of the time randomly turn between 45 and 60 degrees
-            
                         if ((pBot->f_wall_on_right != 0) && (pBot->f_wall_on_right <= gpGlobals->time - 0.5) &&
                             (RANDOM_LONG(1, 100) <= 20))
                         {
@@ -1667,7 +1658,6 @@ void BotThink( bot_t *pBot )
                 (pBot->f_dont_check_stuck < gpGlobals->time))
             {
                // the bot must be stuck!
-
                pBot->f_dont_avoid_wall_time = gpGlobals->time + 1.0;
                pBot->f_look_for_waypoint_time = gpGlobals->time + 1.0;
             
@@ -1812,7 +1802,6 @@ void BotThink( bot_t *pBot )
 		// if the bot is capturing, and is at a capture point, and it's a point that should be captured
 		if( ((DODBot *)pBot)->bCapturing)
 		{
-			// ALERT( at_console, "here\n" );
 			pBot->f_move_speed = 0.0;
 
 			// TODO: this is very rough - probably something is set in pev if the bot is

@@ -2,7 +2,7 @@ Sandbot
 
 == About ==
 Name: Sandbot
-Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (deathmatch), Gunman Chronicles, Natural Selection (combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (capture the flag), Day of Defeat, Team Fortress Classic, Natural Selection (classic) and The Ship but they are still experimental).
+Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch), Day of Defeat, Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
 Requirements: Steam versions of either Half-Life, Half-Life Opposing Force and the latest versions of Gunman Chronicles or They Hunger.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
@@ -33,11 +33,11 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 v0.x (??/??/??)
 - [All] Fixed kicking a bot causing the game to crash.
-- [Day of Defeat] Bots will now capture points.
 - [Opposing Force] Bots will look for random goals on maps with waypoints.
+- [Day of Defeat] Bots will now capture points.
 - [Gunman Chronicles] Bots will look for random goals on maps with waypoints.
-- [They Hunger] Bots will look for random goals on maps with waypoints.
 - [Natural Selection] Bots will now reload after they haven't seen an enemy in a while.
+- [They Hunger] Bots will look for random goals on maps with waypoints.
 
 v0.2.1 (10/08/16)
 - [Day of Defeat] Bots now spawn as Allies and Axis (only the first four classes of each team) and attack each other.
