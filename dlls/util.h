@@ -541,3 +541,5 @@ float UTIL_SharedRandomFloat( unsigned int seed, float low, float high );
 float UTIL_WeaponTimeBase( void );
 
 void UTIL_LogDPrintf( char *fmt, ... );
+
+bool UTIL_IsBuilt( edict_t *pent );
