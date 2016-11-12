@@ -483,9 +483,6 @@ void BotSpawnInit( bot_t *pBot )
 	{
 		pBot->m_rgAmmo[i] = 0;
 	}
-
-	// memset(&(pBot->current_weapon), 0, sizeof(pBot->current_weapon));
-	// memset(&(pBot->m_rgAmmo), 0, sizeof(pBot->m_rgAmmo));
 }
 
 void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char *arg3, const char *arg4)
@@ -1307,7 +1304,7 @@ void BotThink( bot_t *pBot )
    }
 
    // check if time to check for player sounds (if don't already have enemy)
-   if ((pBot->f_sound_update_time <= gpGlobals->time) && !pBot->pBotEnemy)
+   if ((pBot->f_sound_update_time <= gpGlobals->time) && !pBot->HasEnemy())
    {
 	   pBot->UpdateSounds();
    }
@@ -1376,7 +1373,7 @@ void BotThink( bot_t *pBot )
          pBot->pBotEnemy = NULL;  // clear enemy pointer (no ememy for you!)
 	  }
 
-      if (pBot->pBotEnemy != NULL)  // does an enemy exist?
+      if (pBot->HasEnemy())  // does an enemy exist?
       {
          BotShootAtEnemy( pBot );  // shoot at the enemy
 
@@ -1753,7 +1750,7 @@ void BotThink( bot_t *pBot )
 
       // check if the waypoint is a sniper waypoint AND
       // bot isn't currently aiming at an ememy...
-      if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) && !pBot->pBotEnemy)
+      if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) && !pBot->HasEnemy())
       {
 		  if ((mod_id != TFC_DLL) || ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_SNIPER)))
          {
@@ -1886,6 +1883,11 @@ int bot_t::GetTeam()
 
 bool bot_t::HasEnemy()
 {
+	if( this->pBotEnemy->v.solid != SOLID_NOT )
+	{
+		return true;
+	}
+
 	return this->pBotEnemy != NULL;
 }
 

@@ -503,7 +503,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 
 	edict_t *pEdict = pBot->pEdict;
 
-	if (pBot->pBotEnemy != NULL)  // does the bot already have an enemy?
+	if (pBot->HasEnemy())  // does the bot already have an enemy?
 	{
 		vecEnd = pBot->pBotEnemy->v.origin + pBot->pBotEnemy->v.view_ofs;
 
