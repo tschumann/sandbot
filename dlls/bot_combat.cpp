@@ -508,7 +508,8 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		vecEnd = pBot->pBotEnemy->v.origin + pBot->pBotEnemy->v.view_ofs;
 
 		// if the enemy is dead? if it is, assume the bot killed it
-		if (!IsAlive(pBot->pBotEnemy))
+		// SOLID_NOT check is for Natural Selection
+		if (!IsAlive(pBot->pBotEnemy) || pBot->pBotEnemy->v.solid == SOLID_NOT)
 		{
 			// the enemy is dead, jump for joy about 10% of the time,
 			// except in The Ship where this would be too conspicuous
@@ -751,6 +752,43 @@ edict_t *BotFindEnemy( bot_t *pBot )
 						}
 					}
 				}
+
+				// if there's no hive, look for some other enemies
+				if (!pBot->HasEnemy())
+				{
+					while( pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 500.0 ) )
+					{
+						// ignore unbuilt structures
+						if( pent->v.solid != SOLID_NOT )
+						{
+							continue;
+						}
+
+						if( !strcmp( "alienresourcetower", STRING(pent->v.classname) ) ||
+							!strcmp( "defensechamber", STRING(pent->v.classname) ) ||
+							!strcmp( "movementchamber", STRING(pent->v.classname) ) ||
+							!strcmp( "offensechamber", STRING(pent->v.classname) ) ||
+							!strcmp( "sensorychamber", STRING(pent->v.classname) ))
+						{
+							vecEnd = pent->v.origin + pent->v.view_ofs;
+
+							// is this visible?
+							if( FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) )
+							{
+								float fDistance = (pent->v.origin - pEdict->v.origin).Length();
+
+								// is this the closest?
+								if( fDistance < nearestdistance )
+								{
+									nearestdistance = fDistance;
+									pNewEnemy = pent;
+
+									pBot->pBotUser = NULL;  // don't follow user when enemy found
+								}
+							}
+						}
+					}
+				}
 			}
 			else if( pBot->pEdict->v.team == NSBot::TEAM_ALIEN )
 			{
@@ -772,6 +810,41 @@ edict_t *BotFindEnemy( bot_t *pBot )
 						}
 					}
 				}
+
+				// if there's no command chair, look for some other enemies
+				if (!pBot->HasEnemy())
+				{
+					while( pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 500.0 ) )
+					{
+						if( !strcmp( "team_advarmoy", STRING(pent->v.classname) ) ||
+							!strcmp( "team_armory", STRING(pent->v.classname) ) ||
+							!strcmp( "team_armslab", STRING(pent->v.classname) ) ||
+							!strcmp( "team_infportal", STRING(pent->v.classname) ) ||
+							!strcmp( "team_observatory", STRING(pent->v.classname) ) ||
+							!strcmp( "team_prototypelab", STRING(pent->v.classname) ) ||
+							!strcmp( "team_turretfactory", STRING(pent->v.classname) ) || 
+							!strcmp( "turret", STRING(pent->v.classname) ) ||
+							!strcmp( "siegeturret", STRING(pent->v.classname) ) )
+						{
+							vecEnd = pent->v.origin + pent->v.view_ofs;
+
+							// is this visible?
+							if( FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) )
+							{
+								float fDistance = (pent->v.origin - pEdict->v.origin).Length();
+
+								// is this the closest sentry gun?
+								if( fDistance < nearestdistance )
+								{
+									nearestdistance = fDistance;
+									pNewEnemy = pent;
+
+									pBot->pBotUser = NULL;  // don't follow user when enemy found
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -781,7 +854,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 	{
 		pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
 
-		// TODO: does reloading cause ammo to be lost in Day of Defeat
+		// TODO: does reloading cause ammo to be lost in Day of Defeat?
 		if (pBot->ShouldReload())
 		{
 			pEdict->v.button |= IN_RELOAD;  // press reload button

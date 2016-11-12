@@ -34,6 +34,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 v0.3.x (??/??/??)
 - [Half-Life] Bots are now random colours.
 - [Opposing Force] Bots are now random colours.
+- [Natural Selection] Bots will now consider all enemy structures as enemies.
 
 v0.3 (12/11/16)
 - [All] Fixed kicking a bot causing the game to crash.
