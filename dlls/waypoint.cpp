@@ -1866,7 +1866,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 	}
 	if( flags & W_FL_NS_COMMAND_CHAIR )
 	{
-		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a hive near this waypoint\n");
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a command chair near this waypoint\n");
 	}
 
 	if( flags & W_FL_DOD_CAP )

@@ -759,7 +759,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 					vecEnd = pent->v.origin + pent->v.view_ofs;
 
 					// is this command chair visible?
-					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					if (/*FInViewCone( &vecEnd, pEdict ) && */FVisible( vecEnd, pEdict ))
 					{
 						float distance = (pent->v.origin - pEdict->v.origin).Length();
 						ALERT( at_console, "found a command chair\n" );
@@ -1230,7 +1230,7 @@ void BotShootAtEnemy( bot_t *pBot )
 
 		if( mod_id == REWOLF_DLL )
 		{
-			choice = usableWeapons.back().iWeaponId;
+			// choice = usableWeapons.back().iWeaponId;
 		}
 
 		// select the best weapon to use at this distance and fire...

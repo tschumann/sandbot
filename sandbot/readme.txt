@@ -31,12 +31,13 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
-v0.x (??/??/??)
+v0.3 (??/??/16)
 - [All] Fixed kicking a bot causing the game to crash.
 - [Opposing Force] Bots will look for random goals on maps with waypoints.
 - [Day of Defeat] Bots will now capture points.
 - [Gunman Chronicles] Bots will look for random goals on maps with waypoints.
 - [Natural Selection] Bots will now reload after they haven't seen an enemy in a while.
+- [Natural Selection] Bots will now attack the command chair and the built hive in Classic.
 - [They Hunger] Bots will look for random goals on maps with waypoints.
 
 v0.2.1 (10/08/16)

@@ -405,12 +405,13 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					Vector vecEnd = pent->v.origin + pent->v.view_ofs;
 
 					// is this command chair visible?
-					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					if (/*FInViewCone( &vecEnd, pEdict ) && */FVisible( vecEnd, pEdict ))
 					{
+						ALERT( at_console, "seen a command chair\n" );
 						float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest command chair?
-						if (fdistance < 100.0)
+						if (fdistance < 300.0)
 						{
 							ALERT( at_console, "bot seeing a command chair; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
