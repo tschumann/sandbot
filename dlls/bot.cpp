@@ -596,11 +596,21 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       infobuffer = GET_INFOBUFFER( BotEnt );
       clientIndex = ENTINDEX( BotEnt );
 
-
       if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
+	  {
+		  char color[4];
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szModel );
+		  // TODO: these might only work for Half-Life and Opposing Force?
+		  sprintf(color, "%d", RANDOM_LONG(0, 255));
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "topcolor", color );
+		  sprintf(color, "%d", RANDOM_LONG(0, 255));
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "bottomcolor", color );
+	  }
       else // other mods
+	  {
+		  // TODO: is this even needed>
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "gina" );
+	  }
 
       if (mod_id == CSTRIKE_DLL)
       {
