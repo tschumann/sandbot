@@ -394,7 +394,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    }
    else if( mod_id == NS_DLL )
    {
-	   if( ((NSGame *)pGame)->IsCombat() && !pBot->HasEnemy() )
+	   if( !pBot->HasEnemy() )
 	   {
 		   if( UTIL_GetTeam( pBot->pEdict ) == NSBot::TEAM_ALIEN )
 		   {
