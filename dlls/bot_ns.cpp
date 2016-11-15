@@ -303,6 +303,11 @@ void NSBot::UpgradeToHMG()
 	this->pEdict->v.impulse = NSBot::COMBAT_UPGRADE_HMG;
 }
 
+bool NSBot::HasWelder()
+{
+	return (this->pEdict->v.weapons & (1<<NS_WEAPON_WELDER)) != 0;
+}
+
 bool NSBot::ShouldAttackHive( edict_t *pHive )
 {
 	if( ((NSGame *)pGame)->IsClassic() )

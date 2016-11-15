@@ -1986,10 +1986,13 @@ void BotThink( bot_t *pBot )
 		 // check if should build
         else if( pBot->bBuild )
         {
+			// TODO: do some buildings take longer to build than others?
             if( ( pBot->fBuildTime + 22.0 ) > gpGlobals->time )
             {
-                pBot->f_move_speed = 0.0;  // don't move
-
+				// don't move
+                pBot->f_move_speed = 0.0;
+				// TODO: check if bot has welder and equip and shoot if it does
+				// duck and use
                 pEdict->v.button = ( IN_USE | IN_DUCK );
             }
             else

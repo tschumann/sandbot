@@ -734,6 +734,9 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		{
 			if( pBot->pEdict->v.team == NSBot::TEAM_MARINE )
 			{
+				// TODO: possibly not needed, but safe to have - when at a bot waypoint it should
+				// see the hive and acquire it as an enemy, but possibly it won't reqacquire it
+				// as an enemy if it gets distracted?
 				while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
 				{
 					vecEnd = pent->v.origin + pent->v.view_ofs;

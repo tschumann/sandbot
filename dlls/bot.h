@@ -612,6 +612,7 @@ public:
 	virtual void UpgradeToShotgun();
 	virtual bool HasHMG();
 	virtual void UpgradeToHMG();
+	virtual bool HasWelder();
 
 	virtual bool ShouldAttackHive( edict_t *pHive );
 
