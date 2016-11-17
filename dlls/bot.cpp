@@ -1983,63 +1983,73 @@ void BotThink( bot_t *pBot )
 		{
 			BotUseDoor( pBot );
 		}
-		 // check if should build
-        else if( pBot->bBuild )
-        {
-			// TODO: do some buildings take longer to build than others?
-            if( ( pBot->fBuildTime + 22.0 ) > gpGlobals->time )
-            {
-				// don't move
-                pBot->f_move_speed = 0.0;
-				if (((NSBot *)pBot)->HasWelder())
-				{
-					FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
-					pEdict->v.button = ( IN_ATTACK | IN_DUCK );
-				}
-				else
-				{
-					pEdict->v.button = ( IN_USE | IN_DUCK );
-				}
-            }
-            else
-            {
-                pBot->bBuild = false;
 
-                // don't look for items for a while since the bot
-                // could be stuck trying to get to an item
-                pBot->f_find_item = gpGlobals->time + 0.5;
-            }
-        }
-		else if( pBot->bBuildAlienResourceTower )
+		else if( mod_id == NS_DLL )
 		{
-			pEdict->v.impulse = NSBot::CLASSIC_BUILD_RESOURCE_TOWER;
+			if( ((NSBot *)pBot)->IsMarine() )
+			{
+				// check if should build
+				if( pBot->bBuild )
+				{
+					// TODO: do some buildings take longer to build than others?
+					if( ( pBot->fBuildTime + 22.0 ) > gpGlobals->time )
+					{
+						// don't move
+						pBot->f_move_speed = 0.0;
+						if (((NSBot *)pBot)->HasWelder())
+						{
+							FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
+							pEdict->v.button = ( IN_ATTACK | IN_DUCK );
+						}
+						else
+						{
+							pEdict->v.button = ( IN_USE | IN_DUCK );
+						}
+					}
+					else
+					{
+						pBot->bBuild = false;
 
-			pBot->bBuildAlienResourceTower = false;
+						// don't look for items for a while since the bot
+						// could be stuck trying to get to an item
+						pBot->f_find_item = gpGlobals->time + 0.5;
+					}
+				}
+				// check if should use an armory...
+				else if( pBot->bUseArmory )
+				{
+					if( ( pBot->fUseArmoryTime + 4.0 ) > gpGlobals->time )
+					{
+						pBot->f_move_speed = 0.0;  // don't move
+
+						pEdict->v.button = IN_USE;
+					}
+					else
+					{
+						pBot->bUseArmory = false;
+
+						// don't look for items for a while since the bot
+						// could be stuck trying to get to an item
+						pBot->f_find_item = gpGlobals->time + 0.5;
+					}
+				}
+			}
+			else
+			{
+				if( pBot->bBuildAlienResourceTower )
+				{
+					pEdict->v.impulse = NSBot::CLASSIC_BUILD_RESOURCE_TOWER;
+
+					pBot->bBuildAlienResourceTower = false;
+				}
+				else if( pBot->bBuildHive )
+				{
+					pEdict->v.impulse = NSBot::CLASSIC_BUILD_HIVE;
+
+					pBot->bBuildHive = false;
+				}
+			}
 		}
-		else if( pBot->bBuildHive )
-		{
-			pEdict->v.impulse = NSBot::CLASSIC_BUILD_HIVE;
-
-			pBot->bBuildHive = false;
-		}
-		// check if should use an armory...
-        else if( pBot->bUseArmory )
-        {
-            if( ( pBot->fUseArmoryTime + 4.0 ) > gpGlobals->time )
-            {
-                pBot->f_move_speed = 0.0;  // don't move
-
-                pEdict->v.button = IN_USE;
-            }
-            else
-            {
-                pBot->bUseArmory = false;
-
-                // don't look for items for a while since the bot
-                // could be stuck trying to get to an item
-                pBot->f_find_item = gpGlobals->time + 0.5;
-            }
-        }
 
          else
          {
