@@ -1991,9 +1991,15 @@ void BotThink( bot_t *pBot )
             {
 				// don't move
                 pBot->f_move_speed = 0.0;
-				// TODO: check if bot has welder and equip and shoot if it does
-				// duck and use
-                pEdict->v.button = ( IN_USE | IN_DUCK );
+				if (((NSBot *)pBot)->HasWelder())
+				{
+					FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
+					pEdict->v.button = ( IN_ATTACK | IN_DUCK );
+				}
+				else
+				{
+					pEdict->v.button = ( IN_USE | IN_DUCK );
+				}
             }
             else
             {
