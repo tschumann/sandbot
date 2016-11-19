@@ -2412,7 +2412,7 @@ int bot_t::GetTeam()
 
 bool bot_t::HasEnemy()
 {
-	if( this->pBotEnemy->v.solid != SOLID_NOT )
+	if( this->pBotEnemy && this->pBotEnemy->v.solid != SOLID_NOT )
 	{
 		return true;
 	}
