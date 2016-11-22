@@ -532,6 +532,8 @@ public:
 	virtual bool CanBuildDispenser();
 	virtual bool CanBuildSentryGun();
 
+	virtual edict_t* FindEnemy();
+
 	const static int CLASS_CIVILIAN = 0;
 	const static int CLASS_SCOUT = 1;
 	const static int CLASS_SNIPER = 2;
@@ -640,6 +642,8 @@ public:
 	virtual bool IsFade();
 	virtual bool ShouldBecomeOnos();
 	virtual bool IsOnos();
+
+	virtual edict_t* FindEnemy();
 
 	const static int TEAM_NONE = 0;
 	const static int TEAM_MARINE = 1;

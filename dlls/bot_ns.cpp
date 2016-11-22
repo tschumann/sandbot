@@ -463,3 +463,131 @@ bool NSBot::IsOnos()
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5;
 }
+
+edict_t* NSBot::FindEnemy()
+{
+	Vector vecEnd;
+	edict_t *pent = NULL;
+	edict_t *pNewEnemy;
+	float nearestdistance;
+
+	if( this->pEdict->v.team == NSBot::TEAM_MARINE )
+	{
+		// TODO: possibly not needed, but safe to have - when at a bot waypoint it should
+		// see the hive and acquire it as an enemy, but possibly it won't reqacquire it
+		// as an enemy if it gets distracted?
+		while( (pent = UTIL_FindEntityByClassname( pent, "team_hive" )) != NULL )
+		{
+			vecEnd = pent->v.origin + pent->v.view_ofs;
+
+			// is this hive visible?
+			if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) && pent->v.solid != SOLID_NOT)
+			{
+				float distance = (pent->v.origin - pEdict->v.origin).Length();
+				ALERT( at_console, "found a hive\n" );
+
+				// is this the closest hive?
+				if (distance < nearestdistance)
+				{
+					nearestdistance = distance;
+					pNewEnemy = pent;
+				}
+			}
+		}
+
+		// if there's no hive, look for some other enemies
+		if(!this->HasEnemy())
+		{
+			while( pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 500.0 ) )
+			{
+				// ignore unbuilt structures
+				if( pent->v.solid != SOLID_NOT )
+				{
+					continue;
+				}
+
+				if( !strcmp( "alienresourcetower", STRING(pent->v.classname) ) ||
+					!strcmp( "defensechamber", STRING(pent->v.classname) ) ||
+					!strcmp( "movementchamber", STRING(pent->v.classname) ) ||
+					!strcmp( "offensechamber", STRING(pent->v.classname) ) ||
+					!strcmp( "sensorychamber", STRING(pent->v.classname) ))
+				{
+					vecEnd = pent->v.origin + pent->v.view_ofs;
+
+					// is this visible?
+					if( FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) )
+					{
+						float fDistance = (pent->v.origin - pEdict->v.origin).Length();
+
+						// is this the closest?
+						if( fDistance < nearestdistance )
+						{
+							nearestdistance = fDistance;
+							pNewEnemy = pent;
+
+							this->pBotUser = NULL;  // don't follow user when enemy found
+						}
+					}
+				}
+			}
+		}
+	}
+	else if( this->pEdict->v.team == NSBot::TEAM_ALIEN )
+	{
+		while( (pent = UTIL_FindEntityByClassname( pent, "team_command" )) != NULL )
+		{
+			vecEnd = pent->v.origin + pent->v.view_ofs;
+
+			// is this command chair visible?
+			if (/*FInViewCone( &vecEnd, pEdict ) && */FVisible( vecEnd, pEdict ))
+			{
+				float distance = (pent->v.origin - pEdict->v.origin).Length();
+				ALERT( at_console, "found a command chair\n" );
+
+				// is this the closest command chair?
+				if (distance < nearestdistance)
+				{
+					nearestdistance = distance;
+					pNewEnemy = pent;
+				}
+			}
+		}
+
+		// if there's no command chair, look for some other enemies
+		if(!this->HasEnemy())
+		{
+			while( pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 500.0 ) )
+			{
+				if( !strcmp( "team_advarmoy", STRING(pent->v.classname) ) ||
+					!strcmp( "team_armory", STRING(pent->v.classname) ) ||
+					!strcmp( "team_armslab", STRING(pent->v.classname) ) ||
+					!strcmp( "team_infportal", STRING(pent->v.classname) ) ||
+					!strcmp( "team_observatory", STRING(pent->v.classname) ) ||
+					!strcmp( "team_prototypelab", STRING(pent->v.classname) ) ||
+					!strcmp( "team_turretfactory", STRING(pent->v.classname) ) || 
+					!strcmp( "turret", STRING(pent->v.classname) ) ||
+					!strcmp( "siegeturret", STRING(pent->v.classname) ) )
+				{
+					vecEnd = pent->v.origin + pent->v.view_ofs;
+
+					// is this visible?
+					if( FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) )
+					{
+						float fDistance = (pent->v.origin - pEdict->v.origin).Length();
+
+						// is this the closest sentry gun?
+						if( fDistance < nearestdistance )
+						{
+							nearestdistance = fDistance;
+							pNewEnemy = pent;
+
+							this->pBotUser = NULL;  // don't follow user when enemy found
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return pNewEnemy;
+}

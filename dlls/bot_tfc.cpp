@@ -178,3 +178,106 @@ bool TFCBot::CanBuildSentryGun()
 {
 	return this->m_rgAmmo[weapon_defs[TF_WEAPON_SPANNER].iAmmo1] >= 130;
 }
+
+edict_t* TFCBot::FindEnemy()
+{
+	Vector vecEnd;
+	edict_t *pent = NULL;
+	edict_t *pNewEnemy;
+	float nearestdistance = 1000.0;
+
+	extern bool b_observer_mode;
+	extern int team_allies[];
+
+	if (this->pEdict->v.playerclass == TFCBot::CLASS_MEDIC)
+	{
+		// search the world for players...
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
+			edict_t *pPlayer = INDEXENT(i);
+
+			// skip invalid players and skip self (i.e. this bot)
+			if ((pPlayer) && (!pPlayer->free) && (pPlayer != this->pEdict))
+			{
+				// skip this player if not alive (i.e. dead or dying)
+				if (!IsAlive(pPlayer))
+					continue;
+
+				if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
+					continue;
+
+				int player_team = UTIL_GetTeam(pPlayer);
+				int bot_team = UTIL_GetTeam(this->pEdict);
+
+				// don't target your enemies...
+				if ((bot_team != player_team) && !(team_allies[bot_team] & (1<<player_team)))
+					continue;
+
+				// check if player needs to be healed...
+				if ((pPlayer->v.health / pPlayer->v.max_health) > 0.50)
+					continue;  // health greater than 50% so ignore
+
+				vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
+
+				// see if bot can see the player...
+				if (FInViewCone( &vecEnd, this->pEdict ) && FVisible( vecEnd, this->pEdict ))
+				{
+					float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
+
+					if (distance < nearestdistance)
+					{
+						nearestdistance = distance;
+						pNewEnemy = pPlayer;
+
+						this->pBotUser = NULL;  // don't follow user when enemy found
+					}
+				}
+			}
+		}
+	}
+
+	if (pNewEnemy == NULL)
+	{
+		while ((pent = UTIL_FindEntityByClassname( pent, "building_sentrygun" )) != NULL)
+		{
+			int sentry_team = -1;
+			int bot_team = UTIL_GetTeam(this->pEdict);
+
+			if (pent->v.colormap == TFCBot::TEAM_BLUE)
+				sentry_team = 0;  // blue team's sentry
+			else if (pent->v.colormap == TFCBot::TEAM_RED)
+				sentry_team = 1;  // red team's sentry
+			else if (pent->v.colormap == TFCBot::TEAM_YELLOW)
+				sentry_team = 2;  // yellow team's sentry
+			else if (pent->v.colormap == TFCBot::TEAM_GREEN)
+				sentry_team = 3;  // green team's sentry
+
+			// don't target your own team's sentry guns...
+			if (bot_team == sentry_team)
+				continue;
+
+			// don't target your allie's sentry guns either...
+			if (team_allies[bot_team] & (1<<sentry_team))
+				continue;
+
+			vecEnd = pent->v.origin + pent->v.view_ofs;
+
+			// is this sentry gun visible?
+			if (FInViewCone( &vecEnd, this->pEdict ) && FVisible( vecEnd, this->pEdict ))
+			{
+				float distance = (pent->v.origin - this->pEdict->v.origin).Length();
+
+				// is this the closest sentry gun?
+				if (distance < nearestdistance)
+				{
+					nearestdistance = distance;
+					pNewEnemy = pent;
+
+					this->pBotUser = NULL;  // don't follow user when enemy found
+				}
+			}
+		}
+	}
+
+	return pNewEnemy;
+}
