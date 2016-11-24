@@ -659,69 +659,6 @@ edict_t *BotFindEnemy( bot_t *pBot )
 }
 
 
-Vector BotBodyTarget( edict_t *pBotEnemy, bot_t *pBot )
-{
-	Vector target;
-	float f_distance;
-	float f_scale;
-	int d_x, d_y, d_z;
-
-	edict_t *pEdict = pBot->pEdict;
-
-	f_distance = (pBotEnemy->v.origin - pEdict->v.origin).Length();
-
-	if (f_distance > 1000)
-		f_scale = 1.0;
-	else if (f_distance > 100)
-		f_scale = f_distance / 1000.0;
-	else
-		f_scale = 0.1;
-
-	switch (pBot->bot_skill)
-	{
-		case 0:
-			// VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)
-			target = pBotEnemy->v.origin + pBotEnemy->v.view_ofs * RANDOM_FLOAT( 0.5, 1.1 );
-			d_x = 0;  // no offset
-			d_y = 0;
-			d_z = 0;
-			break;
-		case 1:
-			// GOOD, offset a little for x, y, and z
-			target = pBotEnemy->v.origin + pBotEnemy->v.view_ofs;  // aim for the head (if you can find it)
-			d_x = RANDOM_FLOAT(-5, 5) * f_scale;
-			d_y = RANDOM_FLOAT(-5, 5) * f_scale;
-			d_z = RANDOM_FLOAT(-10, 10) * f_scale;
-			break;
-		case 2:
-			// FAIR, offset somewhat for x, y, and z
-			target = pBotEnemy->v.origin;  // aim for the body
-			d_x = RANDOM_FLOAT(-10, 10) * f_scale;
-			d_y = RANDOM_FLOAT(-10, 10) * f_scale;
-			d_z = RANDOM_FLOAT(-18, 18) * f_scale;
-			break;
-		case 3:
-			// POOR, offset for x, y, and z
-			target = pBotEnemy->v.origin;  // aim for the body
-			d_x = RANDOM_FLOAT(-20, 20) * f_scale;
-			d_y = RANDOM_FLOAT(-20, 20) * f_scale;
-			d_z = RANDOM_FLOAT(-32, 32) * f_scale;
-			break;
-		case 4:
-			// BAD, offset lots for x, y, and z
-			target = pBotEnemy->v.origin;  // aim for the body
-			d_x = RANDOM_FLOAT(-35, 35) * f_scale;
-			d_y = RANDOM_FLOAT(-35, 35) * f_scale;
-			d_z = RANDOM_FLOAT(-50, 50) * f_scale;
-			break;
-	}
-
-	target = target + Vector(d_x, d_y, d_z);
-
-	return target;
-}
-
-
 // specifing a weapon_choice allows you to choose the weapon the bot will
 // use (assuming enough ammo exists for that weapon)
 // BotFireWeapon will return TRUE if weapon was fired, FALSE otherwise
@@ -1035,7 +972,7 @@ void BotShootAtEnemy( bot_t *pBot )
 	edict_t *pEdict = pBot->pEdict;
 
 	// aim for the head and/or body
-	Vector v_enemy = BotBodyTarget( pBot->pBotEnemy, pBot ) - GetGunPosition(pEdict);
+	Vector v_enemy = pBot->GetPointToShootAt() - GetGunPosition(pEdict);
 
 	pEdict->v.v_angle = UTIL_VecToAngles( v_enemy );
 

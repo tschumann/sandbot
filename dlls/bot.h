@@ -322,6 +322,7 @@ public:
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual float DistanceToEnemy();
 	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
+	virtual Vector GetPointToShootAt();
 	virtual bool ShouldReload();
 
 	virtual void PickUpItem();
@@ -482,6 +483,8 @@ public:
 	// TODO: should eventually be protected
 	void FixIdealPitch();
 protected:
+	Vector GetOrigin();
+
 	bool bIsKicked;
 
 	float fMaxSpeed;

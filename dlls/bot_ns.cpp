@@ -64,7 +64,7 @@ bool NSBot::IsNearHive()
 	// TODO: cache the results of this in NSGame
 	while( pent = UTIL_FindEntityByClassname( pent, "team_hive" ) )
 	{
-		float distance = (pent->v.origin - this->pEdict->v.origin).Length();
+		float distance = (pent->v.origin - this->GetOrigin()).Length();
 
 		if( distance <= 600.0 )
 		{
@@ -469,7 +469,7 @@ edict_t* NSBot::FindEnemy()
 	Vector vecEnd;
 	edict_t *pent = NULL;
 	edict_t *pNewEnemy;
-	float nearestdistance;
+	float nearestdistance = 1000.0;
 
 	if( this->pEdict->v.team == NSBot::TEAM_MARINE )
 	{
@@ -483,7 +483,7 @@ edict_t* NSBot::FindEnemy()
 			// is this hive visible?
 			if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) && pent->v.solid != SOLID_NOT)
 			{
-				float distance = (pent->v.origin - pEdict->v.origin).Length();
+				float distance = (pent->v.origin - this->GetOrigin()).Length();
 				ALERT( at_console, "found a hive\n" );
 
 				// is this the closest hive?
@@ -496,9 +496,9 @@ edict_t* NSBot::FindEnemy()
 		}
 
 		// if there's no hive, look for some other enemies
-		if(!this->HasEnemy())
+		if( !this->HasEnemy() )
 		{
-			while( pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 500.0 ) )
+			while( pent = UTIL_FindEntityInSphere( pent, this->GetOrigin(), 500.0 ) )
 			{
 				// ignore unbuilt structures
 				if( pent->v.solid != SOLID_NOT )
@@ -517,7 +517,7 @@ edict_t* NSBot::FindEnemy()
 					// is this visible?
 					if( FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) )
 					{
-						float fDistance = (pent->v.origin - pEdict->v.origin).Length();
+						float fDistance = (pent->v.origin - this->GetOrigin()).Length();
 
 						// is this the closest?
 						if( fDistance < nearestdistance )
@@ -541,7 +541,7 @@ edict_t* NSBot::FindEnemy()
 			// is this command chair visible?
 			if (/*FInViewCone( &vecEnd, pEdict ) && */FVisible( vecEnd, pEdict ))
 			{
-				float distance = (pent->v.origin - pEdict->v.origin).Length();
+				float distance = (pent->v.origin - this->GetOrigin()).Length();
 				ALERT( at_console, "found a command chair\n" );
 
 				// is this the closest command chair?
@@ -554,9 +554,9 @@ edict_t* NSBot::FindEnemy()
 		}
 
 		// if there's no command chair, look for some other enemies
-		if(!this->HasEnemy())
+		if( !this->HasEnemy() )
 		{
-			while( pent = UTIL_FindEntityInSphere( pent, pEdict->v.origin, 500.0 ) )
+			while( pent = UTIL_FindEntityInSphere( pent, this->GetOrigin(), 500.0 ) )
 			{
 				if( !strcmp( "team_advarmoy", STRING(pent->v.classname) ) ||
 					!strcmp( "team_armory", STRING(pent->v.classname) ) ||
@@ -573,7 +573,7 @@ edict_t* NSBot::FindEnemy()
 					// is this visible?
 					if( FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) )
 					{
-						float fDistance = (pent->v.origin - pEdict->v.origin).Length();
+						float fDistance = (pent->v.origin - this->GetOrigin()).Length();
 
 						// is this the closest sentry gun?
 						if( fDistance < nearestdistance )

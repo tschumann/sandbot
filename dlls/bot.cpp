@@ -2465,6 +2465,73 @@ int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )
 	return iEnemiesInLineOfSight;
 }
 
+Vector bot_t::GetPointToShootAt()
+{
+	Vector target;
+	Vector enemyOrigin = this->pBotEnemy->v.origin;
+	float fDistanceToEnemy = (enemyOrigin - this->GetOrigin()).Length();
+	float f_scale;
+	int d_x, d_y, d_z;
+
+	edict_t *pEdict = this->pEdict;
+
+	if( fDistanceToEnemy > 1000.0 )
+	{
+		f_scale = 1.0;
+	}
+	else if( fDistanceToEnemy > 100.0 )
+	{
+		f_scale = fDistanceToEnemy / 1000.0;
+	}
+	else
+	{
+		f_scale = 0.1;
+	}
+
+	switch (this->bot_skill)
+	{
+	case 0:
+		// VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)
+		target = enemyOrigin + this->pBotEnemy->v.view_ofs * RANDOM_FLOAT( 0.5, 1.1 );
+		d_x = 0;  // no offset
+		d_y = 0;
+		d_z = 0;
+		break;
+	case 1:
+		// GOOD, offset a little for x, y, and z
+		target = enemyOrigin + this->pBotEnemy->v.view_ofs;  // aim for the head (if you can find it)
+		d_x = RANDOM_FLOAT(-5, 5) * f_scale;
+		d_y = RANDOM_FLOAT(-5, 5) * f_scale;
+		d_z = RANDOM_FLOAT(-10, 10) * f_scale;
+		break;
+	case 2:
+		// FAIR, offset somewhat for x, y, and z
+		target = enemyOrigin;  // aim for the body
+		d_x = RANDOM_FLOAT(-10, 10) * f_scale;
+		d_y = RANDOM_FLOAT(-10, 10) * f_scale;
+		d_z = RANDOM_FLOAT(-18, 18) * f_scale;
+		break;
+	case 3:
+		// POOR, offset for x, y, and z
+		target = enemyOrigin;  // aim for the body
+		d_x = RANDOM_FLOAT(-20, 20) * f_scale;
+		d_y = RANDOM_FLOAT(-20, 20) * f_scale;
+		d_z = RANDOM_FLOAT(-32, 32) * f_scale;
+		break;
+	case 4:
+		// BAD, offset lots for x, y, and z
+		target = enemyOrigin;  // aim for the body
+		d_x = RANDOM_FLOAT(-35, 35) * f_scale;
+		d_y = RANDOM_FLOAT(-35, 35) * f_scale;
+		d_z = RANDOM_FLOAT(-50, 50) * f_scale;
+		break;
+	}
+
+	target = target + Vector(d_x, d_y, d_z);
+
+	return target;
+}
+
 bool bot_t::ShouldReload()
 {
 	return true;
@@ -2574,6 +2641,11 @@ std::vector<weapon_t> bot_t::GetUsableWeapons()
 	}
 
 	return usableWeapons;
+}
+
+Vector bot_t::GetOrigin()
+{
+	return this->pEdict->v.origin;
 }
 
 void bot_t::FixIdealPitch()

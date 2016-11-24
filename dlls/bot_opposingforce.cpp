@@ -21,7 +21,7 @@ bool OpposingForceBot::FindFlag()
 	while ((pent = UTIL_FindEntityByClassname( pent, "item_ctfflag" )) != NULL)
 	{
 		// is this bot carrying the item? (after capture bug fix by Whistler)
-		if ((pent->v.owner == pEdict) && (pent->v.origin == pEdict->v.origin))
+		if ((pent->v.owner == pEdict) && (pent->v.origin == this->GetOrigin()))
 		{
 			// we are carrying the flag
 			bot_has_flag = TRUE;

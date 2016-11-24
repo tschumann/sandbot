@@ -44,7 +44,6 @@ bool BotCheckWallOnRight( bot_t *pBot );
 void BotUseDoor( bot_t *pBot );
 
 edict_t *BotFindEnemy( bot_t *pBot );
-Vector BotBodyTarget( edict_t *pBotEnemy, bot_t *pBot );
 bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice);
 void BotShootAtEnemy( bot_t *pBot );
 bool BotShootTripmine( bot_t *pBot );
