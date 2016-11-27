@@ -468,7 +468,7 @@ edict_t* NSBot::FindEnemy()
 {
 	Vector vecEnd;
 	edict_t *pent = NULL;
-	edict_t *pNewEnemy;
+	edict_t *pNewEnemy = NULL;
 	float nearestdistance = 1000.0;
 
 	if( this->pEdict->v.team == NSBot::TEAM_MARINE )

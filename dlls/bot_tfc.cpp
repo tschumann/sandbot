@@ -183,7 +183,7 @@ edict_t* TFCBot::FindEnemy()
 {
 	Vector vecEnd;
 	edict_t *pent = NULL;
-	edict_t *pNewEnemy;
+	edict_t *pNewEnemy = NULL;
 	float nearestdistance = 1000.0;
 
 	extern bool b_observer_mode;
