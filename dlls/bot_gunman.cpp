@@ -46,6 +46,22 @@ void GunmanBot::OnSpawn()
 	}
 }
 
+void GunmanBot::Think()
+{
+	if( this->GetPistolMode() == GunmanBot::PISTOL_PULSE )
+	{
+		this->UseGaussPistolPulse();
+	}
+	else if( this->GetPistolMode() == GunmanBot::PISTOL_CHARGE )
+	{
+		this->UseGaussPistolCharge();
+	}
+	else if( this->GetPistolMode() == GunmanBot::PISTOL_RAPID )
+	{
+		this->UseGaussPistolRapid();
+	}
+}
+
 bool GunmanBot::ShouldReload()
 {
 	return false;

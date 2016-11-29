@@ -315,6 +315,7 @@ public:
 	bot_t();
 	virtual void OnSpawn();
 	virtual void Join();
+	virtual void Think();
 
 	virtual int GetTeam();
 
@@ -515,6 +516,7 @@ class DODBot : public bot_t
 public:
 	virtual void OnSpawn();
 	virtual void Join();
+	virtual void Think();
 
 	virtual bool ShouldLookForNewGoal();
 	virtual int GetGoalType();
@@ -559,6 +561,8 @@ class GunmanBot : public bot_t
 public:
 	GunmanBot();
 	virtual void OnSpawn();
+	virtual void Think();
+
 	virtual bool ShouldReload();
 
 	virtual int GetPistolMode();
@@ -595,6 +599,8 @@ protected:
 public:
 	virtual void OnSpawn();
 	virtual void Join();
+	virtual void Think();
+
 	virtual void Reset();
 	virtual bool ShouldReload();
 

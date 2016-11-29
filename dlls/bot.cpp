@@ -2321,62 +2321,7 @@ void BotThink( bot_t *pBot )
    // save the previous speed (for checking if stuck)
    pBot->prev_speed = pBot->f_move_speed;
 
-	if( mod_id == DOD_DLL )
-	{
-		// TODO: possibly this will trigger before the bot is touching the capture point? shouldn't
-		// though because bCapturing is only true when the bot is close enough to the waypoint
-		// if the bot is capturing, and is at a capture point, and it's a point that should be captured
-		if( ((DODBot *)pBot)->bCapturing)
-		{
-			pBot->f_move_speed = 0.0;
-
-			// TODO: this is very rough - probably something is set in pev if the bot is
-			// on or near a dod_control_point - should check if it's a brush entity...
-			if( DistanceToNearest(pBot->pEdict->v.origin, "dod_control_point") > 200 )
-			{
-				ALERT( at_console, "too far from capture point while capturing; resetting\n" );
-				pBot->f_move_speed = pEdict->v.maxspeed;
-				((DODBot *)pBot)->bCapturing = false;
-			}
-		}
-
-		// TODO: waypoint goal changes once it's capturing?
-		// if the current waypoint is a capture point and it is now captured
-		if (((DODBot *)pBot)->bCapturing && ShouldSkip(pBot->pEdict, pBot->iGoalIndex))
-		{
-			ALERT( at_console, "leaving waypoint\n" );
-			pBot->f_move_speed = pEdict->v.maxspeed;
-			((DODBot *)pBot)->bCapturing = false;
-		}
-	}
-	else if( mod_id == REWOLF_DLL )
-	{
-		if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_PULSE )
-		{
-			((GunmanBot *)pBot)->UseGaussPistolPulse();
-		}
-		else if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_CHARGE )
-		{
-			((GunmanBot *)pBot)->UseGaussPistolCharge();
-		}
-		else if( ((GunmanBot *)pBot)->GetPistolMode() == GunmanBot::PISTOL_RAPID )
-		{
-			((GunmanBot *)pBot)->UseGaussPistolRapid();
-		}
-	}
-   	else if( mod_id == NS_DLL )
-	{
-		extern bool g_bInGame;
-
-		if( g_bInGame && ((NSGame *)pGame)->IsClassic() )
-		{
-			((NSBot *)pBot)->ClassicUpgrade();
-		}
-		else if( g_bInGame && ((NSGame *)pGame)->IsCombat() && ((NSBot *)pBot)->ShouldCombatUpgrade() )
-		{
-			((NSBot *)pBot)->CombatUpgrade();
-		}
-	}
+	pBot->Think();
 
 	pBot->FixIdealPitch();
 	BotFixIdealYaw( pEdict );
@@ -2403,6 +2348,11 @@ void bot_t::OnSpawn()
 
 void bot_t::Join()
 {
+}
+
+void bot_t::Think()
+{
+	// TODO: move all of BotThink into here eventually
 }
 
 int bot_t::GetTeam()

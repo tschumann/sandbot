@@ -38,6 +38,20 @@ void NSBot::Join()
 	this->not_started = 0;
 }
 
+void NSBot::Think()
+{
+	extern bool g_bInGame;
+
+	if( g_bInGame && ((NSGame *)pGame)->IsClassic() )
+	{
+		this->ClassicUpgrade();
+	}
+	else if( g_bInGame && ((NSGame *)pGame)->IsCombat() && this->ShouldCombatUpgrade() )
+	{
+		this->CombatUpgrade();
+	}
+}
+
 void NSBot::Reset()
 {
 	// this->SetDesiredClass( NSBot::CLASS_SKULK );
