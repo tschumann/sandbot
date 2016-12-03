@@ -137,6 +137,29 @@ void DODBot::Think()
 	}
 }
 
+float DODBot::GetSpeedToEnemy()
+{
+	if( !this->pBotEnemy )
+	{
+		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+	}
+
+	float fDistanceToEnemy = this->GetDistanceToEnemy();
+	float fSpeed = 0.0;
+
+	// run if distance to enemy is far
+	if (fDistanceToEnemy > 200.0)
+	{
+		fSpeed = this->GetMaxSpeed();
+	}
+	else
+	{
+		fSpeed = 0.0;
+	}
+
+	return fSpeed;
+}
+
 bool DODBot::ShouldLookForNewGoal()
 {
 	return !this->bCapturing;

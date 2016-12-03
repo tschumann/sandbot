@@ -52,6 +52,44 @@ void NSBot::Think()
 	}
 }
 
+float NSBot::GetSpeedToEnemy()
+{
+	if( !this->pBotEnemy )
+	{
+		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+	}
+
+	float fDistanceToEnemy = this->GetDistanceToEnemy();
+	float fSpeed = 0.0;
+
+	// run if distance to enemy is far
+	if (fDistanceToEnemy > 200.0)
+	{
+		fSpeed = this->GetMaxSpeed();
+	}
+	// walk if distance is closer
+	else if (fDistanceToEnemy > 20.0)
+	{
+		// TODO: this check should more generally look at whether the bot has a melee weapon or not
+		if (this->IsAlien())
+		{
+			// alien's should charge ahead due to the strength of their close-range attacks
+			fSpeed = this->GetMaxSpeed();
+		}
+		else
+		{
+			fSpeed = this->GetMaxSpeed() / 2.0;
+		}
+	}
+	// don't move if close enough
+	else
+	{
+		fSpeed = 0.0;
+	}
+
+	return fSpeed;
+}
+
 void NSBot::Reset()
 {
 	// this->SetDesiredClass( NSBot::CLASS_SKULK );

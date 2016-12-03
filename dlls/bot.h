@@ -321,7 +321,8 @@ public:
 
 	virtual bool HasEnemy();
 	virtual bool IsValidEnemy( edict_t *pEdict );
-	virtual float DistanceToEnemy();
+	virtual float GetDistanceToEnemy();
+	virtual float GetSpeedToEnemy();
 	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
 	virtual Vector GetPointToShootAt();
 	virtual bool ShouldReload();
@@ -518,6 +519,8 @@ public:
 	virtual void Join();
 	virtual void Think();
 
+	virtual float GetSpeedToEnemy();
+
 	virtual bool ShouldLookForNewGoal();
 	virtual int GetGoalType();
 
@@ -600,6 +603,8 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
+
+	virtual float GetSpeedToEnemy();
 
 	virtual void Reset();
 	virtual bool ShouldReload();

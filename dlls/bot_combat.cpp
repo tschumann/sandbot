@@ -967,8 +967,6 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 
 void BotShootAtEnemy( bot_t *pBot )
 {
-	float f_distance;
-
 	edict_t *pEdict = pBot->pEdict;
 
 	// aim for the head and/or body
@@ -998,32 +996,7 @@ void BotShootAtEnemy( bot_t *pBot )
 
 	v_enemy.z = 0;  // ignore z component (up & down)
 
-	f_distance = v_enemy.Length();  // how far away is the enemy scum?
-
-	// run if distance to enemy is far
-	if (f_distance > 200.0)
-	{
-		pBot->f_move_speed = pBot->GetMaxSpeed();
-	}
-	// walk if distance is closer
-	else if (f_distance > 20.0)
-	{
-		// TODO: this check should more generally look at whether the bot has a melee weapon or not
-		if (mod_id == NS_DLL && ((NSBot *)pBot)->IsAlien())
-		{
-			// alien's should charge ahead due to the strength of their close-range attacks
-			pBot->f_move_speed = pBot->GetMaxSpeed();
-		}
-		else
-		{
-			pBot->f_move_speed = pBot->GetMaxSpeed() / 2.0;
-		}
-	}
-	// don't move if close enough
-	else
-	{
-		pBot->f_move_speed = 0.0;
-	}
+	pBot->f_move_speed = pBot->GetSpeedToEnemy();
 
 	// is it time to shoot yet?
 	if (pBot->f_shoot_time <= gpGlobals->time)

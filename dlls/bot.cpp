@@ -817,9 +817,17 @@ void BotFindItem( bot_t *pBot )
 
    // use a MUCH smaller search radius when waypoints are available
    if ((num_waypoints > 0) && (pBot->curr_waypoint_index != -1))
+   {
       radius = 100.0;
+   }
+   else if( mod_id == NS_DLL )
+   {
+	   radius = 500.0;
+   }
    else
+   {
       radius = 500.0;
+   }
 
    min_distance = radius + 1.0;
 
@@ -1984,75 +1992,75 @@ void BotThink( bot_t *pBot )
 			BotUseDoor( pBot );
 		}
 
-		else if( mod_id == NS_DLL )
-		{
-			if( ((NSBot *)pBot)->IsMarine() )
-			{
-				// check if should build
-				if( pBot->bBuild )
+         else
+         {
+			 if( mod_id == NS_DLL )
+			 {
+				 if( ((NSBot *)pBot)->IsMarine() )
 				{
-					// TODO: do some buildings take longer to build than others?
-					if( ( pBot->fBuildTime + 22.0 ) > gpGlobals->time )
+					// check if should build
+					if( pBot->bBuild )
 					{
-						// don't move
-						pBot->f_move_speed = 0.0;
-						if (((NSBot *)pBot)->HasWelder())
+						// TODO: do some buildings take longer to build than others?
+						if( ( pBot->fBuildTime + 22.0 ) > gpGlobals->time )
 						{
-							FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
-							pEdict->v.button = ( IN_ATTACK | IN_DUCK );
+							// don't move
+							pBot->f_move_speed = 0.0;
+							if (((NSBot *)pBot)->HasWelder())
+							{
+								FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
+								pEdict->v.button = ( IN_ATTACK | IN_DUCK );
+							}
+							else
+							{
+								pEdict->v.button = ( IN_USE | IN_DUCK );
+							}
 						}
 						else
 						{
-							pEdict->v.button = ( IN_USE | IN_DUCK );
+							pBot->bBuild = false;
+
+							// don't look for items for a while since the bot
+							// could be stuck trying to get to an item
+							pBot->f_find_item = gpGlobals->time + 0.5;
 						}
 					}
-					else
+					// check if should use an armory...
+					else if( pBot->bUseArmory )
 					{
-						pBot->bBuild = false;
+						if( ( pBot->fUseArmoryTime + 4.0 ) > gpGlobals->time )
+						{
+							pBot->f_move_speed = 0.0;  // don't move
 
-						// don't look for items for a while since the bot
-						// could be stuck trying to get to an item
-						pBot->f_find_item = gpGlobals->time + 0.5;
+							pEdict->v.button = IN_USE;
+						}
+						else
+						{
+							pBot->bUseArmory = false;
+
+							// don't look for items for a while since the bot
+							// could be stuck trying to get to an item
+							pBot->f_find_item = gpGlobals->time + 0.5;
+						}
 					}
 				}
-				// check if should use an armory...
-				else if( pBot->bUseArmory )
+				else
 				{
-					if( ( pBot->fUseArmoryTime + 4.0 ) > gpGlobals->time )
+					if( pBot->bBuildAlienResourceTower )
 					{
-						pBot->f_move_speed = 0.0;  // don't move
+						pEdict->v.impulse = NSBot::CLASSIC_BUILD_RESOURCE_TOWER;
 
-						pEdict->v.button = IN_USE;
+						pBot->bBuildAlienResourceTower = false;
 					}
-					else
+					else if( pBot->bBuildHive )
 					{
-						pBot->bUseArmory = false;
+						pEdict->v.impulse = NSBot::CLASSIC_BUILD_HIVE;
 
-						// don't look for items for a while since the bot
-						// could be stuck trying to get to an item
-						pBot->f_find_item = gpGlobals->time + 0.5;
+						pBot->bBuildHive = false;
 					}
 				}
 			}
-			else
-			{
-				if( pBot->bBuildAlienResourceTower )
-				{
-					pEdict->v.impulse = NSBot::CLASSIC_BUILD_RESOURCE_TOWER;
 
-					pBot->bBuildAlienResourceTower = false;
-				}
-				else if( pBot->bBuildHive )
-				{
-					pEdict->v.impulse = NSBot::CLASSIC_BUILD_HIVE;
-
-					pBot->bBuildHive = false;
-				}
-			}
-		}
-
-         else
-         {
             if (pBot->IsUnderWater())  // check if the bot is underwater...
             {
                BotUnderWater( pBot );
@@ -2393,9 +2401,43 @@ bool bot_t::IsValidEnemy( edict_t *pEdict )
 	return true;
 }
 
-float bot_t::DistanceToEnemy()
+float bot_t::GetDistanceToEnemy()
 {
+	if( !this->pBotEnemy )
+	{
+		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+	}
+
 	return (this->pBotEnemy->v.origin - GetGunPosition( this->pEdict )).Length();
+}
+
+float bot_t::GetSpeedToEnemy()
+{
+	if( !this->pBotEnemy )
+	{
+		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+	}
+
+	float fDistanceToEnemy = this->GetDistanceToEnemy();
+	float fSpeed = 0.0;
+
+	// run if distance to enemy is far
+	if (fDistanceToEnemy > 200.0)
+	{
+		fSpeed = this->GetMaxSpeed();
+	}
+	// walk if distance is closer
+	else if (fDistanceToEnemy > 20.0)
+	{
+		fSpeed = this->GetMaxSpeed() / 2.0;
+	}
+	// don't move if close enough
+	else
+	{
+		fSpeed = 0.0;
+	}
+
+	return fSpeed;
 }
 
 int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )

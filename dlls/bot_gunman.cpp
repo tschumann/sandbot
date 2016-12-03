@@ -101,7 +101,7 @@ bool GunmanBot::CanUseFists()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 32.0;
+	return this->GetDistanceToEnemy() < 32.0;
 }
 
 bool GunmanBot::CanUseGaussPistolPulse()
@@ -116,7 +116,7 @@ bool GunmanBot::CanUseGaussPistolPulse()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 1024.0;
+	return this->GetDistanceToEnemy() < 1024.0;
 }
 
 bool GunmanBot::CanUseGaussPistolCharge()
@@ -131,7 +131,7 @@ bool GunmanBot::CanUseGaussPistolCharge()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 256.0;
+	return this->GetDistanceToEnemy() < 256.0;
 }
 
 bool GunmanBot::CanUseGaussPistolRapid()
@@ -146,7 +146,7 @@ bool GunmanBot::CanUseGaussPistolRapid()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 512.0;
+	return this->GetDistanceToEnemy() < 512.0;
 }
 
 bool GunmanBot::CanUseShotgun()
@@ -161,7 +161,7 @@ bool GunmanBot::CanUseShotgun()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 150.0;
+	return this->GetDistanceToEnemy() < 150.0;
 }
 
 bool GunmanBot::CanUseMinigun()
@@ -176,7 +176,7 @@ bool GunmanBot::CanUseMinigun()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 1024.0;
+	return this->GetDistanceToEnemy() < 1024.0;
 }
 
 bool GunmanBot::CanUseBeamgun()
@@ -191,7 +191,7 @@ bool GunmanBot::CanUseBeamgun()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 512.0;
+	return this->GetDistanceToEnemy() < 512.0;
 }
 
 bool GunmanBot::CanUseChemgun()
@@ -206,7 +206,7 @@ bool GunmanBot::CanUseChemgun()
 		return false;
 	}
 
-	return this->DistanceToEnemy() > 128.0 && this->DistanceToEnemy() < 512.0;
+	return this->GetDistanceToEnemy() > 128.0 && this->GetDistanceToEnemy() < 512.0;
 }
 
 bool GunmanBot::CanUseDML()
@@ -221,7 +221,7 @@ bool GunmanBot::CanUseDML()
 		return false;
 	}
 
-	return this->DistanceToEnemy() > 256.0 && this->DistanceToEnemy() < 9999.0;
+	return this->GetDistanceToEnemy() > 256.0 && this->GetDistanceToEnemy() < 9999.0;
 }
 
 bool GunmanBot::CanUseDMLGrenade()
@@ -236,7 +236,7 @@ bool GunmanBot::CanUseDMLGrenade()
 		return false;
 	}
 
-	return this->DistanceToEnemy() > 128.0 && this->DistanceToEnemy() < 512.0;
+	return this->GetDistanceToEnemy() > 128.0 && this->GetDistanceToEnemy() < 512.0;
 }
 
 bool GunmanBot::CanUseAICore()

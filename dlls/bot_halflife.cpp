@@ -26,7 +26,7 @@ bool HalfLifeBot::CanUseCrowbar()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 32.0;
+	return this->GetDistanceToEnemy() < 32.0;
 }
 
 bool HalfLifeBot::CanUseGlock()
@@ -41,7 +41,7 @@ bool HalfLifeBot::CanUseGlock()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 8192.0;
+	return this->GetDistanceToEnemy() < 8192.0;
 }
 
 bool HalfLifeBot::CanUseMP5Primary()
@@ -61,5 +61,5 @@ bool HalfLifeBot::CanUseMP5Primary()
 		return false;
 	}
 
-	return this->DistanceToEnemy() < 8192.0;
+	return this->GetDistanceToEnemy() < 8192.0;
 }
