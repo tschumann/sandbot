@@ -50,7 +50,7 @@ void DODBot::Join()
 		this->start_action = MSG_DOD_IDLE;  // switch back to idle
 
 		// do this to control what classes bots will spawn as (not everything is supported yet)
-		int playerClass = RANDOM_LONG(1, 4);
+		int playerClass = RANDOM_LONG(1, 5);
 
 		switch( playerClass )
 		{
@@ -66,6 +66,9 @@ void DODBot::Join()
 		case 4:
 			FakeClientCommand( this->pEdict, "cls_grease", NULL, NULL );
 			break;
+		case 5: // 8
+			FakeClientCommand( this->pEdict, "cls_bazooka", NULL, NULL );
+			break;
 		default:
 			FakeClientCommand( this->pEdict, "cls_random", NULL, NULL );
 			break;
@@ -80,7 +83,7 @@ void DODBot::Join()
 	{
 		this->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-		int playerClass = RANDOM_LONG(1, 4);
+		int playerClass = RANDOM_LONG(1, 5);
 
 		switch( playerClass )
 		{
@@ -95,6 +98,9 @@ void DODBot::Join()
 			break;
 		case 4:
 			FakeClientCommand( this->pEdict, "cls_mp44", NULL, NULL );
+			break;
+		case 5: // 8
+			FakeClientCommand( this->pEdict, "cls_pshreck", NULL, NULL );
 			break;
 		default:
 			FakeClientCommand( this->pEdict, "cls_random", NULL, NULL );

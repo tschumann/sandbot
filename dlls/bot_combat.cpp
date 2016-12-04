@@ -179,7 +179,7 @@ bot_weapon_select_t dod_weapon_select[] = {
 	{DOD_WEAPON_BAZOOKA, "weapon_bazooka", 1.5, 0.0,
 	 0.0, 2000.0, 0.0, 0.0,
 	 100, false, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	 FALSE, FALSE, FALSE, FALSE, 1.0, 0.0},
 
 	/*{DOD_WEAPON_COLT, "weapon_colt", 0.3, 0.2,
 	 0.0, 1200.0, 0.0, 0.0,
@@ -212,7 +212,7 @@ bot_weapon_select_t dod_weapon_select[] = {
 	{DOD_WEAPON_PSCHRECK, "weapon_pschreck", 1.5, 0.0,
 	 0.0, 2000.0, 0.0, 0.0,
 	 100, false, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	 FALSE, FALSE, FALSE, FALSE, 1.0, 0.0},
 
 	/*{DOD_WEAPON_LUGER, "weapon_luger", 0.3, 0.2,
 	 0.0, 1200.0, 0.0, 0.0,
