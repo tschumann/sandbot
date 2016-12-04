@@ -2635,7 +2635,7 @@ std::vector<weapon_t> bot_t::GetUsableWeapons()
 	return usableWeapons;
 }
 
-edict_t *GetCurrentWeapon()
+edict_t *bot_t::GetCurrentWeapon()
 {
 	edict_t *pent = NULL;
 
