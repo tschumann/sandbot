@@ -166,6 +166,11 @@ float DODBot::GetSpeedToEnemy()
 	return fSpeed;
 }
 
+bool DODBot::IsSniper()
+{
+	return false;
+}
+
 bool DODBot::ShouldLookForNewGoal()
 {
 	return !this->bCapturing;

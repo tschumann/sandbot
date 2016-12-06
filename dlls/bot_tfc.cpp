@@ -8,6 +8,11 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+bool TFCBot::IsSniper()
+{
+	return this->pEdict->v.playerclass == TFCBot::CLASS_SNIPER;
+}
+
 bool TFCBot::FindFlag()
 {
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];

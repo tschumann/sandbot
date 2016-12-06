@@ -595,7 +595,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       // check if the waypoint is a sniper waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER)
       {
-         if (((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_SNIPER)) || (mod_id != TFC_DLL))
+         if (((mod_id == TFC_DLL) && pBot->IsSniper()) || (mod_id != TFC_DLL))
          {
             int aim_index;
 
@@ -817,7 +817,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
          else if (mod_id == TFC_DLL)
          {
-            if (pEdict->v.playerclass == TFCBot::CLASS_SNIPER)
+            if (pBot->IsSniper())
             {
                if (RANDOM_LONG(1, 100) <= 10)
                {

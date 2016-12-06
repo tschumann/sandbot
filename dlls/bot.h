@@ -334,6 +334,7 @@ public:
 
 	virtual bool IsDead();
 	virtual bool IsUnderWater();
+	virtual bool IsSniper();
 
 	virtual void SetKicked();
 	virtual bool IsKicked();
@@ -523,6 +524,8 @@ public:
 
 	virtual float GetSpeedToEnemy();
 
+	virtual bool IsSniper();
+
 	virtual bool ShouldLookForNewGoal();
 	virtual int GetGoalType();
 
@@ -537,6 +540,8 @@ public:
 class TFCBot : public bot_t
 {
 public:
+	virtual bool IsSniper();
+
 	virtual bool FindFlag();
 	virtual void Build();
 	virtual bool CanBuildDispenser();
