@@ -2646,7 +2646,7 @@ edict_t *bot_t::GetCurrentWeapon()
 
 	while( pent = UTIL_FindEntityInSphere( pent, this->pEdict->v.origin, 1.0 ) )
 	{
-		if( !strncmp("weapon_", STRING(pent->v.classname), 7) )
+		if( !strncmp("weapon_", STRING(pent->v.classname), 7) && pent->v.effects & EF_NODRAW )
 		{
 			return pent;
 		}
