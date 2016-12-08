@@ -122,8 +122,6 @@ char *show_menu_3 =
 char *show_menu_3_flf =
    {"Waypoint Tags\n\n1. Capture Point\n2. Defend Point\n3. Prone\n\n5. CANCEL"};
 
-void ProcessBotCfgFile(void);
-
 void GameDLLInit( void )
 {
    char filename[256];
@@ -498,12 +496,6 @@ void ClientDisconnect( edict_t *pEntity )
      if (pBots && pBots[i] && pBots[i]->pEdict == pEntity)
      {
 		pBots[i]->SetKicked();
-#if 0
-        // someone kicked this bot off of the server...
-        pBots[i]->is_used = FALSE;  // this slot is now free to use
-		// TODO: is this still needed?
-        pBots[i]->kick_time = gpGlobals->time;  // save the kicked time
-#endif
         break;
      }
   }
@@ -1198,59 +1190,39 @@ void StartFrame( void )
 
      UTIL_BuildFileName(filename, "maps", mapname);
 
-     if ((bot_cfg_fp = fopen(filename, "r")) != NULL)
-     {
-        sprintf(msg, "Executing %s\n", filename);
-        ALERT( at_console, msg );
+    count = 0;
 
-        for (index = 0; index < MAX_PLAYERS; index++)
-        {
-           pBots[index]->is_used = FALSE;
-           pBots[index]->respawn_state = 0;
-           pBots[index]->kick_time = 0.0;
-        }
+    // mark the bots as needing to be respawned...
+    for (index = 0; index < MAX_PLAYERS; index++)
+    {
+       if (count >= prev_num_bots)
+       {
+          pBots[index]->is_used = FALSE;
+          pBots[index]->respawn_state = 0;
+          pBots[index]->kick_time = 0.0;
+       }
 
-        if (IS_DEDICATED_SERVER())
-           bot_cfg_pause_time = gpGlobals->time + 5.0;
-        else
-           bot_cfg_pause_time = gpGlobals->time + 20.0;
-     }
-     else
-     {
-        count = 0;
+       if (pBots[index]->is_used)  // is this slot used?
+       {
+          pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+          count++;
+       }
 
-        // mark the bots as needing to be respawned...
-        for (index = 0; index < MAX_PLAYERS; index++)
-        {
-           if (count >= prev_num_bots)
-           {
-              pBots[index]->is_used = FALSE;
-              pBots[index]->respawn_state = 0;
-              pBots[index]->kick_time = 0.0;
-           }
+       // check for any bots that were very recently kicked...
+       if ((pBots[index]->kick_time + 5.0) > previous_time)
+       {
+          pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+          count++;
+       }
+       else
+          pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
+    }
 
-           if (pBots[index]->is_used)  // is this slot used?
-           {
-              pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
-              count++;
-           }
-
-           // check for any bots that were very recently kicked...
-           if ((pBots[index]->kick_time + 5.0) > previous_time)
-           {
-              pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
-              count++;
-           }
-           else
-              pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
-        }
-
-        // set the respawn time
-        if (IS_DEDICATED_SERVER())
-           respawn_time = gpGlobals->time + 5.0;
-        else
-           respawn_time = gpGlobals->time + 20.0;
-     }
+    // set the respawn time
+    if (IS_DEDICATED_SERVER())
+       respawn_time = gpGlobals->time + 5.0;
+    else
+       respawn_time = gpGlobals->time + 20.0;
 
      bot_check_time = gpGlobals->time + 30.0;
   }
@@ -1279,8 +1251,8 @@ void StartFrame( void )
 	 // is this slot used AND not respawning
      if (!pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
      {
-
 		 // TODO: kicking a bot will result in this being called and the engine crashing - need to figure out how to detect it
+		 // TODO: above already fixed?
         BotThink(pBots[bot_index]);
 
         count++;
@@ -1288,6 +1260,7 @@ void StartFrame( void )
 	 else if( pBots[bot_index]->IsKicked() )
 	 {
 		 // TODO: set is_used to false? would also need to decrement iBotCount too?
+		 // TODO: check what happens on map change?
 	 }
   }
 
@@ -1361,44 +1334,6 @@ void StartFrame( void )
 
   if (g_GameRules)
   {
-     if (need_to_open_cfg)  // have we open bot.cfg file yet?
-     {
-        char filename[256];
-        char mapname[64];
-
-        need_to_open_cfg = FALSE;  // only do this once!!!
-
-        // check if mapname_bot.cfg file exists...
-
-        strcpy(mapname, STRING(gpGlobals->mapname));
-        strcat(mapname, "_bot.cfg");
-
-        UTIL_BuildFileName(filename, "maps", mapname);
-
-        if ((bot_cfg_fp = fopen(filename, "r")) != NULL)
-        {
-           sprintf(msg, "Executing %s\n", filename);
-           ALERT( at_console, msg );
-        }
-        else
-        {
-           UTIL_BuildFileName(filename, "bot.cfg", NULL);
-
-           sprintf(msg, "Executing %s\n", filename);
-           ALERT( at_console, msg );
-
-           bot_cfg_fp = fopen(filename, "r");
-
-           if (bot_cfg_fp == NULL)
-              ALERT( at_console, "bot.cfg file not found\n" );
-        }
-
-        if (IS_DEDICATED_SERVER())
-           bot_cfg_pause_time = gpGlobals->time + 5.0;
-        else
-           bot_cfg_pause_time = gpGlobals->time + 20.0;
-     }
-
      if (!IS_DEDICATED_SERVER() && !spawn_time_reset)
      {
         if (listenserver_edict != NULL)
@@ -1409,19 +1344,9 @@ void StartFrame( void )
 
               if (respawn_time >= 1.0)
                  respawn_time = min(respawn_time, gpGlobals->time + (float)1.0);
-
-              if (bot_cfg_pause_time >= 1.0)
-                 bot_cfg_pause_time = min(bot_cfg_pause_time, gpGlobals->time + (float)1.0);
            }
         }
      }
-
-     if ((bot_cfg_fp) && (bot_cfg_pause_time >= 1.0) && (bot_cfg_pause_time <= gpGlobals->time))
-     {
-        // process bot.cfg file options...
-        ProcessBotCfgFile();
-     }
-
   }      
 
   // if time to check for server commands then do so...
@@ -1760,209 +1685,3 @@ int Cmd_Argc( void )
       return (*g_engfuncs.pfnCmd_Argc)();
    }
 }
-
-
-void ProcessBotCfgFile(void)
-{
-   int ch;
-   char cmd_line[256];
-   int cmd_index;
-   static char server_cmd[80];
-   char *cmd, *arg1, *arg2, *arg3, *arg4;
-   char msg[80];
-
-   if (bot_cfg_pause_time > gpGlobals->time)
-      return;
-
-   if (bot_cfg_fp == NULL)
-      return;
-
-   cmd_index = 0;
-   cmd_line[cmd_index] = 0;
-
-   ch = fgetc(bot_cfg_fp);
-
-   // skip any leading blanks
-   while (ch == ' ')
-      ch = fgetc(bot_cfg_fp);
-
-   while ((ch != EOF) && (ch != '\r') && (ch != '\n'))
-   {
-      if (ch == '\t')  // convert tabs to spaces
-         ch = ' ';
-
-      cmd_line[cmd_index] = ch;
-
-      ch = fgetc(bot_cfg_fp);
-
-      // skip multiple spaces in input file
-      while ((cmd_line[cmd_index] == ' ') &&
-             (ch == ' '))      
-         ch = fgetc(bot_cfg_fp);
-
-      cmd_index++;
-   }
-
-   if (ch == '\r')  // is it a carriage return?
-   {
-      ch = fgetc(bot_cfg_fp);  // skip the linefeed
-   }
-
-   // if reached end of file, then close it
-   if (ch == EOF)
-   {
-      fclose(bot_cfg_fp);
-
-      bot_cfg_fp = NULL;
-
-      bot_cfg_pause_time = 0.0;
-   }
-
-   cmd_line[cmd_index] = 0;  // terminate the command line
-
-   // copy the command line to a server command buffer...
-   strcpy(server_cmd, cmd_line);
-   strcat(server_cmd, "\n");
-
-   cmd_index = 0;
-   cmd = cmd_line;
-   arg1 = arg2 = arg3 = arg4 = NULL;
-
-   // skip to blank or end of string...
-   while ((cmd_line[cmd_index] != ' ') && (cmd_line[cmd_index] != 0))
-      cmd_index++;
-
-   if (cmd_line[cmd_index] == ' ')
-   {
-      cmd_line[cmd_index++] = 0;
-      arg1 = &cmd_line[cmd_index];
-
-      // skip to blank or end of string...
-      while ((cmd_line[cmd_index] != ' ') && (cmd_line[cmd_index] != 0))
-         cmd_index++;
-
-      if (cmd_line[cmd_index] == ' ')
-      {
-         cmd_line[cmd_index++] = 0;
-         arg2 = &cmd_line[cmd_index];
-
-         // skip to blank or end of string...
-         while ((cmd_line[cmd_index] != ' ') && (cmd_line[cmd_index] != 0))
-            cmd_index++;
-
-         if (cmd_line[cmd_index] == ' ')
-         {
-            cmd_line[cmd_index++] = 0;
-            arg3 = &cmd_line[cmd_index];
-
-            // skip to blank or end of string...
-            while ((cmd_line[cmd_index] != ' ') && (cmd_line[cmd_index] != 0))
-               cmd_index++;
-
-            if (cmd_line[cmd_index] == ' ')
-            {
-               cmd_line[cmd_index++] = 0;
-               arg4 = &cmd_line[cmd_index];
-            }
-         }
-      }
-   }
-
-   if ((cmd_line[0] == '#') || (cmd_line[0] == 0))
-      return;  // return if comment or blank line
-
-   if (strcmp(cmd, "addbot") == 0)
-   {
-      BotCreate( NULL, arg1, arg2, arg3, arg4 );
-
-      // have to delay here or engine gives "Tried to write to
-      // uninitialized sizebuf_t" error and crashes...
-
-      bot_cfg_pause_time = gpGlobals->time + 2.0;
-      bot_check_time = gpGlobals->time + 5.0;
-
-      return;
-   }
-
-   if (strcmp(cmd, "botskill") == 0)
-   {
-      int temp = atoi(arg1);
-
-      if ((temp >= 1) && (temp <= 5))
-         default_bot_skill = atoi( arg1 );  // set default bot skill level
-
-      return;
-   }
-
-   if (strcmp(cmd, "observer") == 0)
-   {
-      int temp = atoi(arg1);
-
-      if (temp)
-         b_observer_mode = TRUE;
-      else
-         b_observer_mode = FALSE;
-
-      return;
-   }
-
-   if (strcmp(cmd, "botdontshoot") == 0)
-   {
-      int temp = atoi(arg1);
-
-      if (temp)
-         b_botdontshoot = TRUE;
-      else
-         b_botdontshoot = FALSE;
-
-      return;
-   }
-
-   if (strcmp(cmd, "min_bots") == 0)
-   {
-      min_bots = atoi( arg1 );
-
-      if ((min_bots < 0) || (min_bots > 31))
-         min_bots = 1;
-
-      if (IS_DEDICATED_SERVER())
-      {
-         sprintf(msg, "min_bots set to %d\n", min_bots);
-         printf(msg);
-      }
-
-      return;
-   }
-
-   if (strcmp(cmd, "max_bots") == 0)
-   {
-      max_bots = atoi( arg1 );
-
-      if ((max_bots < 0) || (max_bots > 31)) 
-         max_bots = 1;
-
-      if (IS_DEDICATED_SERVER())
-      {
-         sprintf(msg, "max_bots set to %d\n", max_bots);
-         printf(msg);
-      }
-
-      return;
-   }
-
-   if (strcmp(cmd, "pause") == 0)
-   {
-      bot_cfg_pause_time = gpGlobals->time + atoi( arg1 );
-
-      return;
-   }
-
-   sprintf(msg, "executing server command: %s\n", server_cmd);
-   ALERT( at_console, msg );
-
-   if (IS_DEDICATED_SERVER())
-      printf(msg);
-
-   SERVER_COMMAND(server_cmd);
-}
-
