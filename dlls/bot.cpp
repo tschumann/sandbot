@@ -2289,7 +2289,7 @@ void BotThink( bot_t *pBot )
       // bot isn't currently aiming at an ememy...
       if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER) && !pBot->HasEnemy())
       {
-		  if ((mod_id != TFC_DLL) || ((mod_id == TFC_DLL) && pBot->IsSniper()))
+		  if (pBot->IsSniper())
          {
             // check if it's time to adjust aim yet...
             if (pBot->f_sniper_aim_time <= gpGlobals->time)

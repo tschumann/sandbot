@@ -595,7 +595,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       // check if the waypoint is a sniper waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_SNIPER)
       {
-         if (((mod_id == TFC_DLL) && pBot->IsSniper()) || (mod_id != TFC_DLL))
+         if (pBot->IsSniper())
          {
             int aim_index;
 
