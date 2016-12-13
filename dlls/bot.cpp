@@ -2318,23 +2318,7 @@ void BotThink( bot_t *pBot )
       }
    }
 
-   if (pBot->f_pause_time > gpGlobals->time)  // is the bot "paused"?
-   {
-      pBot->f_move_speed = 0;  // don't move while pausing
-   }
-
-   // make the body face the same way the bot is looking
-   pEdict->v.angles.y = pEdict->v.v_angle.y;
-
-   // save the previous speed (for checking if stuck)
-   pBot->prev_speed = pBot->f_move_speed;
-
 	pBot->Think();
-
-	pBot->FixIdealPitch();
-	BotFixIdealYaw( pEdict );
-	BotFixBodyAngles( pEdict );
-	BotFixViewAngles( pEdict );
 
 	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
 
@@ -2366,11 +2350,27 @@ void bot_t::PreThink()
 void bot_t::Think()
 {
 	// TODO: move all of BotThink into here eventually
+	this->PreThink();
+	this->PostThink();
 }
 
 void bot_t::PostThink()
 {
-	// TODO: put all generic bot thinking here
+	if( this->f_pause_time > gpGlobals->time )  // is the bot "paused"?
+	{
+		this->f_move_speed = 0;  // don't move while pausing
+	}
+
+	// make the body face the same way the bot is looking
+	this->pEdict->v.angles.y = this->pEdict->v.v_angle.y;
+
+	// save the previous speed (for checking if stuck)
+	this->prev_speed = this->f_move_speed;
+	
+	this->FixIdealPitch();
+	BotFixIdealYaw( this->pEdict );
+	BotFixBodyAngles( this->pEdict );
+	BotFixViewAngles( this->pEdict );
 }
 
 int bot_t::GetTeam()
