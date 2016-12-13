@@ -48,6 +48,8 @@ void GunmanBot::OnSpawn()
 
 void GunmanBot::Think()
 {
+	bot_t::PreThink();
+
 	if( this->GetPistolMode() == GunmanBot::PISTOL_PULSE )
 	{
 		this->UseGaussPistolPulse();
@@ -60,6 +62,8 @@ void GunmanBot::Think()
 	{
 		this->UseGaussPistolRapid();
 	}
+
+	bot_t::PostThink();
 }
 
 bool GunmanBot::ShouldReload()

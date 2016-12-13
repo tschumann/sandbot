@@ -315,7 +315,9 @@ public:
 	bot_t();
 	virtual void OnSpawn();
 	virtual void Join();
+	virtual void PreThink();
 	virtual void Think();
+	virtual void PostThink();
 
 	virtual int GetTeam();
 

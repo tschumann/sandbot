@@ -2358,9 +2358,19 @@ void bot_t::Join()
 {
 }
 
+void bot_t::PreThink()
+{
+	// TODO: put all generic bot thinking here
+}
+
 void bot_t::Think()
 {
 	// TODO: move all of BotThink into here eventually
+}
+
+void bot_t::PostThink()
+{
+	// TODO: put all generic bot thinking here
 }
 
 int bot_t::GetTeam()

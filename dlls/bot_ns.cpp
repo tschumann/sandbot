@@ -40,6 +40,8 @@ void NSBot::Join()
 
 void NSBot::Think()
 {
+	bot_t::PreThink();
+
 	extern bool g_bInGame;
 
 	if( g_bInGame && ((NSGame *)pGame)->IsClassic() )
@@ -50,6 +52,8 @@ void NSBot::Think()
 	{
 		this->CombatUpgrade();
 	}
+
+	bot_t::PostThink();
 }
 
 float NSBot::GetSpeedToEnemy()
