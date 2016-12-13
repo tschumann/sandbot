@@ -1005,9 +1005,10 @@ void BotShootAtEnemy( bot_t *pBot )
 
 		int choice = 0;
 
-		if( mod_id == REWOLF_DLL )
+		// TODO: need to deal with usableWeapons being empty - pick a default weapon?
+		if( mod_id == REWOLF_DLL && usableWeapons.size() )
 		{
-			// choice = usableWeapons.back().iWeaponId;
+			choice = usableWeapons.back().iWeaponId;
 		}
 
 		// select the best weapon to use at this distance and fire...
