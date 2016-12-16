@@ -300,7 +300,7 @@ struct bot_player_t
 
 class bot_t;
 
-typedef bool (bot_t::*CanUseWeapon)();
+typedef bool (bot_t::*CanUseWeapon)(bool);
 
 struct weapon_t
 {
@@ -347,7 +347,7 @@ public:
 	virtual int GetGoalType();
 
 	virtual bool BaseCanUseWeapon();
-	virtual std::vector<weapon_t> GetUsableWeapons();
+	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
 
 	virtual edict_t *GetCurrentWeapon();
 
@@ -502,9 +502,9 @@ class HalfLifeBot : public bot_t
 {
 public:
 	HalfLifeBot();
-	virtual bool CanUseCrowbar();
-	virtual bool CanUseGlock();
-	virtual bool CanUseMP5Primary();
+	virtual bool CanUseCrowbar( bool really );
+	virtual bool CanUseGlock( bool really );
+	virtual bool CanUseMP5Primary( bool really );
 };
 
 class OpposingForceBot : public HalfLifeBot
@@ -584,17 +584,17 @@ public:
 	virtual void UseGaussPistolRapid();
 	virtual void UseGaussPistolSniper();
 
-	virtual bool CanUseFists();
-	virtual bool CanUseGaussPistolPulse();
-	virtual bool CanUseGaussPistolCharge();
-	virtual bool CanUseGaussPistolRapid();
-	virtual bool CanUseShotgun();
-	virtual bool CanUseMinigun();
-	virtual bool CanUseBeamgun();
-	virtual bool CanUseChemgun();
-	virtual bool CanUseDML();
-	virtual bool CanUseDMLGrenade();
-	virtual bool CanUseAICore();
+	virtual bool CanUseFists( bool really );
+	virtual bool CanUseGaussPistolPulse( bool really );
+	virtual bool CanUseGaussPistolCharge( bool really );
+	virtual bool CanUseGaussPistolRapid( bool really );
+	virtual bool CanUseShotgun( bool really );
+	virtual bool CanUseMinigun( bool really );
+	virtual bool CanUseBeamgun( bool really );
+	virtual bool CanUseChemgun( bool really );
+	virtual bool CanUseDML( bool really );
+	virtual bool CanUseDMLGrenade( bool really );
+	virtual bool CanUseAICore( bool really );
 
 	const static int PISTOL_PULSE = 1;
 	const static int PISTOL_CHARGE = 2;

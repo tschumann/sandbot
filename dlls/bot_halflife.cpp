@@ -19,17 +19,17 @@ HalfLifeBot::HalfLifeBot()
 	this->weapons.push_back(mp5);
 }
 
-bool HalfLifeBot::CanUseCrowbar()
+bool HalfLifeBot::CanUseCrowbar( bool really )
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
 		return false;
 	}
 
-	return this->GetDistanceToEnemy() < 32.0;
+	return this->GetDistanceToEnemy() < 32.0 || really;
 }
 
-bool HalfLifeBot::CanUseGlock()
+bool HalfLifeBot::CanUseGlock( bool really )
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -41,10 +41,10 @@ bool HalfLifeBot::CanUseGlock()
 		return false;
 	}
 
-	return this->GetDistanceToEnemy() < 8192.0;
+	return this->GetDistanceToEnemy() < 8192.0 || really;
 }
 
-bool HalfLifeBot::CanUseMP5Primary()
+bool HalfLifeBot::CanUseMP5Primary( bool really )
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -61,5 +61,5 @@ bool HalfLifeBot::CanUseMP5Primary()
 		return false;
 	}
 
-	return this->GetDistanceToEnemy() < 8192.0;
+	return this->GetDistanceToEnemy() < 8192.0 || really;
 }

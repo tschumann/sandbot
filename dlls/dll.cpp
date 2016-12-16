@@ -881,10 +881,6 @@ void ClientCommand( edict_t *pEntity )
 
 			if( mod_id == VALVE_DLL )
 			{
-				if( pBot && pBot->HasEnemy() )
-				{
-					((HalfLifeBot *)pBot)->GetUsableWeapons();
-				}
 			}
 			else if( mod_id == DOD_DLL )
 			{

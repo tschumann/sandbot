@@ -1001,14 +1001,29 @@ void BotShootAtEnemy( bot_t *pBot )
 	// is it time to shoot yet?
 	if (pBot->f_shoot_time <= gpGlobals->time)
 	{
-		std::vector<weapon_t> usableWeapons = pBot->GetUsableWeapons();
+		// usable weapons is weapons that should be used i.e. it won't pick a weapon
+		// if the enemy is too far away - really usable weapons are weapons that are
+		// definitely usable and only checks conditions like ammo and whether the
+		// bot is under water etc
+		std::vector<weapon_t> usableWeapons = pBot->GetUsableWeapons( false );
+		std::vector<weapon_t> reallyUsableWeapons = pBot->GetUsableWeapons( true );
 
 		int choice = 0;
 
-		// TODO: need to deal with usableWeapons being empty - pick a default weapon?
-		if( mod_id == REWOLF_DLL && usableWeapons.size() )
+		if( mod_id == REWOLF_DLL )
 		{
-			choice = usableWeapons.back().iWeaponId;
+			if( usableWeapons.size() > 0 )
+			{
+				choice = usableWeapons.back().iWeaponId;
+			}
+			else if( reallyUsableWeapons.size() > 0 )
+			{
+				choice = reallyUsableWeapons.back().iWeaponId;
+			}
+			else
+			{
+				// use a default? should never get here?
+			}
 		}
 
 		// select the best weapon to use at this distance and fire...

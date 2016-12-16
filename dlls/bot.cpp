@@ -2626,7 +2626,7 @@ bool bot_t::BaseCanUseWeapon()
 	return this->HasEnemy();
 }
 
-std::vector<weapon_t> bot_t::GetUsableWeapons()
+std::vector<weapon_t> bot_t::GetUsableWeapons( bool strict )
 {
 	std::vector<weapon_t> usableWeapons;
 
@@ -2643,7 +2643,7 @@ std::vector<weapon_t> bot_t::GetUsableWeapons()
 		}
 
 		// check if the bot can use the weapon
-		if( (this->*pfnCanUseWeapon)() )
+		if( (this->*pfnCanUseWeapon)(strict) )
 		{
 			usableWeapons.push_back( weapon );
 		}
