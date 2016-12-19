@@ -1009,7 +1009,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
-			pBots[i] = new bot_t();
+			pBots[i] = new OpposingForceBot();
 		}
 	}
 	else if( mod_id == DECAY_DLL )
@@ -1018,7 +1018,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
-			pBots[i] = new bot_t();
+			pBots[i] = new HalfLifeBot();
 		}
 	}
 	else if( mod_id == CSTRIKE_DLL || mod_id == CZERO_DLL )
@@ -1027,7 +1027,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
-			pBots[i] = new bot_t();
+			pBots[i] = new CStrikeBot();
 		}
 	}
 	else if( mod_id == DOD_DLL )
@@ -1045,7 +1045,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
-			pBots[i] = new bot_t();
+			pBots[i] = new TFCBot();
 		}
 	}
 	else if( mod_id == REWOLF_DLL )
