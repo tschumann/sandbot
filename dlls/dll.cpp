@@ -907,15 +907,6 @@ void ClientCommand( edict_t *pEntity )
 					}
 				}
 #endif
-
-				if( player->v.weapons & (1<<DOD_WEAPON_GARAND) )
-				{
-					ALERT( at_console, "Weapon: weapon_garand\n" );
-				}
-				if( player->v.weapons & (1<<DOD_WEAPON_KAR) )
-				{
-					ALERT( at_console, "Weapon: weapon_kar\n" );
-				}
 			}
 			else if( mod_id == NS_DLL )
 			{
@@ -932,6 +923,7 @@ void ClientCommand( edict_t *pEntity )
 				ALERT( at_console, "Resources: %f\n", player->v.vuser4.z / 100.0 );
 				ALERT( at_console, "Experience: %f\n", UTIL_GetExperience( player ) );
 
+#if 0
 				if( player->v.team == NSBot::TEAM_MARINE )
 				{
 					if( player->v.iuser4 & MASK_UPGRADE_1 )
@@ -958,6 +950,7 @@ void ClientCommand( edict_t *pEntity )
 						ALERT( at_console, "Celerity\n" );
 					}
 				}
+#endif
 			}
 
 			return;
