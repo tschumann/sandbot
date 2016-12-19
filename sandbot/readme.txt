@@ -8,9 +8,9 @@ Installation: Copy the files into your Steam/steamapps/common/Half-Life director
 
 == Usage ==
 
-addbot			Add a bot to the server
-			In Day of Defeat you can addbot allies or addbot axis
-			In Natural Selection you can addbot alien or addbot marine
+addbot		Add a bot to the server
+		In Day of Defeat you can addbot allies or addbot axis
+		In Natural Selection you can addbot alien or addbot marine
 botskill [1-5]	Set the bot skill level
 waypoint add	Add a waypoint
 waypoint delete	Delete a waypoint

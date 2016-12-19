@@ -1240,16 +1240,13 @@ void StartFrame( void )
 	 // is this slot used AND not respawning
      if (!pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
      {
-		 // TODO: kicking a bot will result in this being called and the engine crashing - need to figure out how to detect it
-		 // TODO: above already fixed?
-        BotThink(pBots[bot_index]);
+		BotThink(pBots[bot_index]);
 
         count++;
      }
 	 else if( pBots[bot_index]->IsKicked() )
 	 {
-		 // TODO: set is_used to false? would also need to decrement iBotCount too?
-		 // TODO: check what happens on map change?
+		 // TODO: is_used is set to by IsKicked - probably don't touch iBotCount - adjusting things based on it would be more complicated
 	 }
   }
 

@@ -119,6 +119,8 @@ void pfnChangeLevel(char* s1, char* s2)
 
 			sprintf(cmd, "kick \"%s\"\n", pBots[index]->name);
 
+			ALERT( at_console, "%s\n", cmd );
+
 			pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
 
 			SERVER_COMMAND(cmd);	// kick the bot using (kick "name")

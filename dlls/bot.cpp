@@ -579,7 +579,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
 
       index = 0;
-      while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
+	  while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
          index++;
 
       if (index == MAX_PLAYERS)
