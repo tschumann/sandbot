@@ -14,6 +14,8 @@ HalfLifeBot::HalfLifeBot()
 	weapon_t glock = {VALVE_WEAPON_GLOCK, "weapon_glock", static_cast<CanUseWeapon>(&HalfLifeBot::CanUseGlock)};
 	weapon_t mp5 = {VALVE_WEAPON_MP5, "weapon_mp5", static_cast<CanUseWeapon>(&HalfLifeBot::CanUseMP5Primary)};
 
+	weapon_t egon = {VALVE_WEAPON_EGON, "weapon_egon", static_cast<CanUseWeapon>(&HalfLifeBot::CanUseEgon)};
+
 	this->weapons.push_back(crowbar);
 	this->weapons.push_back(glock);
 	this->weapons.push_back(mp5);
@@ -62,4 +64,24 @@ bool HalfLifeBot::CanUseMP5Primary( bool really )
 	}
 
 	return this->GetDistanceToEnemy() < 8192.0 || really;
+}
+
+bool HalfLifeBot::CanUseEgon( bool really )
+{
+	if( !bot_t::BaseCanUseWeapon() )
+	{
+		return false;
+	}
+
+	if( this->IsUnderWater() )
+	{
+		return false;
+	}
+
+	if( this->m_rgAmmo[weapon_defs[VALVE_WEAPON_EGON].iAmmo1] < 1 )
+	{
+		return false;
+	}
+
+	return ( this->GetDistanceToEnemy() > 128 && this->GetDistanceToEnemy() < 8192.0 ) || really;
 }

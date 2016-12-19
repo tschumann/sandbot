@@ -505,6 +505,8 @@ public:
 	virtual bool CanUseCrowbar( bool really );
 	virtual bool CanUseGlock( bool really );
 	virtual bool CanUseMP5Primary( bool really );
+
+	virtual bool CanUseEgon( bool really );
 };
 
 class OpposingForceBot : public HalfLifeBot
