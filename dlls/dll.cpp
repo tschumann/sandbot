@@ -496,6 +496,11 @@ void ClientDisconnect( edict_t *pEntity )
      if (pBots && pBots[i] && pBots[i]->pEdict == pEntity)
      {
 		pBots[i]->SetKicked();
+		// TODO: experiment in kicking all bots at the end of each map
+		// don't put this in SetKicked because we only want to try setting this when all
+		// bots are kicked so that the total player count doesn't get out of sync with
+		// which bots have is_used set to true - this all really needs to be simplified
+		pBots[i]->is_used = false;
         break;
      }
   }

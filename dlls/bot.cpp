@@ -2571,8 +2571,6 @@ bool bot_t::IsSniper()
 void bot_t::SetKicked()
 {
 	this->bIsKicked = true;
-	// TODO: experiment in kicking all bots at the end of each map
-	this->is_used = false;
 }
 
 bool bot_t::IsKicked()
