@@ -187,22 +187,30 @@ int DODBot::GetGoalType()
 
 bool DODBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
-	// if it's currently captured by the Axis and the player is Allied
-	if( pControlPoint->v.body == 0 && this->GetTeam() == DODBot::TEAM_ALLIES )
+	if( !strcmp(STRING(pControlPoint->v.model), "models/mapmodels/flags.mdl"))
 	{
-		return true;
-	}
+		// if it's currently captured by the Axis and the player is Allied
+		if( pControlPoint->v.body == 0 && this->GetTeam() == DODBot::TEAM_ALLIES )
+		{
+			return true;
+		}
 
-	// if it's currently captured by the Allies and the player is Axis
-	if( pControlPoint->v.body == 1 && this->GetTeam() == DODBot::TEAM_AXIS )
-	{
-		return true;
-	}
+		// if it's currently captured by the Allies and the player is Axis
+		if( pControlPoint->v.body == 1 && this->GetTeam() == DODBot::TEAM_AXIS )
+		{
+			return true;
+		}
 
-	// if it's uncaptured
-	if( pControlPoint->v.body == 3 )
+		// if it's uncaptured
+		if( pControlPoint->v.body == 3 )
+		{
+			return true;
+		}
+	}
+	else
 	{
-		return true;
+		ALERT( at_error, "Capture point has unsupported flag model: %s\n", STRING(pControlPoint->v.model) );
+		return false;
 	}
 
 	return false;
