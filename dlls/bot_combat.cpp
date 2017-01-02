@@ -1029,6 +1029,10 @@ void BotShootAtEnemy( bot_t *pBot )
 				ALERT( at_console, "Bot couldn't find a weapon to use.\n" );
 			}
 		}
+		else
+		{
+			BotFireWeapon(v_enemy, pBot, choice);
+		}
 	}
 }
 
