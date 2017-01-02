@@ -1012,22 +1012,23 @@ void BotShootAtEnemy( bot_t *pBot )
 
 		if( mod_id == REWOLF_DLL )
 		{
+			// select the best weapon to use at this distance and fire...
 			if( usableWeapons.size() > 0 )
 			{
 				choice = usableWeapons.back().iWeaponId;
+				BotFireWeapon(v_enemy, pBot, choice);
 			}
 			else if( reallyUsableWeapons.size() > 0 )
 			{
 				choice = reallyUsableWeapons.back().iWeaponId;
+
+				BotFireWeapon(v_enemy, pBot, choice);
 			}
 			else
 			{
-				// use a default? should never get here?
+				ALERT( at_console, "Bot couldn't find a weapon to use.\n" );
 			}
 		}
-
-		// select the best weapon to use at this distance and fire...
-		BotFireWeapon(v_enemy, pBot, choice);
 	}
 }
 
@@ -1071,6 +1072,6 @@ bool BotShootTripmine( bot_t *pBot )
 	BotFixIdealYaw(pEdict);
 
 	// TODO: does this work in Opposing Force and They Hunger?
-	return (BotFireWeapon( v_enemy, pBot, VALVE_WEAPON_GLOCK ));
+	return BotFireWeapon( v_enemy, pBot, VALVE_WEAPON_GLOCK );
 }
 
