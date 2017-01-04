@@ -349,8 +349,6 @@ public:
 	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
 
-	virtual edict_t *GetCurrentWeapon();
-
 	bool is_used;
 	int respawn_state;
 	int index;

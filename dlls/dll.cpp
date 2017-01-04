@@ -878,8 +878,6 @@ void ClientCommand( edict_t *pEntity )
 			if( player->v.flags & FL_FAKECLIENT )
 			{
 				pBot = UTIL_GetBotPointer( player );
-
-				ALERT( at_console, "Weapon light level: %d\n", pBot->GetCurrentWeapon()->v.light_level );
 			}
 
 			ALERT( at_console, "Light level: %d\n", player->v.light_level );

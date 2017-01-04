@@ -2650,21 +2650,6 @@ std::vector<weapon_t> bot_t::GetUsableWeapons( bool strict )
 	return usableWeapons;
 }
 
-edict_t *bot_t::GetCurrentWeapon()
-{
-	edict_t *pent = NULL;
-
-	while( pent = UTIL_FindEntityInSphere( pent, this->pEdict->v.origin, 1.0 ) )
-	{
-		if( !strncmp("weapon_", STRING(pent->v.classname), 7) && pent->v.effects & EF_NODRAW )
-		{
-			return pent;
-		}
-	}
-
-	return NULL;
-}
-
 Vector bot_t::GetOrigin()
 {
 	return this->pEdict->v.origin;

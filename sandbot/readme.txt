@@ -36,6 +36,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 v0.3.x (??/??/??)
 - [Half-Life] Bots are now random colours.
 - [Opposing Force] Bots are now random colours.
+- [Day of Defeat] Sandbot will now let you know if you're playing on a map with a flag model that is doesn't understand.
 - [Natural Selection] Bots will now consider all enemy structures as enemies.
 - [Natural Selection] Marine bots will now build structures in Classic.
 
