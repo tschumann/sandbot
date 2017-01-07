@@ -703,6 +703,25 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 				}
 			}
 		}
+		if( arg2 && (*arg2 != 0) )
+		{
+			// TODO: expand this
+			if( mod_id == DOD_DLL )
+			{
+				if( !strcmp(arg2, "bazooka") )
+				{
+					pBot->bot_class = 5;
+				}
+				else if( !strcmp(arg2, "pshreck") )
+				{
+					pBot->bot_class = 5;
+				}
+				else
+				{
+					ALERT( at_error, "Unknown class name %s\n", arg1 );
+				}
+			}
+		}
 
 	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF()))
       {

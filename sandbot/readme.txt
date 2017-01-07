@@ -34,6 +34,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 == Changelog ==
 
 v0.3.x (??/??/??)
+- [All] Bots no longer rejoin when the map changes.
 - [Half-Life] Bots are now random colours.
 - [Opposing Force] Bots are now random colours.
 - [Day of Defeat] Sandbot will now let you know if you're playing on a map with a flag model that is doesn't understand.

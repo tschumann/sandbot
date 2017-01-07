@@ -49,10 +49,13 @@ void DODBot::Join()
 	{
 		this->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-		// do this to control what classes bots will spawn as (not everything is supported yet)
-		int playerClass = RANDOM_LONG(1, 5);
+		if (this->bot_class == -1)
+		{
+			// do this to control what classes bots will spawn as (not everything is supported yet)
+			this->bot_class = RANDOM_LONG(1, 5);
+		}
 
-		switch( playerClass )
+		switch( this->bot_class )
 		{
 		case 1:
 			FakeClientCommand( this->pEdict, "cls_garand", NULL, NULL );
@@ -83,9 +86,13 @@ void DODBot::Join()
 	{
 		this->start_action = MSG_DOD_IDLE;  // switch back to idle
 
-		int playerClass = RANDOM_LONG(1, 5);
+		if (this->bot_class == -1)
+		{
+			// do this to control what classes bots will spawn as (not everything is supported yet)
+			this->bot_class = RANDOM_LONG(1, 5);
+		}
 
-		switch( playerClass )
+		switch( this->bot_class )
 		{
 		case 1:
 			FakeClientCommand( this->pEdict, "cls_k98", NULL, NULL );
