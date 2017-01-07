@@ -649,9 +649,9 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		pBot->f_bot_see_enemy_time = -1;  // so we won't keep reloading
 
 		// TODO: does reloading cause ammo to be lost in Day of Defeat?
-		if (pBot->ShouldReload())
+		if( pBot->ShouldReload() )
 		{
-			pEdict->v.button |= IN_RELOAD;  // press reload button
+			pBot->Reload();
 		}
 	}
 

@@ -2534,6 +2534,12 @@ Vector bot_t::GetPointToShootAt()
 	return target;
 }
 
+void bot_t::Reload()
+{
+	// TODO: override in subclasses and say something in chat or whatever
+	pEdict->v.button |= IN_RELOAD;
+}
+
 bool bot_t::ShouldReload()
 {
 	return true;

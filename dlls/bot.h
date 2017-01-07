@@ -327,6 +327,7 @@ public:
 	virtual float GetSpeedToEnemy();
 	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
 	virtual Vector GetPointToShootAt();
+	virtual void Reload();
 	virtual bool ShouldReload();
 
 	virtual void PickUpItem();
