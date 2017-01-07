@@ -1269,6 +1269,7 @@ void StartFrame( void )
      }
   }
 
+#if 0
   // are we currently respawning bots and is it time to spawn one yet?
   if (pBots && (respawn_time > 1.0) && (respawn_time <= gpGlobals->time))
   {
@@ -1320,6 +1321,7 @@ void StartFrame( void )
         respawn_time = 0.0;
      }
   }
+#endif
 
   if (g_GameRules)
   {

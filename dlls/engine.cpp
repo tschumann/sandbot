@@ -113,13 +113,12 @@ void pfnChangeLevel(char* s1, char* s2)
 	// kick any bot off of the server after time/frag limit...
 	for (int index = 0; index < MAX_PLAYERS; index++)
 	{
-		if (pBots[index]->is_used)	// is this slot used?
+		// TODO:
+		if (pBots && pBots[index]->is_used)	// is this slot used?
 		{
 			char cmd[40];
 
 			sprintf(cmd, "kick \"%s\"\n", pBots[index]->name);
-
-			ALERT( at_console, "%s\n", cmd );
 
 			pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
 

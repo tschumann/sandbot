@@ -2330,6 +2330,7 @@ bot_t::bot_t()
 	// is_used gets set to true in ServerActivate
 	this->is_used = false;
 	this->index = -1;
+	this->name[0] = '\0';
 
 	this->bIsKicked = false;
 }
