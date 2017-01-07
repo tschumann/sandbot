@@ -31,8 +31,6 @@ extern HINSTANCE h_Library;
 extern void *h_Library;
 #endif
 
-extern unsigned int iBotCount;
-
 extern enginefuncs_t g_engfuncs;
 extern int debug_engine;
 extern globalvars_t  *gpGlobals;
@@ -46,6 +44,7 @@ extern float wp_display_time[MAX_WAYPOINTS];
 extern bot_t **pBots;
 extern bool b_observer_mode;
 extern bool b_botdontshoot;
+extern bot_player_t *pBotData;
 
 static FILE *fp;
 
@@ -978,6 +977,13 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		delete pGame;
 		pGame = NULL;
 	}
+	if( pBotData )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBotData[i].bIsUsed = false;
+		}
+	}
 	if( pBots )
 	{
 		for( int i = 0; i < MAX_PLAYERS; i++ )
@@ -1081,33 +1087,24 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		}
 	}
 
-	for( unsigned int i = 0; i < iBotCount; i++ )
-	{
-		pBots[i]->is_used = true;
-	}
-
 	(*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
 }
 
 void ServerDeactivate( void )
 {
-	if( pBots )
-	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
-		{
-			if( pBots[i]->is_used )
-			{
-				iBotCount++;
-			}
-		}
-	}
-
 	// TODO: move this stuff into a function
 	// apparently this can be called more than once, so check before deleting
 	if( pGame )
 	{
 		delete pGame;
 		pGame = NULL;
+	}
+	if( pBotData )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBotData[i].bIsUsed = false;
+		}
 	}
 	if( pBots )
 	{
@@ -1268,60 +1265,6 @@ void StartFrame( void )
         }
      }
   }
-
-#if 0
-  // are we currently respawning bots and is it time to spawn one yet?
-  if (pBots && (respawn_time > 1.0) && (respawn_time <= gpGlobals->time))
-  {
-     int index = 0;
-
-     // find bot needing to be respawned...
-     while ((index < MAX_PLAYERS) && (pBots[index]->respawn_state != RESPAWN_NEED_TO_RESPAWN))
-        index++;
-
-     if (index < MAX_PLAYERS && pBots)
-     {
-        pBots[index]->respawn_state = RESPAWN_IS_RESPAWNING;
-        pBots[index]->is_used = FALSE;      // free up this slot
-
-        // respawn 1 bot then wait a while (otherwise engine crashes)
-        if ((mod_id == VALVE_DLL) || ((mod_id == GEARBOX_DLL) && !((GearboxGame *)pGame)->IsCTF()) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL) || (mod_id == SHIP_DLL))
-        { 
-           char c_skill[2];
-
-           sprintf(c_skill, "%d", pBots[index]->bot_skill);
-
-           // BotCreate(NULL, pBots[index]->skin, pBots[index]->name, c_skill, NULL);
-		   BotCreate(NULL, NULL, NULL, NULL, NULL);
-        }
-        else
-        {
-           // char c_skill[2];
-           // char c_team[2];
-           // char c_class[3];
-
-           // sprintf(c_skill, "%d", pBots[index]->bot_skill);
-           // sprintf(c_team, "%d", pBots[index]->bot_team);
-           // sprintf(c_class, "%d", pBots[index]->bot_class);
-
-           if ((mod_id == TFC_DLL) || (mod_id == GEARBOX_DLL))
-              // BotCreate(NULL, NULL, NULL, pBots[index]->name, c_skill);
-			  BotCreate(NULL, NULL, NULL, NULL, NULL);
-           else
-              // BotCreate(NULL, c_team, c_class, pBots[index]->name, c_skill);
-			  BotCreate(NULL, NULL, NULL, NULL, NULL);
-        }
-
-        respawn_time = gpGlobals->time + 2.0;  // set next respawn time
-
-        bot_check_time = gpGlobals->time + 5.0;
-     }
-     else
-     {
-        respawn_time = 0.0;
-     }
-  }
-#endif
 
   if (g_GameRules)
   {

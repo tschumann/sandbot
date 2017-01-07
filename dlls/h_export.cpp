@@ -36,6 +36,8 @@ extern DLL_FUNCTIONS other_gFunctionTable;
 
 extern int mod_id;
 
+extern bot_player_t *pBotData;
+
 
 #ifndef __linux__
 
@@ -210,6 +212,43 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	if( h_Library == NULL )
 	{
 		ALERT( at_error, "Library not found or not supported!" );
+	}
+
+	extern bot_player_t g_valveBots[];
+	extern bot_player_t g_gearboxBots[];
+	extern bot_player_t g_dodBots[];
+	extern bot_player_t g_gunmanBots[];
+	extern bot_player_t g_nsBots[];
+	extern bot_player_t g_hungerBots[];
+	extern bot_player_t g_shipBots[];
+
+	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
+	{
+		pBotData = g_valveBots;
+	}
+	else if( mod_id == GEARBOX_DLL )
+	{
+		pBotData = g_gearboxBots;
+	}
+	else if( mod_id == DOD_DLL )
+	{
+		pBotData = g_dodBots;
+	}
+	else if( mod_id == REWOLF_DLL )
+	{
+		pBotData = g_gunmanBots;
+	}
+	else if( mod_id == NS_DLL )
+	{
+		pBotData = g_nsBots;
+	}
+	else if( mod_id == HUNGER_DLL )
+	{
+		pBotData = g_hungerBots;
+	}
+	else if( mod_id == SHIP_DLL )
+	{
+		pBotData = g_shipBots;
 	}
 
 	// and now we need to pass engine functions table to the game DLL (in fact it's our own

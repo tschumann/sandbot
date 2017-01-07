@@ -41,10 +41,11 @@ extern int whine_count;
 
 static FILE *fp;
 
+bot_player_t *pBotData = NULL;
+
 
 #define PLAYER_SEARCH_RADIUS     40.0
 
-unsigned int iBotCount = 0;
 unsigned int iBotsNeeded = 0;
 
 bot_t **pBots; // [MAX_PLAYERS];
@@ -491,37 +492,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	bot_t *pBot;
 	int skill;
 	int start_action = 0;
-
-	bot_player_t *pBotData;
-
-	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
-	{
-		pBotData = g_valveBots;
-	}
-	else if( mod_id == GEARBOX_DLL )
-	{
-		pBotData = g_gearboxBots;
-	}
-	else if( mod_id == DOD_DLL )
-	{
-		pBotData = g_dodBots;
-	}
-	else if( mod_id == REWOLF_DLL )
-	{
-		pBotData = g_gunmanBots;
-	}
-	else if( mod_id == NS_DLL )
-	{
-		pBotData = g_nsBots;
-	}
-	else if( mod_id == HUNGER_DLL )
-	{
-		pBotData = g_hungerBots;
-	}
-	else if( mod_id == SHIP_DLL )
-	{
-		pBotData = g_shipBots;
-	}
 
 	int iIndex = RANDOM_LONG( 0, 31 );
 
