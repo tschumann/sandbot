@@ -31,6 +31,9 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
+v0.3.0.1 (10/01/17)
+- [Natural Selection] Fixed liblist.gam not loading sandbot.dll
+
 v0.3 (12/11/16)
 - [All] Fixed kicking a bot causing the game to crash.
 - [Opposing Force] Bots will look for random goals on maps with waypoints.
