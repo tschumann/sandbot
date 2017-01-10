@@ -22,7 +22,7 @@ nohimodel "1"
 // Only show NS-compliant maps
 mpentity "info_mapinfo"
 // Using HPB_bot support for now
-gamedll "dlls\ns.dll"
+gamedll "dlls\sandbot.dll" 
 gamedll_linux "dlls/ns_i386.so"
 // Training map
 //trainmap "ns_training"
