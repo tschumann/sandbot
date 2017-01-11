@@ -123,60 +123,19 @@ char *show_menu_3_flf =
 
 void GameDLLInit( void )
 {
-   char filename[256];
-   char buffer[256];
-   int i, length;
-   FILE *bfp;
-   char *ptr;
+	CVAR_REGISTER (&sv_bot);
+	CVAR_REGISTER(&sv_airmove);
+	CVAR_REGISTER(&bot_skill);
+	developer = CVAR_GET_POINTER("developer");
 
-   CVAR_REGISTER (&sv_bot);
-   CVAR_REGISTER(&sv_airmove);
-   CVAR_REGISTER(&bot_skill);
-   developer = CVAR_GET_POINTER("developer");
+	for( int i = 0; i < MAX_PLAYERS; i++ )
+	{
+		clients[i] = NULL;
+	}
 
-   for (i=0; i<MAX_PLAYERS; i++)
-      clients[i] = NULL;
+	whine_count = 0;
 
-   whine_count = 0;
-
-   // initialize the bots array of structures...
-   // memset(bots, 0, sizeof(bots));
-
-   for (i=0; i < 5; i++)
-      recent_bot_whine[i] = -1;
-
-   UTIL_BuildFileName(filename, "bot_whine.txt", NULL);
-
-   bfp = fopen(filename, "r");
-
-   if (bfp != NULL)
-   {
-      while ((whine_count < MAX_BOT_WHINE) && (fgets(buffer, 80, bfp) != NULL))
-      {
-         length = strlen(buffer);
-
-         if (buffer[length-1] == '\n')
-         {
-            buffer[length-1] = 0;  // remove '\n'
-            length--;
-         }
-
-         if ((ptr = strstr(buffer, "%n")) != NULL)
-         {
-            *(ptr+1) = 's';  // change %n to %s
-         }
-
-         if (length > 0)
-         {
-            strcpy(bot_whine[whine_count], buffer);
-            whine_count++;
-         }
-      }
-
-      fclose(bfp);
-   }
-
-   (*other_gFunctionTable.pfnGameInit)();
+	(*other_gFunctionTable.pfnGameInit)();
 }
 
 int DispatchSpawn( edict_t *pent )
