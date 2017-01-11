@@ -1138,6 +1138,10 @@ void StartFrame( void )
 
      UTIL_BuildFileName(filename, "maps", mapname);
 
+	char szCommand[256];
+	sprintf( szCommand, "exec %s_bot.cfg\n", STRING(gpGlobals->mapname) );
+	SERVER_COMMAND( szCommand );
+
     count = 0;
 
     // mark the bots as needing to be respawned...
