@@ -966,11 +966,8 @@ void BotClient_NS_GameStatus( void *p, int bot_index )
 	{
 		status = *(int *) p;
 
-		// ALERT( at_console, "status %d\n", status );
-
 		if( bot_index != -1 && ( status == kGameStatusReset || status == kGameStatusResetNewMap || status == kGameStatusEnded ) )
 		{
-			// ALERT( at_console, "time to restart\n" );
 			pBots[bot_index]->not_started = true;
 		}
 	}
