@@ -2,8 +2,8 @@
 // Natural Selection      //
 //   by Charlie Cleveland //
 ////////////////////////////
-game "Natural Selection 3.2 (Revision 585)"
-developer "Unknown Worlds Entertainment"
+game "Natural Selection"
+developer "Unknown Worlds"
 developer_url "http://www.unknownworlds.com/ns/"
 url_info "http://www.unknownworlds.com/ns/"
 url_dl "http://www.unknownworlds.com/ns/view?action=files"
@@ -22,7 +22,7 @@ nohimodel "1"
 // Only show NS-compliant maps
 mpentity "info_mapinfo"
 // Using HPB_bot support for now
-gamedll "dlls\sandbot.dll" 
+gamedll "dlls\sandbot.dll"
 gamedll_linux "dlls/ns_i386.so"
 // Training map
 //trainmap "ns_training"
