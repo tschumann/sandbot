@@ -1122,21 +1122,11 @@ void StartFrame( void )
   // if a new map has started then (MUST BE FIRST IN StartFrame)...
   if ((gpGlobals->time + 0.1) < previous_time)
   {
-     char filename[256];
-     char mapname[64];
-
      check_server_cmd = 0.0;  // reset at start of map
 
      msecnum = 0;
      msecdel = 0;
      msecval = 0;
-
-     // check if mapname_bot.cfg file exists...
-
-     strcpy(mapname, STRING(gpGlobals->mapname));
-     strcat(mapname, "_bot.cfg");
-
-     UTIL_BuildFileName(filename, "maps", mapname);
 
 	char szCommand[256];
 	sprintf( szCommand, "exec %s_bot.cfg\n", STRING(gpGlobals->mapname) );
@@ -1243,95 +1233,6 @@ void StartFrame( void )
                  respawn_time = min(respawn_time, gpGlobals->time + (float)1.0);
            }
         }
-     }
-  }      
-
-  // if time to check for server commands then do so...
-  if ((check_server_cmd <= gpGlobals->time) && IS_DEDICATED_SERVER())
-  {
-     check_server_cmd = gpGlobals->time + 1.0;
-
-     char *cvar_bot = (char *)CVAR_GET_STRING( "bot" );
-
-     if ( cvar_bot && cvar_bot[0] )
-     {
-        char cmd_line[80];
-        char *cmd, *arg1, *arg2, *arg3, *arg4;
-
-        strcpy(cmd_line, cvar_bot);
-
-        index = 0;
-        cmd = cmd_line;
-        arg1 = arg2 = arg3 = arg4 = NULL;
-
-        // skip to blank or end of string...
-        while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-           index++;
-
-        if (cmd_line[index] == ' ')
-        {
-           cmd_line[index++] = 0;
-           arg1 = &cmd_line[index];
-
-           // skip to blank or end of string...
-           while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-              index++;
-
-           if (cmd_line[index] == ' ')
-           {
-              cmd_line[index++] = 0;
-              arg2 = &cmd_line[index];
-
-              // skip to blank or end of string...
-              while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-                 index++;
-
-              if (cmd_line[index] == ' ')
-              {
-                 cmd_line[index++] = 0;
-                 arg3 = &cmd_line[index];
-
-                 // skip to blank or end of string...
-                 while ((cmd_line[index] != ' ') && (cmd_line[index] != 0))
-                    index++;
-
-                 if (cmd_line[index] == ' ')
-                 {
-                    cmd_line[index++] = 0;
-                    arg4 = &cmd_line[index];
-                 }
-              }
-           }
-        }
-
-        if (strcmp(cmd, "addbot") == 0)
-        {
-           BotCreate( NULL, arg1, arg2, arg3, arg4 );
-
-           bot_check_time = gpGlobals->time + 5.0;
-        }
-        else if (strcmp(cmd, "min_bots") == 0)
-        {
-           min_bots = atoi( arg1 );
-
-           if ((min_bots < 0) || (min_bots > 31))
-              min_bots = 1;
-  
-           sprintf(msg, "min_bots set to %d\n", min_bots);
-           printf(msg);
-        }
-        else if (strcmp(cmd, "max_bots") == 0)
-        {
-           max_bots = atoi( arg1 );
- 
-           if ((max_bots < 0) || (max_bots > 31)) 
-              max_bots = 1;
-
-           sprintf(msg, "max_bots set to %d\n", max_bots);
-           printf(msg);
-        }
-
-        CVAR_SET_STRING("bot", "");
      }
   }
 
