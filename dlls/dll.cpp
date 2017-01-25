@@ -839,6 +839,9 @@ void ClientCommand( edict_t *pEntity )
 			}
 
 			ALERT( at_console, "Light level: %d\n", player->v.light_level );
+			ALERT( at_console, "Team: %d\n", player->v.team );
+			ALERT( at_console, "Class: %d\n", player->v.playerclass );
+			ALERT( at_console, "Speed: %d\n", player->v.speed );
 
 			if( mod_id == VALVE_DLL )
 			{
