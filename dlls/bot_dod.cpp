@@ -52,7 +52,7 @@ void DODBot::Join()
 		if (this->bot_class == -1)
 		{
 			// do this to control what classes bots will spawn as (not everything is supported yet)
-			this->bot_class = RANDOM_LONG(1, 5);
+			this->bot_class = RANDOM_LONG(1, 4);
 		}
 
 		switch( this->bot_class )
@@ -89,7 +89,7 @@ void DODBot::Join()
 		if (this->bot_class == -1)
 		{
 			// do this to control what classes bots will spawn as (not everything is supported yet)
-			this->bot_class = RANDOM_LONG(1, 5);
+			this->bot_class = RANDOM_LONG(1, 4);
 		}
 
 		switch( this->bot_class )
