@@ -158,7 +158,7 @@ float DODBot::GetSpeedToEnemy()
 {
 	if( !this->pBotEnemy )
 	{
-		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+		ALERT( at_error, "Call to __FUNCTION__ when pBotEnemy is NULL!\n" );
 	}
 
 	float fDistanceToEnemy = this->GetDistanceToEnemy();

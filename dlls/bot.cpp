@@ -2406,7 +2406,7 @@ float bot_t::GetDistanceToEnemy()
 {
 	if( !this->pBotEnemy )
 	{
-		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+		ALERT( at_error, "Call to __FUNCTION__ when pBotEnemy is NULL!\n" );
 	}
 
 	return (this->pBotEnemy->v.origin - GetGunPosition( this->pEdict )).Length();
@@ -2416,7 +2416,7 @@ float bot_t::GetSpeedToEnemy()
 {
 	if( !this->pBotEnemy )
 	{
-		ALERT( at_error, "Call to " __FUNCTION__ " when pBotEnemy is NULL!\n" );
+		ALERT( at_error, "Call to __FUNCTION__ when pBotEnemy is NULL!\n" );
 	}
 
 	float fDistanceToEnemy = this->GetDistanceToEnemy();
