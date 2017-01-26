@@ -47,7 +47,7 @@ int gmsgCountdown = 0;	// Natural Selection
 int gmsgGameStatus = 0; // Natural Selection
 int gmsgQuarry = 0;		// The Ship
 
-bool g_bExecuteBotCfg;
+bool g_bExecuteBotCfg = false;
 
 static FILE *fp;
 

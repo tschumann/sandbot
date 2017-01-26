@@ -36,8 +36,6 @@ extern int default_bot_skill;
 extern int max_team_players[4];
 extern int team_class_limits[4];
 extern int max_teams;
-extern char bot_whine[MAX_BOT_WHINE][81];
-extern int whine_count;
 
 static FILE *fp;
 
@@ -46,13 +44,9 @@ bot_player_t *pBotData = NULL;
 
 #define PLAYER_SEARCH_RADIUS     40.0
 
-unsigned int iBotsNeeded = 0;
-
 bot_t **pBots; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 bool b_botdontshoot = FALSE;
-
-extern int recent_bot_whine[5];
 
 int number_names = 0;
 
@@ -1690,17 +1684,6 @@ void BotThink( bot_t *pBot )
       if (pBot->need_to_initialize)
       {
          BotSpawnInit(pBot);
-
-         // did another player kill this bot AND bot whine messages loaded AND
-         // has the bot been alive for at least 15 seconds AND
-         if ((pBot->killer_edict != NULL) && (whine_count > 0) && ((pBot->f_bot_spawn_time + 15.0) <= gpGlobals->time))
-         {
-            if ((RANDOM_LONG(1,100) <= 10))
-            {
-               pBot->b_bot_say_killed = TRUE;
-               pBot->f_bot_say_killed = gpGlobals->time + 10.0 + RANDOM_FLOAT(0.0, 5.0);
-            }
-         }
 
          pBot->need_to_initialize = FALSE;
       }

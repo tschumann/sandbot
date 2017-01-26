@@ -158,8 +158,6 @@ const int kGameStatusUnspentLevels = 4;
 #define BOT_SKIN_LEN 32
 #define BOT_NAME_LEN 32
 
-#define MAX_BOT_WHINE 100
-
 #define MAX_BACKPACKS 100
 
 // Only one of these allowed per entity, stored in pev->iuser3.

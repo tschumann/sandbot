@@ -96,13 +96,6 @@ int msecnum;
 float msecdel;
 float msecval;
 
-
-char bot_whine[MAX_BOT_WHINE][81];
-int whine_count;
-int recent_bot_whine[5];
-
-cvar_t sv_bot = {"bot",""};
-
 cvar_t bot_skill = {"bot_skill", "3"};
 
 cvar_t *developer;
@@ -123,7 +116,6 @@ char *show_menu_3_flf =
 
 void GameDLLInit( void )
 {
-	CVAR_REGISTER (&sv_bot);
 	CVAR_REGISTER(&sv_airmove);
 	CVAR_REGISTER(&bot_skill);
 	developer = CVAR_GET_POINTER("developer");
@@ -132,8 +124,6 @@ void GameDLLInit( void )
 	{
 		clients[i] = NULL;
 	}
-
-	whine_count = 0;
 
 	(*other_gFunctionTable.pfnGameInit)();
 }
