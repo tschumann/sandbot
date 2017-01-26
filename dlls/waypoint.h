@@ -20,7 +20,7 @@ typedef unsigned __int64 uint64_t;
 
 #include <limits.h>
 
-#define MAX_WAYPOINTS 1024
+#define MAX_WAYPOINTS 2048
 
 #define REACHABLE_RANGE 400.0
 
