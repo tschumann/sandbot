@@ -33,13 +33,19 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
-v0.3.x (??/??/??)
+v0.3.x (??/??/17)
 - [All] Bots no longer rejoin when the map changes.
 - [Half-Life] Bots are now random colours.
+- [Half-Life] Bots now automatically join a game.
 - [Opposing Force] Bots are now random colours.
+- [Opposing Force] Bots now automatically join a game.
 - [Day of Defeat] Sandbot will now let you know if you're playing on a map with a flag model that is doesn't understand.
+- [Day of Defeat] Bots now automatically join a game.
+- [Gunman Chronicles] Bots now use new weapon selection again.
+- [Gunman Chronicles] Bots now automatically join a game.
 - [Natural Selection] Bots will now consider all enemy structures as enemies.
 - [Natural Selection] Marine bots will now build structures in Classic.
+- [They Hunger] Bots now automatically join a game.
 
 v0.3.0.1 (10/01/17)
 - [Natural Selection] Fixed liblist.gam not loading sandbot.dll
