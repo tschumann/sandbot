@@ -47,6 +47,8 @@ int gmsgCountdown = 0;	// Natural Selection
 int gmsgGameStatus = 0; // Natural Selection
 int gmsgQuarry = 0;		// The Ship
 
+bool g_bExecuteBotCfg;
+
 static FILE *fp;
 
 const char *AssetRemap( const char *szPath )
@@ -333,6 +335,16 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 {
 	int index = -1;
 	UTIL_LogDPrintf("pfnMessageBegin: msg_dest=%d msg_type=%d ed=%x\n", msg_dest, msg_type, ed);
+
+	// this is a bit hacky - it assumes that a message will be executed pretty soon after a map loads
+	if( g_bExecuteBotCfg )
+	{
+		char szCommand[256];
+		sprintf( szCommand, "exec %s_bot.cfg\n", STRING(gpGlobals->mapname) );
+		SERVER_COMMAND( szCommand );
+
+		g_bExecuteBotCfg = false;
+	}
 
   if (ed)
   {

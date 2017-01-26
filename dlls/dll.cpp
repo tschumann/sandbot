@@ -1049,6 +1049,9 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		}
 	}
 
+	extern bool g_bExecuteBotCfg;
+	g_bExecuteBotCfg = true;
+
 	(*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
 }
 
@@ -1101,7 +1104,6 @@ void StartFrame( void )
   static float check_server_cmd = 0.0;
   static int i, index, player_index, bot_index;
   static float previous_time = -1.0;
-  char msg[256];
   int count;
 
   if( !g_bInGame )
@@ -1130,10 +1132,6 @@ void StartFrame( void )
      msecnum = 0;
      msecdel = 0;
      msecval = 0;
-
-	char szCommand[256];
-	sprintf( szCommand, "exec %s_bot.cfg\n", STRING(gpGlobals->mapname) );
-	SERVER_COMMAND( szCommand );
 
     count = 0;
 

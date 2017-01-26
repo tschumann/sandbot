@@ -23,7 +23,7 @@ Q. Can you add support for mod x?
 A. I'm not planning to at the moment - I'm planning support for Half-Life, Opposing Force, Day of Defeat, Team Fortress Classic, Gunman Chronicles, Natural Selection, The Ship and They Hunger which is likely going to take a while.
 
 Q. Can you add MetaMod support?
-A. I've tried and things just broke unexpectedly, so not right now.
+A. I've tried and things just broke unexpectedly, so not right now. My now outdated attempt is at https://github.com/tschumann/sandbot/tree/metamod if you want to play with it.
 
 Q. Can it be used for dedicated servers?
 A. Maybe - I haven't tested it, but it should.
