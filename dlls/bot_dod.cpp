@@ -10,6 +10,8 @@
 
 void DODBot::OnSpawn()
 {
+	bot_t::OnSpawn();
+
 	this->bCapturing = false;
 	this->iGoalIndex = 0;
 }

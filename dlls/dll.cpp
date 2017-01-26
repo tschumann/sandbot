@@ -188,6 +188,7 @@ int DispatchSpawn( edict_t *pent )
      PRECACHE_SOUND("common/wpn_hudon.wav");       // path add/delete done
      PRECACHE_SOUND("common/wpn_moveselect.wav");  // path add/delete cancel
      PRECACHE_SOUND("common/wpn_denyselect.wav");  // path add/delete error
+	 PRECACHE_MODEL("models/mechgibs.mdl");
 
      m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
 
@@ -826,6 +827,7 @@ void ClientCommand( edict_t *pEntity )
 			if( player->v.flags & FL_FAKECLIENT )
 			{
 				pBot = UTIL_GetBotPointer( player );
+				ALERT( at_console, "%d\n", pBot->GetLightLevel() );
 			}
 
 			ALERT( at_console, "Light level: %d\n", player->v.light_level );

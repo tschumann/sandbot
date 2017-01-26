@@ -13,6 +13,8 @@
 
 void NSBot::OnSpawn()
 {
+	bot_t::OnSpawn();
+
 	this->bIsEvolving = false;
 }
 

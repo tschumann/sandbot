@@ -37,6 +37,8 @@ GunmanBot::GunmanBot()
 
 void GunmanBot::OnSpawn()
 {
+	bot_t::OnSpawn();
+
 	this->iPistolMode = RANDOM_LONG(GunmanBot::PISTOL_PULSE, GunmanBot::PISTOL_RAPID);
 
 	// currently the bots don't know that the charge requires 10 ammo

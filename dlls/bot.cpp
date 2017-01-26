@@ -2533,6 +2533,30 @@ float bot_t::GetMaxSpeed()
 	return this->fMaxSpeed;
 }
 
+int bot_t::GetLightLevel()
+{
+	// TODO: Foxbot uses this->pBotEnemy instead of this->pEdict
+	this->pLightEnt = CREATE_NAMED_ENTITY(MAKE_STRING("info_target"));
+    DispatchSpawn(this->pLightEnt);
+	this->pLightEnt->v.origin = this->pEdict->v.origin;
+    this->pLightEnt->v.takedamage = DAMAGE_NO;
+    this->pLightEnt->v.solid = SOLID_NOT;
+    this->pLightEnt->v.owner = this->pEdict;
+    this->pLightEnt->v.movetype = MOVETYPE_FLY; // noclip
+    this->pLightEnt->v.classname = MAKE_STRING("entity_botlightvalue");
+    this->pLightEnt->v.nextthink = gpGlobals->time;
+    this->pLightEnt->v.rendermode = kRenderNormal;
+    this->pLightEnt->v.renderfx = kRenderFxNone;
+    this->pLightEnt->v.renderamt = 0;
+    SET_MODEL(this->pLightEnt, "models/mechgibs.mdl"); // invisible model
+
+	int iIllumination = GETENTITYILLUM(this->pLightEnt);
+
+	REMOVE_ENTITY(this->pLightEnt);
+
+	return iIllumination;
+}
+
 bool bot_t::IsDead()
 {
 	return this->pEdict->v.health < 1 || this->pEdict->v.deadflag != DEAD_NO;

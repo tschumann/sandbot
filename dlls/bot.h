@@ -333,6 +333,8 @@ public:
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
 
+	virtual int GetLightLevel();
+
 	virtual bool IsDead();
 	virtual bool IsUnderWater();
 	virtual bool IsSniper();
@@ -491,6 +493,7 @@ protected:
 
 	bool bIsKicked;
 
+	edict_t *pLightEnt;
 	float fMaxSpeed;
 	std::vector<weapon_t> weapons;
 };
