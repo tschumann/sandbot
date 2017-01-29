@@ -33,6 +33,9 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
+v0.3.2 (??/??/??)
+- [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
+
 v0.3.1 (26/01/17)
 - [All] Bots no longer rejoin when the map changes.
 - [Half-Life] Bots are now random colours.
