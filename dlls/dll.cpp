@@ -98,6 +98,8 @@ float msecval;
 
 cvar_t bot_skill = {"bot_skill", "3"};
 
+cvar_t bot_count = {"bot_count", "11"};
+
 cvar_t *developer;
 
 // a fresh install of Natural Selection 3.2 will spam the console about the non-existence of this cvar
@@ -118,6 +120,24 @@ void GameDLLInit( void )
 {
 	CVAR_REGISTER(&sv_airmove);
 	CVAR_REGISTER(&bot_skill);
+	CVAR_REGISTER(&bot_count);
+
+	switch( mod_id )
+	{
+	case VALVE_DLL:
+		bot_count.value = 11;
+		break;
+	case GEARBOX_DLL:
+		bot_count.value = 11;
+		break;
+	case REWOLF_DLL:
+		bot_count.value = 11;
+		break;
+	case HUNGER_DLL:
+		bot_count.value = 11;
+		break;
+	}
+
 	developer = CVAR_GET_POINTER("developer");
 
 	for( int i = 0; i < MAX_PLAYERS; i++ )
