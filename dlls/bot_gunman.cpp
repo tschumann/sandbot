@@ -80,24 +80,24 @@ int GunmanBot::GetPistolMode()
 
 void GunmanBot::UseGaussPistolPulse()
 {
-	FakeClientCommand( this->pEdict, "cust_11", NULL, NULL );
+	FakeClientCommand( this->pEdict, "cust_11" );
 }
 
 void GunmanBot::UseGaussPistolCharge()
 {
 	// gauss_bolt in logs
-	FakeClientCommand( this->pEdict, "cust_12", NULL, NULL );
+	FakeClientCommand( this->pEdict, "cust_12" );
 }
 
 void GunmanBot::UseGaussPistolRapid()
 {
 	// gauss_charged in logs
-	FakeClientCommand( this->pEdict, "cust_13", NULL, NULL );
+	FakeClientCommand( this->pEdict, "cust_13" );
 }
 
 void GunmanBot::UseGaussPistolSniper()
 {
-	FakeClientCommand( this->pEdict, "cust_14", NULL, NULL );
+	FakeClientCommand( this->pEdict, "cust_14" );
 }
 
 bool GunmanBot::CanUseFists( bool really )

@@ -25,7 +25,7 @@ bool ShipBot::IsValidEnemy( edict_t *pEdict )
 
 void ShipBot::PickUpItem()
 {
-	FakeClientCommand( this->pEdict, "pickup", NULL, NULL );
+	FakeClientCommand( this->pEdict, "pickup" );
 }
 
 void ShipBot::SetQuarry( int iEntIndex )

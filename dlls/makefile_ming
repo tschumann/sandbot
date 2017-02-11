@@ -1,5 +1,5 @@
 #
-# HPB_bot makefile for MingW32 (egcs-2.91.66)
+# Sandbot makefile for MingW32 (egcs-2.91.66)
 #
 # created: 12/16/2000 botman (botman@mailandnews.com)
 #
@@ -9,20 +9,20 @@ MOD_DIR = D:\Half-Life\tfc
 
 CPP = gcc
 
-CPPFLAGS = -march=pentium -O2 -w -I../engine -I../common -I../pm_shared
+CPPFLAGS = -march=pentium -O2 -w -I../engine -I../common -I../pm_shared -I../metamod
 
 OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
-	dll.o engine.o h_export.o linkfunc.o util.o waypoint.o
+	dll.o engine.o h_export.o linkfunc.o meta_api.o util.o waypoint.o
 
-HPB_bot.dll:	${OBJ} HPB_bot_ming.def
-	dllwrap -s --def HPB_bot_ming.def --driver-name gcc -o HPB_bot.dll \
+sandbot.dll:	${OBJ} sandbot.def
+	dllwrap -s --def sandbot.def --driver-name gcc -o sandbot.dll \
 		${OBJ}
-	copy HPB_bot.dll ${MOD_DIR}\dlls\HPB_bot.dll /Y
+	copy sandbot.dll ${MOD_DIR}\dlls\sandbot.dll /Y
 
-HPB_bot_ming.def:	${OBJ}
-	dllwrap -s --output-def HPB_bot_ming.def --driver-name gcc -o HPB_bot.dll \
+sandbot.def:	${OBJ}
+	dllwrap -s --output-def sandbot.def --driver-name gcc -o sandbot.dll \
 		${OBJ}
-	type GiveFnpt.dat >> HPB_bot_ming.def
+	type GiveFnpt.dat >> sandbot.def
 
 clean:
 	-del *.o

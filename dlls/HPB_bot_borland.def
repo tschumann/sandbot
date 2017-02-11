@@ -1,4 +1,4 @@
-LIBRARY hl
+LIBRARY sandbot
 EXPORTS
  GetEntityAPI = _GetEntityAPI
  GetNewDLLFunctions = _GetNewDLLFunctions

@@ -6,9 +6,18 @@
 // h_export.cpp
 //
 
+/*
 #include "extdll.h"
 #include "enginecallback.h"
+#include "meta_api.h"
 #include "util.h"
+#include "cbase.h"
+*/
+
+#include "extdll.h"
+#include "dllapi.h"
+#include "h_export.h"
+#include "meta_api.h"
 #include "cbase.h"
 #include "studio.h"
 
@@ -27,6 +36,8 @@ HINSTANCE h_Library = NULL;
 #else
 void* h_Library = NULL;
 #endif
+
+int DispatchSpawn_Post( edict_t * pent );
 
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
@@ -57,199 +68,14 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 
 #endif
 
-#ifndef __linux__
 #ifdef __BORLANDC__
-extern "C" DLLEXPORT void EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals)
+int EXPORT GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, int *interfaceVersion )
 #else
-void DLLEXPORT GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
-#endif
-#else
-extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
+extern "C" EXPORT int GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, int *interfaceVersion )
 #endif
 {
-	char game_dir[256];
-
-	// get the engine functions from the engine...
-	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
-	// get the globals from the engine
-	gpGlobals = pGlobals;
-
-	// find the directory name of the currently running mod
-	// this returns just the mod directory's name: http://metamod.org/engine_notes.html#GetGameDir
-	GET_GAME_DIR(game_dir);
-
-	if (strcmpi(game_dir, "valve") == 0)
-	{
-		mod_id = VALVE_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("valve/dlls/hl.dll"); // and load the library
-#else
-		h_Library = dlopen("valve/dlls/hl.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "bshift") == 0)
-	{
-		mod_id = BSHIFT_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("bshift/dlls/hl.dll"); // and load the library
-#else
-		h_Library = dlopen("bshift/dlls/bshift.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "gearbox") == 0)
-	{
-		mod_id = GEARBOX_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("gearbox/dlls/opfor.dll"); // and load the library
-#else
-		h_Library = dlopen("gearbox/dlls/opfor.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "decay") == 0)
-	{
-		mod_id = DECAY_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("decay/dlls/decay.dll"); // and load the library
-#else
-		h_Library = dlopen("decay/dlls/decay_i386.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "cstrike") == 0)
-	{
-		mod_id = CSTRIKE_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("cstrike/dlls/mp.dll"); // and load the library
-#else
-		h_Library = dlopen("cstrike/dlls/cs.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "czero") == 0)
-	{
-		mod_id = CZERO_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("czero/dlls/mp.dll"); // and load the library
-#else
-		h_Library = dlopen("czero/dlls/cs.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "czeror") == 0)
-	{
-		mod_id = CZEROR_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("czeror/dlls/cz.dll"); // and load the library
-#else
-		h_Library = dlopen("czeror/dlls/cz.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "dod") == 0)
-	{
-		mod_id = DOD_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("dod/dlls/dod.dll"); // and load the library
-#else
-		h_Library = dlopen("dod/dlls/dod.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "tfc") == 0)
-	{
-		mod_id = TFC_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("tfc/dlls/tfc.dll"); // and load the library
-#else
-		h_Library = dlopen("tfc/dlls/tfc.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "rewolf") == 0)
-	{
-		mod_id = REWOLF_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("rewolf/dlls/gunman.dll"); // and load the library
-#else
-		h_Library = NULL;
-#endif
-	}
-	else if (strcmpi(game_dir, "hunger") == 0)
-	{
-		mod_id = HUNGER_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("hunger/dlls/einar.dll"); // and load the library
-#else
-		h_Library = NULL;
-#endif
-	}
-	else if (strcmpi(game_dir, "ns") == 0)
-	{
-		mod_id = NS_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("ns/dlls/ns.dll"); // and load the library
-#else
-		h_Library = dlopen("ns/dlls/ns_i386.so", RTLD_NOW); // and load the library
-#endif
-	}
-	else if (strcmpi(game_dir, "ship") == 0)
-	{
-		mod_id = SHIP_DLL;
-
-#ifndef __linux__
-		h_Library = LoadLibrary("ship/dlls/ship.dll"); // and load the library
-#else
-		h_Library = dlopen("ship/dlls/ship_i386.so", RTLD_NOW); // and load the library
-#endif
-	}
-
-	if( h_Library == NULL )
-	{
-		ALERT( at_error, "Library not found or not supported!" );
-	}
-
-	extern bot_player_t g_valveBots[];
-	extern bot_player_t g_gearboxBots[];
-	extern bot_player_t g_dodBots[];
-	extern bot_player_t g_gunmanBots[];
-	extern bot_player_t g_nsBots[];
-	extern bot_player_t g_hungerBots[];
-	extern bot_player_t g_shipBots[];
-
-	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
-	{
-		pBotData = g_valveBots;
-	}
-	else if( mod_id == GEARBOX_DLL )
-	{
-		pBotData = g_gearboxBots;
-	}
-	else if( mod_id == DOD_DLL )
-	{
-		pBotData = g_dodBots;
-	}
-	else if( mod_id == REWOLF_DLL )
-	{
-		pBotData = g_gunmanBots;
-	}
-	else if( mod_id == NS_DLL )
-	{
-		pBotData = g_nsBots;
-	}
-	else if( mod_id == HUNGER_DLL )
-	{
-		pBotData = g_hungerBots;
-	}
-	else if( mod_id == SHIP_DLL )
-	{
-		pBotData = g_shipBots;
-	}
+	if( g_bIsMMPlugin )
+		memset( pengfuncsFromEngine, 0, sizeof( enginefuncs_t ) );
 
 	// and now we need to pass engine functions table to the game DLL (in fact it's our own
 	// functions we are passing here, but the game DLL won't notice)...
@@ -395,7 +221,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	pengfuncsFromEngine->pfnAddServerCommand = pfnAddServerCommand;
 	pengfuncsFromEngine->pfnVoice_GetClientListening = pfnVoice_GetClientListening;
 	pengfuncsFromEngine->pfnVoice_SetClientListening = pfnVoice_SetClientListening;
-	pengfuncsFromEngine->pfnGetPlayerAuthId = pfnGetPlayerAuthId; 
+	pengfuncsFromEngine->pfnGetPlayerAuthId = pfnGetPlayerAuthId;
 	pengfuncsFromEngine->pfnSequenceGet = pfnSequenceGet;
 	pengfuncsFromEngine->pfnSequencePickSentence = pfnSequencePickSentence;
 	pengfuncsFromEngine->pfnGetFileSize = pfnGetFileSize;
@@ -408,12 +234,253 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	pengfuncsFromEngine->ConstructTutorMessageDecayBuffer = pfnConstructTutorMessageDecayBuffer;
 	pengfuncsFromEngine->ResetTutorMessageDecayData = pfnResetTutorMessageDecayData;
 
+	return TRUE;
+}
+
+#ifndef __linux__
+#ifdef __BORLANDC__
+extern "C" DLLEXPORT void EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals)
+#else
+void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
+#endif
+#else
+extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
+#endif
+{
+	// get the engine functions from the engine...
+	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
+	// get the globals from the engine
+	gpGlobals = pGlobals;
+
+	// find the directory name of the currently running mod
+	// this returns just the mod directory's name: http://metamod.org/engine_notes.html#GetGameDir
+	char game_dir[256];
+	GET_GAME_DIR(game_dir);
+
+	if (strcmpi(game_dir, "valve") == 0)
+	{
+		mod_id = VALVE_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "valve/dlls/hl.dll" ); // and load the library
+#else
+			h_Library = dlopen( "valve/dlls/hl.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "bshift") == 0)
+	{
+		mod_id = BSHIFT_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "bshift/dlls/hl.dll" ); // and load the library
+#else
+			h_Library = dlopen( "bshift/dlls/bshift.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "gearbox") == 0)
+	{
+		mod_id = GEARBOX_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "gearbox/dlls/opfor.dll" ); // and load the library
+#else
+			h_Library = dlopen( "gearbox/dlls/opfor.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "decay") == 0)
+	{
+		mod_id = DECAY_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "decay/dlls/decay.dll" ); // and load the library
+#else
+			h_Library = dlopen( "decay/dlls/decay_i386.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "cstrike") == 0)
+	{
+		mod_id = CSTRIKE_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "cstrike/dlls/mp.dll" ); // and load the library
+#else
+			h_Library = dlopen( "cstrike/dlls/cs.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "czero") == 0)
+	{
+		mod_id = CZERO_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "czero/dlls/mp.dll" ); // and load the library
+#else
+			h_Library = dlopen( "czero/dlls/cs.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "czeror") == 0)
+	{
+		mod_id = CZEROR_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "czeror/dlls/cz.dll" ); // and load the library
+#else
+			h_Library = dlopen( "czeror/dlls/cz.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "dod") == 0)
+	{
+		mod_id = DOD_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "dod/dlls/dod.dll" ); // and load the library
+#else
+			h_Library = dlopen( "dod/dlls/dod.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "tfc") == 0)
+	{
+		mod_id = TFC_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "tfc/dlls/tfc.dll" ); // and load the library
+#else
+			h_Library = dlopen( "tfc/dlls/tfc.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "rewolf") == 0)
+	{
+		mod_id = REWOLF_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "rewolf/dlls/gunman.dll" ); // and load the library
+#else
+			h_Library = NULL;
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "hunger") == 0)
+	{
+		mod_id = HUNGER_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "hunger/dlls/einar.dll" ); // and load the library
+#else
+			h_Library = NULL;
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "ns") == 0)
+	{
+		mod_id = NS_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "ns/dlls/ns.dll" ); // and load the library
+#else
+			h_Library = dlopen( "ns/dlls/ns_i386.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+	else if (strcmpi(game_dir, "ship") == 0)
+	{
+		mod_id = SHIP_DLL;
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( "ship/dlls/ship.dll" ); // and load the library
+#else
+			h_Library = dlopen( "ship/dlls/ship_i386.so", RTLD_NOW ); // and load the library
+#endif
+		}
+	}
+
+	if( !g_bIsMMPlugin && h_Library == NULL )
+	{
+		ALERT( at_error, "Library not found or not supported!" );
+	}
+
+	extern bot_player_t g_valveBots[];
+	extern bot_player_t g_gearboxBots[];
+	extern bot_player_t g_dodBots[];
+	extern bot_player_t g_gunmanBots[];
+	extern bot_player_t g_nsBots[];
+	extern bot_player_t g_hungerBots[];
+	extern bot_player_t g_shipBots[];
+
+	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
+	{
+		pBotData = g_valveBots;
+	}
+	else if( mod_id == GEARBOX_DLL )
+	{
+		pBotData = g_gearboxBots;
+	}
+	else if( mod_id == DOD_DLL )
+	{
+		pBotData = g_dodBots;
+	}
+	else if( mod_id == REWOLF_DLL )
+	{
+		pBotData = g_gunmanBots;
+	}
+	else if( mod_id == NS_DLL )
+	{
+		pBotData = g_nsBots;
+	}
+	else if( mod_id == HUNGER_DLL )
+	{
+		pBotData = g_hungerBots;
+	}
+	else if( mod_id == SHIP_DLL )
+	{
+		pBotData = g_shipBots;
+	}
+
+	if( g_bIsMMPlugin )
+		return;
+
+	GetEngineFunctions( pengfuncsFromEngine, NULL );
+
 	// give the engine functions to the other DLL...
 	(*(GIVEFNPTRSTODLL) GetProcAddress (h_Library, "GiveFnptrsToDll")) (pengfuncsFromEngine, pGlobals);
 
 	return; // finished, interfacing from gamedll to engine complete
 }
 
+gamedll_funcs_t gGameDLLFunc;
 
 #ifdef __BORLANDC__
 int EXPORT GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
@@ -424,6 +491,19 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
    // check if engine's pointer is valid and version is correct...
    if ((pFunctionTable == NULL) || (interfaceVersion != INTERFACE_VERSION))
       return FALSE;
+
+   memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
+   if( !g_bIsMMPlugin )
+   {
+	   // pass other DLLs engine callbacks to function table...
+	   if( !(*(GETENTITYAPI)GetProcAddress( h_Library, "GetEntityAPI" )) (&other_gFunctionTable, INTERFACE_VERSION) )
+		   return FALSE;  // error initializing function table!!!
+
+	   gGameDLLFunc.dllapi_table = &other_gFunctionTable;
+	   gpGamedllFuncs = &gGameDLLFunc;
+
+	   memcpy( pFunctionTable, &other_gFunctionTable, sizeof( DLL_FUNCTIONS ) );
+   }
 
    // pass gamedll functions table to engine (in fact it's our own functions we are passing
    // here, but the engine won't notice)...
@@ -479,16 +559,21 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
    pFunctionTable->pfnInconsistentFile = InconsistentFile;
    pFunctionTable->pfnAllowLagCompensation = AllowLagCompensation;
 
-   // and now we need to get the REAL gamedll functions, for our own use (call GetEntityAPI()
-   // in the game DLL and have it fill in our functions table)...
-
-   // was the call NOT successful ?
-   if (!(*(GETENTITYAPI) GetProcAddress (h_Library, "GetEntityAPI")) (&other_gFunctionTable, INTERFACE_VERSION))
-      return FALSE;  // error initializing function table!!!
-
-   return (TRUE); // finished, interfacing from engine to gamedll complete
+   return TRUE; // finished, interfacing from engine to gamedll complete
 }
 
+#ifdef __BORLANDC__
+int EXPORT GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
+#else
+extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
+#endif
+{
+	memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
+
+	pFunctionTable->pfnSpawn = DispatchSpawn_Post;
+
+	return (TRUE);
+}
 
 #ifdef __BORLANDC__
 int EXPORT GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
@@ -513,6 +598,8 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
       missing = TRUE; // then mark it as missing, no use to look for it again in the future
       return FALSE; // and give up
    }
+
+   gGameDLLFunc.newapi_table = pFunctionTable;
 
    // else call the function that provides the new DLL functions interface on request
    return (!(*other_GetNewDLLFunctions) (pFunctionTable, interfaceVersion));

@@ -1624,7 +1624,7 @@ void BotFindItem( bot_t *pBot )
 
 	  if( mod_id == SHIP_DLL )
 	{
-		FakeClientCommand( pEdict, "pickup", NULL, NULL );
+		FakeClientCommand( pEdict, "pickup" );
 	}
    }
 }
@@ -1980,7 +1980,7 @@ void BotThink( bot_t *pBot )
 							pBot->f_move_speed = 0.0;
 							if (((NSBot *)pBot)->HasWelder())
 							{
-								FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
+								FakeClientCommand(pBot->pEdict, "weapon_welder");
 								pEdict->v.button = ( IN_ATTACK | IN_DUCK );
 							}
 							else

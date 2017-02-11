@@ -78,6 +78,9 @@
     <ClCompile Include="waypoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="meta_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">
