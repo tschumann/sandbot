@@ -157,7 +157,7 @@ int DispatchSpawn( edict_t *pent )
   if (debug_engine)
   {
      fp=fopen("bot.txt","a");
-     fprintf(fp, "DispatchSpawn: %x %s\n",pent,pClassname);
+     fprintf(fp, "DispatchSpawn: %p %s\n",pent,pClassname);
      if (pent->v.model != 0)
         fprintf(fp, " model=%s\n",STRING(pent->v.model));
      fclose(fp);
@@ -405,7 +405,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
   int i;
   int count = 0;
 
-  if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientConnect: pent=%x name=%s\n",pEntity,pszName); fclose(fp); }
+  if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientConnect: pent=%p name=%s\n",pEntity,pszName); fclose(fp); }
 
   // check if this client is the listen server client
   if (strcmp(pszAddress, "loopback") == 0)

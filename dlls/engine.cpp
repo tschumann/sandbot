@@ -219,7 +219,7 @@ void pfnRemoveEntity(edict_t* e)
    if (debug_engine)
    {
       fp=fopen("bot.txt","a");
-      fprintf(fp,"pfnRemoveEntity: %x\n",e);
+      fprintf(fp,"pfnRemoveEntity: %p\n",e);
       if (e->v.model != 0)
          fprintf(fp," model=%s\n", STRING(e->v.model));
       fclose(fp);
@@ -1198,7 +1198,7 @@ int pfnPrecacheGeneric(char* s)
 }
 int pfnGetPlayerUserId(edict_t *e )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerUserId: %x\n",e); fclose(fp); }
+   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerUserId: %p\n",e); fclose(fp); }
    return (*g_engfuncs.pfnGetPlayerUserId)(e);
 }
 void pfnBuildSoundMsg(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch, int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
@@ -1216,7 +1216,7 @@ cvar_t* pfnCVarGetPointer(const char *szVarName)
 }
 unsigned int pfnGetPlayerWONId(edict_t *e)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerWONId: %x\n",e); fclose(fp); }
+   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerWONId: %p\n",e); fclose(fp); }
    return (*g_engfuncs.pfnGetPlayerWONId)(e);
 }
 
