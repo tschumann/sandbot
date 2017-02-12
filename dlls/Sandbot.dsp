@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="HPB_bot" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="Sandbot" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=HPB_bot - Win32 Release
+CFG=Sandbot - Win32 Release
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "HPB_bot.mak".
+!MESSAGE NMAKE /f "Sandbot.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "HPB_bot.mak" CFG="HPB_bot - Win32 Release"
+!MESSAGE NMAKE /f "Sandbot.mak" CFG="Sandbot - Win32 Release"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "HPB_bot - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "HPB_bot - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "Sandbot - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "Sandbot - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "HPB_bot - Win32 Release"
+!IF  "$(CFG)" == "Sandbot - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -54,15 +54,15 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /def:".\HPB_bot.def"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /def:".\Sandbot.def"
 # SUBTRACT LINK32 /profile
 
-!ELSEIF  "$(CFG)" == "HPB_bot - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Sandbot - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir ".\HPB_bot___Win"
-# PROP BASE Intermediate_Dir ".\HPB_bot___Win"
+# PROP BASE Output_Dir ".\Sandbot___Win"
+# PROP BASE Intermediate_Dir ".\Sandbot___Win"
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
@@ -81,15 +81,15 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386
-# ADD LINK32 user32.lib advapi32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /def:".\HPB_bot.def"
+# ADD LINK32 user32.lib advapi32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /def:".\Sandbot.def"
 # SUBTRACT LINK32 /profile
 
 !ENDIF 
 
 # Begin Target
 
-# Name "HPB_bot - Win32 Release"
-# Name "HPB_bot - Win32 Debug"
+# Name "Sandbot - Win32 Release"
+# Name "Sandbot - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat;for;f90"

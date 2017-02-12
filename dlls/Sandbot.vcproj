@@ -42,7 +42,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/HPB_bot.tlb"
+				TypeLibraryName=".\Release\sandbot.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -54,10 +54,10 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/HPB_bot.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				PrecompiledHeaderFile=".\Release\sandbot.pch"
+				AssemblerListingLocation=".\Release\"
+				ObjectFile=".\Release\"
+				ProgramDataBaseFileName=".\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -75,18 +75,18 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Release/sandbot.dll"
+				OutputFile=".\Release\sandbot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\sandbot.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Release/HPB_bot.pdb"
+				ProgramDatabaseFile=".\Release\sandbot.pdb"
 				GenerateMapFile="true"
-				MapFileName=".\Release/HPB_bot.map"
+				MapFileName=".\Release\sandbot.map"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Release/sandbot.lib"
+				ImportLibrary=".\Release\sandbot.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -101,7 +101,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/sandbot.bsc"
+				OutputFile=".\Release\sandbot.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -140,7 +140,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/HPB_bot.tlb"
+				TypeLibraryName=".\Debug\sandbot.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -150,14 +150,14 @@
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;VALVE_DLL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/HPB_bot.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
+				PrecompiledHeaderFile=".\Debug\sandbot.pch"
+				AssemblerListingLocation=".\Debug\"
+				ObjectFile=".\Debug\"
+				ProgramDataBaseFileName=".\Debug\"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -173,16 +173,16 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Debug/sandbot.dll"
+				OutputFile=".\Debug\sandbot.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\sandbot.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/HPB_bot.pdb"
+				ProgramDatabaseFile=".\Debug\sandbot.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Debug/sandbot.lib"
+				ImportLibrary=".\Debug\sandbot.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -197,7 +197,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/sandbot.bsc"
+				OutputFile=".\Debug\sandbot.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

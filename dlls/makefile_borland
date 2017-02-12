@@ -21,7 +21,7 @@ OBJ = bot.obj bot_client.obj bot_combat.obj bot_navigate.obj \
 sandbot.dll:	${OBJ} linkfunc.obj
 	ilink32 -c -aa -q -Gn -Tpd -m ${DEBUG} c0d32.obj ${OBJ} \
 	linkfunc.obj, $@, sandbot.map, import32.lib cw32mt.lib, \
-	HPB_bot_borland.def
+	sandbot_borland.def
 	copy sandbot.dll ${MOD_DIR}\dlls\sandbot.dll /Y
 
 linkfunc.obj:	linkfunc.cpp
