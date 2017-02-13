@@ -7,7 +7,7 @@
 //
 
 #include "extdll.h"
-#include "util.h"
+#include "meta_api.h"
 #include "cbase.h"
 #include "studio.h"
 
@@ -350,7 +350,7 @@ void player( entvars_t *pev )
 {
 	static LINK_ENTITY_FUNC otherClassName = NULL;
 
-	if( otherClassName == NULL )
+	if( h_Library != NULL && otherClassName == NULL )
 	{
 		otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, "player");
 	}
@@ -554,8 +554,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       // create the player entity by calling MOD's player function
       // (from LINK_ENTITY_TO_CLASS for player object)
-
-      player( VARS(BotEnt) );
+	  if( g_bIsMMPlugin )
+		  CALL_GAME_ENTITY( PLID, "player", &BotEnt->v );
+	  else
+		  player( VARS(BotEnt) );
 
       infobuffer = GET_INFOBUFFER( BotEnt );
       clientIndex = ENTINDEX( BotEnt );
