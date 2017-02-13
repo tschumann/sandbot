@@ -89,7 +89,7 @@ int pfnPrecacheModel(char* s)
 {
 	const char *szPath = AssetRemap( s );
 
-	if( g_bIsMMPlugin && !strcmp(szPath, s) )
+	if( g_bIsMMPlugin && strcmp(szPath, s) != 0 )
 	{
 		int result = PRECACHE_MODEL((char*)szPath);
 		RETURN_META_VALUE( MRES_SUPERCEDE, result );

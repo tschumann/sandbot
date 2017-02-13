@@ -582,11 +582,11 @@ void ClientPutInServer( edict_t *pEntity )
 
 void ClientCommand( edict_t *pEntity )
 {
-	const char *pcmd = Cmd_Argv(0);
-	const char *arg1 = Cmd_Argv(1);
-	const char *arg2 = Cmd_Argv(2);
-	const char *arg3 = Cmd_Argv(3);
-	const char *arg4 = Cmd_Argv(4);
+	const char *pcmd = CMD_ARGV(0);
+	const char *arg1 = CMD_ARGV(1);
+	const char *arg2 = CMD_ARGV(2);
+	const char *arg3 = CMD_ARGV(3);
+	const char *arg4 = CMD_ARGV(4);
 
 	UTIL_LogDPrintf("ClientCommand: pEntity=%x, pcmd=%s", pEntity, pcmd);
 	if ((arg1 != NULL) && (*arg1 != 0))
@@ -1523,7 +1523,7 @@ void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pv
 	(*other_gFunctionTable.pfnSetupVisibility)(pViewEntity, pClient, pvs, pas);
 }
 
-void UpdateClientData ( const struct edict_s *ent, int sendweapons, struct clientdata_s *cd )
+void UpdateClientData( const struct edict_s *ent, int sendweapons, struct clientdata_s *cd )
 {
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
@@ -1621,7 +1621,7 @@ int AllowLagCompensation( void )
 	return (*other_gFunctionTable.pfnAllowLagCompensation)();
 }
 
-void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... )
+void FakeClientCommand( edict_t *pFakeClient, const char *fmt, ... )
 {
 	// the purpose of this function is to provide fakeclients (bots) with the same client
 	// command-scripting advantages (putting multiple commands in one line between semicolons)
@@ -1687,7 +1687,7 @@ void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... )
 		}
 
 		// tell now the MOD DLL to execute this ClientCommand...
-		(*other_gFunctionTable.pfnClientCommand)(pFakeClient);
+		MDLL_ClientCommand(pFakeClient);
 	}
 
 	g_argv[0] = 0;               // when it's done, reset the g_argv field
@@ -1774,7 +1774,7 @@ const char *Cmd_Args( void )
 	if( g_bIsMMPlugin )
 		RETURN_META_VALUE( MRES_IGNORED, 0 );
 
-	return (*g_engfuncs.pfnCmd_Args)();	// ask the client command string to the engine
+	return CMD_ARGS();	// ask the client command string to the engine
 }
 
 const char *Cmd_Argv( int argc )
@@ -1791,7 +1791,7 @@ const char *Cmd_Argv( int argc )
 	if( g_bIsMMPlugin )
 		RETURN_META_VALUE( MRES_IGNORED, 0 );
 	
-	return (*g_engfuncs.pfnCmd_Argv)(argc);
+	return CMD_ARGV(argc);
 }
 
 int Cmd_Argc( void )
@@ -1807,5 +1807,5 @@ int Cmd_Argc( void )
 	if( g_bIsMMPlugin )
 		RETURN_META_VALUE( MRES_IGNORED, 0 );
 	
-	return (*g_engfuncs.pfnCmd_Argc)();
+	return CMD_ARGC();
 }

@@ -29,6 +29,7 @@ extern void *h_Library;
 
 
 extern int mod_id;
+extern edict_t *clients[32];
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 extern int default_bot_skill;
@@ -592,10 +593,31 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "ah", "1");
       }
 
-      ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
+      MDLL_ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
+
+	  // Sandbot metamod fix - START
+
+	  // we have to do the ClientPutInServer() hook's job ourselves since calling the MDLL_
+	  // function calls directly the gamedll one, and not ours. You are allowed to call this
+	  // an "awful hack".
+
+	  int i = 0;
+
+	  while( (i < MAX_PLAYERS) && clients[i] )
+	  {
+		  i++;
+	  }
+
+	  if( i < MAX_PLAYERS )
+	  {
+		  // store this clients edict in the clients array
+		  clients[i] = BotEnt;
+	  }
+
+	  // HPB_bot metamod fix - END
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
-      ClientPutInServer( BotEnt );
+	  MDLL_ClientPutInServer( BotEnt );
 
       BotEnt->v.flags |= FL_FAKECLIENT;
 
@@ -2539,7 +2561,7 @@ int bot_t::GetLightLevel()
 {
 	// TODO: Foxbot uses this->pBotEnemy instead of this->pEdict
 	this->pLightEnt = CREATE_NAMED_ENTITY(MAKE_STRING("info_target"));
-    DispatchSpawn(this->pLightEnt);
+    MDLL_Spawn(this->pLightEnt);
 	this->pLightEnt->v.origin = this->pEdict->v.origin;
     this->pLightEnt->v.takedamage = DAMAGE_NO;
     this->pLightEnt->v.solid = SOLID_NOT;

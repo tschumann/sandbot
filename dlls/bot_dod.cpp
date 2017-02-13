@@ -36,14 +36,7 @@ void DODBot::Join()
 		}
 
 		// select the team the bot wishes to join...
-		if (this->bot_team == DODBot::TEAM_ALLIES)
-		{
-			FakeClientCommand( this->pEdict, "jointeam 1" );
-		}
-		else if (this->bot_team == DODBot::TEAM_AXIS)
-		{
-			FakeClientCommand( this->pEdict, "jointeam 2" );
-		}
+		FakeClientCommand( this->pEdict, "jointeam %d", this->bot_team );
 
 		return;
 	}

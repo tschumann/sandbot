@@ -184,6 +184,7 @@
     <ClInclude Include="bot_func.h" />
     <ClInclude Include="bot_weapons.h" />
     <ClInclude Include="cdll_dll.h" />
+    <ClInclude Include="engine.h" />
     <ClInclude Include="enginecallback.h" />
     <ClInclude Include="extdll.h" />
     <ClInclude Include="util.h" />

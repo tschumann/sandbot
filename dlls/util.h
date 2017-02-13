@@ -15,6 +15,10 @@
 //
 // Misc utility code
 //
+
+#ifndef UTIL_H
+#define UTIL_H
+
 #include <string.h>
 #ifndef ACTIVITY_H
 #include "activity.h"
@@ -543,3 +547,5 @@ float UTIL_WeaponTimeBase( void );
 void UTIL_LogDPrintf( char *fmt, ... );
 
 bool UTIL_IsBuilt( edict_t *pent );
+
+#endif // UTIL_H

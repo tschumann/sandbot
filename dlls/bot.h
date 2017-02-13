@@ -73,18 +73,8 @@ extern bool g_bIsMMPlugin;
 #define SHIP_DLL		22
 
 
-// define some function prototypes...
-BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128] );
-void ClientPutInServer( edict_t *pEntity );
-void ClientCommand( edict_t *pEntity );
-
 void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... );
 const char *GetArg( const char *command, int arg_number );
-
-
-const char *Cmd_Args( void );
-const char *Cmd_Argv( int argc );
-int Cmd_Argc( void );
 
 #define HW_WAIT_SPAWN 1
 

@@ -23,7 +23,6 @@
 
 #include "extdll.h"
 #include "util.h"
-#include "engine.h"
 #include "dll.h"
 #include "studio.h"
 
@@ -128,11 +127,12 @@ void ClientPrint( edict_t *pEntity, int msg_dest, const char *msg_name)
    if (gmsgTextMsg == 0)
       gmsgTextMsg = REG_USER_MSG( "TextMsg", -1 );
 
-   pfnMessageBegin( MSG_ONE, gmsgTextMsg, NULL, pEntity );
+   MESSAGE_BEGIN( MSG_ONE, gmsgTextMsg, NULL, pEntity );
 
-   pfnWriteByte( msg_dest );
-   pfnWriteString( msg_name );
-   pfnMessageEnd();
+   WRITE_BYTE( msg_dest );
+   WRITE_STRING( msg_name );
+
+   MESSAGE_END();
 }
 
 void UTIL_SayText( const char *pText, edict_t *pEdict )
@@ -140,10 +140,12 @@ void UTIL_SayText( const char *pText, edict_t *pEdict )
    if (gmsgSayText == 0)
       gmsgSayText = REG_USER_MSG( "SayText", -1 );
 
-   pfnMessageBegin( MSG_ONE, gmsgSayText, NULL, pEdict );
-      pfnWriteByte( ENTINDEX(pEdict) );
-      pfnWriteString( pText );
-   pfnMessageEnd();
+   MESSAGE_BEGIN( MSG_ONE, gmsgSayText, NULL, pEdict );
+
+   WRITE_BYTE( ENTINDEX(pEdict) );
+   WRITE_STRING( pText );
+
+   MESSAGE_END();
 }
 
 
@@ -203,17 +205,21 @@ void UTIL_HostSay( edict_t *pEntity, int teamonly, char *message )
       if ( teamonly && (sender_team != player_team) )
          continue;
 
-      pfnMessageBegin( MSG_ONE, gmsgSayText, NULL, client );
-         pfnWriteByte( ENTINDEX(pEntity) );
-         pfnWriteString( text );
-      pfnMessageEnd();
+	  MESSAGE_BEGIN( MSG_ONE, gmsgSayText, NULL, client );
+
+	  WRITE_BYTE( ENTINDEX(pEntity) );
+	  WRITE_STRING( text );
+
+	  MESSAGE_END();
    }
 
    // print to the sending client
-   pfnMessageBegin( MSG_ONE, gmsgSayText, NULL, pEntity );
-      pfnWriteByte( ENTINDEX(pEntity) );
-      pfnWriteString( text );
-   pfnMessageEnd();
+   MESSAGE_BEGIN( MSG_ONE, gmsgSayText, NULL, pEntity );
+
+   WRITE_BYTE( ENTINDEX(pEntity) );
+   WRITE_STRING( text );
+
+   MESSAGE_END();
    
    // echo to server console
    g_engfuncs.pfnServerPrint( text );
@@ -526,14 +532,14 @@ void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, 
    if (gmsgShowMenu == 0)
       gmsgShowMenu = REG_USER_MSG( "ShowMenu", -1 );
 
-   pfnMessageBegin( MSG_ONE, gmsgShowMenu, NULL, pEdict );
+   MESSAGE_BEGIN( MSG_ONE, gmsgShowMenu, NULL, pEdict );
 
-   pfnWriteShort( slots );
-   pfnWriteChar( displaytime );
-   pfnWriteByte( needmore );
-   pfnWriteString( pText );
+   WRITE_SHORT( slots );
+   WRITE_CHAR( displaytime );
+   WRITE_BYTE( needmore );
+   WRITE_STRING( pText );
 
-   pfnMessageEnd();
+   MESSAGE_END();
 }
 
 void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)

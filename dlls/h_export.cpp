@@ -6,14 +6,6 @@
 // h_export.cpp
 //
 
-/*
-#include "extdll.h"
-#include "enginecallback.h"
-#include "meta_api.h"
-#include "util.h"
-#include "cbase.h"
-*/
-
 #include "extdll.h"
 #include "dllapi.h"
 #include "h_export.h"
@@ -38,6 +30,9 @@ void* h_Library = NULL;
 #endif
 
 int DispatchSpawn_Post( edict_t * pent );
+const char *Cmd_Args( void );
+const char *Cmd_Argv( int argc );
+int Cmd_Argc( void );
 
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
