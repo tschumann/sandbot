@@ -11,7 +11,7 @@ CPP = gcc
 
 BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
 
-CPPFLAGS = ${BASEFLAGS} -m32 -O2 -w -lm -I../engine -I../common -I../pm_shared  -I../metamod
+CPPFLAGS = ${BASEFLAGS} -m32 -O2 -w -lm -I../dlls -I../engine -I../common -I../pm_shared  -I../metamod
 
 OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
 	dll.o engine.o h_export.o linkfunc.o meta_api.o util.o waypoint.o \
