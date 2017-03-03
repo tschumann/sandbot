@@ -1075,9 +1075,6 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		}
 	}
 
-	extern bool g_bExecuteBotCfg;
-	g_bExecuteBotCfg = true;
-
 	bServerActivated = true;
 	bCanAddBots = false;
 
