@@ -7,7 +7,7 @@
 //
 
 #include "extdll.h"
-#include "util.h"
+#include "meta_api.h"
 #include "cbase.h"
 #include "studio.h"
 
@@ -29,6 +29,7 @@ extern void *h_Library;
 
 
 extern int mod_id;
+extern edict_t *clients[32];
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 extern int default_bot_skill;
@@ -316,7 +317,7 @@ bot_player_t g_shipBots[MAX_PLAYERS] =
 // how often (out of 1000 times) the bot will pause, based on bot skill
 float pause_frequency[5] = {4, 7, 10, 15, 20};
 
-float pause_time[5][2] = {{0.2, 0.5}, {0.5, 1.0}, {0.7, 1.3}, {1.0, 1.7}, {1.2, 2.0}};
+float pause_time[5][2] = {{0.2f, 0.5f}, {0.5f, 1.0f}, {0.7f, 1.3f}, {1.0f, 1.7f}, {1.2f, 2.0f}};
 
 // TheFatal's method for calculating the msecval
 extern int msecnum;
@@ -370,7 +371,7 @@ void player( entvars_t *pev )
 {
 	static LINK_ENTITY_FUNC otherClassName = NULL;
 
-	if( otherClassName == NULL )
+	if( h_Library != NULL && otherClassName == NULL )
 	{
 		otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, "player");
 	}
@@ -574,8 +575,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       // create the player entity by calling MOD's player function
       // (from LINK_ENTITY_TO_CLASS for player object)
-
-      player( VARS(BotEnt) );
+	  if( g_bIsMMPlugin )
+		  CALL_GAME_ENTITY( PLID, "player", &BotEnt->v );
+	  else
+		  player( VARS(BotEnt) );
 
       infobuffer = GET_INFOBUFFER( BotEnt );
       clientIndex = ENTINDEX( BotEnt );
@@ -610,10 +613,31 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "ah", "1");
       }
 
-      ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
+      MDLL_ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
+
+	  // Sandbot metamod fix - START
+
+	  // we have to do the ClientPutInServer() hook's job ourselves since calling the MDLL_
+	  // function calls directly the gamedll one, and not ours. You are allowed to call this
+	  // an "awful hack".
+
+	  int i = 0;
+
+	  while( (i < MAX_PLAYERS) && clients[i] )
+	  {
+		  i++;
+	  }
+
+	  if( i < MAX_PLAYERS )
+	  {
+		  // store this clients edict in the clients array
+		  clients[i] = BotEnt;
+	  }
+
+	  // HPB_bot metamod fix - END
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
-      ClientPutInServer( BotEnt );
+	  MDLL_ClientPutInServer( BotEnt );
 
       BotEnt->v.flags |= FL_FAKECLIENT;
 
@@ -1644,7 +1668,7 @@ void BotFindItem( bot_t *pBot )
 
 	  if( mod_id == SHIP_DLL )
 	{
-		FakeClientCommand( pEdict, "pickup", NULL, NULL );
+		FakeClientCommand( pEdict, "pickup" );
 	}
    }
 }
@@ -2000,7 +2024,7 @@ void BotThink( bot_t *pBot )
 							pBot->f_move_speed = 0.0;
 							if (((NSBot *)pBot)->HasWelder())
 							{
-								FakeClientCommand(pBot->pEdict, "weapon_welder", NULL, NULL);
+								FakeClientCommand(pBot->pEdict, "weapon_welder");
 								pEdict->v.button = ( IN_ATTACK | IN_DUCK );
 							}
 							else
@@ -2557,7 +2581,7 @@ int bot_t::GetLightLevel()
 {
 	// TODO: Foxbot uses this->pBotEnemy instead of this->pEdict
 	this->pLightEnt = CREATE_NAMED_ENTITY(MAKE_STRING("info_target"));
-    DispatchSpawn(this->pLightEnt);
+    MDLL_Spawn(this->pLightEnt);
 	this->pLightEnt->v.origin = this->pEdict->v.origin;
     this->pLightEnt->v.takedamage = DAMAGE_NO;
     this->pLightEnt->v.solid = SOLID_NOT;

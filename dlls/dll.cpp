@@ -7,15 +7,14 @@
 //
 
 #include "extdll.h"
-#include "enginecallback.h"
-#include "util.h"
-#include "cbase.h"
+#include "dllapi.h"
+#include "h_export.h"
+#include "meta_api.h"
 #include "entity_state.h"
 #include "studio.h"
 
 #include "bot.h"
 #include "bot_func.h"
-#include "bot_weapons.h"
 #include "waypoint.h"
 
 
@@ -55,7 +54,7 @@ DLL_GLOBAL const Vector g_vecZero = Vector(0,0,0);
 int mod_id = 0;
 int m_spriteTexture = 0;
 int default_bot_skill = 2;
-int isFakeClientCommand = 0;
+bool isFakeClientCommand = false;
 int fake_arg_count;
 float bot_check_time = 30.0;
 int min_bots = -1;
@@ -81,6 +80,7 @@ FLAG_S flags[MAX_FLAGS];  // for TFC
 int num_flags = 0;  // for TFC
 int num_backpacks = 0;
 BACKPACK_S backpacks[MAX_BACKPACKS];
+char arg[256];
 
 FILE *bot_cfg_fp = NULL;
 bool need_to_open_cfg = TRUE;
@@ -160,6 +160,9 @@ void GameDLLInit( void )
 		clients[i] = NULL;
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnGameInit)();
 }
 
@@ -172,7 +175,7 @@ int DispatchSpawn( edict_t *pent )
   if (debug_engine)
   {
      fp=fopen("bot.txt","a");
-     fprintf(fp, "DispatchSpawn: %x %s\n",pent,pClassname);
+     fprintf(fp, "DispatchSpawn: %p %s\n",pent,pClassname);
      if (pent->v.model != 0)
         fprintf(fp, " model=%s\n",STRING(pent->v.model));
      fclose(fp);
@@ -241,26 +244,60 @@ int DispatchSpawn( edict_t *pent )
      bot_check_time = gpGlobals->time + 30.0;
   }
 
-   return (*other_gFunctionTable.pfnSpawn)(pent);
+  if( g_bIsMMPlugin )
+	  RETURN_META_VALUE( MRES_IGNORED, 0 );
+
+   int result = (*other_gFunctionTable.pfnSpawn)(pent);
+
+   // solves the bots unable to see through certain types of glass bug.
+   // MAPPERS: NEVER EVER ALLOW A TRANSPARENT ENTITY TO WEAR THE FL_WORLDBRUSH FLAG !!!
+
+   if( pent->v.rendermode == kRenderTransTexture )
+	   pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
+
+   return result;
+}
+
+int DispatchSpawn_Post( edict_t * pent )
+{
+	// solves the bots unable to see through certain types of glass bug.
+	// MAPPERS: NEVER EVER ALLOW A TRANSPARENT ENTITY TO WEAR THE FL_WORLDBRUSH FLAG !!!
+
+	if( pent->v.rendermode == kRenderTransTexture )
+		pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
+
+	RETURN_META_VALUE( MRES_IGNORED, 0 );
 }
 
 void DispatchThink( edict_t *pent )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnThink)(pent);
 }
 
 void DispatchUse( edict_t *pentUsed, edict_t *pentOther )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnUse)(pentUsed, pentOther);
 }
 
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnTouch)(pentTouched, pentOther);
 }
 
 void DispatchBlocked( edict_t *pentBlocked, edict_t *pentOther )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnBlocked)(pentBlocked, pentOther);
 }
 
@@ -371,129 +408,165 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
       }
    }
 
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*other_gFunctionTable.pfnKeyValue)(pentKeyvalue, pkvd);
 }
 
 void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSave)(pent, pSaveData);
 }
 
 int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnRestore)(pent, pSaveData, globalEntity);
 }
 
 void DispatchObjectCollisionBox( edict_t *pent )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSetAbsBox)(pent);
 }
 
 void SaveWriteFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSaveWriteFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
 }
 
 void SaveReadFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSaveReadFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
 }
 
 void SaveGlobalState( SAVERESTOREDATA *pSaveData )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSaveGlobalState)(pSaveData);
 }
 
 void RestoreGlobalState( SAVERESTOREDATA *pSaveData )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnRestoreGlobalState)(pSaveData);
 }
 
 void ResetGlobalState( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnResetGlobalState)();
 }
 
-BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ]  )
+BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128] )
 {
-  int i;
-  int count = 0;
+	int i;
+	int count = 0;
 
-  if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp, "ClientConnect: pent=%x name=%s\n",pEntity,pszName); fclose(fp); }
+	if( debug_engine ) { fp = fopen( "bot.txt", "a" ); fprintf( fp, "ClientConnect: pent=%p name=%s\n", pEntity, pszName ); fclose( fp ); }
 
-  // check if this client is the listen server client
-  if (strcmp(pszAddress, "loopback") == 0)
-  {
-     // save the edict of the listen server client...
-     listenserver_edict = pEntity;
-  }
+	// check if this client is the listen server client
+	if( strcmp( pszAddress, "loopback" ) == 0 )
+	{
+		// save the edict of the listen server client...
+		listenserver_edict = pEntity;
+	}
 
-  // check if this is NOT a bot joining the server...
-  if (strcmp(pszAddress, "127.0.0.1") != 0)
-  {
-     // don't try to add bots for 60 seconds, give client time to get added
-     bot_check_time = gpGlobals->time + 60.0;
+	// check if this is NOT a bot joining the server...
+	if( strcmp( pszAddress, "127.0.0.1" ) != 0 )
+	{
+		// don't try to add bots for 60 seconds, give client time to get added
+		bot_check_time = gpGlobals->time + 60.0;
 
-     for (i=0; i < MAX_PLAYERS; i++)
-     {
-        if (pBots[i]->is_used)  // count the number of bots in use
-           count++;
-     }
+		for( i = 0; i < MAX_PLAYERS; i++ )
+		{
+			if( pBots[i]->is_used )  // count the number of bots in use
+				count++;
+		}
 
-     // if there are currently more than the minimum number of bots running
-     // then kick one of the bots off the server...
-     if ((count > min_bots) && (min_bots != -1))
-     {
-        for (i=0; i < MAX_PLAYERS; i++)
-        {
-           if (pBots[i]->is_used)  // is this slot used?
-           {
-              char cmd[80];
+		// if there are currently more than the minimum number of bots running
+		// then kick one of the bots off the server...
+		if( (count > min_bots) && (min_bots != -1) )
+		{
+			for( i = 0; i < MAX_PLAYERS; i++ )
+			{
+				if( pBots[i]->is_used )  // is this slot used?
+				{
+					char cmd[80];
 
-              sprintf(cmd, "kick \"%s\"\n", pBots[i]->name);
+					sprintf( cmd, "kick \"%s\"\n", pBots[i]->name );
 
-              SERVER_COMMAND(cmd);  // kick the bot using (kick "name")
+					SERVER_COMMAND( cmd );  // kick the bot using (kick "name")
 
-              break;
-           }
-        }
-     }
-  }
+					break;
+				}
+			}
+		}
+	}
 
-   return (*other_gFunctionTable.pfnClientConnect)(pEntity, pszName, pszAddress, szRejectReason);
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
+	return (*other_gFunctionTable.pfnClientConnect)(pEntity, pszName, pszAddress, szRejectReason);
 }
 
 void ClientDisconnect( edict_t *pEntity )
 {
-	UTIL_LogDPrintf("ClientDisconnect: pEntity=%x\n", pEntity);
+	UTIL_LogDPrintf( "ClientDisconnect: pEntity=%x\n", pEntity );
 
-  int i = 0;
-  while ((i < MAX_PLAYERS) && (clients[i] != pEntity))
-     i++;
+	int i = 0;
+	while( (i < MAX_PLAYERS) && (clients[i] != pEntity) )
+		i++;
 
-  if (i < MAX_PLAYERS)
-     clients[i] = NULL;
+	if( i < MAX_PLAYERS )
+		clients[i] = NULL;
 
-  for (i=0; i < MAX_PLAYERS; i++)
-  {
-     if (pBots && pBots[i] && pBots[i]->pEdict == pEntity)
-     {
-		pBots[i]->SetKicked();
-		// TODO: experiment in kicking all bots at the end of each map
-		// don't put this in SetKicked because we only want to try setting this when all
-		// bots are kicked so that the total player count doesn't get out of sync with
-		// which bots have is_used set to true - this all really needs to be simplified
-		pBots[i]->is_used = false;
-        break;
-     }
-  }
+	for( i = 0; i < MAX_PLAYERS; i++ )
+	{
+		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
+		{
+			pBots[i]->SetKicked();
+			// TODO: experiment in kicking all bots at the end of each map
+			// don't put this in SetKicked because we only want to try setting this when all
+			// bots are kicked so that the total player count doesn't get out of sync with
+			// which bots have is_used set to true - this all really needs to be simplified
+			pBots[i]->is_used = false;
+			break;
+		}
+	}
 
-   (*other_gFunctionTable.pfnClientDisconnect)(pEntity);
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
+	(*other_gFunctionTable.pfnClientDisconnect)(pEntity);
 }
 
 void ClientKill( edict_t *pEntity )
 {
 	UTIL_LogDPrintf("ClientKill: pEntity=%x\n", pEntity);
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnClientKill)(pEntity);
 }
@@ -515,16 +588,19 @@ void ClientPutInServer( edict_t *pEntity )
 		clients[i] = pEntity;
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnClientPutInServer)(pEntity);
 }
 
 void ClientCommand( edict_t *pEntity )
 {
-	const char *pcmd = Cmd_Argv(0);
-	const char *arg1 = Cmd_Argv(1);
-	const char *arg2 = Cmd_Argv(2);
-	const char *arg3 = Cmd_Argv(3);
-	const char *arg4 = Cmd_Argv(4);
+	const char *pcmd = CMD_ARGV(0);
+	const char *arg1 = CMD_ARGV(1);
+	const char *arg2 = CMD_ARGV(2);
+	const char *arg3 = CMD_ARGV(3);
+	const char *arg4 = CMD_ARGV(4);
 
 	UTIL_LogDPrintf("ClientCommand: pEntity=%x, pcmd=%s", pEntity, pcmd);
 	if ((arg1 != NULL) && (*arg1 != 0))
@@ -550,6 +626,9 @@ void ClientCommand( edict_t *pEntity )
 
          bot_check_time = gpGlobals->time + 5.0;
 
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
+
          return;
       }
 	  // seems to be like a bots ignore real players setting?
@@ -569,6 +648,9 @@ void ClientCommand( edict_t *pEntity )
          else
             ClientPrint(pEntity, HUD_PRINTNOTIFY, "observer mode DISABLED\n");
 
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
+
          return;
       }
       else if (FStrEq(pcmd, "botskill"))
@@ -585,6 +667,9 @@ void ClientCommand( edict_t *pEntity )
 
          sprintf(msg, "botskill is %d\n", default_bot_skill);
          ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
+
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
 
          return;
       }
@@ -604,6 +689,9 @@ void ClientCommand( edict_t *pEntity )
          else
             ClientPrint(pEntity, HUD_PRINTNOTIFY, "botdontshoot DISABLED\n");
 
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
+
          return;
       }
       else if (FStrEq(pcmd, "debug_engine"))
@@ -611,6 +699,9 @@ void ClientCommand( edict_t *pEntity )
          debug_engine = 1;
 
          ClientPrint(pEntity, HUD_PRINTNOTIFY, "debug_engine enabled!\n");
+
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
 
          return;
       }
@@ -657,13 +748,23 @@ void ClientCommand( edict_t *pEntity )
          {
             int index;
 
-            if (num_waypoints < 1)
-               return;
+			if( num_waypoints < 1 )
+			{
+				if( g_bIsMMPlugin )
+					RETURN_META( MRES_SUPERCEDE );
+
+				return;
+			}
 
             index = WaypointFindNearest(pEntity, 50.0, -1);
 
-            if (index == -1)
-               return;
+			if( index == -1 )
+			{
+				if( g_bIsMMPlugin )
+					RETURN_META( MRES_SUPERCEDE );
+
+				return;
+			}
 
             g_menu_waypoint = index;
             g_menu_state = MENU_1;
@@ -681,6 +782,9 @@ void ClientCommand( edict_t *pEntity )
             else
                ClientPrint(pEntity, HUD_PRINTNOTIFY, "waypoints are OFF\n");
          }
+
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
 
          return;
       }
@@ -702,6 +806,9 @@ void ClientCommand( edict_t *pEntity )
             sprintf(msg, "autowaypoint is OFF\n");
 
          ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
+
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
 
          return;
       }
@@ -737,6 +844,9 @@ void ClientCommand( edict_t *pEntity )
             WaypointRemovePath(pEntity, 2);
          }
 
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
+
          return;
       }
       else if (FStrEq(pcmd, "menuselect") && (g_menu_state != MENU_NONE))
@@ -748,6 +858,9 @@ void ClientCommand( edict_t *pEntity )
                g_menu_state = MENU_2;  // display team specific menu...
 
                UTIL_ShowMenu(pEntity, 0x1F, -1, FALSE, show_menu_2);
+
+			   if( g_bIsMMPlugin )
+				   RETURN_META( MRES_SUPERCEDE );
 
                return;
             }
@@ -783,6 +896,9 @@ void ClientCommand( edict_t *pEntity )
                g_menu_state = MENU_3;
 
                UTIL_ShowMenu(pEntity, 0x13, -1, FALSE, show_menu_3);
+
+			   if( g_bIsMMPlugin )
+				   RETURN_META( MRES_SUPERCEDE );
 
                return;
             }
@@ -825,6 +941,9 @@ void ClientCommand( edict_t *pEntity )
 
          g_menu_state = MENU_NONE;
 
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
+
          return;
       }
       else if (FStrEq(pcmd, "search"))
@@ -842,6 +961,9 @@ void ClientCommand( edict_t *pEntity )
             ClientPrint(pEntity, HUD_PRINTCONSOLE, str);
          }
 
+		 if( g_bIsMMPlugin )
+			 RETURN_META( MRES_SUPERCEDE );
+
          return;
       }
 		else if (FStrEq(pcmd, "player_info") && DEBUG_CODE)
@@ -853,6 +975,10 @@ void ClientCommand( edict_t *pEntity )
 			if( !player )
 			{
 				ALERT( at_console, "Player not found\n" );
+
+				if( g_bIsMMPlugin )
+					RETURN_META( MRES_SUPERCEDE );
+
 				return;
 			}
 
@@ -943,9 +1069,15 @@ void ClientCommand( edict_t *pEntity )
 #endif
 			}
 
+			if( g_bIsMMPlugin )
+				RETURN_META( MRES_SUPERCEDE );
+
 			return;
 		}
    }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
 
    (*other_gFunctionTable.pfnClientCommand)(pEntity);
 }
@@ -953,6 +1085,9 @@ void ClientCommand( edict_t *pEntity )
 void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 {
 	UTIL_LogDPrintf("ClientUserInfoChanged: pEntity=%x infobuffer=%s\n", pEntity, infobuffer);
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnClientUserInfoChanged)(pEntity, infobuffer);
 }
@@ -1078,6 +1213,9 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	bServerActivated = true;
 	bCanAddBots = false;
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
 }
 
@@ -1107,16 +1245,25 @@ void ServerDeactivate( void )
 		pBots = NULL;
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnServerDeactivate)();
 }
 
 void PlayerPreThink( edict_t *pEntity )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnPlayerPreThink)(pEntity);
 }
 
 void PlayerPostThink( edict_t *pEntity )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnPlayerPostThink)(pEntity);
 }
 
@@ -1126,13 +1273,13 @@ float g_fCountDownTime = 0.0;
 
 void StartFrame( void )
 {
-  edict_t *pPlayer;
-  static float check_server_cmd = 0.0;
-  static int i, index, player_index, bot_index;
-  static float previous_time = -1.0;
-  int count;
+	edict_t *pPlayer;
+	static float check_server_cmd = 0.0;
+	static int i, index, player_index, bot_index;
+	static float previous_time = -1.0;
+	int count;
 
-  if( !g_bInGame )
+	if( !g_bInGame )
 	{
 		if( mod_id == NS_DLL )
 		{
@@ -1150,141 +1297,141 @@ void StartFrame( void )
 		}
 	}
 
-  // if a new map has started then (MUST BE FIRST IN StartFrame)...
-  if ((gpGlobals->time + 0.1) < previous_time)
-  {
-     check_server_cmd = 0.0;  // reset at start of map
+	// if a new map has started then (MUST BE FIRST IN StartFrame)...
+	if( (gpGlobals->time + 0.1) < previous_time )
+	{
+		check_server_cmd = 0.0;  // reset at start of map
 
-     msecnum = 0;
-     msecdel = 0;
-     msecval = 0;
+		msecnum = 0;
+		msecdel = 0;
+		msecval = 0;
 
-    count = 0;
+		count = 0;
 
-    // mark the bots as needing to be respawned...
-    for (index = 0; index < MAX_PLAYERS; index++)
-    {
-       if (count >= prev_num_bots)
-       {
-          pBots[index]->is_used = FALSE;
-          pBots[index]->respawn_state = 0;
-          pBots[index]->kick_time = 0.0;
-       }
+		// mark the bots as needing to be respawned...
+		for( index = 0; index < MAX_PLAYERS; index++ )
+		{
+			if( count >= prev_num_bots )
+			{
+				pBots[index]->is_used = FALSE;
+				pBots[index]->respawn_state = 0;
+				pBots[index]->kick_time = 0.0;
+			}
 
-       if (pBots[index]->is_used)  // is this slot used?
-       {
-          pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
-          count++;
-       }
+			if( pBots[index]->is_used )  // is this slot used?
+			{
+				pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+				count++;
+			}
 
-       // check for any bots that were very recently kicked...
-       if ((pBots[index]->kick_time + 5.0) > previous_time)
-       {
-          pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
-          count++;
-       }
-       else
-          pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
-    }
+			// check for any bots that were very recently kicked...
+			if( (pBots[index]->kick_time + 5.0) > previous_time )
+			{
+				pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+				count++;
+			}
+			else
+				pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
+		}
 
-    // set the respawn time
-    if (IS_DEDICATED_SERVER())
-       respawn_time = gpGlobals->time + 5.0;
-    else
-       respawn_time = gpGlobals->time + 20.0;
+		// set the respawn time
+		if( IS_DEDICATED_SERVER() )
+			respawn_time = gpGlobals->time + 5.0;
+		else
+			respawn_time = gpGlobals->time + 20.0;
 
-     bot_check_time = gpGlobals->time + 30.0;
-  }
+		bot_check_time = gpGlobals->time + 30.0;
+	}
 
-  // adjust the millisecond delay based on the frame rate interval...
-  if (msecdel <= gpGlobals->time)
-  {
-     msecdel = gpGlobals->time + 0.5;
-     if (msecnum > 0)
-        msecval = 450.0/msecnum;
-     msecnum = 0;
-  }
-  else
-     msecnum++;
+	// adjust the millisecond delay based on the frame rate interval...
+	if( msecdel <= gpGlobals->time )
+	{
+		msecdel = gpGlobals->time + 0.5;
+		if( msecnum > 0 )
+			msecval = 450.0 / msecnum;
+		msecnum = 0;
+	}
+	else
+		msecnum++;
 
-  if (msecval < 1)    // don't allow msec to be less than 1...
-     msecval = 1;
+	if( msecval < 1 )    // don't allow msec to be less than 1...
+		msecval = 1;
 
-  if (msecval > 100)  // ...or greater than 100
-     msecval = 100;
+	if( msecval > 100 )  // ...or greater than 100
+		msecval = 100;
 
-  count = 0;
+	count = 0;
 
-  for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
-  {
-	 // is this slot used AND not respawning
-     if (!pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
-     {
-		BotThink(pBots[bot_index]);
+	for( bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++ )
+	{
+		// is this slot used AND not respawning
+		if( !pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE )
+		{
+			BotThink( pBots[bot_index] );
 
-        count++;
-     }
-	 else if( pBots[bot_index]->IsKicked() )
-	 {
-		 // TODO: is_used is set to by IsKicked - probably don't touch iBotCount - adjusting things based on it would be more complicated
-	 }
-  }
+			count++;
+		}
+		else if( pBots[bot_index]->IsKicked() )
+		{
+			// TODO: is_used is set to by IsKicked - probably don't touch iBotCount - adjusting things based on it would be more complicated
+		}
+	}
 
-  if (count > num_bots)
-     num_bots = count;
+	if( count > num_bots )
+		num_bots = count;
 
-  for (player_index = 1; player_index <= gpGlobals->maxClients; player_index++)
-  {
-     pPlayer = INDEXENT(player_index);
+	for( player_index = 1; player_index <= gpGlobals->maxClients; player_index++ )
+	{
+		pPlayer = INDEXENT( player_index );
 
-     if (pPlayer && !pPlayer->free)
-     {
-        if ((g_waypoint_on) && FBitSet(pPlayer->v.flags, FL_CLIENT))
-        {
-              WaypointThink(pPlayer);
-        }
-     }
-  }
+		if( pPlayer && !pPlayer->free )
+		{
+			if( (g_waypoint_on) && FBitSet( pPlayer->v.flags, FL_CLIENT ) )
+			{
+				WaypointThink( pPlayer );
+			}
+		}
+	}
 
-  if (g_GameRules)
-  {
-     if (!IS_DEDICATED_SERVER() && !spawn_time_reset)
-     {
-        if (listenserver_edict != NULL)
-        {
-           if (IsAlive(listenserver_edict))
-           {
-              spawn_time_reset = TRUE;
+	if( g_GameRules )
+	{
+		if( !IS_DEDICATED_SERVER() && !spawn_time_reset )
+		{
+			if( listenserver_edict != NULL )
+			{
+				if( IsAlive( listenserver_edict ) )
+				{
+					spawn_time_reset = TRUE;
 
-              if (respawn_time >= 1.0)
-                 respawn_time = min(respawn_time, gpGlobals->time + (float)1.0);
-           }
-        }
-     }
-  }
+					if( respawn_time >= 1.0 )
+						respawn_time = min( respawn_time, gpGlobals->time + (float)1.0 );
+				}
+			}
+		}
+	}
 
-  // check if time to see if a bot needs to be created...
-  if (bot_check_time < gpGlobals->time)
-  {
-     int count = 0;
+	// check if time to see if a bot needs to be created...
+	if( bot_check_time < gpGlobals->time )
+	{
+		int count = 0;
 
-     bot_check_time = gpGlobals->time + 5.0;
+		bot_check_time = gpGlobals->time + 5.0;
 
-     for (i = 0; i < MAX_PLAYERS; i++)
-     {
-        if (clients[i] != NULL)
-           count++;
-     }
+		for( i = 0; i < MAX_PLAYERS; i++ )
+		{
+			if( clients[i] != NULL )
+				count++;
+		}
 
-     // if there are currently less than the maximum number of "players"
-     // then add another bot using the default skill level...
-     if ((count < max_bots) && (max_bots != -1))
-     {
-        BotCreate( NULL, NULL, NULL, NULL, NULL );
-     }
-  }
+		// if there are currently less than the maximum number of "players"
+		// then add another bot using the default skill level...
+		if( (count < max_bots) && (max_bots != -1) )
+		{
+			BotCreate( NULL, NULL, NULL, NULL, NULL );
+		}
+	}
 
-  previous_time = gpGlobals->time;
+	previous_time = gpGlobals->time;
 
 	if( bBaseLinesCreated )
 	{
@@ -1297,21 +1444,33 @@ void StartFrame( void )
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnStartFrame)();
 }
 
 void ParmsNewLevel( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnParmsNewLevel)();
 }
 
 void ParmsChangeLevel( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnParmsChangeLevel)();
 }
 
 const char *GetGameDescription( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnGetGameDescription)();
 }
 
@@ -1319,91 +1478,145 @@ void PlayerCustomization( edict_t *pEntity, customization_t *pCust )
 {
 	UTIL_LogDPrintf("PlayerCustomization: pEntity=%x pCust=%x\n", pEntity, pCust);
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnPlayerCustomization)(pEntity, pCust);
 }
 
 void SpectatorConnect( edict_t *pEntity )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSpectatorConnect)(pEntity);
 }
 
 void SpectatorDisconnect( edict_t *pEntity )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSpectatorDisconnect)(pEntity);
 }
 
 void SpectatorThink( edict_t *pEntity )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSpectatorThink)(pEntity);
 }
 
 void Sys_Error( const char *error_string )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSys_Error)(error_string);
 }
 
 void PM_Move( struct playermove_s *ppmove, int server )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnPM_Move)(ppmove, server);
 }
 
 void PM_Init( struct playermove_s *ppmove )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnPM_Init)(ppmove);
 }
 
 char PM_FindTextureType( char *name )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnPM_FindTextureType)(name);
 }
 
 void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pvs, unsigned char **pas )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnSetupVisibility)(pViewEntity, pClient, pvs, pas);
 }
 
-void UpdateClientData ( const struct edict_s *ent, int sendweapons, struct clientdata_s *cd )
+void UpdateClientData( const struct edict_s *ent, int sendweapons, struct clientdata_s *cd )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnUpdateClientData)(ent, sendweapons, cd);
 }
 
 int AddToFullPack( struct entity_state_s *state, int e, edict_t *ent, edict_t *host, int hostflags, int player, unsigned char *pSet )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnAddToFullPack)(state, e, ent, host, hostflags, player, pSet);
 }
 
 void CreateBaseline( int player, int eindex, struct entity_state_s *baseline, struct edict_s *entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnCreateBaseline)(player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs);
 }
 
 void RegisterEncoders( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnRegisterEncoders)();
 }
 
 int GetWeaponData( struct edict_s *player, struct weapon_data_s *info )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnGetWeaponData)(player, info);
 }
 
 void CmdStart( const edict_t *player, const struct usercmd_s *cmd, unsigned int random_seed )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnCmdStart)(player, cmd, random_seed);
 }
 
 void CmdEnd ( const edict_t *player )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnCmdEnd)(player);
 }
 
 int ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnConnectionlessPacket)(net_from, args, response_buffer, response_buffer_size);
 }
 
 int GetHullBounds( int hullnumber, float *mins, float *maxs )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnGetHullBounds)(hullnumber, mins, maxs);
 }
 
@@ -1414,6 +1627,10 @@ void CreateInstancedBaselines( void )
 		bBaseLinesCreated = true;
 		bServerActivated = false;
 	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*other_gFunctionTable.pfnCreateInstancedBaselines)();
 }
 
@@ -1421,108 +1638,205 @@ int InconsistentFile( const edict_t *player, const char *filename, char *disconn
 {
 	UTIL_LogDPrintf("InconsistentFile: player=%x filename=%s disconnect_message=%s\n", player, filename, disconnect_message);
 
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnInconsistentFile)(player, filename, disconnect_message);
 }
 
 int AllowLagCompensation( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*other_gFunctionTable.pfnAllowLagCompensation)();
 }
 
-
-void FakeClientCommand(edict_t *pBot, char *arg1, char *arg2, char *arg3)
+void FakeClientCommand( edict_t *pFakeClient, const char *fmt, ... )
 {
-   int length;
+	// the purpose of this function is to provide fakeclients (bots) with the same client
+	// command-scripting advantages (putting multiple commands in one line between semicolons)
+	// as real players. It is an improved version of botman's FakeClientCommand, in which you
+	// supply directly the whole string as if you were typing it in the bot's "console". It
+	// is supposed to work exactly like the pfnClientCommand (server-sided client command).
 
-   memset(g_argv, 0, sizeof(g_argv));
+	va_list argptr;
+	static char command[256];
+	int length, fieldstart, fieldstop, i, index, stringindex = 0;
 
-   isFakeClientCommand = 1;
+	if( FNullEnt( pFakeClient ) )
+		return;                   // reliability check
 
-   if ((arg1 == NULL) || (*arg1 == 0))
-      return;
+								  // concatenate all the arguments in one string
+	va_start( argptr, fmt );
+	_vsnprintf( command, sizeof( command ), fmt, argptr );
+	va_end( argptr );
 
-   if ((arg2 == NULL) || (*arg2 == 0))
-   {
-      length = sprintf(&g_argv[0], "%s", arg1);
-      fake_arg_count = 1;
-   }
-   else if ((arg3 == NULL) || (*arg3 == 0))
-   {
-      length = sprintf(&g_argv[0], "%s %s", arg1, arg2);
-      fake_arg_count = 2;
-   }
-   else
-   {
-      length = sprintf(&g_argv[0], "%s %s %s", arg1, arg2, arg3);
-      fake_arg_count = 3;
-   }
+	if( command == NULL || *command == '\0' )
+		return;                   // if nothing in the command buffer, return
 
-   g_argv[length] = 0;  // null terminate just in case
+	isFakeClientCommand = true;  // set the "fakeclient command" flag
+	length = strlen( command );    // get the total length of the command string
 
-   strcpy(&g_argv[64], arg1);
+								   // process all individual commands (separated by a semicolon) one each a time
+	while( stringindex < length )
+	{
+		fieldstart = stringindex; // save field start position (first character)
+		while( stringindex < length && command[stringindex] != ';' )
+			stringindex++;         // reach end of field
+		if( command[stringindex - 1] == '\n' )
+			fieldstop = stringindex - 2;   // discard any trailing '\n' if needed
+		else
+			fieldstop = stringindex - 1;   // save field stop position (last character before semicolon or end)
+		for( i = fieldstart; i <= fieldstop; i++ )
+			g_argv[i - fieldstart] = command[i];   // store the field value in the g_argv global string
+		g_argv[i - fieldstart] = 0;       // terminate the string
+		stringindex++;            // move the overall string index one step further to bypass the semicolon
 
-   if (arg2)
-      strcpy(&g_argv[128], arg2);
+		index = 0;
+		fake_arg_count = 0;       // let's now parse that command and count the different arguments
 
-   if (arg3)
-      strcpy(&g_argv[192], arg3);
+								  // count the number of arguments
+		while( index < i - fieldstart )
+		{
+			while( index < i - fieldstart && g_argv[index] == ' ' )
+				index++;            // ignore spaces
 
-   // allow the MOD DLL to execute the ClientCommand...
-   ClientCommand(pBot);
+									// is this field a group of words between quotes or a single word ?
+			if( g_argv[index] == '"' )
+			{
+				index++;            // move one step further to bypass the quote
+				while( index < i - fieldstart && g_argv[index] != '"' )
+					index++;         // reach end of field
+				index++;            // move one step further to bypass the quote
+			}
+			else
+				while( index < i - fieldstart && g_argv[index] != ' ' )
+					index++;         // this is a single word, so reach the end of field
 
-   isFakeClientCommand = 0;
+			fake_arg_count++;      // we have processed one argument more
+		}
+
+		// tell now the MOD DLL to execute this ClientCommand...
+		MDLL_ClientCommand(pFakeClient);
+	}
+
+	g_argv[0] = 0;               // when it's done, reset the g_argv field
+	isFakeClientCommand = false; // reset the "fakeclient command" flag
+	fake_arg_count = 0;          // and the argument count
 }
 
+const char *GetArg( const char *command, int arg_number )
+{
+	// the purpose of this function is to provide fakeclients (bots) with the same Cmd_Argv
+	// convenience the engine provides to real clients. This way the handling of real client
+	// commands and bot client commands is exactly the same, just have a look in engine.cpp
+	// for the hooking of pfnCmd_Argc, pfnCmd_Args and pfnCmd_Argv, which redirects the call
+	// either to the actual engine functions (when the caller is a real client), either on
+	// our function here, which does the same thing, when the caller is a bot.
+
+	int length, i, index = 0, arg_count = 0, fieldstart, fieldstop;
+
+	arg[0] = 0;                  // reset arg
+	length = strlen( command );    // get length of command
+
+								   // while we have not reached end of line
+	while( index < length && arg_count <= arg_number )
+	{
+		while( index < length && command[index] == ' ' )
+			index++;               // ignore spaces
+
+								   // is this field multi-word between quotes or single word?
+		if( command[index] == '"' )
+		{
+			index++;               // move one step further to bypass the quote
+			fieldstart = index;    // save field start position
+			while( index < length && command[index] != '"' )
+				index++;            // reach end of field
+			fieldstop = index - 1; // save field stop position
+			index++;               // move one step further to bypass the quote
+		}
+		else
+		{
+			fieldstart = index;    // save field start position
+			while( index < length && command[index] != ' ' )
+				index++;            // reach end of field
+			fieldstop = index - 1; // save field stop position
+		}
+
+		// is this argument we just processed the wanted one?
+		if( arg_count == arg_number )
+		{
+			for( i = fieldstart; i <= fieldstop; i++ )
+				arg[i - fieldstart] = command[i];   // store the field value in a string
+			arg[i - fieldstart] = 0;       // terminate the string
+		}
+
+		arg_count++;              // we have processed one argument more
+	}
+
+	return arg;                  // returns the wanted argument
+}
 
 const char *Cmd_Args( void )
 {
-   if (isFakeClientCommand)
-   {
-      return &g_argv[0];
-   }
-   else
-   {
-      return (*g_engfuncs.pfnCmd_Args)();
-   }
-}
+	// is this a bot issuing that client command?
+	if( isFakeClientCommand )
+	{
+		// is it a "say" or "say_team" client command?
+		if( strncmp( "say ", g_argv, 4 ) == 0 )
+		{
+			if( g_bIsMMPlugin )
+				RETURN_META_VALUE( MRES_SUPERCEDE, g_argv + 4 );
+			return g_argv + 4;     // skip the "say" bot client command
+		}
+		else if( strncmp( "say_team ", g_argv, 9 ) == 0 )
+		{
+			if( g_bIsMMPlugin )
+				RETURN_META_VALUE( MRES_SUPERCEDE, g_argv + 9 );
+			return g_argv + 9;     // skip the "say_team" bot client command
+		}
 
+		if( g_bIsMMPlugin )
+			RETURN_META_VALUE( MRES_SUPERCEDE, g_argv );
+		return g_argv;            // else return the whole bot client command string we know
+	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
+	return CMD_ARGS();	// ask the client command string to the engine
+}
 
 const char *Cmd_Argv( int argc )
 {
-   if (isFakeClientCommand)
-   {
-      if (argc == 0)
-      {
-         return &g_argv[64];
-      }
-      else if (argc == 1)
-      {
-         return &g_argv[128];
-      }
-      else if (argc == 2)
-      {
-         return &g_argv[192];
-      }
-      else
-      {
-         return NULL;
-      }
-   }
-   else
-   {
-      return (*g_engfuncs.pfnCmd_Argv)(argc);
-   }
-}
+	// is this a bot issuing that client command ?
+	if( isFakeClientCommand )
+	{
+		if( g_bIsMMPlugin )
+			RETURN_META_VALUE( MRES_SUPERCEDE, GetArg( g_argv, argc ) );
 
+		return GetArg( g_argv, argc );      // if so, then return the wanted argument we know
+	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+	
+	return CMD_ARGV(argc);
+}
 
 int Cmd_Argc( void )
 {
-   if (isFakeClientCommand)
-   {
-      return fake_arg_count;
-   }
-   else
-   {
-      return (*g_engfuncs.pfnCmd_Argc)();
-   }
+	// is this a bot issuing that client command ?
+	if( isFakeClientCommand )
+	{
+		if( g_bIsMMPlugin )
+			RETURN_META_VALUE( MRES_SUPERCEDE, fake_arg_count );
+		return fake_arg_count;    // if so, then return the argument count we know
+	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+	
+	return CMD_ARGC();
 }

@@ -24,7 +24,6 @@ extern int max_teams;
 
 void BotStartGame( bot_t *pBot )
 {
-   char c_team[32];
    char c_class[32];
    int index, count, retry_count;
    edict_t *pPlayer;
@@ -85,18 +84,10 @@ void BotStartGame( bot_t *pBot )
          }
 
          // select the team the bot wishes to join...
-         if (pBot->bot_team == 1)
-            strcpy(c_team, "1");
-         else if (pBot->bot_team == 2)
-            strcpy(c_team, "2");
-         else if (pBot->bot_team == 3)
-            strcpy(c_team, "3");
-         else if (pBot->bot_team == 4)
-            strcpy(c_team, "4");
-         else
-            strcpy(c_team, "5");
+		 if( pBot->bot_team < 1 && pBot->bot_team > 5 )
+			 pBot->bot_team = 5;
 
-         FakeClientCommand(pEdict, "jointeam", c_team, NULL);
+         FakeClientCommand(pEdict, "jointeam %d", pBot->bot_team);
 
          return;
       }
@@ -164,7 +155,7 @@ void BotStartGame( bot_t *pBot )
          else
             strcpy(c_class, "randompc");
 
-         FakeClientCommand(pEdict, c_class, NULL, NULL);
+         FakeClientCommand(pEdict, c_class);
 
          // bot has now joined the game (doesn't need to be started)
          pBot->not_started = 0;
@@ -187,14 +178,10 @@ void BotStartGame( bot_t *pBot )
             pBot->bot_team = RANDOM_LONG(1, 2);
 
          // select the team the bot wishes to join...
-         if (pBot->bot_team == 1)
-            strcpy(c_team, "1");
-         else if (pBot->bot_team == 2)
-            strcpy(c_team, "2");
-         else
-            strcpy(c_team, "5");
+		 if( pBot->bot_team != 1 && pBot->bot_team != 2 )
+			 pBot->bot_team = 5;
 
-         FakeClientCommand(pEdict, "menuselect", c_team, NULL);
+         FakeClientCommand(pEdict, "menuselect %d", pBot->bot_team);
 
          return;
       }
@@ -209,19 +196,7 @@ void BotStartGame( bot_t *pBot )
          if (pBot->bot_class == -1)
             pBot->bot_class = RANDOM_LONG(1, 4);
 
-         // select the class the bot wishes to use...
-         if (pBot->bot_class == 1)
-            strcpy(c_class, "1");
-         else if (pBot->bot_class == 2)
-            strcpy(c_class, "2");
-         else if (pBot->bot_class == 3)
-            strcpy(c_class, "3");
-         else if (pBot->bot_class == 4)
-            strcpy(c_class, "4");
-         else
-            strcpy(c_class, "5");  // random
-
-         FakeClientCommand(pEdict, "menuselect", c_class, NULL);
+         FakeClientCommand(pEdict, "menuselect %d", pBot->bot_class);
 
          // bot has now joined the game (doesn't need to be started)
          pBot->not_started = 0;
@@ -239,19 +214,7 @@ void BotStartGame( bot_t *pBot )
          if (pBot->bot_class == -1)
             pBot->bot_class = RANDOM_LONG(1, 4);
 
-         // select the class the bot wishes to use...
-         if (pBot->bot_class == 1)
-            strcpy(c_class, "1");
-         else if (pBot->bot_class == 2)
-            strcpy(c_class, "2");
-         else if (pBot->bot_class == 3)
-            strcpy(c_class, "3");
-         else if (pBot->bot_class == 4)
-            strcpy(c_class, "4");
-         else
-            strcpy(c_class, "5");  // random
-
-         FakeClientCommand(pEdict, "menuselect", c_class, NULL);
+         FakeClientCommand(pEdict, "menuselect %d", pBot->bot_class);
 
          // bot has now joined the game (doesn't need to be started)
          pBot->not_started = 0;
@@ -274,15 +237,7 @@ void BotStartGame( bot_t *pBot )
          if (pBot->bot_team == -1)
             pBot->bot_team = RANDOM_LONG(1, 2);
 
-         // select the team the bot wishes to join...
-         if (pBot->bot_team == 1)
-            strcpy(c_team, "1");
-         else if (pBot->bot_team == 2)
-            strcpy(c_team, "2");
-         else
-            strcpy(c_team, "3");
-
-         FakeClientCommand(pEdict, "jointeam", c_team, NULL);
+         FakeClientCommand(pEdict, "jointeam %d", pBot->bot_team);
 
          return;
       }
@@ -298,22 +253,10 @@ void BotStartGame( bot_t *pBot )
             pBot->bot_class = RANDOM_LONG(1, 10);
 
          // select the class the bot wishes to use...
-         if (pBot->bot_class == 1)
-            strcpy(c_class, "1");
-         else if (pBot->bot_class == 2)
-            strcpy(c_class, "2");
-         else if (pBot->bot_class == 3)
-            strcpy(c_class, "3");
-         else if (pBot->bot_class == 4)
-            strcpy(c_class, "4");
-         else if (pBot->bot_class == 5)
-            strcpy(c_class, "5");
-         else if (pBot->bot_class == 6)
-            strcpy(c_class, "6");
-         else
-            strcpy(c_class, "7");
+		 if( pBot->bot_class > 7 )
+			 pBot->bot_class = 7;
 
-         FakeClientCommand(pEdict, "selectchar", c_class, NULL);
+         FakeClientCommand(pEdict, "selectchar %d", pBot->bot_class);
 
          // bot has now joined the game (doesn't need to be started)
          pBot->not_started = 0;

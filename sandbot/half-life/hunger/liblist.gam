@@ -10,6 +10,6 @@ type "Single"
 startmap "thintro"
 trainmap "they30"
 gamedll "dlls\sandbot.dll"
+// gamedll "addons\metamod\dlls\metamod.dll"
 cldll "1"
 svonly "0"
-

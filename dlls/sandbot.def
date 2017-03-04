@@ -1,4 +1,4 @@
-LIBRARY HPB_bot
+LIBRARY sandbot
 EXPORTS
 	GiveFnptrsToDll			@1
 SECTIONS

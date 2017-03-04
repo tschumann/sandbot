@@ -22,9 +22,9 @@ using std::min;
 
 typedef int (FAR *GETENTITYAPI)(DLL_FUNCTIONS *, int);
 typedef int (FAR *GETNEWDLLFUNCTIONS)(NEW_DLL_FUNCTIONS *, int *);
-typedef void (DLLEXPORT *GIVEFNPTRSTODLL)(enginefuncs_t *, globalvars_t *);
+typedef void (__stdcall *GIVEFNPTRSTODLL)(enginefuncs_t *, globalvars_t *);
 typedef int (*SERVER_GETBLENDINGINTERFACE) (int, struct sv_blending_interface_s **, struct engine_studio_api_s *, float (*)[3][4], float (*)[MAXSTUDIOBONES][3][4]);
-typedef void (DLLEXPORT *SV_SAVEGAMECOMMENT)(char *, int);
+typedef void (*SV_SAVEGAMECOMMENT)(char *, int);
 
 typedef void (FAR *LINK_ENTITY_FUNC)(entvars_t *);
 
@@ -52,6 +52,8 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 #define DEBUG_CODE 0
 #endif // _DEBUG
 
+extern bool g_bIsMMPlugin;
+
 
 // define constants used to identify the MOD we are playing...
 
@@ -72,17 +74,8 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 
 int GetBotCount();
 
-// define some function prototypes...
-BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128] );
-void ClientPutInServer( edict_t *pEntity );
-void ClientCommand( edict_t *pEntity );
-
-void FakeClientCommand(edict_t *pBot, char *arg1, char *arg2, char *arg3);
-
-
-const char *Cmd_Args( void );
-const char *Cmd_Argv( int argc );
-int Cmd_Argc( void );
+void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... );
+const char *GetArg( const char *command, int arg_number );
 
 #define HW_WAIT_SPAWN 1
 

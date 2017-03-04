@@ -36,14 +36,7 @@ void DODBot::Join()
 		}
 
 		// select the team the bot wishes to join...
-		if (this->bot_team == DODBot::TEAM_ALLIES)
-		{
-			FakeClientCommand( this->pEdict, "jointeam", "1", NULL );
-		}
-		else if (this->bot_team == DODBot::TEAM_AXIS)
-		{
-			FakeClientCommand( this->pEdict, "jointeam", "2", NULL );
-		}
+		FakeClientCommand( this->pEdict, "jointeam %d", this->bot_team );
 
 		return;
 	}
@@ -60,22 +53,22 @@ void DODBot::Join()
 		switch( this->bot_class )
 		{
 		case 1:
-			FakeClientCommand( this->pEdict, "cls_garand", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_garand");
 			break;
 		case 2:
-			FakeClientCommand( this->pEdict, "cls_carbine", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_carbine" );
 			break;
 		case 3:
-			FakeClientCommand( this->pEdict, "cls_tommy", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_tommy" );
 			break;
 		case 4:
-			FakeClientCommand( this->pEdict, "cls_grease", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_grease" );
 			break;
 		case 5: // 8
-			FakeClientCommand( this->pEdict, "cls_bazooka", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_bazooka" );
 			break;
 		default:
-			FakeClientCommand( this->pEdict, "cls_random", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_random" );
 			break;
 		}
 
@@ -97,22 +90,22 @@ void DODBot::Join()
 		switch( this->bot_class )
 		{
 		case 1:
-			FakeClientCommand( this->pEdict, "cls_k98", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_k98" );
 			break;
 		case 2:
-			FakeClientCommand( this->pEdict, "cls_k43", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_k43" );
 			break;
 		case 3:
-			FakeClientCommand( this->pEdict, "cls_mp40", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_mp40" );
 			break;
 		case 4:
-			FakeClientCommand( this->pEdict, "cls_mp44", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_mp44" );
 			break;
 		case 5: // 8
-			FakeClientCommand( this->pEdict, "cls_pshreck", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_pshreck" );
 			break;
 		default:
-			FakeClientCommand( this->pEdict, "cls_random", NULL, NULL );
+			FakeClientCommand( this->pEdict, "cls_random" );
 			break;
 		}
 

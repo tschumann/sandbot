@@ -7,7 +7,7 @@
 //
 
 #include "extdll.h"
-#include "util.h"
+#include "meta_api.h"
 #include "studio.h"
 
 #include "bot.h"
@@ -83,29 +83,54 @@ const char *AssetRemap( const char *szPath )
 	return szPath;
 }
 
-
 int pfnPrecacheModel(char* s)
 {
-	return (*g_engfuncs.pfnPrecacheModel)((char *)AssetRemap(s));
+	const char *szPath = AssetRemap( s );
+
+	if( g_bIsMMPlugin && strcmp(szPath, s) != 0 )
+	{
+		int result = PRECACHE_MODEL((char*)szPath);
+		RETURN_META_VALUE( MRES_SUPERCEDE, result );
+	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
+	return (*g_engfuncs.pfnPrecacheModel)((char*)szPath);
 }
 int pfnPrecacheSound(char* s)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnPrecacheSound)(s);
 }
 void pfnSetModel(edict_t *e, const char *m)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnSetModel)(e, AssetRemap(m));
 }
 int pfnModelIndex(const char *m)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnModelIndex)(m);
 }
 int pfnModelFrames(int modelIndex)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnModelFrames)(modelIndex);
 }
 void pfnSetSize(edict_t *e, const float *rgflMin, const float *rgflMax)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnSetSize)(e, rgflMin, rgflMax);
 }
 void pfnChangeLevel(char* s1, char* s2)
@@ -126,34 +151,58 @@ void pfnChangeLevel(char* s1, char* s2)
 		}
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnChangeLevel)(s1, s2);
 }
 void pfnGetSpawnParms(edict_t *ent)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnGetSpawnParms)(ent);
 }
 void pfnSaveSpawnParms(edict_t *ent)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnSaveSpawnParms)(ent);
 }
 float pfnVecToYaw(const float *rgflVector)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnVecToYaw)(rgflVector);
 }
 void pfnVecToAngles(const float *rgflVectorIn, float *rgflVectorOut)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnVecToAngles)(rgflVectorIn, rgflVectorOut);
 }
 void pfnMoveToOrigin(edict_t *ent, const float *pflGoal, float dist, int iMoveType)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnMoveToOrigin)(ent, pflGoal, dist, iMoveType);
 }
 void pfnChangeYaw(edict_t* ent)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnChangeYaw)(ent);
 }
 void pfnChangePitch(edict_t* ent)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnChangePitch)(ent);
 }
 edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszField, const char *pszValue)
@@ -178,35 +227,60 @@ edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszF
      }
   }
 
+  if( g_bIsMMPlugin )
+	  RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnFindEntityByString)(pEdictStartSearchAfter, pszField, pszValue);
 }
 int pfnGetEntityIllum(edict_t* pEnt)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetEntityIllum)(pEnt);
 }
 edict_t* pfnFindEntityInSphere(edict_t *pEdictStartSearchAfter, const float *org, float rad)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFindEntityInSphere:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnFindEntityInSphere)(pEdictStartSearchAfter, org, rad);
 }
 edict_t* pfnFindClientInPVS(edict_t *pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnFindClientInPVS)(pEdict);
 }
 edict_t* pfnEntitiesInPVS(edict_t *pplayer)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnEntitiesInPVS)(pplayer);
 }
 void pfnMakeVectors(const float *rgflVector)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnMakeVectors)(rgflVector);
 }
 void pfnAngleVectors(const float *rgflVector, float *forward, float *right, float *up)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnAngleVectors)(rgflVector, forward, right, up);
 }
 edict_t* pfnCreateEntity(void)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	edict_t *pent = (*g_engfuncs.pfnCreateEntity)();
 	UTIL_LogDPrintf("pfnCreateEntity\n");
 	return pent;
@@ -217,80 +291,133 @@ void pfnRemoveEntity(edict_t* e)
    if (debug_engine)
    {
       fp=fopen("bot.txt","a");
-      fprintf(fp,"pfnRemoveEntity: %x\n",e);
+      fprintf(fp,"pfnRemoveEntity: %p\n",e);
       if (e->v.model != 0)
          fprintf(fp," model=%s\n", STRING(e->v.model));
       fclose(fp);
    }
 
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnRemoveEntity)(e);
 }
 edict_t* pfnCreateNamedEntity(int className)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	edict_t *pent = (*g_engfuncs.pfnCreateNamedEntity)(className);
 	UTIL_LogDPrintf("pfnCreateNamedEntity: className=%s\n", STRING(className));
 	return pent;
 }
 void pfnMakeStatic(edict_t *ent)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnMakeStatic)(ent);
 }
 int pfnEntIsOnFloor(edict_t *e)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnEntIsOnFloor)(e);
 }
 int pfnDropToFloor(edict_t* e)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnDropToFloor)(e);
 }
 int pfnWalkMove(edict_t *ent, float yaw, float dist, int iMode)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnWalkMove)(ent, yaw, dist, iMode);
 }
 void pfnSetOrigin(edict_t *e, const float *rgflOrigin)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnSetOrigin)(e, rgflOrigin);
 }
 void pfnEmitSound(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEmitSound:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnEmitSound)(entity, channel, sample, volume, attenuation, fFlags, pitch);
 }
 void pfnEmitAmbientSound(edict_t *entity, float *pos, const char *samp, float vol, float attenuation, int fFlags, int pitch)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEmitAmbientSound:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnEmitAmbientSound)(entity, pos, samp, vol, attenuation, fFlags, pitch);
 }
 void pfnTraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *pentToSkip, TraceResult *ptr)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnTraceLine)(v1, v2, fNoMonsters, pentToSkip, ptr);
 }
 void pfnTraceToss(edict_t* pent, edict_t* pentToIgnore, TraceResult *ptr)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnTraceToss)(pent, pentToIgnore, ptr);
 }
 int pfnTraceMonsterHull(edict_t *pEdict, const float *v1, const float *v2, int fNoMonsters, edict_t *pentToSkip, TraceResult *ptr)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnTraceMonsterHull)(pEdict, v1, v2, fNoMonsters, pentToSkip, ptr);
 }
 void pfnTraceHull(const float *v1, const float *v2, int fNoMonsters, int hullNumber, edict_t *pentToSkip, TraceResult *ptr)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnTraceHull)(v1, v2, fNoMonsters, hullNumber, pentToSkip, ptr);
 }
 void pfnTraceModel(const float *v1, const float *v2, int hullNumber, edict_t *pent, TraceResult *ptr)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnTraceModel)(v1, v2, hullNumber, pent, ptr);
 }
 const char *pfnTraceTexture(edict_t *pTextureEntity, const float *v1, const float *v2 )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnTraceTexture)(pTextureEntity, v1, v2);
 }
 void pfnTraceSphere(const float *v1, const float *v2, int fNoMonsters, float radius, edict_t *pentToSkip, TraceResult *ptr)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnTraceSphere)(v1, v2, fNoMonsters, radius, pentToSkip, ptr);
 }
 void pfnGetAimVector(edict_t* ent, float speed, float *rgflReturn)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnGetAimVector)(ent, speed, rgflReturn);
 }
 void pfnServerCommand(char* str)
@@ -300,33 +427,71 @@ void pfnServerCommand(char* str)
 	{
 		UTIL_LogDPrintf("pfnServerCommand: str=%s\n", str);
 	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 	
 	(*g_engfuncs.pfnServerCommand)(str);
 }
 void pfnServerExecute(void)
 {
 	UTIL_LogDPrintf("pfnServerExecute\n");
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnServerExecute)();
 }
 void pfnClientCommand(edict_t* pEdict, char* szFmt, ...)
 {
-	// TODO: this doesn't actually call anything but it seems to work?
-	UTIL_LogDPrintf("pfnClientCommand: szFmt=%s\n", szFmt);
+	va_list argptr;
+	static char string[1024];
+
+	va_start( argptr, szFmt );
+	_vsnprintf( string, sizeof( string ), szFmt, argptr );
+	va_end( argptr );
+
+	UTIL_LogDPrintf( "pfnClientCommand: string=%s\n", string );
+
+	// is the target entity an official bot, a third party bot or a real player ?
+	if( pEdict->v.flags & FL_FAKECLIENT )
+	{
+		FakeClientCommand( pEdict, string );
+		if( g_bIsMMPlugin )
+			RETURN_META( MRES_SUPERCEDE );
+	}
+
+	(*g_engfuncs.pfnClientCommand)(pEdict, string);
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_SUPERCEDE );
 }
 void pfnParticleEffect(const float *org, const float *dir, float color, float count)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnParticleEffect)(org, dir, color, count);
 }
 void pfnLightStyle(int style, char* val)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnLightStyle)(style, val);
 }
 int pfnDecalIndex(const char *name)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnDecalIndex)(name);
 }
 int pfnPointContents(const float *rgflVector)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnPointContents)(rgflVector);
 }
 void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
@@ -617,6 +782,9 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      }
   }
 
+  if( g_bIsMMPlugin )
+	  RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ed);
 }
 
@@ -633,6 +801,9 @@ void pfnMessageEnd(void)
 	botMsgFunction = NULL;
 	botMsgEndFunction = NULL;
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnMessageEnd)();
 }
 
@@ -645,6 +816,9 @@ void pfnWriteByte(int iValue)
 	{
 		(*botMsgFunction)((void *)&iValue, botMsgIndex);
 	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
 	(*g_engfuncs.pfnWriteByte)(iValue);
 }
@@ -659,6 +833,9 @@ void pfnWriteChar(int iValue)
 		(*botMsgFunction)((void *)&iValue, botMsgIndex);
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnWriteChar)(iValue);
 }
 
@@ -671,6 +848,9 @@ void pfnWriteShort(int iValue)
 	{
 		(*botMsgFunction)((void *)&iValue, botMsgIndex);
 	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
 	(*g_engfuncs.pfnWriteShort)(iValue);
 }
@@ -685,6 +865,9 @@ void pfnWriteLong(int iValue)
 		(*botMsgFunction)((void *)&iValue, botMsgIndex);
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnWriteLong)(iValue);
 }
 
@@ -697,6 +880,9 @@ void pfnWriteAngle(float flValue)
 	{
 		(*botMsgFunction)((void *)&flValue, botMsgIndex);
 	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
 	(*g_engfuncs.pfnWriteAngle)(flValue);
 }
@@ -711,6 +897,9 @@ void pfnWriteCoord(float flValue)
 		(*botMsgFunction)((void *)&flValue, botMsgIndex);
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnWriteCoord)(flValue);
 }
 
@@ -723,6 +912,9 @@ void pfnWriteString(const char *sz)
 	{
 		(*botMsgFunction)((void *)sz, botMsgIndex);
 	}
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
 	(*g_engfuncs.pfnWriteString)(sz);
 }
@@ -737,27 +929,45 @@ void pfnWriteEntity(int iValue)
 		(*botMsgFunction)((void *)&iValue, botMsgIndex);
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnWriteEntity)(iValue);
 }
 
 void pfnCVarRegister(cvar_t *pCvar)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCVarRegister)(pCvar);
 }
 float pfnCVarGetFloat(const char *szVarName)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCVarGetFloat)(szVarName);
 }
 const char* pfnCVarGetString(const char *szVarName)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCVarGetString)(szVarName);
 }
 void pfnCVarSetFloat(const char *szVarName, float flValue)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCVarSetFloat)(szVarName, flValue);
 }
 void pfnCVarSetString(const char *szVarName, const char *szValue)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCVarSetString)(szVarName, szValue);
 }
 void pfnEngineFprintf( void *pfile, char *szFmt, ... )
@@ -765,69 +975,111 @@ void pfnEngineFprintf( void *pfile, char *szFmt, ... )
 	va_list argptr;
 	static char string[1024];
 
-	va_start (argptr, szFmt);
-	vsprintf (string, szFmt, argptr);
-	va_end (argptr);
+	va_start( argptr, szFmt );
+	_vsnprintf( string, sizeof( string ), szFmt, argptr );
+	va_end( argptr );
 
 	(*g_engfuncs.pfnEngineFprintf)(pfile, string);
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_SUPERCEDE );
 }
 void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 {
 	va_list argptr;
 	static char string[1024];
 
-	va_start (argptr, szFmt);
-	vsprintf (string, szFmt, argptr);
-	va_end (argptr);
+	va_start( argptr, szFmt );
+	_vsnprintf( string, sizeof( string ), szFmt, argptr );
+	va_end( argptr );
 
 	(*g_engfuncs.pfnAlertMessage)(atype, string);
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_SUPERCEDE );
 }
 void* pfnPvAllocEntPrivateData(edict_t *pEdict, int32 cb)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnPvAllocEntPrivateData)(pEdict, cb);
 }
 void* pfnPvEntPrivateData(edict_t *pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnPvEntPrivateData)(pEdict);
 }
 void pfnFreeEntPrivateData(edict_t *pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnFreeEntPrivateData)(pEdict);
 }
 const char* pfnSzFromIndex(int iString)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnSzFromIndex)(iString);
 }
 int pfnAllocString(const char *szValue)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnAllocString)(szValue);
 }
 entvars_t* pfnGetVarsOfEnt(edict_t *pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetVarsOfEnt)(pEdict);
 }
 edict_t* pfnPEntityOfEntOffset(int iEntOffset)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnPEntityOfEntOffset)(iEntOffset);
 }
 int pfnEntOffsetOfPEntity(const edict_t *pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnEntOffsetOfPEntity)(pEdict);
 }
 int pfnIndexOfEdict(const edict_t *pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnIndexOfEdict)(pEdict);
 }
 edict_t* pfnPEntityOfEntIndex(int iEntIndex)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnPEntityOfEntIndex)(iEntIndex);
 }
 edict_t* pfnFindEntityByVars(entvars_t* pvars)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnFindEntityByVars)(pvars);
 }
 void* pfnGetModelPtr(edict_t* pEdict)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetModelPtr)(pEdict);
 }
 int pfnRegUserMsg(const char *pszName, int iSize)
@@ -1021,103 +1273,180 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		}
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_SUPERCEDE, msg );
+
 	return msg;
 }
 void pfnAnimationAutomove(const edict_t* pEdict, float flTime)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnAnimationAutomove)(pEdict, flTime);
 }
 void pfnGetBonePosition(const edict_t* pEdict, int iBone, float *rgflOrigin, float *rgflAngles )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnGetBonePosition)(pEdict, iBone, rgflOrigin, rgflAngles);
 }
 uint32 pfnFunctionFromName( const char *pName )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnFunctionFromName)(pName);
 }
 const char *pfnNameForFunction( uint32 function )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnNameForFunction)(function);
 }
 void pfnClientPrintf( edict_t* pEdict, PRINT_TYPE ptype, const char *szMsg )
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnClientPrintf:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnClientPrintf)(pEdict, ptype, szMsg);
 }
 void pfnServerPrint( const char *szMsg )
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnServerPrint: %s\n",szMsg); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnServerPrint)(szMsg);
 }
 void pfnGetAttachment(const edict_t *pEdict, int iAttachment, float *rgflOrigin, float *rgflAngles )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnGetAttachment)(pEdict, iAttachment, rgflOrigin, rgflAngles);
 }
 void pfnCRC32_Init(CRC32_t *pulCRC)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCRC32_Init)(pulCRC);
 }
 void pfnCRC32_ProcessBuffer(CRC32_t *pulCRC, void *p, int len)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCRC32_ProcessBuffer)(pulCRC, p, len);
 }
 void pfnCRC32_ProcessByte(CRC32_t *pulCRC, unsigned char ch)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCRC32_ProcessByte)(pulCRC, ch);
 }
 CRC32_t pfnCRC32_Final(CRC32_t pulCRC)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCRC32_Final)(pulCRC);
 }
 int32 pfnRandomLong(int32 lLow, int32 lHigh)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnRandomLong)(lLow, lHigh);
 }
 float pfnRandomFloat(float flLow, float flHigh)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnRandomFloat)(flLow, flHigh);
 }
 void pfnSetView(const edict_t *pClient, const edict_t *pViewent )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnSetView)(pClient, pViewent);
 }
 float pfnTime( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnTime)();
 }
 void pfnCrosshairAngle(const edict_t *pClient, float pitch, float yaw)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCrosshairAngle)(pClient, pitch, yaw);
 }
 byte *pfnLoadFileForMe(char *filename, int *pLength)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnLoadFileForMe: filename=%s\n",filename); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnLoadFileForMe)(filename, pLength);
 }
 void pfnFreeFile(void *buffer)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnFreeFile)(buffer);
 }
 void pfnEndSection(const char *pszSectionName)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnEndSection)(pszSectionName);
 }
 int pfnCompareFileTime(char *filename1, char *filename2, int *iCompare)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCompareFileTime)(filename1, filename2, iCompare);
 }
 void pfnGetGameDir(char *szGetGameDir)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnGetGameDir)(szGetGameDir);
 }
 void pfnCvar_RegisterVariable(cvar_t *variable)
 {
 	UTIL_LogDPrintf("pfnCvar_RegisterVariable: variable->name=%s\n", variable->name );
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnCvar_RegisterVariable)(variable);
 }
 void pfnFadeClientVolume(const edict_t *pEdict, int fadePercent, int fadeOutSeconds, int holdTime, int fadeInSeconds)
 {
 	UTIL_LogDPrintf("pfnFadeClientVolume: pEdict=%x fadePercent=%d fadeOutSeconds=%d holdTime=%d fadeInSeconds=%d\n", pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
+
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnFadeClientVolume)(pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
 }
 void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
@@ -1136,75 +1465,132 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 		}
 	}
 
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnSetClientMaxspeed)(pEdict, fNewMaxspeed);
 }
 edict_t * pfnCreateFakeClient(const char *netname)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCreateFakeClient)(netname);
 }
 void pfnRunPlayerMove(edict_t *fakeclient, const float *viewangles, float forwardmove, float sidemove, float upmove, unsigned short buttons, byte impulse, byte msec )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnRunPlayerMove)(fakeclient, viewangles, forwardmove, sidemove, upmove, buttons, impulse, msec);
 }
 int pfnNumberOfEntities(void)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnNumberOfEntities)();
 }
 char* pfnGetInfoKeyBuffer(edict_t *e)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetInfoKeyBuffer:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetInfoKeyBuffer)(e);
 }
 char* pfnInfoKeyValue(char *infobuffer, char *key)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnInfoKeyValue: %s %s\n",infobuffer,key); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnInfoKeyValue)(infobuffer, key);
 }
 void pfnSetKeyValue(char *infobuffer, char *key, char *value)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetKeyValue: %s %s\n",key,value); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnSetKeyValue)(infobuffer, key, value);
 }
 void pfnSetClientKeyValue(int clientIndex, char *infobuffer, char *key, char *value)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetClientKeyValue: %s %s\n",key,value); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnSetClientKeyValue)(clientIndex, infobuffer, key, value);
 }
 int pfnIsMapValid(char *filename)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnIsMapValid)(filename);
 }
 void pfnStaticDecal( const float *origin, int decalIndex, int entityIndex, int modelIndex )
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnStaticDecal:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnStaticDecal)(origin, decalIndex, entityIndex, modelIndex);
 }
 int pfnPrecacheGeneric(char* s)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPrecacheGeneric: %s\n",s); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnPrecacheGeneric)(s);
 }
 int pfnGetPlayerUserId(edict_t *e )
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerUserId: %x\n",e); fclose(fp); }
+   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerUserId: %p\n",e); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetPlayerUserId)(e);
 }
 void pfnBuildSoundMsg(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch, int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnBuildSoundMsg:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnBuildSoundMsg)(entity, channel, sample, volume, attenuation, fFlags, pitch, msg_dest, msg_type, pOrigin, ed);
 }
 int pfnIsDedicatedServer(void)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnIsDedicatedServer)();
 }
 cvar_t* pfnCVarGetPointer(const char *szVarName)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCVarGetPointer)(szVarName);
 }
 unsigned int pfnGetPlayerWONId(edict_t *e)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerWONId: %x\n",e); fclose(fp); }
+   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerWONId: %p\n",e); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetPlayerWONId)(e);
 }
 
@@ -1214,103 +1600,182 @@ unsigned int pfnGetPlayerWONId(edict_t *e)
 void pfnInfo_RemoveKey(char *s, const char *key)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnInfo_RemoveKey:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnInfo_RemoveKey)(s, key);
 }
 const char *pfnGetPhysicsKeyValue(const edict_t *pClient, const char *key)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPhysicsKeyValue:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetPhysicsKeyValue)(pClient, key);
 }
 void pfnSetPhysicsKeyValue(const edict_t *pClient, const char *key, const char *value)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetPhysicsKeyValue:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnSetPhysicsKeyValue)(pClient, key, value);
 }
 const char *pfnGetPhysicsInfoString(const edict_t *pClient)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPhysicsInfoString:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetPhysicsInfoString)(pClient);
 }
 unsigned short pfnPrecacheEvent(int type, const char *psz)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPrecacheEvent:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnPrecacheEvent)(type, psz);
 }
 void pfnPlaybackEvent(int flags, const edict_t *pInvoker, unsigned short eventindex, float delay,
    float *origin, float *angles, float fparam1,float fparam2, int iparam1, int iparam2, int bparam1, int bparam2)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnPlaybackEvent:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnPlaybackEvent)(flags, pInvoker, eventindex, delay, origin, angles, fparam1, fparam2, iparam1, iparam2, bparam1, bparam2);
 }
 unsigned char *pfnSetFatPVS(float *org)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnSetFatPVS)(org);
 }
 unsigned char *pfnSetFatPAS(float *org)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnSetFatPAS)(org);
 }
 int pfnCheckVisibility(const edict_t *entity, unsigned char *pset)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnCheckVisibility)(entity, pset);
 }
 void pfnDeltaSetField(struct delta_s *pFields, const char *fieldname)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnDeltaSetField)(pFields, fieldname);
 }
 void pfnDeltaUnsetField(struct delta_s *pFields, const char *fieldname)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnDeltaUnsetField)(pFields, fieldname);
 }
 void pfnDeltaAddEncoder(char *name, void (*conditionalencode)( struct delta_s *pFields, const unsigned char *from, const unsigned char *to))
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnDeltaAddEncoder)(name, conditionalencode);
 }
 int pfnGetCurrentPlayer(void)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetCurrentPlayer:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetCurrentPlayer)();
 }
 int pfnCanSkipPlayer(const edict_t *player)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCanSkipPlayer:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnCanSkipPlayer)(player);
 }
 int pfnDeltaFindField(struct delta_s *pFields, const char *fieldname)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnDeltaFindField)(pFields, fieldname);
 }
 void pfnDeltaSetFieldByIndex(struct delta_s *pFields, int fieldNumber)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnDeltaSetFieldByIndex)(pFields, fieldNumber);
 }
 void pfnDeltaUnsetFieldByIndex(struct delta_s *pFields, int fieldNumber)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnDeltaUnsetFieldByIndex)(pFields, fieldNumber);
 }
 void pfnSetGroupMask(int mask, int op)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnSetGroupMask:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnSetGroupMask)(mask, op);
 }
 int pfnCreateInstancedBaseline(int classname, struct entity_state_s *baseline)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCreateInstancedBaseline:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnCreateInstancedBaseline)(classname, baseline);
 }
 void pfnCvar_DirectSet(struct cvar_s *var, char *value)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnCvar_DirectSet:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnCvar_DirectSet)(var, value);
 }
 void pfnForceUnmodified(FORCE_TYPE type, float *mins, float *maxs, const char *filename)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnForceUnmodified:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnForceUnmodified)(type, mins, maxs, filename);
 }
 void pfnGetPlayerStats(const edict_t *pClient, int *ping, int *packet_loss)
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerStats:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnGetPlayerStats)(pClient, ping, packet_loss);
 }
 
@@ -1320,62 +1785,109 @@ void pfnGetPlayerStats(const edict_t *pClient, int *ping, int *packet_loss)
 void pfnAddServerCommand( char *cmd_name, void (*function) (void) )
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnAddServerCommand:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META( MRES_IGNORED );
+
    (*g_engfuncs.pfnAddServerCommand)(cmd_name, function);
 }
 qboolean pfnVoice_GetClientListening(int iReceiver, int iSender)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnVoice_GetClientListening)(iReceiver, iSender);
 }
 qboolean pfnVoice_SetClientListening(int iReceiver, int iSender, qboolean bListen)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnVoice_SetClientListening)(iReceiver, iSender, bListen);
 }
 const char *pfnGetPlayerAuthId( edict_t *e )
 {
    if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnGetPlayerAuthId:\n"); fclose(fp); }
+
+   if( g_bIsMMPlugin )
+	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+
    return (*g_engfuncs.pfnGetPlayerAuthId)(e);
 }
 void* pfnSequenceGet( const char* fileName, const char* entryName )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnSequenceGet)(fileName, entryName);
 }
 void* pfnSequencePickSentence( const char* groupName, int pickMethod, int *picked )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnSequencePickSentence)(groupName, pickMethod, picked);
 }
 int pfnGetFileSize( char *filename )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetFileSize)(filename);
 }
 unsigned int pfnGetApproxWavePlayLen(const char *filepath)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetApproxWavePlayLen)(filepath);
 }
 int pfnIsCareerMatch( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnIsCareerMatch)();
 }
 int pfnGetLocalizedStringLength(const char *label)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetLocalizedStringLength)(label);
 }
 void pfnRegisterTutorMessageShown(int mid)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.pfnRegisterTutorMessageShown)(mid);
 }
 int pfnGetTimesTutorMessageShown(int mid)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
 	return (*g_engfuncs.pfnGetTimesTutorMessageShown)(mid);
 }
 void pfnProcessTutorMessageDecayBuffer(int *buffer, int bufferLength)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.ProcessTutorMessageDecayBuffer)(buffer, bufferLength);
 }
 void pfnConstructTutorMessageDecayBuffer(int *buffer, int bufferLength)
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.ConstructTutorMessageDecayBuffer)(buffer, bufferLength);
 }
 void pfnResetTutorMessageDecayData( void )
 {
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
+
 	(*g_engfuncs.ResetTutorMessageDecayData)();
 }
