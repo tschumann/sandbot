@@ -49,7 +49,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\dlls,..\engine,..\common,..\pm_shared,..\"
+				AdditionalIncludeDirectories="..\dlls;..\engine;..\common;..\pm_shared;..\;..\metamod"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;VALVE_DLL;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				RuntimeLibrary="0"
