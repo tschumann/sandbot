@@ -20,7 +20,8 @@
 #ifndef CDLL_DLL_H
 #define CDLL_DLL_H
 
-#define MAX_WEAPONS		32		// ???
+// the engine can probably deal with 64 but Gunman Chronicles sets the maximum to 48
+#define MAX_WEAPONS		48 // 32		// ???
 
 #define MAX_WEAPON_SLOTS		5	// hud item selection slots
 #define MAX_ITEM_TYPES			6	// hud item selection slots
