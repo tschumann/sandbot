@@ -71,7 +71,6 @@ char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 int num_teams = 0;
 edict_t *pent_info_tfdetect = NULL;
 edict_t *pent_info_ctfdetect = NULL;
-edict_t *pent_info_frontline = NULL;
 edict_t *pent_item_tfgoal = NULL;
 int max_team_players[4];  // for TFC
 int team_class_limits[4];  // for TFC
@@ -88,6 +87,10 @@ bool need_to_open_cfg = TRUE;
 float bot_cfg_pause_time = 0.0;
 float respawn_time = 0.0;
 bool spawn_time_reset = FALSE;
+
+bool bBaseLinesCreated = false;
+bool bServerActivated = false;
+bool bCanAddBots = false;
 
 Game *pGame = NULL;
 
@@ -130,11 +133,23 @@ void GameDLLInit( void )
 	case GEARBOX_DLL:
 		bot_count.value = 11;
 		break;
+	case DOD_DLL:
+		bot_count.value = 15;
+		break;
+	case TFC_DLL:
+		bot_count.value = 15;
+		break;
 	case REWOLF_DLL:
 		bot_count.value = 11;
 		break;
+	case NS_DLL:
+		bot_count.value = 15;
+		break;
 	case HUNGER_DLL:
 		bot_count.value = 11;
+		break;
+	case SHIP_DLL:
+		bot_count.value = 7;
 		break;
 	}
 
@@ -175,7 +190,6 @@ int DispatchSpawn( edict_t *pent )
 
      pent_info_tfdetect = NULL;
      pent_info_ctfdetect = NULL;
-     pent_info_frontline = NULL;
      pent_item_tfgoal = NULL;
 
      for (index=0; index < 4; index++)
@@ -1196,8 +1210,8 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		}
 	}
 
-	extern bool g_bExecuteBotCfg;
-	g_bExecuteBotCfg = true;
+	bServerActivated = true;
+	bCanAddBots = false;
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
@@ -1419,6 +1433,17 @@ void StartFrame( void )
 
 	previous_time = gpGlobals->time;
 
+	if( bBaseLinesCreated )
+	{
+		bCanAddBots = true;
+		bBaseLinesCreated = false;
+	}
+
+	if( bCanAddBots && GetBotCount() < bot_count.value )
+	{
+		BotCreate( NULL, NULL, NULL, NULL, NULL );
+	}
+
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
 
@@ -1597,6 +1622,12 @@ int GetHullBounds( int hullnumber, float *mins, float *maxs )
 
 void CreateInstancedBaselines( void )
 {
+	if( bServerActivated )
+	{
+		bBaseLinesCreated = true;
+		bServerActivated = false;
+	}
+
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
 

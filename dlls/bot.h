@@ -72,6 +72,7 @@ extern bool g_bIsMMPlugin;
 #define HUNGER_DLL		21
 #define SHIP_DLL		22
 
+int GetBotCount();
 
 void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... );
 const char *GetArg( const char *command, int arg_number );

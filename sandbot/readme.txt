@@ -23,7 +23,7 @@ Q. Can you add support for mod x?
 A. I'm not planning to at the moment - I'm planning support for Half-Life, Opposing Force, Day of Defeat, Team Fortress Classic, Gunman Chronicles, Natural Selection, The Ship and They Hunger which is likely going to take a while.
 
 Q. Can you add MetaMod support?
-A. I've tried and things just broke unexpectedly, so not right now. My now outdated attempt is at https://github.com/tschumann/sandbot/tree/metamod if you want to play with it.
+A. It is a work in progress.
 
 Q. Can it be used for dedicated servers?
 A. Maybe - I haven't tested it, but it should.
@@ -35,6 +35,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 v0.3.2 (??/??/??)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
+- [All] Added bot_count cvar to control how many bots spawn by default (mapname_bot.cfg has been removed).
 
 v0.3.1 (26/01/17)
 - [All] Bots no longer rejoin when the map changes.

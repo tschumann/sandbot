@@ -324,6 +324,26 @@ extern int msecnum;
 extern float msecdel;
 extern float msecval;
 
+int GetBotCount()
+{
+	int count = 0;
+
+	for( int i = 1; i <= gpGlobals->maxClients; i++ )
+	{
+		edict_t *pPlayer = INDEXENT(i);
+
+		if( pPlayer && !pPlayer->free )
+		{
+			if( FBitSet(pPlayer->v.flags, FL_CLIENT) )
+			{
+				count++;
+			}
+		}
+	}
+
+	return count;
+}
+
 
 inline edict_t *CREATE_FAKE_CLIENT( const char *netname )
 {
