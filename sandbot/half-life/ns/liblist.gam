@@ -23,6 +23,7 @@ nohimodel "1"
 mpentity "info_mapinfo"
 // Using HPB_bot support for now
 gamedll "dlls\sandbot.dll"
+// gamedll "addons\metamod\dlls\metamod.dll"
 gamedll_linux "dlls/ns_i386.so"
 // Training map
 //trainmap "ns_training"
