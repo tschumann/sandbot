@@ -344,6 +344,22 @@ int GetBotCount()
 	return count;
 }
 
+void NewActiveClient( edict_t *pEntity )
+{
+	int i = 0;
+
+	while( (i < MAX_PLAYERS) && clients[i] )
+	{
+		i++;
+	}
+
+	if( i < MAX_PLAYERS )
+	{
+		// store this clients edict in the clients array
+		clients[i] = pEntity;
+	}
+}
+
 void KickAllBots()
 {
 	for( int index = 0; index < MAX_PLAYERS; index++ )
@@ -607,6 +623,12 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       else if (pPlayer)
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
 
+	  // Make sure that when creating new bot, the previous one private data is freed
+	  if( BotEnt->pvPrivateData != NULL )
+		  FREE_PRIVATE( BotEnt );
+	  BotEnt->pvPrivateData = NULL;
+	  BotEnt->v.frags = 0;
+
       index = 0;
 	  while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
          index++;
@@ -620,7 +642,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       // create the player entity by calling MOD's player function
       // (from LINK_ENTITY_TO_CLASS for player object)
 	  if( g_bIsMMPlugin )
-		  CALL_GAME_ENTITY( PLID, "player", &BotEnt->v );
+		  CALL_GAME_ENTITY( PLID, "player", VARS(BotEnt) );
 	  else
 		  player( VARS(BotEnt) );
 
@@ -640,7 +662,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       else // other mods
 	  {
 		  // TODO: is this even needed>
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "gina" );
+         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );
 	  }
 
       if (mod_id == CSTRIKE_DLL)
@@ -659,26 +681,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       MDLL_ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
 
-	  // Sandbot metamod fix - START
-
-	  // we have to do the ClientPutInServer() hook's job ourselves since calling the MDLL_
-	  // function calls directly the gamedll one, and not ours. You are allowed to call this
-	  // an "awful hack".
-
-	  int i = 0;
-
-	  while( (i < MAX_PLAYERS) && clients[i] )
-	  {
-		  i++;
-	  }
-
-	  if( i < MAX_PLAYERS )
-	  {
-		  // store this clients edict in the clients array
-		  clients[i] = BotEnt;
-	  }
-
-	  // HPB_bot metamod fix - END
+	  NewActiveClient( BotEnt );
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
 	  MDLL_ClientPutInServer( BotEnt );
