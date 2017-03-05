@@ -153,46 +153,11 @@ C_DLLEXPORT int Meta_Detach( PLUG_LOADTIME now, PL_UNLOAD_REASON reason )
 		return FALSE; // returning FALSE prevents metamod from unloading this plugin
 	}
 
-	// Kick all bots off this server
-	// TODO: move this stuff into a function
-	// apparently this can be called more than once, so check before deleting
-	// kick any bot off of the server after time/frag limit...
-	for( int index = 0; index < MAX_PLAYERS; index++ )
-	{
-		// TODO:
-		if( pBots && pBots[index]->is_used )	// is this slot used?
-		{
-			char cmd[40];
+	extern void KickAllBots();
+	KickAllBots();
 
-			sprintf( cmd, "kick \"%s\"\n", pBots[index]->name );
-
-			pBots[index]->respawn_state = RESPAWN_IDLE;
-
-			SERVER_COMMAND( cmd );	// kick the bot using (kick "name")
-		}
-	}
-
-	if( pGame )
-	{
-		delete pGame;
-		pGame = NULL;
-	}
-	if( pBotData )
-	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
-		{
-			pBotData[i].bIsUsed = false;
-		}
-	}
-	if( pBots )
-	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
-		{
-			delete pBots[i];
-			pBots[i] = NULL;
-		}
-		pBots = NULL;
-	}
+	extern void CleanupGameAndBots();
+	CleanupGameAndBots();
 
 	return TRUE; // returning TRUE enables metamod to unload this plugin
 }

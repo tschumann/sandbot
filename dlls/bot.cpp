@@ -344,6 +344,50 @@ int GetBotCount()
 	return count;
 }
 
+void KickAllBots()
+{
+	for( int index = 0; index < MAX_PLAYERS; index++ )
+	{
+		if( pBots && pBots[index]->is_used )	// is this slot used?
+		{
+			char cmd[40];
+
+			sprintf(cmd, "kick \"%s\"\n", pBots[index]->name);
+
+			pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+
+			SERVER_COMMAND(cmd);	// kick the bot using (kick "name")
+		}
+	}
+}
+
+void CleanupGameAndBots()
+{
+	// called from ServerDeactivate which can apparently be called
+	// more than once, so check everything before deleting
+	if( pGame )
+	{
+		delete pGame;
+		pGame = NULL;
+	}
+	if( pBotData )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			pBotData[i].bIsUsed = false;
+		}
+	}
+	if( pBots )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			delete pBots[i];
+			pBots[i] = NULL;
+		}
+		pBots = NULL;
+	}
+}
+
 
 inline edict_t *CREATE_FAKE_CLIENT( const char *netname )
 {
@@ -1692,6 +1736,7 @@ void BotThink( bot_t *pBot )
    if (pBot->name[0] == 0)  // name filled in yet?
       strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
+   // TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
    if (mod_id == CSTRIKE_DLL || (mod_id == DOD_DLL && !((DODBot *)pBot)->bCapturing))
       pBot->SetMaxSpeed( pEdict->v.maxspeed );
    else

@@ -1221,29 +1221,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 void ServerDeactivate( void )
 {
-	// TODO: move this stuff into a function
-	// apparently this can be called more than once, so check before deleting
-	if( pGame )
-	{
-		delete pGame;
-		pGame = NULL;
-	}
-	if( pBotData )
-	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
-		{
-			pBotData[i].bIsUsed = false;
-		}
-	}
-	if( pBots )
-	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
-		{
-			delete pBots[i];
-			pBots[i] = NULL;
-		}
-		pBots = NULL;
-	}
+	CleanupGameAndBots();
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );

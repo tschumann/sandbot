@@ -290,6 +290,9 @@ struct bot_player_t
 	BOOL bIsUsed;
 };
 
+void KickAllBots();
+void CleanupGameAndBots();
+
 class bot_t;
 
 typedef bool (bot_t::*CanUseWeapon)(bool);
