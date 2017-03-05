@@ -32,7 +32,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
-v0.4.0 (04/03/17)
+v0.4.0 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
 - [All] Added bot_count cvar to control how many bots spawn by default (mapname_bot.cfg has been removed).
 - [All] Added MetaMod support.
@@ -97,6 +97,7 @@ Thanks to:
 Valve, for the Half-Life SDK and the Valve ERC.
 Todd Aspeotis, for teaching me C++.
 Jeffrey 'botman' Broome for his bot code and other cool stuff.
+Sam 'solokiller' VanHeer for his knowledge of the GoldSource engine.
 Maleficus for setting a high standard of how good bots can be.
 ModDB for being a good host.
 Bots United for their support.
@@ -104,4 +105,5 @@ Bots United for their support.
 == Credits ==
 
 Framework: botman
+MetaMod support: The Storm
 Programming: tschumann
