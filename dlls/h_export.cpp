@@ -576,28 +576,33 @@ int EXPORT GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interface
 extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
 #endif
 {
-   static GETNEWDLLFUNCTIONS other_GetNewDLLFunctions = NULL;
-   static bool missing = FALSE;
-
-   // if the new DLL functions interface has been formerly reported as missing, give up
-   if (missing)
-      return FALSE;
-
-   // do we NOT know if the new DLL functions interface is provided ? if so, look for its address
-   if (other_GetNewDLLFunctions == NULL)
-      other_GetNewDLLFunctions = (GETNEWDLLFUNCTIONS) GetProcAddress (h_Library, "GetNewDLLFunctions");
-
-   // have we NOT found it ?
-   if (other_GetNewDLLFunctions == NULL)
+   if( !g_bIsMMPlugin )
    {
-      missing = TRUE; // then mark it as missing, no use to look for it again in the future
-      return FALSE; // and give up
+	   static GETNEWDLLFUNCTIONS other_GetNewDLLFunctions = NULL;
+	   static bool missing = FALSE;
+
+	   // if the new DLL functions interface has been formerly reported as missing, give up
+	   if( missing )
+		   return FALSE;
+
+	   // do we NOT know if the new DLL functions interface is provided ? if so, look for its address
+	   if( other_GetNewDLLFunctions == NULL )
+		   other_GetNewDLLFunctions = (GETNEWDLLFUNCTIONS)GetProcAddress( h_Library, "GetNewDLLFunctions" );
+
+	   // have we NOT found it ?
+	   if( other_GetNewDLLFunctions == NULL )
+	   {
+		   missing = TRUE; // then mark it as missing, no use to look for it again in the future
+		   return FALSE; // and give up
+	   }
+
+	   gGameDLLFunc.newapi_table = pFunctionTable;
+
+	   // else call the function that provides the new DLL functions interface on request
+	   return (!(*other_GetNewDLLFunctions) (pFunctionTable, interfaceVersion));
    }
 
-   gGameDLLFunc.newapi_table = pFunctionTable;
-
-   // else call the function that provides the new DLL functions interface on request
-   return (!(*other_GetNewDLLFunctions) (pFunctionTable, interfaceVersion));
+   return TRUE;
 }
 
 
