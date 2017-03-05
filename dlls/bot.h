@@ -738,6 +738,7 @@ class Game
 {
 public:
 	virtual bool IsTeamPlay();
+	virtual unsigned int BotsOnTeam( int team );
 };
 
 class GearboxGame : public Game

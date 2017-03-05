@@ -10,5 +10,20 @@
 
 bool Game::IsTeamPlay()
 {
-	return CVAR_GET_FLOAT( "mp_teamplay" ) > 0;
+	return CVAR_GET_FLOAT("mp_teamplay") > 0;
+}
+
+unsigned int Game::BotsOnTeam( int team )
+{
+	int iOnTeam = 0;
+
+	for( int i = 0; i < MAX_PLAYERS; i++ )
+	{
+		if( pBots[i]->GetTeam() == team )
+		{
+			iOnTeam++;
+		}
+	}
+
+	return iOnTeam;
 }
