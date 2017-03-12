@@ -737,6 +737,7 @@ extern bot_t **pBots;
 class Game
 {
 public:
+	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();
 	virtual unsigned int BotsOnTeam( int team );
 };

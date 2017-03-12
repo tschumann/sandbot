@@ -1366,6 +1366,7 @@ void StartFrame( void )
 		{
 			if( (g_waypoint_on) && FBitSet( pPlayer->v.flags, FL_CLIENT ) )
 			{
+				ALERT( at_console, "%f\n", pPlayer->v.maxspeed );
 				WaypointThink( pPlayer );
 			}
 		}
@@ -1417,7 +1418,7 @@ void StartFrame( void )
 		bBaseLinesCreated = false;
 	}
 
-	if( bCanAddBots && GetBotCount() < bot_count.value )
+	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < bot_count.value )
 	{
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}

@@ -8,6 +8,11 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+bool Game::CanAddBots()
+{
+	return true;
+}
+
 bool Game::IsTeamPlay()
 {
 	return CVAR_GET_FLOAT("mp_teamplay") > 0;
