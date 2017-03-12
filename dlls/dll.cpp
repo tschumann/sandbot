@@ -576,18 +576,7 @@ void ClientPutInServer( edict_t *pEntity )
 {
 	UTIL_LogDPrintf("ClientPutInServer: pEntity=%x\n", pEntity);
 
-	int i = 0;
-
-	while( (i < MAX_PLAYERS) && clients[i] )
-	{
-		i++;
-	}
-
-	if( i < MAX_PLAYERS )
-	{
-		// store this clients edict in the clients array
-		clients[i] = pEntity;
-	}
+	NewActiveClient( pEntity );
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
