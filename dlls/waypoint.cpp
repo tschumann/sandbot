@@ -1028,6 +1028,13 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          waypoints[wpt_index].flags |= W_FL_WEAPON;
       }
 
+	  if ((strcmp("dod_objecy", nearest_name) == 0))
+      {
+         if (pEntity)
+            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a dod_object\n");
+         waypoints[wpt_index].flags |= W_FL_DOD_OBJ;
+      }
+
 	  if ((strcmp("dod_control_point", nearest_name) == 0))
       {
          if (pEntity)
@@ -1867,6 +1874,11 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if( flags & W_FL_NS_COMMAND_CHAIR )
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a command chair near this waypoint\n");
+	}
+
+	if( flags & W_FL_DOD_OBJ )
+	{
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is an object near this waypoint\n");
 	}
 
 	if( flags & W_FL_DOD_CAP )
