@@ -1570,7 +1570,7 @@ void WaypointSave(void)
 
    header.waypoint_file_version = WAYPOINT_VERSION;
 
-   header.waypoint_file_flags = 0;  // not currently used
+   header.waypoint_file_flags = mod_id;
 
    header.number_of_waypoints = num_waypoints;
 

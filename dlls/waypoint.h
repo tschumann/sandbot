@@ -24,7 +24,7 @@ typedef unsigned __int64 uint64_t;
 
 #define REACHABLE_RANGE 400.0
 
-// defines for waypoint flags field (64 bits are available)
+// defines for waypoint flags field (32 bits are available)
 #define W_FL_TEAM			((1<<0) + (1<<1))  /* allow for 4 teams (0-3) */
 #define W_FL_TEAM_SPECIFIC	(1<<2)  /* waypoint only for specified team */
 #define W_FL_CROUCH			(1<<3)  /* must crouch to reach this waypoint */
@@ -69,7 +69,7 @@ typedef unsigned __int64 uint64_t;
 typedef struct {
    char filetype[8];
    int  waypoint_file_version;
-   int  waypoint_file_flags;	// not currently used
+   int  waypoint_file_flags;
    int  number_of_waypoints;
    char mapname[32];	// name of map for these waypoints
 } WAYPOINT_HDR;
@@ -77,7 +77,8 @@ typedef struct {
 
 // define the structure for waypoints...
 typedef struct {
-   uint64_t flags;	// button, lift, flag, health, ammo, etc.
+   int flags;	// button, lift, flag, health, ammo, etc.
+   int unused;
    Vector origin;	// location
 } WAYPOINT;
 
