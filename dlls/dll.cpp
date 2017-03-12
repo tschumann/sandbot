@@ -42,7 +42,6 @@ extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern float wp_display_time[MAX_WAYPOINTS];
 extern bot_t **pBots;
 extern bool b_observer_mode;
-extern bool b_botdontshoot;
 extern bot_player_t *pBotData;
 
 static FILE *fp;
@@ -102,6 +101,7 @@ float msecval;
 cvar_t bot_skill = {"bot_skill", "3"};
 
 cvar_t bot_count = {"bot_count", "11"};
+cvar_t bot_shoot = {"bot_shoot", "1"};
 
 cvar_t *developer;
 
@@ -124,6 +124,7 @@ void GameDLLInit( void )
 	CVAR_REGISTER(&sv_airmove);
 	CVAR_REGISTER(&bot_skill);
 	CVAR_REGISTER(&bot_count);
+	CVAR_REGISTER(&bot_shoot);
 
 	switch( mod_id )
 	{
@@ -667,27 +668,6 @@ void ClientCommand( edict_t *pEntity )
 
          sprintf(msg, "botskill is %d\n", default_bot_skill);
          ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
-
-		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
-
-         return;
-      }
-      else if (FStrEq(pcmd, "botdontshoot"))
-      {
-         if ((arg1 != NULL) && (*arg1 != 0))
-         {
-            int temp = atoi(arg1);
-            if (temp)
-               b_botdontshoot = TRUE;
-            else
-               b_botdontshoot = FALSE;
-         }
-
-         if (b_botdontshoot)
-            ClientPrint(pEntity, HUD_PRINTNOTIFY, "botdontshoot ENABLED\n");
-         else
-            ClientPrint(pEntity, HUD_PRINTNOTIFY, "botdontshoot DISABLED\n");
 
 		 if( g_bIsMMPlugin )
 			 RETURN_META( MRES_SUPERCEDE );

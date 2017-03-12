@@ -28,9 +28,12 @@ Q. Can it be used for dedicated servers?
 A. Maybe - I haven't tested it, but it should.
 
 Q. Can I make some waypoints?
-A. Yes, but hold off for now - things are probably going to change in that space.
+A. Yes, please do!
 
 == Changelog ==
+
+v0.4.1 (??/??/??)
+- [All] Replaced botdonshoot console command with bot_shoot cvar.
 
 v0.4 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).

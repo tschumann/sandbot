@@ -47,7 +47,6 @@ bot_player_t *pBotData = NULL;
 
 bot_t **pBots; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
-bool b_botdontshoot = FALSE;
 
 int number_names = 0;
 
@@ -1879,7 +1878,7 @@ void BotThink( bot_t *pBot )
    }
    else  // else handle movement related actions...
    {
-      if (b_botdontshoot == 0)
+      if (pBot->CanShoot())
       {
          if ((mod_id == TFC_DLL) && (pBot->bot_has_flag == TRUE))
          {
@@ -2606,6 +2605,12 @@ void bot_t::Reload()
 bool bot_t::ShouldReload()
 {
 	return true;
+}
+
+bool bot_t::CanShoot()
+{
+	extern cvar_t bot_shoot;
+	return bot_shoot.value > 1;
 }
 
 void bot_t::PickUpItem()

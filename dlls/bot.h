@@ -325,6 +325,8 @@ public:
 	virtual void Reload();
 	virtual bool ShouldReload();
 
+	virtual bool CanShoot();
+
 	virtual void PickUpItem();
 
 	virtual void SetMaxSpeed( float fMaxSpeed );
