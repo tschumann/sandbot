@@ -2628,7 +2628,7 @@ bool bot_t::ShouldReload()
 bool bot_t::CanShoot()
 {
 	extern cvar_t bot_shoot;
-	return bot_shoot.value > 1;
+	return bot_shoot.value > 0;
 }
 
 void bot_t::PickUpItem()
