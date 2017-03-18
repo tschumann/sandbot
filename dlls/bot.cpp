@@ -1722,30 +1722,45 @@ void BotFindItem( bot_t *pBot )
 
 void BotThink( bot_t *pBot )
 {
-   int index = 0;
-   Vector v_diff;             // vector from previous to current location
-   float pitch_degrees;
-   float yaw_degrees;
-   float moved_distance;      // length of v_diff vector (distance bot moved)
-   TraceResult tr;
-   bool found_waypoint;
-   bool is_idle;
+	int index = 0;
+	Vector v_diff;             // vector from previous to current location
+	float pitch_degrees;
+	float yaw_degrees;
+	float moved_distance;      // length of v_diff vector (distance bot moved)
+	TraceResult tr;
+	bool found_waypoint;
+	bool is_idle;
 
-   edict_t *pEdict = pBot->pEdict;
+	edict_t *pEdict = pBot->pEdict;
 
-   pEdict->v.flags |= FL_FAKECLIENT;
+	pEdict->v.flags |= FL_FAKECLIENT;
 
-   if (pBot->name[0] == 0)  // name filled in yet?
-      strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
+	if (pBot->name[0] == 0)  // name filled in yet?
+		strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
-   // TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
-   if (mod_id == CSTRIKE_DLL || (mod_id == DOD_DLL && !((DODBot *)pBot)->bCapturing))
-      pBot->SetMaxSpeed( pEdict->v.maxspeed );
-   else
-      pBot->SetMaxSpeed( CVAR_GET_FLOAT("sv_maxspeed") );
+	// TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
+	if( mod_id == CSTRIKE_DLL )
+	{
+		pBot->SetMaxSpeed( pEdict->v.maxspeed );
+	}
+	else if( mod_id == DOD_DLL )
+	{
+		if( !((DODBot *)pBot)->bCapturing )
+		{
+			pBot->SetMaxSpeed( 300 );
+		}
+		else
+		{
+			pBot->SetMaxSpeed( 0 );
+		}
+	}
+	else
+	{
+		pBot->SetMaxSpeed( CVAR_GET_FLOAT("sv_maxspeed") );
+	}
 
-   pEdict->v.button = 0;
-   pBot->f_move_speed = 0.0;
+	pEdict->v.button = 0;
+	pBot->f_move_speed = 0.0;
 
    // if the bot hasn't selected stuff to start the game yet, go do that...
    if (pBot->not_started)
