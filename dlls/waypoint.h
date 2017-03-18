@@ -78,8 +78,8 @@ typedef struct {
 
 // define the structure for waypoints...
 typedef struct {
-   int flags;	// button, lift, flag, health, ammo, etc.
-   int unused;
+   uint64_t flags;	// button, lift, flag, health, ammo, etc.
+   // int unused;
    Vector origin;	// location
 } WAYPOINT;
 
