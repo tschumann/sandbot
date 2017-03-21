@@ -332,6 +332,7 @@ public:
 
 	virtual void SetMaxSpeed( float fMaxSpeed );
 	virtual float GetMaxSpeed();
+	virtual float GetMaximumSpeed();
 
 	virtual int GetLightLevel();
 
@@ -517,6 +518,7 @@ public:
 
 class CStrikeBot : public bot_t
 {
+	virtual float GetMaximumSpeed();
 };
 
 class DODBot : public bot_t
@@ -527,6 +529,8 @@ public:
 	virtual void Think();
 
 	virtual float GetSpeedToEnemy();
+
+	virtual float GetMaximumSpeed();
 
 	virtual bool IsSniper();
 

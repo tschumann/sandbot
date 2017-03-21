@@ -1738,26 +1738,7 @@ void BotThink( bot_t *pBot )
 	if (pBot->name[0] == 0)  // name filled in yet?
 		strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
-	// TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
-	if( mod_id == CSTRIKE_DLL )
-	{
-		pBot->SetMaxSpeed( pEdict->v.maxspeed );
-	}
-	else if( mod_id == DOD_DLL )
-	{
-		if( !((DODBot *)pBot)->bCapturing )
-		{
-			pBot->SetMaxSpeed( 300 );
-		}
-		else
-		{
-			pBot->SetMaxSpeed( 0 );
-		}
-	}
-	else
-	{
-		pBot->SetMaxSpeed( CVAR_GET_FLOAT("sv_maxspeed") );
-	}
+	pBot->SetMaxSpeed( pBot->GetMaximumSpeed() );
 
 	pEdict->v.button = 0;
 	pBot->f_move_speed = 0.0;
@@ -2645,6 +2626,11 @@ float bot_t::GetMaxSpeed()
 	return this->fMaxSpeed;
 }
 
+float bot_t::GetMaximumSpeed()
+{
+	return CVAR_GET_FLOAT("sv_maxspeed");
+}
+
 int bot_t::GetLightLevel()
 {
 	// TODO: Foxbot uses this->pBotEnemy instead of this->pEdict
@@ -2655,6 +2641,7 @@ int bot_t::GetLightLevel()
     this->pLightEnt->v.solid = SOLID_NOT;
     this->pLightEnt->v.owner = this->pEdict;
     this->pLightEnt->v.movetype = MOVETYPE_FLY; // noclip
+	// TODO: give this a real entity name? like info_target?
     this->pLightEnt->v.classname = MAKE_STRING("entity_botlightvalue");
     this->pLightEnt->v.nextthink = gpGlobals->time;
     this->pLightEnt->v.rendermode = kRenderNormal;
@@ -2664,6 +2651,7 @@ int bot_t::GetLightLevel()
 
 	int iIllumination = GETENTITYILLUM(this->pLightEnt);
 
+	// TODO: keep this for the life-time of the bot?
 	REMOVE_ENTITY(this->pLightEnt);
 
 	return iIllumination;

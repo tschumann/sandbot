@@ -172,6 +172,19 @@ float DODBot::GetSpeedToEnemy()
 	return fSpeed;
 }
 
+float DODBot::GetMaximumSpeed()
+{
+	// TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
+	if( !this->bCapturing )
+	{
+		return 300;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 bool DODBot::IsSniper()
 {
 	return false;
