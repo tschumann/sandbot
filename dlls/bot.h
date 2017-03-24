@@ -369,12 +369,8 @@ public:
 	int bot_team;
 	int bot_class;
 	int bot_money;        // for Counter-Strike
-	int primary_weapon;   // for Front Line Force
-	int secondary_weapon; // for Front Line Force
-	int defender;         // for Front Line Force
-	int warmup;           // for Front Line Force
 	float idle_angle;
-	float idle_angle_time;  // for Front Line Force
+	float idle_angle_time;
 	int round_end;        // round has ended (in round based games)
 	float blinded_time;
 

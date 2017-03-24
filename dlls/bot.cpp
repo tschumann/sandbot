@@ -737,11 +737,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		BotEnt->v.pitch_speed = BOT_PITCH_SPEED;
 		BotEnt->v.yaw_speed = BOT_YAW_SPEED;
 
-		pBot->warmup = 0;  // for Front Line Force
 		pBot->idle_angle = 0.0;
 		pBot->idle_angle_time = 0.0;
-		pBot->round_end = 0;
-		pBot->defender = 0;
 
 		pBot->bot_skill = skill - 1;  // 0 based for array indexes
 

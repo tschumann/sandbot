@@ -811,33 +811,6 @@ void BotClient_Hunger_DeathMsg(void *p, int bot_index)
 	BotClient_Valve_DeathMsg(p, bot_index);
 }
 
-
-// This message gets sent when a text message is displayed
-void BotClient_FLF_TextMsg(void *p, int bot_index)
-{
-   static int state = 0;   // current state machine state
-   static int msg_dest = 0;
-
-   if (state == 0)
-   {
-      state++;
-      msg_dest = *(int *)p;  // HUD_PRINTCENTER, etc.
-   }
-   else if (state == 1)
-   {
-      state = 0;
-
-      if (strcmp((char *)p, "You are Attacking\n") == 0)  // attacker msg
-      {
-         pBots[bot_index]->defender = 0;  // attacker
-      }
-      else if (strcmp((char *)p, "You are Defending\n") == 0)  // defender msg
-      {
-         pBots[bot_index]->defender = 1;  // defender
-      }
-   }
-}
-
 void BotClient_Valve_ScreenFade(void *p, int bot_index)
 {
    static int state = 0;   // current state machine state
