@@ -69,12 +69,12 @@ float NSBot::GetSpeedToEnemy()
 	float fSpeed = 0.0;
 
 	// run if distance to enemy is far
-	if (fDistanceToEnemy > 200.0)
+	if( fDistanceToEnemy > 200.0 )
 	{
 		fSpeed = this->GetMaxSpeed();
 	}
 	// walk if distance is closer
-	else if (fDistanceToEnemy > 20.0)
+	else if( fDistanceToEnemy > 20.0 )
 	{
 		// TODO: this check should more generally look at whether the bot has a melee weapon or not
 		if (this->IsAlien())
@@ -448,13 +448,13 @@ bool NSBot::IsEvolved()
 
 void NSBot::StartEvolving()
 {
-	this->f_move_speed = 0.0;
+	this->SetSpeed( 0.0 );
 	this->bIsEvolving = true;
 }
 
 void NSBot::FinishEvolving()
 {
-	this->f_move_speed = this->GetMaxSpeed();
+	this->SetSpeed( this->GetMaxSpeed() );
 	this->bIsEvolving = false;
 }
 

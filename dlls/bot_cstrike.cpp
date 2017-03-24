@@ -8,7 +8,7 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
-float CStrikeBot::GetMaximumSpeed()
+float CStrikeBot::GetSpeed()
 {
 	return pEdict->v.maxspeed;
 }

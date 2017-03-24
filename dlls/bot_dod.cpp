@@ -125,14 +125,14 @@ void DODBot::Think()
 	// if the bot is capturing, and is at a capture point, and it's a point that should be captured
 	if( this->bCapturing )
 	{
-		this->f_move_speed = 0.0;
+		this->SetSpeed( 0.0 );
 
 		// TODO: this is very rough - probably something is set in pev if the bot is
 		// on or near a dod_control_point - should check if it's a brush entity...
 		if( DistanceToNearest(this->pEdict->v.origin, "dod_control_point") > 200 )
 		{
 			ALERT( at_console, "too far from capture point while capturing; resetting\n" );
-			this->f_move_speed = this->pEdict->v.maxspeed;
+			this->SetSpeed( this->pEdict->v.maxspeed );
 			this->bCapturing = false;
 		}
 	}
@@ -142,7 +142,7 @@ void DODBot::Think()
 	if( this->bCapturing && ShouldSkip(this->pEdict, this->iGoalIndex) )
 	{
 		ALERT( at_console, "leaving waypoint\n" );
-		this->f_move_speed = this->pEdict->v.maxspeed;
+		this->SetSpeed( this->pEdict->v.maxspeed );
 		this->bCapturing = false;
 	}
 
@@ -160,7 +160,7 @@ float DODBot::GetSpeedToEnemy()
 	float fSpeed = 0.0;
 
 	// run if distance to enemy is far
-	if (fDistanceToEnemy > 200.0)
+	if( fDistanceToEnemy > 200.0 )
 	{
 		fSpeed = this->GetMaxSpeed();
 	}
@@ -172,7 +172,7 @@ float DODBot::GetSpeedToEnemy()
 	return fSpeed;
 }
 
-float DODBot::GetMaximumSpeed()
+float DODBot::GetSpeed()
 {
 	// TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
 	if( !this->bCapturing )

@@ -1738,7 +1738,7 @@ void BotThink( bot_t *pBot )
 	if (pBot->name[0] == 0)  // name filled in yet?
 		strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
-	pBot->SetMaxSpeed( pBot->GetMaximumSpeed() );
+	pBot->SetMaxSpeed( pBot->GetMaxSpeed() );
 
 	pEdict->v.button = 0;
 	pBot->f_move_speed = 0.0;
@@ -2493,12 +2493,12 @@ float bot_t::GetSpeedToEnemy()
 	float fSpeed = 0.0;
 
 	// run if distance to enemy is far
-	if (fDistanceToEnemy > 200.0)
+	if( fDistanceToEnemy > 200.0 )
 	{
 		fSpeed = this->GetMaxSpeed();
 	}
 	// walk if distance is closer
-	else if (fDistanceToEnemy > 20.0)
+	else if( fDistanceToEnemy > 20.0 )
 	{
 		fSpeed = this->GetMaxSpeed() / 2.0;
 	}
@@ -2626,7 +2626,12 @@ float bot_t::GetMaxSpeed()
 	return this->fMaxSpeed;
 }
 
-float bot_t::GetMaximumSpeed()
+void bot_t::SetSpeed( float fSpeed )
+{
+	this->f_move_speed = fSpeed;
+}
+
+float bot_t::GetSpeed()
 {
 	return CVAR_GET_FLOAT("sv_maxspeed");
 }
