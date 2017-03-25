@@ -1709,10 +1709,7 @@ void BotFindItem( bot_t *pBot )
 
       pBot->pBotPickupItem = pPickupEntity;  // save the item bot is trying to get
 
-	  if( mod_id == SHIP_DLL )
-	{
-		FakeClientCommand( pEdict, "pickup" );
-	}
+	  pBot->PickUpItem();
    }
 }
 
@@ -1736,6 +1733,7 @@ void BotThink( bot_t *pBot )
 		strcpy(pBot->name, STRING(pBot->pEdict->v.netname));
 
 	pBot->SetMaxSpeed( pBot->GetMaxSpeed() );
+	pBot->SetSpeed( pBot->GetMaxSpeed() );
 
 	pEdict->v.button = 0;
 	pBot->f_move_speed = 0.0;
@@ -1874,7 +1872,7 @@ void BotThink( bot_t *pBot )
    }
    else  // else handle movement related actions...
    {
-      if (pBot->CanShoot())
+	   if (pBot->CanShoot())
       {
          if ((mod_id == TFC_DLL) && (pBot->bot_has_flag == TRUE))
          {
@@ -1901,7 +1899,7 @@ void BotThink( bot_t *pBot )
 
       if (pBot->HasEnemy())  // does an enemy exist?
       {
-         BotShootAtEnemy( pBot );  // shoot at the enemy
+		 BotShootAtEnemy( pBot );  // shoot at the enemy
 
          pBot->f_pause_time = 0;  // dont't pause if enemy exists
       }
@@ -2606,7 +2604,8 @@ bool bot_t::ShouldReload()
 bool bot_t::CanShoot()
 {
 	extern cvar_t bot_shoot;
-	return bot_shoot.value > 0;
+	// TODO: in Natural Selection at least, bot_shoot.value is 0 but bot_shoot.string is 1
+	return bot_shoot.value > 0.0 || atof( bot_shoot.string ) > 0.0;
 }
 
 void bot_t::PickUpItem()
@@ -2620,7 +2619,7 @@ void bot_t::SetMaxSpeed( float fMaxSpeed )
 
 float bot_t::GetMaxSpeed()
 {
-	return this->fMaxSpeed;
+	return CVAR_GET_FLOAT("sv_maxspeed");
 }
 
 void bot_t::SetSpeed( float fSpeed )
@@ -2630,7 +2629,7 @@ void bot_t::SetSpeed( float fSpeed )
 
 float bot_t::GetSpeed()
 {
-	return CVAR_GET_FLOAT("sv_maxspeed");
+	return this->f_move_speed;
 }
 
 int bot_t::GetLightLevel()

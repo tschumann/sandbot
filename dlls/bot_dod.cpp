@@ -131,9 +131,9 @@ void DODBot::Think()
 		// on or near a dod_control_point - should check if it's a brush entity...
 		if( DistanceToNearest(this->pEdict->v.origin, "dod_control_point") > 200 )
 		{
-			ALERT( at_console, "too far from capture point while capturing; resetting\n" );
-			this->SetSpeed( this->pEdict->v.maxspeed );
+			UTIL_LogDPrintf( "too far from capture point while capturing; resetting\n" );
 			this->bCapturing = false;
+			this->SetSpeed( this->GetMaxSpeed() );
 		}
 	}
 
@@ -141,9 +141,9 @@ void DODBot::Think()
 	// if the current waypoint is a capture point and it is now captured
 	if( this->bCapturing && ShouldSkip(this->pEdict, this->iGoalIndex) )
 	{
-		ALERT( at_console, "leaving waypoint\n" );
-		this->SetSpeed( this->pEdict->v.maxspeed );
+		UTIL_LogDPrintf( "leaving waypoint\n" );
 		this->bCapturing = false;
+		this->SetSpeed( this->GetMaxSpeed() );
 	}
 
 	bot_t::PostThink();
@@ -172,17 +172,15 @@ float DODBot::GetSpeedToEnemy()
 	return fSpeed;
 }
 
+float DODBot::GetMaxSpeed()
+{
+	return pEdict->v.maxspeed;
+}
+
 float DODBot::GetSpeed()
 {
 	// TODO: maxspeed for Day of Defeat is probably sprint speed - find out regular run speed
-	if( !this->bCapturing )
-	{
-		return 300;
-	}
-	else
-	{
-		return 0;
-	}
+	return 300;
 }
 
 bool DODBot::IsSniper()

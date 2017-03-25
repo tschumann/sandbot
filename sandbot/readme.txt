@@ -2,7 +2,7 @@ Sandbot
 
 == About ==
 Name: Sandbot
-Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch), Day of Defeat, Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
+Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
 Requirements:
  Steam versions of either Half-Life, Half-Life Opposing Force and the latest versions of Gunman Chronicles or They Hunger.
  MetaMod-P (MetaMod mostly works but Gunman Chronicles will only work with MetaMod-P for example.

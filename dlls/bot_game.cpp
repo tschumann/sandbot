@@ -18,6 +18,11 @@ bool Game::IsTeamPlay()
 	return CVAR_GET_FLOAT("mp_teamplay") > 0;
 }
 
+bool Game::IsCTF()
+{
+	return false;
+}
+
 unsigned int Game::BotsOnTeam( int team )
 {
 	int iOnTeam = 0;

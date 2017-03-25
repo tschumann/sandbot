@@ -515,7 +515,8 @@ public:
 
 class CStrikeBot : public bot_t
 {
-	virtual float GetSpeed();
+public:
+	virtual float GetMaxSpeed();
 };
 
 class DODBot : public bot_t
@@ -527,6 +528,7 @@ public:
 
 	virtual float GetSpeedToEnemy();
 
+	virtual float GetMaxSpeed();
 	virtual float GetSpeed();
 
 	virtual bool IsSniper();
@@ -743,6 +745,7 @@ class Game
 public:
 	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();
+	virtual bool IsCTF();
 	virtual unsigned int BotsOnTeam( int team );
 };
 
@@ -754,7 +757,7 @@ public:
 		return this->IsCTF() || Game::IsTeamPlay();
 	}
 
-	bool IsCTF()
+	virtual bool IsCTF()
 	{
 		extern edict_t *pent_info_ctfdetect;
 		return pent_info_ctfdetect != NULL;

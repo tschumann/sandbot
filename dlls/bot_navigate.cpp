@@ -568,7 +568,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  ALERT( at_console, "stopping near waypoint\n" );
-		  pBot->f_move_speed = 0.0;
+		  pBot->SetSpeed( 0.0 );
 		  ((DODBot *)pBot)->bCapturing = true;
 		  pBot->iGoalIndex = pBot->waypoint_goal;
 	  }
@@ -576,7 +576,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		  pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  ALERT( at_console, "moving away from waypoint\n" );
-		  pBot->SetMaxSpeed(pEdict->v.maxspeed);
+		  pBot->SetSpeed( pEdict->v.maxspeed );
 		  ((DODBot *)pBot)->bCapturing = false;
 	  }
 

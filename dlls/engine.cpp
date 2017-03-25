@@ -1439,7 +1439,7 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 {
 	UTIL_LogDPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
-	// TODO: NS_DLL too? different Alien classes have different speeds
+	// TODO: NS_DLL and TFC_DLL too? different classes have different speeds
 	if( mod_id == CSTRIKE_DLL || mod_id == DOD_DLL )
 	{
 		bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
