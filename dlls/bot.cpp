@@ -1736,7 +1736,7 @@ void BotThink( bot_t *pBot )
 	pBot->SetSpeed( pBot->GetMaxSpeed() );
 
 	pEdict->v.button = 0;
-	pBot->f_move_speed = 0.0;
+	pBot->SetSpeed( 0.0 );
 
    // if the bot hasn't selected stuff to start the game yet, go do that...
    if (pBot->not_started)
@@ -1780,7 +1780,7 @@ void BotThink( bot_t *pBot )
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
 
-      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
+      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->GetSpeed(), 0, 0, pEdict->v.button, 0, msecval);
 
       return;
    }
@@ -1818,7 +1818,7 @@ void BotThink( bot_t *pBot )
       BotFixBodyAngles (pEdict);
       BotFixViewAngles (pEdict);
 
-      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
+      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->GetSpeed(), 0, 0, pEdict->v.button, 0, msecval);
 
       return;
    }
@@ -1833,7 +1833,8 @@ void BotThink( bot_t *pBot )
 	   pBot->UpdateSounds();
    }
 
-   pBot->f_move_speed = pBot->GetMaxSpeed();  // set to max speed
+   // set to max speed
+   pBot->SetSpeed( pBot->GetMaxSpeed() );
 
    if (pBot->prev_time <= gpGlobals->time)
    {
@@ -1864,11 +1865,12 @@ void BotThink( bot_t *pBot )
 
    if ((pitch_degrees >= pEdict->v.pitch_speed) || (yaw_degrees >= pEdict->v.yaw_speed))
    {
-      pBot->f_move_speed = 0.0;  // don't move while turning a lot
+		// don't move while turning a lot
+		pBot->SetSpeed( 0.0 );
    }
    else if ((pitch_degrees >= 10) || (yaw_degrees >= 10))  // turning more than 10 degrees?
    {
-      pBot->f_move_speed = pBot->f_move_speed / 4;  // slow down while turning
+      pBot->SetSpeed( pBot->GetSpeed() / 4.0 );  // slow down while turning
    }
    else  // else handle movement related actions...
    {
@@ -1967,7 +1969,7 @@ void BotThink( bot_t *pBot )
 
                pBot->b_see_tripmine = FALSE;
 
-               pBot->f_move_speed = 0;  // don't run while turning
+               pBot->SetSpeed( 0.0 );  // don't run while turning
             }
          }
 
@@ -1976,7 +1978,7 @@ void BotThink( bot_t *pBot )
          {
             if ((pBot->f_use_health_time + 10.0) > gpGlobals->time)
             {
-               pBot->f_move_speed = 0;  // don't move while using health station
+               pBot->SetSpeed( 0.0 );  // don't move while using health station
 
                pEdict->v.button = IN_USE;
             }
@@ -1996,7 +1998,7 @@ void BotThink( bot_t *pBot )
          {
             if ((pBot->f_use_HEV_time + 10.0) > gpGlobals->time)
             {
-               pBot->f_move_speed = 0;  // don't move while using HEV station
+               pBot->SetSpeed( 0.0 );  // don't move while using HEV station
 
                pEdict->v.button = IN_USE;
             }
@@ -2019,7 +2021,7 @@ void BotThink( bot_t *pBot )
             // still capturing and hasn't captured yet...
             if ((pBot->f_use_capture_time > gpGlobals->time) && (pBot->pCaptureEdict->v.skin == team))
             {
-               pBot->f_move_speed = 0;  // don't move while capturing
+               pBot->SetSpeed( 0.0 );  // don't move while capturing
 
                pEdict->v.button = IN_USE;
             }
@@ -2036,7 +2038,7 @@ void BotThink( bot_t *pBot )
 
          else if (pBot->b_use_button)
          {
-            pBot->f_move_speed = 0;  // don't move while using elevator
+            pBot->SetSpeed( 0.0 );  // don't move while using elevator
 
             BotUseLift( pBot, moved_distance );
          }
@@ -2059,7 +2061,7 @@ void BotThink( bot_t *pBot )
 						if( ( pBot->fBuildTime + 22.0 ) > gpGlobals->time )
 						{
 							// don't move
-							pBot->f_move_speed = 0.0;
+							pBot->SetSpeed( 0.0 );
 							if (((NSBot *)pBot)->HasWelder())
 							{
 								FakeClientCommand(pBot->pEdict, "weapon_welder");
@@ -2084,7 +2086,7 @@ void BotThink( bot_t *pBot )
 					{
 						if( ( pBot->fUseArmoryTime + 4.0 ) > gpGlobals->time )
 						{
-							pBot->f_move_speed = 0.0;  // don't move
+							pBot->SetSpeed( 0.0 );  // don't move
 
 							pEdict->v.button = IN_USE;
 						}
@@ -2168,7 +2170,7 @@ void BotThink( bot_t *pBot )
             
                      BotFixIdealYaw(pEdict);
             
-                     pBot->f_move_speed = 0;  // don't move while turning
+                     pBot->SetSpeed( 0.0 );  // don't move while turning
                      pBot->f_dont_avoid_wall_time = gpGlobals->time + 1.0;
             
                      moved_distance = 2.0;  // dont use bot stuck code
@@ -2187,7 +2189,7 @@ void BotThink( bot_t *pBot )
             
                            BotFixIdealYaw(pEdict);
             
-                           pBot->f_move_speed = 0;  // don't move while turning
+                           pBot->SetSpeed( 0.0 );  // don't move while turning
                            pBot->f_dont_avoid_wall_time = gpGlobals->time + 1.0;
                         }
             
@@ -2204,7 +2206,7 @@ void BotThink( bot_t *pBot )
             
                            BotFixIdealYaw(pEdict);
             
-                           pBot->f_move_speed = 0;  // don't move while turning
+                           pBot->SetSpeed( 0.0 );  // don't move while turning
                            pBot->f_dont_avoid_wall_time = gpGlobals->time + 1.0;
                         }
             
@@ -2296,7 +2298,7 @@ void BotThink( bot_t *pBot )
       // check if the next waypoint is a door waypoint...
       if (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOOR)
       {
-         pBot->f_move_speed = pBot->GetMaxSpeed() / 3;  // slow down for doors
+         pBot->SetSpeed( pBot->GetMaxSpeed() / 3.0 );  // slow down for doors
       }
 
       // check if the next waypoint is a ladder waypoint...
@@ -2312,16 +2314,16 @@ void BotThink( bot_t *pBot )
                float waypoint_distance = (pEdict->v.origin - pBot->waypoint_origin).Length();
 
                if (waypoint_distance <= 20.0)  // if VERY close...
-                  pBot->f_move_speed = 20.0;  // go VERY slow
+                  pBot->SetSpeed( 20.0 );  // go VERY slow
                else if (waypoint_distance <= 100.0)  // if fairly close...
-                  pBot->f_move_speed = 50.0;  // go fairly slow
+                  pBot->SetSpeed( 50.0 );  // go fairly slow
 
                pBot->ladder_dir = LADDER_DOWN;
                pBot->f_dont_check_stuck = gpGlobals->time + 1.0;
             }
             else  // bot must be in mid-air, go BACKWARDS to touch ladder...
             {
-               pBot->f_move_speed = -pBot->GetMaxSpeed();
+               pBot->SetSpeed( -pBot->GetMaxSpeed() );
             }
          }
          else
@@ -2374,7 +2376,7 @@ void BotThink( bot_t *pBot )
 
 	pBot->Think();
 
-	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->f_move_speed, 0, 0, pEdict->v.button, 0, msecval);
+	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->GetSpeed(), 0, 0, pEdict->v.button, 0, msecval);
 
 	return;
 }

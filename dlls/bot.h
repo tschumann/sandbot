@@ -438,7 +438,6 @@ public:
 	float f_primary_charging;
 	float f_secondary_charging;
 	int   charging_weapon_id;
-	float f_move_speed;
 	float f_pause_time;
 	float f_sound_update_time;
 	bool  bot_has_flag;
@@ -493,6 +492,7 @@ protected:
 
 	edict_t *pLightEnt;
 	float fMaxSpeed;
+	float f_move_speed;
 	std::vector<weapon_t> weapons;
 };
 

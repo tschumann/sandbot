@@ -726,7 +726,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          {
             if (iId == TF_WEAPON_SNIPERRIFLE)
             {
-               pBot->f_move_speed = 0;  // don't move while using sniper rifle
+               pBot->SetSpeed( 0.0 );  // don't move while using sniper rifle
             }
          }
 
@@ -882,7 +882,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          {
             if (iId == TF_WEAPON_SNIPERRIFLE)
             {
-               pBot->f_move_speed = 0;  // don't move while using sniper rifle
+               pBot->SetSpeed( 0.0 );  // don't move while using sniper rifle
 
                if (pEdict->v.velocity.Length() > 50)
                {
@@ -996,7 +996,7 @@ void BotShootAtEnemy( bot_t *pBot )
 
 	v_enemy.z = 0;  // ignore z component (up & down)
 
-	pBot->f_move_speed = pBot->GetSpeedToEnemy();
+	pBot->SetSpeed( pBot->GetSpeedToEnemy() );
 
 	// is it time to shoot yet?
 	if (pBot->f_shoot_time <= gpGlobals->time)
