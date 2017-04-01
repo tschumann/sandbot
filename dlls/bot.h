@@ -492,7 +492,7 @@ protected:
 
 	edict_t *pLightEnt;
 	float fMaxSpeed;
-	float f_move_speed;
+	float fSpeed;
 	std::vector<weapon_t> weapons;
 };
 

@@ -2416,14 +2416,14 @@ void bot_t::PostThink()
 {
 	if( this->f_pause_time > gpGlobals->time )  // is the bot "paused"?
 	{
-		this->f_move_speed = 0;  // don't move while pausing
+		this->SetSpeed( 0.0 );  // don't move while pausing
 	}
 
 	// make the body face the same way the bot is looking
 	this->pEdict->v.angles.y = this->pEdict->v.v_angle.y;
 
 	// save the previous speed (for checking if stuck)
-	this->prev_speed = this->f_move_speed;
+	this->prev_speed = this->fSpeed;
 	
 	this->FixIdealPitch();
 	BotFixIdealYaw( this->pEdict );
@@ -2626,12 +2626,12 @@ float bot_t::GetMaxSpeed()
 
 void bot_t::SetSpeed( float fSpeed )
 {
-	this->f_move_speed = fSpeed;
+	this->fSpeed = fSpeed;
 }
 
 float bot_t::GetSpeed()
 {
-	return this->f_move_speed;
+	return this->fSpeed;
 }
 
 int bot_t::GetLightLevel()
