@@ -8,6 +8,43 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+void OpposingForceBot::Join()
+{
+	// handle Opposing Force CTF stuff here...
+
+	if( this->start_action == MSG_OPFOR_TEAM_SELECT )
+	{
+		this->start_action = MSG_OPFOR_IDLE;  // switch back to idle
+
+		// TODO: team 3? there are only two teams?
+		if ((this->bot_team != 1) && (this->bot_team != 2) && (this->bot_team != 3))
+			this->bot_team = RANDOM_LONG(1, 2);			
+
+		FakeClientCommand(pEdict, "jointeam %d", this->bot_team);
+
+		return;
+	}
+
+	if( this->start_action == MSG_OPFOR_CLASS_SELECT )
+	{
+		this->start_action = MSG_OPFOR_IDLE;  // switch back to idle
+
+		if ((this->bot_class < 0) || (this->bot_class > 10))
+			this->bot_class = RANDOM_LONG(1, 10);
+
+		// select the class the bot wishes to use...
+		if( this->bot_class > 7 )
+			this->bot_class = 7;
+
+		FakeClientCommand(pEdict, "selectchar %d", this->bot_class);
+
+		// bot has now joined the game (doesn't need to be started)
+		this->not_started = 0;
+
+		return;
+	}
+}
+
 bool OpposingForceBot::FindFlag()
 {
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];

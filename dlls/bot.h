@@ -510,6 +510,8 @@ public:
 class OpposingForceBot : public HalfLifeBot
 {
 public:
+	virtual void Join();
+
 	virtual bool FindFlag();
 };
 

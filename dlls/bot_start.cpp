@@ -222,48 +222,11 @@ void BotStartGame( bot_t *pBot )
          return;
       }
    }
-   else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
-   {
-      // handle Opposing Force CTF stuff here...
-
-      if (pBot->start_action == MSG_OPFOR_TEAM_SELECT)
-      {
-         pBot->start_action = MSG_OPFOR_IDLE;  // switch back to idle
-
-         if ((pBot->bot_team != 1) && (pBot->bot_team != 2) &&
-             (pBot->bot_team != 3))
-            pBot->bot_team = -1;
-
-         if (pBot->bot_team == -1)
-            pBot->bot_team = RANDOM_LONG(1, 2);
-
-         FakeClientCommand(pEdict, "jointeam %d", pBot->bot_team);
-
-         return;
-      }
-
-      if (pBot->start_action == MSG_OPFOR_CLASS_SELECT)
-      {
-         pBot->start_action = MSG_OPFOR_IDLE;  // switch back to idle
-
-         if ((pBot->bot_class < 0) || (pBot->bot_class > 10))
-            pBot->bot_class = -1;
-
-         if (pBot->bot_class == -1)
-            pBot->bot_class = RANDOM_LONG(1, 10);
-
-         // select the class the bot wishes to use...
-		 if( pBot->bot_class > 7 )
-			 pBot->bot_class = 7;
-
-         FakeClientCommand(pEdict, "selectchar %d", pBot->bot_class);
-
-         // bot has now joined the game (doesn't need to be started)
-         pBot->not_started = 0;
-
-         return;
-      }
-   }
+	else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
+	{
+		pBot->Join();
+		return;
+	}
 	else if( mod_id == DOD_DLL || mod_id == NS_DLL)
 	{
 		pBot->Join();
