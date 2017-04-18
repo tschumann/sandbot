@@ -8,6 +8,143 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+void TFCBot::Join()
+{
+	extern int max_teams;
+	extern int max_team_players[4];
+	extern int team_class_limits[4];
+
+	if ((this->start_action == MSG_TFC_IDLE) && (this->create_time + 3.0 <= gpGlobals->time))
+	{
+		this->start_action = MSG_TFC_TEAM_SELECT;  // force team selection
+	}
+
+	// handle Team Fortress Classic stuff here...
+
+	if (this->start_action == MSG_TFC_TEAM_SELECT)
+	{
+		this->start_action = MSG_TFC_IDLE;  // switch back to idle
+		this->create_time = gpGlobals->time;  // reset
+
+		if ((this->bot_team != 1) && (this->bot_team != 2) && (this->bot_team != 3) && (this->bot_team != 4) && (this->bot_team != 5))
+			this->bot_team = -1;
+
+		if (this->bot_team == -1)
+			this->bot_team = RANDOM_LONG(1, max_teams);
+
+		int retry_count = 0;
+
+		while ((retry_count < 4) && (max_team_players[this->bot_team-1] > 0))  // not unlimited?
+		{
+			int count = 0;
+
+			// count number of players on this team...
+			for (index = 1; index <= gpGlobals->maxClients; index++)
+			{
+				edict_t *pPlayer = INDEXENT(index);
+
+				if (pPlayer && !pPlayer->free)
+				{
+					if (UTIL_GetTeam(pPlayer) == (this->bot_team - 1))
+						count++;
+				}
+			}
+
+			if (count < max_team_players[this->bot_team-1])
+				break;  // haven't reached limit yet, continue
+			else
+			{
+				this->bot_team++;
+
+				if (this->bot_team > max_teams)
+					this->bot_team = 1;
+
+				retry_count++;
+			}
+		}
+
+		// select the team the bot wishes to join...
+		if( this->bot_team < 1 && this->bot_team > 5 )
+			this->bot_team = 5;
+
+		FakeClientCommand(pEdict, "jointeam %d", this->bot_team);
+
+		return;
+	}
+
+	if (this->start_action == MSG_TFC_CLASS_SELECT)
+	{
+		this->start_action = MSG_TFC_IDLE;  // switch back to idle
+		this->create_time = gpGlobals->time;  // reset
+
+		if ((this->bot_class < 0) || (this->bot_class > 10))
+			this->bot_class = -1;
+
+		if (this->bot_class == -1)
+			this->bot_class = RANDOM_LONG(1, 10);
+
+		int team = UTIL_GetTeam(pEdict);
+
+		if (team_class_limits[team] == -1)  // civilian only?
+		{
+			this->bot_class = 0;  // civilian
+		}
+		else
+		{
+			// TODO: this all looks unused - part of something that was half done?
+			int class_not_allowed;
+
+			if (this->bot_class == 10)
+				class_not_allowed = team_class_limits[team] & (1<<7);
+			else if (this->bot_class <= 7)
+				class_not_allowed = team_class_limits[team] & (1<<(this->bot_class-1));
+			else
+				class_not_allowed = team_class_limits[team] & (1<<(this->bot_class));
+
+			while (class_not_allowed)
+			{
+				this->bot_class = RANDOM_LONG(1, 10);
+
+				if (this->bot_class == 10)
+					class_not_allowed = team_class_limits[team] & (1<<7);
+				else if (this->bot_class <= 7)
+					class_not_allowed = team_class_limits[team] & (1<<(this->bot_class-1));
+				else
+					class_not_allowed = team_class_limits[team] & (1<<(this->bot_class));
+			}
+		}
+
+		// select the class the bot wishes to use...
+		if (this->bot_class == 0)
+			FakeClientCommand(pEdict, "civilian");
+		else if (this->bot_class == 1)
+			FakeClientCommand(pEdict, "scout");
+		else if (this->bot_class == 2)
+			FakeClientCommand(pEdict, "sniper");
+		else if (this->bot_class == 3)
+			FakeClientCommand(pEdict, "soldier");
+		else if (this->bot_class == 4)
+			FakeClientCommand(pEdict, "demoman");
+		else if (this->bot_class == 5)
+			FakeClientCommand(pEdict, "medic");
+		else if (this->bot_class == 6)
+			FakeClientCommand(pEdict, "hwguy");
+		else if (this->bot_class == 7)
+			FakeClientCommand(pEdict, "pyro");
+		else if (this->bot_class == 8)
+			FakeClientCommand(pEdict, "spy");
+		else if (this->bot_class == 9)
+			FakeClientCommand(pEdict, "engineer");
+		else
+			FakeClientCommand(pEdict, "randompc");
+
+		// bot has now joined the game (doesn't need to be started)
+		this->not_started = 0;
+
+		return;
+	}
+}
+
 bool TFCBot::IsSniper()
 {
 	return this->pEdict->v.playerclass == TFCBot::CLASS_SNIPER;

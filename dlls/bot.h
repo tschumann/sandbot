@@ -518,6 +518,8 @@ public:
 class CStrikeBot : public bot_t
 {
 public:
+	virtual void Join();
+
 	virtual float GetMaxSpeed();
 };
 
@@ -549,6 +551,8 @@ public:
 class TFCBot : public bot_t
 {
 public:
+	virtual void Join();
+
 	virtual bool IsSniper();
 
 	virtual bool FindFlag();

@@ -383,7 +383,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			return true;
 		}
    }
-   else if ((mod_id == GEARBOX_DLL) && ((GearboxGame *)pGame)->IsCTF())
+   else if ((mod_id == GEARBOX_DLL) && pGame->IsCTF())
    {
 		bool success = ((OpposingForceBot *)pBot)->FindFlag();
 
