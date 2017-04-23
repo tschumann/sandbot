@@ -2398,6 +2398,7 @@ void bot_t::OnSpawn()
 
 void bot_t::Join()
 {
+	this->not_started = 0;
 }
 
 void bot_t::PreThink()

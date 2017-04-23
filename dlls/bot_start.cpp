@@ -19,20 +19,6 @@ extern int mod_id;
 
 void BotStartGame( bot_t *pBot )
 {
-	if( mod_id == CSTRIKE_DLL || mod_id == DOD_DLL || mod_id == TFC_DLL || mod_id == NS_DLL )
-	{
-		pBot->Join();
-		return;
-	}
-	else if( (mod_id == GEARBOX_DLL) && pGame->IsCTF() )
-	{
-		pBot->Join();
-		return;
-	}
-	else
-	{
-		// otherwise, don't need to do anything to start game...
-		pBot->not_started = 0;
-	}
+	pBot->Join();
 }
 
