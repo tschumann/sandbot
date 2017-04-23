@@ -14,4 +14,5 @@ Open Sandbot-2017.sln in Visual Studio 2017. You can probably load it in older (
 
 Linux
 -----
-Run make.
+You will probably need to install g++-multilib
+Run make in the dlls/ directory.
