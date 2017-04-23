@@ -10,8 +10,7 @@ Building
 ========
 Windows
 -------
-Open Sandbot-2008.sln in Visual Studio (it was made using Visual Studio 2008 but newer versions should probably open it fine).
-A Visual Studio 2015 solution is also provided (Sandbot-2015.sln) but currently isn't used for active development.
+Open Sandbot-2017.sln in Visual Studio 2017. You can probably load it in older (or newer) versions too.
 
 Linux
 -----
