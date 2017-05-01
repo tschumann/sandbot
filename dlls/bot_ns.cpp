@@ -102,6 +102,30 @@ void NSBot::Reset()
 	this->bIsEvolving = false;
 }
 
+float NSBot::GetAimSpread()
+{
+	float fSpread = bot_t::GetAimSpread();
+
+	// until light level can be properly detected, make marines slightly less accurate
+	if (this->IsMarine())
+	{
+		fSpread += 0.1;
+	}
+
+	return fSpread;
+}
+
+void NSBot::Reload()
+{
+	bot_t::Reload();
+
+	// only marines should be reloading, but check anyway
+	if( this->IsMarine() )
+	{
+		UTIL_HostSay(this->pEdict, TRUE, "reloading");
+	}
+}
+
 bool NSBot::ShouldReload()
 {
 	if( this->IsAlien() )

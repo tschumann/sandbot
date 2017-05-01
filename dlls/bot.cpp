@@ -2526,30 +2526,41 @@ int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )
 	return iEnemiesInLineOfSight;
 }
 
+float bot_t::GetAimSpread()
+{
+	Vector enemyOrigin = this->pBotEnemy->v.origin;
+	float fDistanceToEnemy = (enemyOrigin - this->GetOrigin()).Length();
+	float fSpread = 0.0;
+
+	// wide spread for for-away enemies
+	if( fDistanceToEnemy > 1000.0 )
+	{
+		fSpread = 1.0;
+	}
+	// proportional spread for nearby enemies
+	else if( fDistanceToEnemy > 100.0 )
+	{
+		fSpread = fDistanceToEnemy / 1000.0;
+	}
+	// small spread for close enemies
+	else
+	{
+		fSpread = 0.1;
+	}
+
+	return fSpread;
+}
+
 Vector bot_t::GetPointToShootAt()
 {
 	Vector target;
 	Vector enemyOrigin = this->pBotEnemy->v.origin;
-	float fDistanceToEnemy = (enemyOrigin - this->GetOrigin()).Length();
-	float f_scale;
+	float fSpread = this->GetAimSpread();
 	int d_x, d_y, d_z;
 
 	edict_t *pEdict = this->pEdict;
 
-	if( fDistanceToEnemy > 1000.0 )
-	{
-		f_scale = 1.0;
-	}
-	else if( fDistanceToEnemy > 100.0 )
-	{
-		f_scale = fDistanceToEnemy / 1000.0;
-	}
-	else
-	{
-		f_scale = 0.1;
-	}
-
-	switch (this->bot_skill)
+	switch( this->bot_skill )
 	{
 	case 0:
 		// VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)
@@ -2561,30 +2572,30 @@ Vector bot_t::GetPointToShootAt()
 	case 1:
 		// GOOD, offset a little for x, y, and z
 		target = enemyOrigin + this->pBotEnemy->v.view_ofs;  // aim for the head (if you can find it)
-		d_x = RANDOM_FLOAT(-5, 5) * f_scale;
-		d_y = RANDOM_FLOAT(-5, 5) * f_scale;
-		d_z = RANDOM_FLOAT(-10, 10) * f_scale;
+		d_x = RANDOM_FLOAT(-5, 5) * fSpread;
+		d_y = RANDOM_FLOAT(-5, 5) * fSpread;
+		d_z = RANDOM_FLOAT(-10, 10) * fSpread;
 		break;
 	case 2:
 		// FAIR, offset somewhat for x, y, and z
 		target = enemyOrigin;  // aim for the body
-		d_x = RANDOM_FLOAT(-10, 10) * f_scale;
-		d_y = RANDOM_FLOAT(-10, 10) * f_scale;
-		d_z = RANDOM_FLOAT(-18, 18) * f_scale;
+		d_x = RANDOM_FLOAT(-10, 10) * fSpread;
+		d_y = RANDOM_FLOAT(-10, 10) * fSpread;
+		d_z = RANDOM_FLOAT(-18, 18) * fSpread;
 		break;
 	case 3:
 		// POOR, offset for x, y, and z
 		target = enemyOrigin;  // aim for the body
-		d_x = RANDOM_FLOAT(-20, 20) * f_scale;
-		d_y = RANDOM_FLOAT(-20, 20) * f_scale;
-		d_z = RANDOM_FLOAT(-32, 32) * f_scale;
+		d_x = RANDOM_FLOAT(-20, 20) * fSpread;
+		d_y = RANDOM_FLOAT(-20, 20) * fSpread;
+		d_z = RANDOM_FLOAT(-32, 32) * fSpread;
 		break;
 	case 4:
 		// BAD, offset lots for x, y, and z
 		target = enemyOrigin;  // aim for the body
-		d_x = RANDOM_FLOAT(-35, 35) * f_scale;
-		d_y = RANDOM_FLOAT(-35, 35) * f_scale;
-		d_z = RANDOM_FLOAT(-50, 50) * f_scale;
+		d_x = RANDOM_FLOAT(-35, 35) * fSpread;
+		d_y = RANDOM_FLOAT(-35, 35) * fSpread;
+		d_z = RANDOM_FLOAT(-50, 50) * fSpread;
 		break;
 	}
 

@@ -322,6 +322,7 @@ public:
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();
 	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
+	virtual float GetAimSpread();
 	virtual Vector GetPointToShootAt();
 	virtual void Reload();
 	virtual bool ShouldReload();
@@ -627,6 +628,8 @@ public:
 	virtual float GetSpeedToEnemy();
 
 	virtual void Reset();
+	virtual float GetAimSpread();
+	virtual void Reload();
 	virtual bool ShouldReload();
 
 	virtual bool IsNearHive();

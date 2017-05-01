@@ -12,8 +12,6 @@
 #include "studio.h"
 
 #include "bot.h"
-#include "bot_func.h"
-#include "bot_weapons.h"
 
 extern int mod_id;
 

@@ -5,7 +5,7 @@ Name: Sandbot
 Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
 Requirements:
  Steam versions of either Half-Life, Half-Life Opposing Force and the latest versions of Gunman Chronicles or They Hunger.
- MetaMod-P (MetaMod mostly works but Gunman Chronicles will only work with MetaMod-P for example.
+ MetaMod-P (MetaMod mostly works but Gunman Chronicles will only work with MetaMod-P for example) if you want MetaMod support.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
 == Usage ==
@@ -34,6 +34,11 @@ A. Yes, please do!
 
 v0.4.1 (??/??/??)
 - [All] Replaced botdonshoot console command with bot_shoot cvar.
+- [All] Updated Windows compiler to Visual Studio 2017 (from Visual Studio 2008).
+- [All] Updated Linux compiler to gcc 6.3.0 (from I'm not sure what - gcc 4.8.2? gcc 4.9.0?).
+- [Day of Defeat] Bots will now move at walk speed instead of sprinting everywhere.
+- [Natural Selection] Marine bots will now say when they're reloading.
+- [Natural Selection] Marine bots are now slightly less accurate to compensate for the fact their isn't reduced in dark areas.
 
 v0.4 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
