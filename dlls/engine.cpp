@@ -62,19 +62,20 @@ const char *AssetRemap( const char *szPath )
 	else if( mod_id == SHIP_DLL )
 	{
 		// it's unclear where these invalid model names come from
-		if( !strcmp(szPath, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl") )
+		// they cause crashes when developer > 0
+		if( !strncmp(szPath, "models/player/models/player/Jane.mdl/models/player/Jane.mdl.mdl", strlen("models/player/models/player/Jane.mdl") ) )
 		{
 			return "models/player/Jane.mdl";
 		}
-		else if( !strcmp(szPath, "models/player/models/player/John.mdl/models/player/John.mdl.mdl") )
+		else if( !strncmp(szPath, "models/player/models/player/John.mdl/models/player/John.mdl.mdl", strlen("models/player/models/player/John.mdl") ) )
 		{
 			return "models/player/John.mdl";
 		}
-		else if( !strcmp(szPath, "models/player/models/player/john2.mdl/models/player/john2.mdl.m") )
+		else if( !strncmp(szPath, "models/player/models/player/john2.mdl/models/player/john2.mdl.m", strlen("models/player/models/player/john2.mdl") ) )
 		{
 			return "models/player/john2.mdl";
 		}
-		else if( !strcmp(szPath, "models/player/models/player/Holliday.mdl/models/player/Holliday") )
+		else if( !strncmp(szPath, "models/player/models/player/Holliday.mdl/models/player/Holliday", strlen("models/player/models/player/Holliday.mdl") ) )
 		{
 			return "models/player/Holliday.mdl";
 		}
