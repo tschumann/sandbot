@@ -213,6 +213,7 @@ typedef struct
 #define NS_WEAPON_DEVOUR			30
 
 // weapon ID values for They Hunger (others shared with Half-Life)
+// TODO: redefine the Half-Life ones
 #define HUNGER_WEAPON_TH_SPANNER	16
 #define HUNGER_WEAPON_TH_AP9		17
 #define HUNGER_WEAPON_TH_SHOVEL		18

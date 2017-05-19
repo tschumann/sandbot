@@ -328,6 +328,7 @@ public:
 	virtual bool ShouldReload();
 
 	virtual bool CanShoot();
+	virtual int GetPistol();
 
 	virtual void PickUpItem();
 
@@ -501,6 +502,9 @@ class HalfLifeBot : public bot_t
 {
 public:
 	HalfLifeBot();
+
+	virtual int GetPistol();
+
 	virtual bool CanUseCrowbar( bool really );
 	virtual bool CanUseGlock( bool really );
 	virtual bool CanUseMP5Primary( bool really );
@@ -512,6 +516,8 @@ class OpposingForceBot : public HalfLifeBot
 {
 public:
 	virtual void Join();
+
+	virtual int GetPistol();
 
 	virtual bool FindFlag();
 };
@@ -745,6 +751,8 @@ public:
 
 class HungerBot : public HalfLifeBot
 {
+public:
+	virtual int GetPistol();
 };
 
 extern bot_t **pBots;

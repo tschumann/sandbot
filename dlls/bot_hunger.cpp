@@ -7,3 +7,8 @@
 #include "bot_func.h"
 #include "waypoint.h"
 #include "bot_weapons.h"
+
+int HungerBot::GetPistol()
+{
+	return VALVE_WEAPON_GLOCK;
+}

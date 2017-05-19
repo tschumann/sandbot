@@ -21,6 +21,11 @@ HalfLifeBot::HalfLifeBot()
 	this->weapons.push_back(mp5);
 }
 
+int HalfLifeBot::GetPistol()
+{
+	return VALVE_WEAPON_GLOCK;
+}
+
 bool HalfLifeBot::CanUseCrowbar( bool really )
 {
 	if( !bot_t::BaseCanUseWeapon() )

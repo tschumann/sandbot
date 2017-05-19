@@ -2622,6 +2622,11 @@ bool bot_t::CanShoot()
 	return bot_shoot.value > 0.0 || atof( bot_shoot.string ) > 0.0;
 }
 
+int bot_t::GetPistol()
+{
+	return VALVE_WEAPON_GLOCK;
+}
+
 void bot_t::PickUpItem()
 {
 }

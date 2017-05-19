@@ -52,6 +52,11 @@ void OpposingForceBot::Join()
 	}
 }
 
+int OpposingForceBot::GetPistol()
+{
+	return GEARBOX_WEAPON_GLOCK;
+}
+
 bool OpposingForceBot::FindFlag()
 {
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];

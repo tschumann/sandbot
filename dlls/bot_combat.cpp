@@ -1075,7 +1075,6 @@ bool BotShootTripmine( bot_t *pBot )
 
 	BotFixIdealYaw(pEdict);
 
-	// TODO: does this work in Opposing Force and They Hunger?
-	return BotFireWeapon( v_enemy, pBot, VALVE_WEAPON_GLOCK );
+	return BotFireWeapon( v_enemy, pBot, pBot->GetPistol() );
 }
 
