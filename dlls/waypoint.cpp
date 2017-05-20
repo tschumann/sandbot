@@ -949,19 +949,25 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       {
          strcpy(item_name, STRING(pent->v.classname));
 		 ALERT( at_console, "%s is visible\n", item_name );
+		 ALERT(at_console, "%d\n", pent->v.owner);
 
-         if (!strncmp("item_health", item_name, 11) || !strncmp("item_armor", item_name, 10) ||
+         if ((!strncmp("item_health", item_name, 11) || !strncmp("item_armor", item_name, 10) ||
              !strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
              !strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
 			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
-             !strncmp("weapon_", item_name, 7) && (pent->v.owner == NULL)
+             !strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name)) &&
+			 (pent->v.owner == NULL)
 			 )
          {
             distance = (pent->v.origin - origin).Length();
 
+			UTIL_LogPrintf("%f dist", distance);
+
             if (distance < min_distance)
             {
                strcpy(nearest_name, item_name);
+
+			   UTIL_LogPrintf("%s is closer", item_name);
 
                tfc_backpack_index = -1;  // "null" out backpack index
 
@@ -993,6 +999,8 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          }
       }
    }
+
+   UTIL_LogPrintf("%s is closest", nearest_name);
 
    if (nearest_name[0])  // found an entity name
    {

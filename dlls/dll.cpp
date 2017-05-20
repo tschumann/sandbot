@@ -1335,7 +1335,7 @@ void StartFrame( void )
 		{
 			if( (g_waypoint_on) && FBitSet( pPlayer->v.flags, FL_CLIENT ) )
 			{
-				ALERT( at_console, "%f\n", pPlayer->v.maxspeed );
+				// ALERT( at_console, "%f\n", pPlayer->v.maxspeed );
 				WaypointThink( pPlayer );
 			}
 		}

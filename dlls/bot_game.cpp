@@ -10,7 +10,7 @@
 
 bool Game::CanAddBots()
 {
-	return false;
+	return true;
 }
 
 bool Game::IsTeamPlay()
