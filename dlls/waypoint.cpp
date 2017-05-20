@@ -1028,7 +1028,21 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          waypoints[wpt_index].flags |= W_FL_WEAPON;
       }
 
-	  if ((strcmp("dod_objecy", nearest_name) == 0))
+	  if ((strcmp("item_ctfbase", nearest_name) == 0))
+	  {
+		  if (pEntity)
+			  ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfbase\n");
+		  waypoints[wpt_index].flags |= W_FL_FLAG_GOAL;
+	  }
+
+	  if ((strcmp("item_ctfflag", nearest_name) == 0))
+	  {
+		  if (pEntity)
+			  ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfflag\n");
+		  waypoints[wpt_index].flags |= W_FL_FLAG;
+	  }
+
+	  if ((strcmp("dod_object", nearest_name) == 0))
       {
          if (pEntity)
             ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a dod_object\n");

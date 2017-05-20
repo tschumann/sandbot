@@ -566,7 +566,7 @@ edict_t* NSBot::FindEnemy()
 			if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ) && pent->v.solid != SOLID_NOT)
 			{
 				float distance = (pent->v.origin - this->GetOrigin()).Length();
-				ALERT( at_console, "found a hive\n" );
+				UTIL_LogDPrintf( "found a hive\n" );
 
 				// is this the closest hive?
 				if (distance < nearestdistance)
@@ -624,7 +624,7 @@ edict_t* NSBot::FindEnemy()
 			if (/*FInViewCone( &vecEnd, pEdict ) && */FVisible( vecEnd, pEdict ))
 			{
 				float distance = (pent->v.origin - this->GetOrigin()).Length();
-				ALERT( at_console, "found a command chair\n" );
+				UTIL_LogDPrintf( "found a command chair\n" );
 
 				// is this the closest command chair?
 				if (distance < nearestdistance)

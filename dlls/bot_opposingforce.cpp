@@ -57,6 +57,12 @@ int OpposingForceBot::GetPistol()
 	return GEARBOX_WEAPON_GLOCK;
 }
 
+int OpposingForceBot::GetGoalType()
+{
+	// TODO: return W_FL_FLAG_GOAL if bot has flag
+	return W_FL_FLAG;
+}
+
 bool OpposingForceBot::FindFlag()
 {
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];

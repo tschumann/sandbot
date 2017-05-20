@@ -519,6 +519,8 @@ public:
 
 	virtual int GetPistol();
 
+	virtual int GetGoalType();
+
 	virtual bool FindFlag();
 };
 

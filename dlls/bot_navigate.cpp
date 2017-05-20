@@ -407,13 +407,13 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 					// is this command chair visible?
 					if (/*FInViewCone( &vecEnd, pEdict ) && */FVisible( vecEnd, pEdict ))
 					{
-						ALERT( at_console, "seen a command chair\n" );
+						UTIL_LogDPrintf("seen a command chair\n" );
 						float fdistance = (pent->v.origin - pEdict->v.origin).Length();
 
 						// is this the closest command chair?
 						if (fdistance < 300.0)
 						{
-							ALERT( at_console, "bot seeing a command chair; making it the enemy\n" );
+							UTIL_LogDPrintf( "bot seeing a command chair; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
 						}
 					}
@@ -435,7 +435,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 						// is this the closest hive?
 						if (fdistance < 300.0)
 						{
-							ALERT( at_console, "bot seeing a hive; making it the enemy\n" );
+							UTIL_LogDPrintf( "bot seeing a hive; making it the enemy\n" );
 							pBot->pBotEnemy = pent;
 						}
 					}
@@ -517,8 +517,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    // find the distance to the target waypoint
    waypoint_distance = (pEdict->v.origin - pBot->waypoint_origin).Length();
 
-   // ALERT( at_console, "bot is %f from waypoint\n", waypoint_distance);
-
    // set the minimum distance from waypoint to be considered "touching" it
    min_distance = 50.0;
 
@@ -567,7 +565,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	  if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
 		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
-		  ALERT( at_console, "stopping near waypoint\n" );
+		  UTIL_LogDPrintf( "stopping near waypoint\n" );
 		  pBot->SetSpeed( 0.0 );
 		  ((DODBot *)pBot)->bCapturing = true;
 		  pBot->iGoalIndex = pBot->waypoint_goal;
@@ -575,7 +573,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	  else if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
 		  pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
-		  ALERT( at_console, "moving away from waypoint\n" );
+		  UTIL_LogDPrintf( "moving away from waypoint\n" );
 		  pBot->SetSpeed( pEdict->v.maxspeed );
 		  ((DODBot *)pBot)->bCapturing = false;
 	  }
@@ -624,7 +622,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       // check if the bot has reached the goal waypoint...
       if (pBot->curr_waypoint_index == pBot->waypoint_goal)
       {
-		  ALERT( at_console, "bot is at goal waypoint %d\n", pBot->curr_waypoint_index);
+		  UTIL_LogDPrintf( "bot is at goal waypoint %d\n", pBot->curr_waypoint_index );
          pBot->waypoint_goal = -1;  // forget this goal waypoint
 
          if (pBot->waypoint_near_flag)
@@ -785,7 +783,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 // GO FIND WEAPONS HERE!!!
 
 
-         if (mod_id == VALVE_DLL || mod_id == GEARBOX_DLL || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
+         if (mod_id == VALVE_DLL || (mod_id == GEARBOX_DLL && !pGame->IsCTF()) || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
          {
             if (RANDOM_LONG(1, 100) <= 50)
             {
@@ -865,13 +863,23 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                }
             }
          }
+		 else if (mod_id == GEARBOX_DLL && pGame->IsCTF())
+		 {
+			 index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
+
+			 if (index != -1)
+			 {
+				 UTIL_LogDPrintf("an opfor bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam(pBot->pEdict), index);
+				 pBot->waypoint_goal = index;
+			 }
+		 }
 		 else if (mod_id == DOD_DLL)
 		 {
 			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
             if (index != -1)
             {
-				ALERT(at_console, "a dod bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam( pBot->pEdict ), index);
+				UTIL_LogDPrintf("a dod bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam( pBot->pEdict ), index);
                pBot->waypoint_goal = index;
 			}
 		 }
@@ -879,18 +887,18 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		 {
 			 if( pBot->pEdict->v.team == NSBot::TEAM_ALIEN )
 			 {
-				 ALERT(at_console, "looking for command chair\n");
+				 UTIL_LogDPrintf("looking for command chair\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_COMMAND_CHAIR);
              }
 			 else if( pBot->pEdict->v.team == NSBot::TEAM_MARINE )
 			 {
-				 ALERT(at_console, "looking for hive\n");
+				 UTIL_LogDPrintf("looking for hive\n");
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_HIVE);
              }
 
             if (index != -1)
             {
-				ALERT(at_console, "an ns bot is heading for a goal\n");
+				UTIL_LogDPrintf("an ns bot is heading for a goal\n");
                pBot->waypoint_goal = index;
 			}
 		 }
