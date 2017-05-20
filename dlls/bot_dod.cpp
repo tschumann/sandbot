@@ -172,6 +172,13 @@ float DODBot::GetSpeedToEnemy()
 	return fSpeed;
 }
 
+void DODBot::Reload()
+{
+	bot_t::Reload();
+
+	UTIL_HostSay(this->pEdict, TRUE, "reloading");
+}
+
 float DODBot::GetMaxSpeed()
 {
 	return pEdict->v.maxspeed;

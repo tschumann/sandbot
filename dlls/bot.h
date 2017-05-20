@@ -540,6 +540,7 @@ public:
 	virtual void Think();
 
 	virtual float GetSpeedToEnemy();
+	virtual void Reload();
 
 	virtual float GetMaxSpeed();
 	virtual float GetSpeed();
