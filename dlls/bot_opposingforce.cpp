@@ -59,7 +59,11 @@ int OpposingForceBot::GetPistol()
 
 int OpposingForceBot::GetGoalType()
 {
-	// TODO: return W_FL_FLAG_GOAL if bot has flag
+	// TODO: bot_has_flag may not be set properly
+	if (this->bot_has_flag)
+	{
+		return W_FL_FLAG_GOAL;
+	}
 	return W_FL_FLAG;
 }
 
@@ -79,7 +83,7 @@ bool OpposingForceBot::FindFlag()
 		if ((pent->v.owner == pEdict) && (pent->v.origin == this->GetOrigin()))
 		{
 			// we are carrying the flag
-			bot_has_flag = TRUE;
+			this->bot_has_flag = TRUE;
 
 			break;  // break out of while loop
 		}

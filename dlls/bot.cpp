@@ -48,8 +48,6 @@ bot_player_t *pBotData = NULL;
 bot_t **pBots; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 
-int number_names = 0;
-
 #define MAX_BOT_NAMES 100
 
 #define VALVE_MAX_SKINS    10
@@ -660,8 +658,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  }
       else // other mods
 	  {
-		  // TODO: is this even needed>
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );
+		  // TODO: is this even needed?
+		SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );
 	  }
 
       if (mod_id == CSTRIKE_DLL)
@@ -853,17 +851,20 @@ int BotInFieldOfView(bot_t *pBot, Vector dest)
 
 bool BotEntityIsVisible( bot_t *pBot, Vector dest )
 {
-   TraceResult tr;
+	TraceResult tr;
 
-   // trace a line from bot's eyes to destination...
-   UTIL_TraceLine( pBot->pEdict->v.origin + pBot->pEdict->v.view_ofs, dest, ignore_monsters,
-                   pBot->pEdict->v.pContainingEntity, &tr );
+	// trace a line from bot's eyes to destination...
+	UTIL_TraceLine( pBot->pEdict->v.origin + pBot->pEdict->v.view_ofs, dest, ignore_monsters, pBot->pEdict->v.pContainingEntity, &tr );
 
-   // check if line of sight to object is not blocked (i.e. visible)
-   if (tr.flFraction >= 1.0)
-      return TRUE;
-   else
-      return FALSE;
+	// check if line of sight to object is not blocked (i.e. visible)
+	if (tr.flFraction >= 1.0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
@@ -889,10 +890,6 @@ void BotFindItem( bot_t *pBot )
    if ((num_waypoints > 0) && (pBot->curr_waypoint_index != -1))
    {
       radius = 100.0;
-   }
-   else if( mod_id == NS_DLL )
-   {
-	   radius = 500.0;
    }
    else
    {
