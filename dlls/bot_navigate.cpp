@@ -350,7 +350,6 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	int team;
 	float pause_time = 0.0;
 	edict_t *pent;
-	bool bot_has_flag = FALSE;
 	bool touching;
 
 	edict_t *pEdict = pBot->pEdict;
@@ -709,22 +708,22 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       }
 
       // check if the bot is carrying the flag/card/ball...
-      if (bot_has_flag)
+      if (pBot->bot_has_flag)
       {
-         pBot->bot_has_flag = TRUE;
-
          // find the nearest flag goal waypoint...
-
-         index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG_GOAL);
+         index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
          pBot->waypoint_goal = index;  // goal index or -1
 
          pBot->waypoint_near_flag = FALSE;
       }
-      else
-      {
-         pBot->bot_has_flag = FALSE;
-      }
+	  else
+	  {
+		  // find the nearest flag goal waypoint...
+		  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
+
+		  pBot->waypoint_goal = index;  // goal index or -1
+	  }
 
       // test special case of bot underwater and close to surface...
       if (pBot->IsUnderWater())

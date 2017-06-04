@@ -1873,7 +1873,7 @@ void BotThink( bot_t *pBot )
    {
 	   if (pBot->CanShoot())
       {
-         if ((mod_id == TFC_DLL) && (pBot->bot_has_flag == TRUE))
+         if (pGame->IsCTF() && pBot->bot_has_flag)
          {
             // is it time to check whether bot should look for enemies yet?
             if (pBot->f_bot_find_enemy_time <= gpGlobals->time)
@@ -1893,7 +1893,7 @@ void BotThink( bot_t *pBot )
       }
       else
 	  {
-         pBot->pBotEnemy = NULL;  // clear enemy pointer (no ememy for you!)
+         pBot->pBotEnemy = NULL;  // clear enemy pointer (no enemy for you!)
 	  }
 
       if (pBot->HasEnemy())  // does an enemy exist?

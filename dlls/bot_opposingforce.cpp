@@ -59,7 +59,7 @@ int OpposingForceBot::GetPistol()
 
 int OpposingForceBot::GetGoalType()
 {
-	// TODO: bot_has_flag may not be set properly
+	// TODO: looks like bot_has_flag is set properly...
 	if (this->bot_has_flag)
 	{
 		return W_FL_FLAG_GOAL;
