@@ -480,12 +480,36 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		return false;
 	}
 
-	// if the waypoint is for a dod_control_point
-	if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
+	if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG )
+	{
+		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag");
+
+		// if there's not a nearby item_flag
+		if( !nearest_flag )
+		{
+			ALERT(at_console, "Couldn't find nearest item_ctfflag in ShouldSkip\n");
+
+			return false;
+		}
+
+		if( pBot->pEdict->v.skin == 0 && nearest_flag->v.skin == 1 )
+		{
+			return true;
+		}
+		else if( pBot->pEdict->v.skin == 1 && nearest_flag->v.skin == 0 )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
 		edict_t *nearest_control_point = FindNearest(waypoints[index].origin, "dod_control_point");
 
-		// if there's not nearby dod_control_point
+		// if there's not a nearby dod_control_point
 		if( !nearest_control_point )
 		{
 			ALERT( at_console, "Couldn't find nearest dod_control_point in ShouldSkip\n" );
