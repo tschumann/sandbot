@@ -492,13 +492,13 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 			return false;
 		}
 
-		UTIL_LogDPrintf("Bot team %d, flag skin %d\n", pBot->pEdict->v.skin, nearest_flag->v.skin);
+		UTIL_LogDPrintf("Bot team %d, flag skin %d\n", UTIL_GetTeam(pBot->pEdict), nearest_flag->v.skin);
 
-		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_flag->v.skin == 1 )
+		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_flag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN)
 		{
 			return false;
 		}
-		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_flag->v.skin == 0 )
+		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_flag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
 		{
 			return false;
 		}
@@ -519,13 +519,13 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 			return false;
 		}
 
-		UTIL_LogDPrintf("Bot team %d, base skin %d\n", UTIL_GetTeam(pBot->pEdict), nearest_base->v.skin);
+		UTIL_LogDPrintf("Bot team %d, base model %s\n", UTIL_GetTeam(pBot->pEdict), STRING(nearest_base->v.model));
 
-		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_base->v.skin == 1 )
+		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && !strcmp(STRING(nearest_base->v.model), "models/civ_stand.mdl"))
 		{
 			return false;
 		}
-		else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_base->v.skin == 0 )
+		else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && !strcmp(STRING(nearest_base->v.model), "models/mil_stand.mdl"))
 		{
 			return false;
 		}
@@ -1934,13 +1934,14 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
 		edict_t *pFlag = FindNearest(waypoints[index].origin, "item_ctfflag");
 		ALERT(at_console, "Body %d\n", pFlag->v.body);
+		ALERT(at_console, "Skin %d\n", pFlag->v.skin);
 	}
 
 	if (flags & W_FL_FLAG_GOAL)
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
 		edict_t *pBase = FindNearest(waypoints[index].origin, "item_ctfbase");
-		ALERT(at_console, "Body %d\n", pBase->v.body);
+		ALERT(at_console, "Model %s\n", STRING(pBase->v.model));
 	}
 
 	if (flags & W_FL_PRONE)

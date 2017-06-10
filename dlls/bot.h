@@ -526,8 +526,9 @@ public:
 
 	const static int TEAM_BLACK_MESA = 0;
 	const static int TEAM_OPPOSING_FORCE = 1;
-	const static int BLACK_MESA_FLAG_BODY = 0;
-	const static int OPPOSING_FORCE_BASE_BODY = 0;
+
+	const static int BLACK_MESA_FLAG_SKIN = 1;
+	const static int OPPOSING_FORCE_FLAG_SKIN = 2;
 };
 
 class CStrikeBot : public bot_t

@@ -99,6 +99,7 @@ bool OpposingForceBot::FindFlag()
 			// the bot can see it, check what type of model it is...
 			skin = pent->v.skin;
 
+			// TODO: it seems like skins 1 and 2 are actually used?
 			if (skin == 0) // Opposing Force team (these are BACKASSWARDS!)
 				skin = 1;
 			else if (skin == 1) // Black Mesa team
