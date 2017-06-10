@@ -99,14 +99,9 @@ bool OpposingForceBot::FindFlag()
 			// the bot can see it, check what type of model it is...
 			skin = pent->v.skin;
 
-			// TODO: it seems like skins 1 and 2 are actually used?
-			if (skin == 0) // Opposing Force team (these are BACKASSWARDS!)
-				skin = 1;
-			else if (skin == 1) // Black Mesa team
-				skin = 0;
-
 			// see if the flag matches the bot's team...
-			if (skin == team)
+			if ((skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN && team == OpposingForceBot::TEAM_BLACK_MESA) ||
+				(skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN && team == OpposingForceBot::TEAM_OPPOSING_FORCE))
 			{
 				// is and enemy carrying our flag/card?
 				if (pent->v.owner != NULL)
