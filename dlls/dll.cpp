@@ -132,7 +132,7 @@ void GameDLLInit( void )
 		bot_count.value = 11;
 		break;
 	case GEARBOX_DLL:
-		bot_count.value = 11;
+		bot_count.value = 1;
 		break;
 	case DOD_DLL:
 		bot_count.value = 15;
@@ -693,7 +693,14 @@ void ClientCommand( edict_t *pEntity )
             if (!g_waypoint_on)
                g_waypoint_on = TRUE;  // turn waypoints on if off
 
-            WaypointAdd(pEntity);
+			int flags = 0;
+
+			if (arg2)
+			{
+				flags = atoi(arg2);
+			}
+
+            WaypointAdd(pEntity, flags);
          }
          else if (FStrEq(arg1, "delete"))
          {
@@ -959,13 +966,27 @@ void ClientCommand( edict_t *pEntity )
 				// ALERT( at_console, "%d\n", pBot->GetLightLevel() );
 			}
 
+			ALERT( at_console, "Name: %s\n", STRING(player->v.netname) );
 			ALERT( at_console, "Light level: %d\n", player->v.light_level );
 			ALERT( at_console, "Team: %d\n", player->v.team );
 			ALERT( at_console, "Class: %d\n", player->v.playerclass );
+			ALERT( at_console, "Skin: %d\n", player->v.skin );
 			ALERT( at_console, "Speed: %d\n", player->v.speed );
+			ALERT( at_console, "Model: %s\n", STRING(player->v.model) );
 
 			if( mod_id == VALVE_DLL )
 			{
+			}
+			else if( mod_id == GEARBOX_DLL )
+			{
+				if (UTIL_GetTeam(player) == OpposingForceBot::TEAM_BLACK_MESA)
+				{
+					ALERT(at_console, "Team: Black Mesa\n");
+				}
+				else if (UTIL_GetTeam(player) == OpposingForceBot::TEAM_OPPOSING_FORCE)
+				{
+					ALERT(at_console, "Team: Opposing Force\n");
+				}
 			}
 			else if( mod_id == DOD_DLL )
 			{

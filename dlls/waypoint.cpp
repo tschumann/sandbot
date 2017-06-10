@@ -484,7 +484,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	{
 		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag");
 
-		// if there's not a nearby item_flag
+		// if there's not a nearby item_ctfflag
 		if( !nearest_flag )
 		{
 			ALERT(at_console, "Couldn't find nearest item_ctfflag in ShouldSkip\n");
@@ -492,17 +492,46 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 			return false;
 		}
 
-		if( pBot->pEdict->v.skin == 0 && nearest_flag->v.skin == 1 )
+		UTIL_LogDPrintf("Bot team %d, flag skin %d\n", pBot->pEdict->v.skin, nearest_flag->v.skin);
+
+		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_flag->v.skin == 1 )
 		{
-			return true;
+			return false;
 		}
-		else if( pBot->pEdict->v.skin == 1 && nearest_flag->v.skin == 0 )
+		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_flag->v.skin == 0 )
 		{
-			return true;
+			return false;
 		}
 		else
 		{
+			return true;
+		}
+	}
+	else if (mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG_GOAL)
+	{
+		edict_t *nearest_base = FindNearest(waypoints[index].origin, "item_ctfbase");
+
+		// if there's not a nearby item_ctfbase
+		if (!nearest_base)
+		{
+			ALERT(at_console, "Couldn't find nearest item_ctfbase in ShouldSkip\n");
+
 			return false;
+		}
+
+		UTIL_LogDPrintf("Bot team %d, base skin %d\n", UTIL_GetTeam(pBot->pEdict), nearest_base->v.skin);
+
+		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_base->v.skin == 1 )
+		{
+			return false;
+		}
+		else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_base->v.skin == 0 )
+		{
+			return false;
+		}
+		else
+		{
+			return true;
 		}
 	}
 	else if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
@@ -1129,7 +1158,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
 }
 
 
-void WaypointAdd(edict_t *pEntity)
+void WaypointAdd(edict_t *pEntity, int flags = 0)
 {
    int index;
 
@@ -1177,9 +1206,15 @@ void WaypointAdd(edict_t *pEntity)
    if (pEntity->v.movetype == MOVETYPE_FLY)
       waypoints[index].flags |= W_FL_LADDER;  // waypoint on a ladder
 
-
-   // search the area near the waypoint for items (HEALTH, AMMO, WEAPON, etc.)
-   WaypointSearchItems(pEntity, waypoints[index].origin, index);
+   if (flags)
+   {
+	   waypoints[index].flags = flags;
+   }
+   else
+   {
+	   // search the area near the waypoint for items (HEALTH, AMMO, WEAPON, etc.)
+	   WaypointSearchItems(pEntity, waypoints[index].origin, index);
+   }
 
    // TODO: this isn't working
    if( waypoints[index].flags & W_FL_NS_HIVE )
@@ -1897,11 +1932,15 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if (flags & W_FL_FLAG)
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
+		edict_t *pFlag = FindNearest(waypoints[index].origin, "item_ctfflag");
+		ALERT(at_console, "Body %d\n", pFlag->v.body);
 	}
 
 	if (flags & W_FL_FLAG_GOAL)
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
+		edict_t *pBase = FindNearest(waypoints[index].origin, "item_ctfbase");
+		ALERT(at_console, "Body %d\n", pBase->v.body);
 	}
 
 	if (flags & W_FL_PRONE)

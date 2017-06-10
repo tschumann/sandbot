@@ -296,7 +296,7 @@ int UTIL_GetTeam(edict_t *pEntity)
           (strcmp(model_name, "otis") == 0) ||
           (strcmp(model_name, "ctf_scientist") == 0))
       {
-         return 0;
+         return OpposingForceBot::TEAM_BLACK_MESA;
       }
       else if ((strcmp(model_name, "beret") == 0) ||
                (strcmp(model_name, "drill") == 0) ||
@@ -305,7 +305,7 @@ int UTIL_GetTeam(edict_t *pEntity)
                (strcmp(model_name, "shephard") == 0) ||
                (strcmp(model_name, "tower") == 0))
       {
-         return 1;
+         return OpposingForceBot::TEAM_OPPOSING_FORCE;
       }
 
       return 0;  // return zero if team is unknown

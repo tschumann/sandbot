@@ -52,6 +52,12 @@ void OpposingForceBot::Join()
 	}
 }
 
+int OpposingForceBot::GetTeam()
+{
+	// TODO: move UTIL_GetTeam functionality into class methods
+	return UTIL_GetTeam(this->pEdict);
+}
+
 int OpposingForceBot::GetPistol()
 {
 	return GEARBOX_WEAPON_GLOCK;

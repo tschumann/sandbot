@@ -516,12 +516,18 @@ class OpposingForceBot : public HalfLifeBot
 {
 public:
 	virtual void Join();
+	virtual int GetTeam();
 
 	virtual int GetPistol();
 
 	virtual int GetGoalType();
 
 	virtual bool FindFlag();
+
+	const static int TEAM_BLACK_MESA = 0;
+	const static int TEAM_OPPOSING_FORCE = 1;
+	const static int BLACK_MESA_FLAG_BODY = 0;
+	const static int OPPOSING_FORCE_BASE_BODY = 0;
 };
 
 class CStrikeBot : public bot_t
