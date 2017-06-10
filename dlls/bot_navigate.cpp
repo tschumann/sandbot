@@ -355,6 +355,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	edict_t *pEdict = pBot->pEdict;
 
 	// check if team play is enabled
+	// TODO: make all waypoints valid for everyone?
 	if (pGame->IsTeamPlay())
 	{
 		team = UTIL_GetTeam(pEdict);

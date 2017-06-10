@@ -643,6 +643,7 @@ void ClientCommand( edict_t *pEntity )
 
          return;
       }
+	  // TODO: make this a cvar
       else if (FStrEq(pcmd, "botskill"))
       {
          if ((arg1 != NULL) && (*arg1 != 0))
@@ -663,7 +664,7 @@ void ClientCommand( edict_t *pEntity )
 
          return;
       }
-      else if (FStrEq(pcmd, "debug_engine"))
+      else if (FStrEq(pcmd, "debug_engine") && DEBUG_CODE)
       {
          debug_engine = 1;
 
