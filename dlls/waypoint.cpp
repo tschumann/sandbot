@@ -426,11 +426,10 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
    return min_index;
 }
 
-edict_t *FindNearest(Vector point, const char *szClassname)
+edict_t *FindNearest( Vector point, const char *szClassname, float fMinimumDistance = 9999.99 )
 {
 	edict_t *pent = NULL;
 	edict_t *pNearest = NULL;
-	float fMinimumDistance = 9999.99;
 
 	while( (pent = UTIL_FindEntityByClassname( pent, szClassname )) != NULL )
 	{
@@ -482,12 +481,12 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 
 	if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG )
 	{
-		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag");
+		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag", 50.0);
 
 		// if there's not a nearby item_ctfflag
 		if( !nearest_flag )
 		{
-			ALERT(at_console, "Couldn't find nearest item_ctfflag in ShouldSkip\n");
+			ALERT(at_console, "Couldn't find nearest item_ctfflag in ShouldSkip - must be away from base\n");
 
 			return false;
 		}
