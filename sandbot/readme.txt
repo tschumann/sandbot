@@ -32,6 +32,9 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
+v0.4.0.1 (??/06/17)
+- [All] Fixed single player not loading (thanks shardthefox200@ModDB)
+
 v0.4.0 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
 - [All] Added bot_count cvar to control how many bots spawn by default (mapname_bot.cfg has been removed).
