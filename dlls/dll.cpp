@@ -1439,7 +1439,7 @@ void StartFrame( void )
 		bBaseLinesCreated = false;
 	}
 
-	if( bCanAddBots && GetBotCount() < bot_count.value )
+	if( gpGlobals->deathmatch && bCanAddBots && GetBotCount() < bot_count.value )
 	{
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
