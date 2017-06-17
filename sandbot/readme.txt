@@ -5,7 +5,8 @@ Name: Sandbot
 Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch), Day of Defeat, Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
 Requirements:
  Steam versions of either Half-Life, Half-Life Opposing Force and the latest versions of Gunman Chronicles or They Hunger.
- MetaMod-P (MetaMod mostly works but Gunman Chronicles will only work with MetaMod-P for example.
+ MetaMod-P (MetaMod mostly works but Gunman Chronicles will only work with MetaMod-P for example) on Windows.
+ MetaMod on Linux.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
 == Usage ==
@@ -25,7 +26,7 @@ Q. Can you add support for mod x?
 A. I'm not planning to at the moment - I'm planning support for Half-Life, Opposing Force, Day of Defeat, Team Fortress Classic, Gunman Chronicles, Natural Selection, The Ship and They Hunger which is likely going to take a while.
 
 Q. Can it be used for dedicated servers?
-A. Maybe - I haven't tested it, but it should.
+A. Maybe - I haven't tested it, but it should. Let me know if there are any problems
 
 Q. Can I make some waypoints?
 A. Yes, but hold off for now - things are probably going to change in that space.
@@ -34,6 +35,7 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 v0.4.0.1 (??/06/17)
 - [All] Fixed single player not loading (thanks shardthefox200@ModDB)
+- [Linux] Replaced MetaMod-P with MetaMod as MetaMod-P almost always freezes on Ubuntu.
 
 v0.4.0 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
