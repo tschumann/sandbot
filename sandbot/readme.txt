@@ -33,9 +33,9 @@ A. Yes, but hold off for now - things are probably going to change in that space
 
 == Changelog ==
 
-v0.4.0.1 (??/06/17)
+v0.4.0.1 (18/06/17)
 - [All] Fixed single player not loading (thanks shardthefox200@ModDB)
-- [Linux] Replaced MetaMod-P with MetaMod as MetaMod-P almost always freezes on Ubuntu.
+- [Linux] Replaced included MetaMod-P for Linux with MetaMod for Linux as MetaMod-P almost always freezes on Ubuntu.
 
 v0.4.0 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
