@@ -503,6 +503,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		}
 		else
 		{
+			ALERT(at_console, "Flag belongs to bot's team - skipping\n");
 			return true;
 		}
 	}
@@ -530,6 +531,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		}
 		else
 		{
+			ALERT(at_console, "Base is the same as bot's team - skipping\n");
 			return true;
 		}
 	}

@@ -988,6 +988,17 @@ void ClientCommand( edict_t *pEntity )
 				{
 					ALERT(at_console, "Team: Opposing Force\n");
 				}
+				if (pBot)
+				{
+					if (pBot->GetGoalType() == W_FL_FLAG_GOAL)
+					{
+						ALERT(at_console, "Has flag and is looking for base\n");
+					}
+					else if (pBot->GetGoalType() == W_FL_FLAG)
+					{
+						ALERT(at_console, "Looking for flag\n");
+					}
+				}
 			}
 			else if( mod_id == DOD_DLL )
 			{

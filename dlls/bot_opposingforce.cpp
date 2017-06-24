@@ -105,7 +105,7 @@ bool OpposingForceBot::FindFlag()
 			// the bot can see it, check what type of model it is...
 			skin = pent->v.skin;
 
-			// see if the flag matches the bot's team...
+			// is it the flag we should be protecting
 			if ((skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN && team == OpposingForceBot::TEAM_BLACK_MESA) ||
 				(skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN && team == OpposingForceBot::TEAM_OPPOSING_FORCE))
 			{
@@ -120,8 +120,10 @@ bool OpposingForceBot::FindFlag()
 					return TRUE;
 				}
 			}
-			else  // flag/card is for another team!
+			// is it the flag we want to steal
+			else
 			{
+				ALERT(at_console, "Seen flag to take\n");
 				// check if someone is NOT carrying the flag/card...
 				if (pent->v.owner == NULL)
 				{
