@@ -481,12 +481,12 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 
 	if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG )
 	{
-		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag", 50.0);
+		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag", 75.0);
 
 		// if there's not a nearby item_ctfflag
 		if( !nearest_flag )
 		{
-			ALERT(at_console, "Couldn't find nearest item_ctfflag in ShouldSkip - must be away from base\n");
+			ALERT(at_console, "Couldn't find nearest item_ctfflag for waypoint %d in ShouldSkip - must be away from base\n", index);
 
 			return false;
 		}
@@ -495,10 +495,12 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 
 		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_flag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN)
 		{
+			UTIL_LogDPrintf("Black Mesa member, Opposing Force flag - not skipping\n");
 			return false;
 		}
 		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_flag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
 		{
+			UTIL_LogDPrintf("Opposing Force member, Black Mesa flag - not skipping\n");
 			return false;
 		}
 		else
@@ -939,28 +941,28 @@ int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
 void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
         int noise, int red, int green, int blue, int brightness, int speed)
 {
-   MESSAGE_BEGIN(MSG_ONE, SVC_TEMPENTITY, NULL, pEntity);
-   WRITE_BYTE( TE_BEAMPOINTS);
-   WRITE_COORD(start.x);
-   WRITE_COORD(start.y);
-   WRITE_COORD(start.z);
-   WRITE_COORD(end.x);
-   WRITE_COORD(end.y);
-   WRITE_COORD(end.z);
-   WRITE_SHORT( m_spriteTexture );
-   WRITE_BYTE( 1 ); // framestart
-   WRITE_BYTE( 10 ); // framerate
-   WRITE_BYTE( 10 ); // life in 0.1's
-   WRITE_BYTE( width ); // width
-   WRITE_BYTE( noise );  // noise
+	MESSAGE_BEGIN(MSG_ONE, SVC_TEMPENTITY, NULL, pEntity);
+		WRITE_BYTE(TE_BEAMPOINTS);
+		WRITE_COORD(start.x);
+		WRITE_COORD(start.y);
+		WRITE_COORD(start.z);
+		WRITE_COORD(end.x);
+		WRITE_COORD(end.y);
+		WRITE_COORD(end.z);
+		WRITE_SHORT( m_spriteTexture );
+		WRITE_BYTE( 1 ); // framestart
+		WRITE_BYTE( 10 ); // framerate
+		WRITE_BYTE( 10 ); // life in 0.1's
+		WRITE_BYTE( width ); // width
+		WRITE_BYTE( noise );  // noise
 
-   WRITE_BYTE( red );   // r, g, b
-   WRITE_BYTE( green );   // r, g, b
-   WRITE_BYTE( blue );   // r, g, b
+		WRITE_BYTE( red );   // r, g, b
+		WRITE_BYTE( green );   // r, g, b
+		WRITE_BYTE( blue );   // r, g, b
 
-   WRITE_BYTE( brightness );   // brightness
-   WRITE_BYTE( speed );    // speed
-   MESSAGE_END();
+		WRITE_BYTE( brightness );   // brightness
+		WRITE_BYTE( speed );    // speed
+	MESSAGE_END();
 }
 
 // pEntity is the player

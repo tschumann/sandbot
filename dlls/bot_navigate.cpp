@@ -385,8 +385,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
    }
    else if ((mod_id == GEARBOX_DLL) && pGame->IsCTF())
    {
-	   ALERT(at_console, "Opposing Force bot looking got a flag\n");
-		bool success = ((OpposingForceBot *)pBot)->FindFlag();
+	   bool success = ((OpposingForceBot *)pBot)->FindFlag();
 
 		if( success )
 		{
