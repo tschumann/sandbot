@@ -4,14 +4,19 @@
 # created: 12/16/2000 botman (botman@mailandnews.com)
 #
 
-# the following specifies the path to your MOD...
-MOD_DIR = /usr/hlds_l/tfc
-
 CPP = gcc
+
+ARCHFLAG = -march=i686
 
 BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
 
-CPPFLAGS = ${BASEFLAGS} -m32 -O2 -w -lm -I../dlls -I../engine -I../common -I../pm_shared  -I../metamod
+# from https://github.com/APGRoboCop/hpb_bot_plugin/blob/master/Makefile
+OPTFLAGS = -mtune=pentium4 -mmmx -msse -msse2 -O2 -m32 -mfpmath=sse \
+		-funroll-loops -ffunction-sections -fomit-frame-pointer \
+		-fexpensive-optimizations -finline-functions -ffast-math \
+		-falign-loops=2 -falign-jumps=2 -falign-functions=2 \
+
+CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} ${ARCHFLAG} -m32 -O2 -w -lm -I../dlls -I../engine -I../common -I../pm_shared  -I../metamod
 
 OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
 	dll.o engine.o h_export.o linkfunc.o meta_api.o util.o waypoint.o \
@@ -20,7 +25,7 @@ OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
 
 sandbot.so: ${OBJ}
 	${CPP} -m32 -fPIC -shared -o $@ ${OBJ} -ldl
-	# cp -f HPB_bot_i486.so ${MOD_DIR}/dlls
+	# cp -f sandbot.so /home/$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
 clean:
 	-rm -f *.o
@@ -31,4 +36,3 @@ clean:
 
 %.o:	%.c
 	${CPP} ${CPPFLAGS} -c $< -o $@
-
