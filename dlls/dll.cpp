@@ -11,7 +11,6 @@
 #include "h_export.h"
 #include "meta_api.h"
 #include "entity_state.h"
-#include "studio.h"
 
 #include "bot.h"
 #include "bot_func.h"
@@ -33,7 +32,6 @@ extern void *h_Library;
 extern enginefuncs_t g_engfuncs;
 extern int debug_engine;
 extern globalvars_t  *gpGlobals;
-extern char g_argv[1024];
 extern bool g_waypoint_on;
 extern bool g_auto_waypoint;
 extern bool g_path_waypoint;
@@ -43,6 +41,8 @@ extern float wp_display_time[MAX_WAYPOINTS];
 extern bot_t **pBots;
 extern bool b_observer_mode;
 extern bot_player_t *pBotData;
+
+char g_argv[1024];
 
 static FILE *fp;
 
@@ -81,9 +81,6 @@ int num_backpacks = 0;
 BACKPACK_S backpacks[MAX_BACKPACKS];
 char arg[256];
 
-FILE *bot_cfg_fp = NULL;
-bool need_to_open_cfg = TRUE;
-float bot_cfg_pause_time = 0.0;
 float respawn_time = 0.0;
 bool spawn_time_reset = FALSE;
 
@@ -235,7 +232,6 @@ int DispatchSpawn( edict_t *pent )
      memset(team_names, 0, sizeof(team_names));
      num_teams = 0;
 
-     bot_cfg_pause_time = 0.0;
      respawn_time = 0.0;
      spawn_time_reset = FALSE;
 

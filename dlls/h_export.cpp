@@ -36,7 +36,6 @@ int Cmd_Argc( void );
 
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
-char g_argv[1024];
 
 extern DLL_FUNCTIONS other_gFunctionTable;
 

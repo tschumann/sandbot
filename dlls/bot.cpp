@@ -817,57 +817,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
    }
 }
 
-
-int BotInFieldOfView(bot_t *pBot, Vector dest)
-{
-   // find angles from source to destination...
-   Vector entity_angles = UTIL_VecToAngles( dest );
-
-   // make yaw angle 0 to 360 degrees if negative...
-   if (entity_angles.y < 0)
-      entity_angles.y += 360;
-
-   // get bot's current view angle...
-   float view_angle = pBot->pEdict->v.v_angle.y;
-
-   // make view angle 0 to 360 degrees if negative...
-   if (view_angle < 0)
-      view_angle += 360;
-
-   // return the absolute value of angle to destination entity
-   // zero degrees means straight ahead,  45 degrees to the left or
-   // 45 degrees to the right is the limit of the normal view angle
-
-   // rsm - START angle bug fix
-   int angle = abs((int)view_angle - (int)entity_angles.y);
-
-   if (angle > 180)
-      angle = 360 - angle;
-
-   return angle;
-   // rsm - END
-}
-
-
-bool BotEntityIsVisible( bot_t *pBot, Vector dest )
-{
-	TraceResult tr;
-
-	// trace a line from bot's eyes to destination...
-	UTIL_TraceLine( pBot->pEdict->v.origin + pBot->pEdict->v.view_ofs, dest, ignore_monsters, pBot->pEdict->v.pContainingEntity, &tr );
-
-	// check if line of sight to object is not blocked (i.e. visible)
-	if (tr.flFraction >= 1.0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-
 void BotFindItem( bot_t *pBot )
 {
    edict_t *pent = NULL;
@@ -913,7 +862,7 @@ void BotFindItem( bot_t *pBot )
          vecStart = pEdict->v.origin + pEdict->v.view_ofs;
          vecEnd = entity_origin;
 
-         angle_to_entity = BotInFieldOfView( pBot, vecEnd - vecStart );
+         angle_to_entity = pBot->GetAngleToPoint( vecEnd - vecStart );
 
          // check if entity is outside field of view (+/- 45 degrees)
          if (angle_to_entity > 45)
@@ -1141,14 +1090,14 @@ void BotFindItem( bot_t *pBot )
          vecEnd = entity_origin;
 
          // find angles from bot origin to entity...
-         angle_to_entity = BotInFieldOfView( pBot, vecEnd - vecStart );
+         angle_to_entity = pBot->GetAngleToPoint( vecEnd - vecStart );
 
          // check if entity is outside field of view (+/- 45 degrees)
          if (angle_to_entity > 45)
             continue;  // skip this item if bot can't "see" it
 
          // check if line of sight to object is not blocked (i.e. visible)
-         if (BotEntityIsVisible( pBot, vecEnd ))
+         if (pBot->CanSeePoint( vecEnd ))
          {
             // check if entity is a weapon...
             if (strncmp("weapon_", item_name, 7) == 0)
@@ -2622,6 +2571,52 @@ bool bot_t::CanShoot()
 int bot_t::GetPistol()
 {
 	return VALVE_WEAPON_GLOCK;
+}
+
+bool bot_t::CanSeePoint(Vector point)
+{
+	TraceResult tr;
+
+	// trace a line from bot's eyes to destination...
+	UTIL_TraceLine( this->pEdict->v.origin + this->pEdict->v.view_ofs, point, ignore_monsters, this->pEdict->v.pContainingEntity, &tr );
+
+	// check if line of sight to object is not blocked (i.e. visible)
+	return tr.flFraction >= 1.0;
+}
+
+int bot_t::GetAngleToPoint( Vector point )
+{
+	// find angles from source to destination...
+	Vector entity_angles = UTIL_VecToAngles( point );
+
+	// make yaw angle 0 to 360 degrees if negative...
+	if( entity_angles.y < 0 )
+	{
+		entity_angles.y += 360;
+	}
+
+	// get bot's current view angle...
+	float fViewAngle = this->pEdict->v.v_angle.y;
+
+	// make view angle 0 to 360 degrees if negative...
+	if( fViewAngle < 0.0 )
+	{
+		fViewAngle += 360;
+	}
+
+	// return the absolute value of angle to destination entity
+	// zero degrees means straight ahead,  45 degrees to the left or
+	// 45 degrees to the right is the limit of the normal view angle
+
+	// angle bug fix below - rsm
+	int iAngle = abs((int)fViewAngle - (int)entity_angles.y);
+
+	if( iAngle > 180 )
+	{
+		iAngle = 360 - iAngle;
+	}
+
+	return iAngle;
 }
 
 void bot_t::PickUpItem()

@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "studio.h"
+
 using std::vector;
 using std::min;
 
@@ -329,6 +331,9 @@ public:
 
 	virtual bool CanShoot();
 	virtual int GetPistol();
+
+	virtual bool CanSeePoint( Vector point );
+	virtual int GetAngleToPoint( Vector point );
 
 	virtual void PickUpItem();
 
