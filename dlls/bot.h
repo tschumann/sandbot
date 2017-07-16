@@ -335,6 +335,7 @@ public:
 	virtual bool CanSeePoint( Vector point );
 	virtual int GetAngleToPoint( Vector point );
 
+	virtual bool CanUseItem( edict_t *pItem );
 	virtual void PickUpItem();
 
 	virtual void SetMaxSpeed( float fMaxSpeed );
@@ -492,6 +493,8 @@ public:
 
 	// TODO: should eventually be protected
 	void FixIdealPitch();
+
+	const static int PLAYER_SEARCH_RADIUS = 40.0f;
 protected:
 	Vector GetOrigin();
 
@@ -645,6 +648,8 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
+
+	virtual bool CanUseItem( edict_t *pItem );
 
 	virtual float GetSpeedToEnemy();
 

@@ -42,9 +42,6 @@ static FILE *fp;
 
 bot_player_t *pBotData = NULL;
 
-
-#define PLAYER_SEARCH_RADIUS     40.0
-
 bot_t **pBots; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 
@@ -926,7 +923,7 @@ void BotFindItem( bot_t *pBot )
                      if (!pBot->b_use_health_station)
                      {
                         // check if close enough and facing it directly...
-                        if ((distance < PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
+                        if ((distance < bot_t::PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
                         {
                            pBot->b_use_health_station = TRUE;
                            pBot->f_use_health_time = gpGlobals->time;
@@ -960,7 +957,7 @@ void BotFindItem( bot_t *pBot )
                      if (!pBot->b_use_HEV_station)
                      {
                         // check if close enough and facing it directly...
-                        if ((distance < PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
+                        if ((distance < bot_t::PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
                         {
                            pBot->b_use_HEV_station = TRUE;
                            pBot->f_use_HEV_time = gpGlobals->time;
@@ -994,7 +991,7 @@ void BotFindItem( bot_t *pBot )
                      if (!pBot->b_use_button)
                      {
                         // check if close enough and facing it directly...
-                        if ((distance < PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
+                        if ((distance < bot_t::PLAYER_SEARCH_RADIUS) && (angle_to_entity <= 10))
                         {
                            pBot->b_use_button = TRUE;
                            pBot->b_lift_moving = FALSE;
@@ -1027,7 +1024,7 @@ void BotFindItem( bot_t *pBot )
                         if( !pBot->bUseDoor )
                         {
                             // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS ) && ( angle_to_entity <= 10 ) )
+                            if( ( distance < bot_t::PLAYER_SEARCH_RADIUS ) && ( angle_to_entity <= 10 ) )
                             {
                                 pBot->bUseDoor = TRUE;
                                 pBot->fUseDoorTime = gpGlobals->time;
@@ -1058,7 +1055,7 @@ void BotFindItem( bot_t *pBot )
 						if( !pBot->bBuildAlienResourceTower )
 						{
 							// check if close enough and facing it directly and has enough resource
-							if( ( distance < PLAYER_SEARCH_RADIUS * 2 ) && ( angle_to_entity <= 10 ) && ((NSBot *)pBot)->GetResources() >= kAlienResourceTowerCost )
+							if( ( distance < bot_t::PLAYER_SEARCH_RADIUS * 2 ) && ( angle_to_entity <= 10 ) && ((NSBot *)pBot)->GetResources() >= kAlienResourceTowerCost )
 							{
 								pBot->bBuildAlienResourceTower = TRUE;
 							}
@@ -1204,426 +1201,9 @@ void BotFindItem( bot_t *pBot )
             {
             }
 
-			if( mod_id == NS_DLL )
+			if (mod_id == NS_DLL)
 			{
-				// check if entity is ammo
-				if( ((NSBot *)pBot)->IsMarine() && !strcmp( "item_ammopack", item_name ) )
-				{
-					// check if the item is not visible (i.e. has not respawned)
-					if( pent->v.effects & EF_NODRAW )
-					{
-						continue;
-					}
-
-					can_pickup = TRUE;
-				}
-				// check if entity is a catalyst
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "item_catalyst", item_name ) )
-				{
-					// check if the item is not visible (i.e. has not respawned)
-					if( pent->v.effects & EF_NODRAW )
-					{
-						continue;
-					}
-
-					can_pickup = TRUE;
-				}
-				// check if entity is ammo
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "item_genericammo", item_name ) )
-				{
-					// check if the item is not visible (i.e. has not respawned)
-					if( pent->v.effects & EF_NODRAW )
-					{
-						continue;
-					}
-
-					can_pickup = TRUE;
-				}
-
-				// check if entity is a healthkit
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "item_health", item_name ) )
-				{
-					// check if the item is not visible (i.e. has not respawned)
-					if( pent->v.effects & EF_NODRAW )
-					{
-						continue;
-					}
-
-					// check if the bot can make use of this item
-					if( pEdict->v.health < pEdict->v.max_health )
-					{
-						can_pickup = TRUE;
-					}
-				}
-				// check if entity is an alien resource tower
-				else if( ((NSBot *)pBot)->IsAlien() && UTIL_GetClass( pEdict ) == AVH_USER3_ALIEN_PLAYER2 && !strcmp( "alienresourcetower", item_name ) )
-				{
-					float fDistance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-						{
-							// check if close enough and facing it directly...
-							if( ( fDistance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-							{
-								pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-							}
-
-							// if close to resource tower...
-							if( fDistance < 100.0 )
-							{
-								// don't avoid walls for a while
-								pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-							}
-
-							can_pickup = true;
-						}
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-				}
-				// check if entity is a resource tower
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "resourcetower", item_name ) )
-				{
-					float fDistance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-						{
-							// check if close enough and facing it directly...
-							if( ( fDistance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-							{
-								pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-							}
-
-							// if close to resource tower...
-							if( fDistance < 100.0 )
-							{
-								// don't avoid walls for a while
-								pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-							}
-
-							can_pickup = true;
-						}
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-				}
-				// check if entity is an arms lab
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_armslab", item_name ) )
-				{
-					float fDistance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-						{
-							// check if close enough and facing it directly...
-							if( ( fDistance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-							{
-								pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-							}
-
-							// if close to armory...
-							if( fDistance < 100.0 )
-							{
-								// don't avoid walls for a while
-								pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-							}
-
-							can_pickup = true;
-						}
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-				}
-				// check if entity is an advanced armory
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_advarmory", item_name ) )
-				{
-					float fDistance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-						{
-							// check if close enough and facing it directly...
-							if( ( fDistance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-							{
-								pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-							}
-
-							// if close to armory...
-							if( fDistance < 100.0 )
-							{
-								// don't avoid walls for a while
-								pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-							}
-
-							can_pickup = true;
-						}
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-				}
-				// check if entity is an armory
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_armory", item_name ) )
-				{
-					float fDistance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-						{
-							// check if close enough and facing it directly...
-							if( ( fDistance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-							{
-								pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-							}
-
-							// if close to armory...
-							if( fDistance < 100.0 )
-							{
-								// don't avoid walls for a while
-								pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-							}
-
-							can_pickup = true;
-						}
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-				}
-				// check if entity is a hive
-				else if( ((NSBot *)pBot)->IsAlien() && UTIL_GetClass( pEdict ) == AVH_USER3_ALIEN_PLAYER2 && !strcmp( "team_hive", item_name ) )
-				{
-					float fDistance = (vecEnd - vecStart).Length();
-
-					if( !pBot->bBuildHive )
-					{
-						// check if close enough and facing it directly...
-						if( ( fDistance < PLAYER_SEARCH_RADIUS * 12.0 ) && ((NSBot *)pBot)->GetResources() >= kHiveCost )
-						{
-							pBot->bBuildHive = true;
-						}
-
-						// if close to hive...
-						if( fDistance < 100.0 )
-						{
-							// don't avoid walls for a while
-							pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-						}
-
-						can_pickup = true;
-					}
-				}
-				// check if entity is an infantry portal...
-                else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_infportal", item_name ) )
-                {
-					float distance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-                        {
-                            // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-                            {
-                                pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-                            }
-
-                            // if close to armory...
-                            if( distance < 100.0 )
-                            {
-                                // don't avoid walls for a while
-                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                            }
-
-                            can_pickup = true;
-                        }
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-                }
-
-				// check if entity is an observatory...
-                else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_observatory", item_name ) )
-                {
-					float distance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-                        {
-                            // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-                            {
-                                pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-                            }
-
-                            // if close to armory...
-                            if( distance < 100.0 )
-                            {
-                                // don't avoid walls for a while
-                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                            }
-
-                            can_pickup = true;
-                        }
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-                }
-
-				// check if entity is a prototype lab...
-                else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_prototypelab", item_name ) )
-                {
-					float distance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-                        {
-                            // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-                            {
-                                pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-                            }
-
-                            // if close to armory...
-                            if( distance < 100.0 )
-                            {
-                                // don't avoid walls for a while
-                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                            }
-
-                            can_pickup = true;
-                        }
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-                }
-
-				// check if entity is a turret factory...
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "team_turretfactory", item_name ) )
-                {
-					float distance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-                        {
-                            // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-                            {
-                                pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-                            }
-
-                            // if close to armory...
-                            if( distance < 100.0 )
-                            {
-                                // don't avoid walls for a while
-                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                            }
-
-                            can_pickup = true;
-                        }
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-                }
-
-				// check if entity is a siege turret...
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "siegeturret", item_name ) )
-                {
-					float distance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-                        {
-                            // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-                            {
-                                pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-                            }
-
-                            // if close to armory...
-                            if( distance < 100.0 )
-                            {
-                                // don't avoid walls for a while
-                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                            }
-
-                            can_pickup = true;
-                        }
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-                }
-
-				// check if entity is a turret...
-				else if( ((NSBot *)pBot)->IsMarine() && !strcmp( "turret", item_name ) )
-                {
-					float distance = (vecEnd - vecStart).Length();
-
-					if( !UTIL_IsBuilt( pent ) )
-					{
-						if( !pBot->bBuild )
-                        {
-                            // check if close enough and facing it directly...
-                            if( ( distance < PLAYER_SEARCH_RADIUS * 2.0 ) /*&& ( angle_to_entity <= 10 )*/ )
-                            {
-                                pBot->bBuild = true;
-								pBot->fBuildTime = gpGlobals->time;
-                            }
-
-                            // if close to armory...
-                            if( distance < 100.0 )
-                            {
-                                // don't avoid walls for a while
-                                pBot->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-                            }
-
-                            can_pickup = true;
-                        }
-					}
-					else
-					{
-						pBot->bBuild = false;
-					}
-                }
+				can_pickup = pBot->CanUseItem( pent );
 			}
          }  // end if object is visible
       }  // end else not "func_" entity
@@ -2617,6 +2197,12 @@ int bot_t::GetAngleToPoint( Vector point )
 	}
 
 	return iAngle;
+}
+
+bool bot_t::CanUseItem( edict_t *pItem )
+{
+	// TODO: make this handle stuff - okay as it's only used by NSBot right now
+	return false;
 }
 
 void bot_t::PickUpItem()
