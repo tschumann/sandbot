@@ -313,6 +313,7 @@ public:
 	bot_t();
 	virtual void OnSpawn();
 	virtual void Join();
+	virtual void Respawn();
 	virtual void PreThink();
 	virtual void Think();
 	virtual void PostThink();
@@ -356,6 +357,7 @@ public:
 
 	virtual bool ShouldLookForNewGoal();
 	virtual int GetGoalType();
+	virtual float GetWaypointRadius();
 
 	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
@@ -364,7 +366,7 @@ public:
 	int respawn_state;
 	int index;
 	edict_t *pEdict;
-	bool need_to_initialize;
+	bool bShouldInit;
 	char name[BOT_NAME_LEN+1];
 	char skin[BOT_SKIN_LEN+1];
 	int bot_skill;

@@ -725,7 +725,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 		BotSpawnInit(pBot);
 
-		pBot->need_to_initialize = FALSE;  // don't need to initialize yet
+		pBot->bShouldInit = FALSE;  // don't need to initialize yet
 
 		BotEnt->v.idealpitch = BotEnt->v.v_angle.x;
 		BotEnt->v.ideal_yaw = BotEnt->v.v_angle.y;
@@ -820,7 +820,7 @@ void BotFindItem( bot_t *pBot )
    edict_t *pPickupEntity = NULL;
    Vector pickup_origin;
    Vector entity_origin;
-   float radius = 500;
+   float radius = pBot->GetWaypointRadius();
    bool can_pickup;
    float min_distance;
    char item_name[40];
@@ -831,16 +831,6 @@ void BotFindItem( bot_t *pBot )
    edict_t *pEdict = pBot->pEdict;
 
    pBot->pBotPickupItem = NULL;
-
-   // use a MUCH smaller search radius when waypoints are available
-   if ((num_waypoints > 0) && (pBot->curr_waypoint_index != -1))
-   {
-      radius = 100.0;
-   }
-   else
-   {
-      radius = 500.0;
-   }
 
    min_distance = radius + 1.0;
 
@@ -1289,32 +1279,15 @@ void BotThink( bot_t *pBot )
    // if the bot is dead, randomly press fire to respawn...
    if (pBot->IsDead())
    {
-      if (pBot->need_to_initialize)
-      {
-         BotSpawnInit(pBot);
+		pBot->Respawn();
 
-         pBot->need_to_initialize = FALSE;
-      }
-
-      if (RANDOM_LONG(1, 100) > 50)
-	  {
-         pEdict->v.button = IN_ATTACK;
-	  }
-
-      pBot->FixIdealPitch();
-      BotFixIdealYaw (pEdict);
-      BotFixBodyAngles (pEdict);
-      BotFixViewAngles (pEdict);
-
-      g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, pBot->GetSpeed(), 0, 0, pEdict->v.button, 0, msecval);
-
-      return;
+		return;
    }
 
    // set this for the next time the bot dies so it will initialize stuff
-   if (pBot->need_to_initialize == FALSE)
+   if (pBot->bShouldInit == FALSE)
    {
-      pBot->need_to_initialize = TRUE;
+      pBot->bShouldInit = TRUE;
       pBot->f_bot_spawn_time = gpGlobals->time;
    }
 
@@ -1927,6 +1900,29 @@ void bot_t::Join()
 	this->not_started = 0;
 }
 
+void bot_t::Respawn()
+{
+	if( this->bShouldInit )
+	{
+		BotSpawnInit(this);
+
+		this->bShouldInit = FALSE;
+	}
+
+	if( RANDOM_LONG(1, 100) > 50 )
+	{
+		pEdict->v.button = IN_ATTACK;
+	}
+
+	// TODO: everything below seems to need to get run each frame - move it to one place
+	this->FixIdealPitch();
+	BotFixIdealYaw(pEdict);
+	BotFixBodyAngles(pEdict);
+	BotFixViewAngles(pEdict);
+
+	g_engfuncs.pfnRunPlayerMove( pEdict, pEdict->v.v_angle, this->GetSpeed(), 0, 0, pEdict->v.button, 0, msecval );
+}
+
 void bot_t::PreThink()
 {
 	// TODO: put all generic bot thinking here
@@ -2317,8 +2313,21 @@ bool bot_t::ShouldLookForNewGoal()
 
 int bot_t::GetGoalType()
 {
-	// TODO: something better
-	return W_FL_DELETED;
+	// TODO: something better?
+	return W_FL_HEALTH;
+}
+
+float bot_t::GetWaypointRadius()
+{
+	float fRadius = 500.0f;
+
+	// use a much smaller search radius when waypoints are available
+	if( (num_waypoints > 0 ) && ( this->curr_waypoint_index != -1 ) )
+	{
+		fRadius = 100.0;
+	}
+
+	return fRadius;
 }
 
 bool bot_t::BaseCanUseWeapon()
