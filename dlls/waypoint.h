@@ -106,6 +106,7 @@ void WaypointInit(void);
 int  WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int team);
 int  WaypointFindNearest(edict_t *pEntity, float distance, int team);
 int  WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src);
+int  WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src, uint64_t flags);
 
 int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags);
 int  WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int exclude[]);

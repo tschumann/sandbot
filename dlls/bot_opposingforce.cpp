@@ -128,7 +128,7 @@ bool OpposingForceBot::FindFlag()
 				if (pent->v.owner == NULL)
 				{
 					// find the nearest waypoint to the flag/card...
-					index = WaypointFindNearest(pEdict, 500, team, pent->v.origin);
+					index = WaypointFindNearest(pEdict, 500, team, pent->v.origin, W_FL_FLAG);
 
 					if (index == -1)
 					{

@@ -918,6 +918,10 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 
             pBot->f_waypoint_time = gpGlobals->time;
          }
+		 else
+		 {
+			 UTIL_LogDPrintf("Unable to get route from waypoint %d to waypoint %d\n");
+		 }
       }
 
       if (waypoint_found == FALSE)

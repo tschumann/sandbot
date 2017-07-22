@@ -403,8 +403,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
          continue;  // skip any aiming waypoints
 
       // skip this waypoint if it's team specific and teams don't match...
-      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) &&
-          ((waypoints[index].flags & W_FL_TEAM) != team))
+      if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[index].flags & W_FL_TEAM) != team))
          continue;
 
       distance = (waypoints[index].origin - v_src).Length();
@@ -412,8 +411,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
       if ((distance < min_distance) && (distance < range))
       {
          // if waypoint is visible from source position...
-         UTIL_TraceLine( v_src, waypoints[index].origin, ignore_monsters,
-                         pEntity->v.pContainingEntity, &tr );
+         UTIL_TraceLine( v_src, waypoints[index].origin, ignore_monsters, pEntity->v.pContainingEntity, &tr );
 
          if (tr.flFraction >= 1.0)
          {
@@ -424,6 +422,59 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
    }
 
    return min_index;
+}
+
+
+// find the nearest waypoint to the source postition and return the index
+int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src, uint64_t flags)
+{
+	int index, min_index;
+	float distance;
+	float min_distance;
+	TraceResult tr;
+
+	if (num_waypoints < 1)
+		return -1;
+
+	// find the nearest waypoint...
+
+	min_index = -1;
+	min_distance = 9999.0;
+
+	for (index = 0; index < num_waypoints; index++)
+	{
+		if (waypoints[index].flags & W_FL_DELETED)
+			continue;  // skip any deleted waypoints
+
+		if (waypoints[index].flags & W_FL_AIMING)
+			continue;  // skip any aiming waypoints
+
+					   // skip this waypoint if it's team specific and teams don't match...
+		if ((team != -1) && (waypoints[index].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[index].flags & W_FL_TEAM) != team))
+			continue;
+
+		// if it's not the type of waypoint requested
+		if (!(waypoints[index].flags & flags))
+		{
+			continue;
+		}
+
+		distance = (waypoints[index].origin - v_src).Length();
+
+		if ((distance < min_distance) && (distance < range))
+		{
+			// if waypoint is visible from source position...
+			UTIL_TraceLine(v_src, waypoints[index].origin, ignore_monsters, pEntity->v.pContainingEntity, &tr);
+
+			if (tr.flFraction >= 1.0)
+			{
+				min_index = index;
+				min_distance = distance;
+			}
+		}
+	}
+
+	return min_index;
 }
 
 edict_t *FindNearest( Vector point, const char *szClassname, float fMinimumDistance = 9999.99 )
@@ -486,26 +537,26 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		// if there's not a nearby item_ctfflag
 		if( !nearest_flag )
 		{
-			ALERT(at_console, "Couldn't find nearest item_ctfflag for waypoint %d in ShouldSkip - must be away from base\n", index);
+			// ALERT(at_console, "Couldn't find nearest item_ctfflag for waypoint %d in ShouldSkip - must be away from base\n", index);
 
 			return false;
 		}
 
-		UTIL_LogDPrintf("Bot team %d, flag skin %d\n", UTIL_GetTeam(pBot->pEdict), nearest_flag->v.skin);
+		// UTIL_LogDPrintf("Bot team %d, flag skin %d\n", UTIL_GetTeam(pBot->pEdict), nearest_flag->v.skin);
 
 		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_flag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN)
 		{
-			UTIL_LogDPrintf("Black Mesa member, Opposing Force flag - not skipping\n");
+			// UTIL_LogDPrintf("Black Mesa member, Opposing Force flag - not skipping\n");
 			return false;
 		}
 		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_flag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
 		{
-			UTIL_LogDPrintf("Opposing Force member, Black Mesa flag - not skipping\n");
+			// UTIL_LogDPrintf("Opposing Force member, Black Mesa flag - not skipping\n");
 			return false;
 		}
 		else
 		{
-			ALERT(at_console, "Flag belongs to bot's team - skipping\n");
+			// ALERT(at_console, "Flag belongs to bot's team - skipping\n");
 			return true;
 		}
 	}
@@ -516,12 +567,12 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		// if there's not a nearby item_ctfbase
 		if (!nearest_base)
 		{
-			ALERT(at_console, "Couldn't find nearest item_ctfbase in ShouldSkip\n");
+			// ALERT(at_console, "Couldn't find nearest item_ctfbase in ShouldSkip\n");
 
 			return false;
 		}
 
-		UTIL_LogDPrintf("Bot team %d, base model %s\n", UTIL_GetTeam(pBot->pEdict), STRING(nearest_base->v.model));
+		// UTIL_LogDPrintf("Bot team %d, base model %s\n", UTIL_GetTeam(pBot->pEdict), STRING(nearest_base->v.model));
 
 		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && !strcmp(STRING(nearest_base->v.model), "models/civ_stand.mdl"))
 		{
@@ -533,7 +584,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		}
 		else
 		{
-			ALERT(at_console, "Base is the same as bot's team - skipping\n");
+			// ALERT(at_console, "Base is the same as bot's team - skipping\n");
 			return true;
 		}
 	}
@@ -941,28 +992,32 @@ int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
 void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
         int noise, int red, int green, int blue, int brightness, int speed)
 {
-	MESSAGE_BEGIN(MSG_ONE, SVC_TEMPENTITY, NULL, pEntity);
-		WRITE_BYTE(TE_BEAMPOINTS);
-		WRITE_COORD(start.x);
-		WRITE_COORD(start.y);
-		WRITE_COORD(start.z);
-		WRITE_COORD(end.x);
-		WRITE_COORD(end.y);
-		WRITE_COORD(end.z);
-		WRITE_SHORT( m_spriteTexture );
-		WRITE_BYTE( 1 ); // framestart
-		WRITE_BYTE( 10 ); // framerate
-		WRITE_BYTE( 10 ); // life in 0.1's
-		WRITE_BYTE( width ); // width
-		WRITE_BYTE( noise );  // noise
+	// don't send waypoint render messages to bots
+	if (!(pEntity->v.flags & FL_FAKECLIENT))
+	{
+		MESSAGE_BEGIN(MSG_ONE, SVC_TEMPENTITY, NULL, pEntity);
+			WRITE_BYTE(TE_BEAMPOINTS);
+			WRITE_COORD(start.x);
+			WRITE_COORD(start.y);
+			WRITE_COORD(start.z);
+			WRITE_COORD(end.x);
+			WRITE_COORD(end.y);
+			WRITE_COORD(end.z);
+			WRITE_SHORT(m_spriteTexture);
+			WRITE_BYTE(1); // framestart
+			WRITE_BYTE(10); // framerate
+			WRITE_BYTE(10); // life in 0.1's
+			WRITE_BYTE(width); // width
+			WRITE_BYTE(noise);  // noise
 
-		WRITE_BYTE( red );   // r, g, b
-		WRITE_BYTE( green );   // r, g, b
-		WRITE_BYTE( blue );   // r, g, b
+			WRITE_BYTE(red);   // r, g, b
+			WRITE_BYTE(green);   // r, g, b
+			WRITE_BYTE(blue);   // r, g, b
 
-		WRITE_BYTE( brightness );   // brightness
-		WRITE_BYTE( speed );    // speed
-	MESSAGE_END();
+			WRITE_BYTE(brightness);   // brightness
+			WRITE_BYTE(speed);    // speed
+		MESSAGE_END();
+	}
 }
 
 // pEntity is the player
@@ -2031,7 +2086,7 @@ void WaypointThink(edict_t *pEntity)
 
          distance = (waypoints[i].origin - pEntity->v.origin).Length();
 
-         if (distance < 500)
+         if (distance < 400)
          {
             if (distance < min_distance)
             {
