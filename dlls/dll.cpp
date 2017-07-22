@@ -970,6 +970,7 @@ void ClientCommand( edict_t *pEntity )
 			ALERT( at_console, "Skin: %d\n", player->v.skin );
 			ALERT( at_console, "Speed: %d\n", player->v.speed );
 			ALERT( at_console, "Model: %s\n", STRING(player->v.model) );
+			ALERT( at_console, "Friction: %f\n", player->v.friction );
 
 			if( mod_id == VALVE_DLL )
 			{

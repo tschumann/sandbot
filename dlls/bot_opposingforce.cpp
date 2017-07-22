@@ -57,6 +57,18 @@ void OpposingForceBot::Join()
 	}
 }
 
+void OpposingForceBot::PreThink()
+{
+	/*
+	 * this is a bit of hack (although you could argue that bouncing around until you in multiplayer is a bug)
+	 * but without this it's almost impossible for bots to get the enemy flag on op4ctf_hairball
+	 */
+	if( pGame->IsCTF() )
+	{
+		this->pEdict->v.friction = 1.0f;
+	}
+}
+
 int OpposingForceBot::GetTeam()
 {
 	// TODO: move UTIL_GetTeam functionality into class methods

@@ -526,6 +526,8 @@ class OpposingForceBot : public HalfLifeBot
 {
 public:
 	virtual void Join();
+	virtual void PreThink();
+
 	virtual int GetTeam();
 
 	virtual int GetPistol();
