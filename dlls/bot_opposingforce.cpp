@@ -59,12 +59,11 @@ void OpposingForceBot::Join()
 
 void OpposingForceBot::PreThink()
 {
-	/*
-	 * this is a bit of hack (although you could argue that bouncing around until you in multiplayer is a bug)
-	 * but without this it's almost impossible for bots to get the enemy flag on op4ctf_hairball
-	 */
-	if( pGame->IsCTF() )
+	// this is a bit of hack (although you could argue that bouncing around until you in multiplayer is a bug)
+	// but without this it's almost impossible for bots to get the enemy flag on op4ctf_hairball
+	if( pGame->IsCTF() && !strcmp(STRING(gpGlobals->mapname), "op4ctf_hairball") )
 	{
+		// TODO: possibly could be less than 1.0 and the bots would be okay?
 		this->pEdict->v.friction = 1.0f;
 	}
 }
@@ -82,7 +81,7 @@ int OpposingForceBot::GetPistol()
 
 int OpposingForceBot::GetGoalType()
 {
-	// TODO: looks like bot_has_flag is set properly...
+	// TODO: this doesn't get reset once a bot gets a flag to a capture point
 	if( this->bot_has_flag )
 	{
 		// find a base
