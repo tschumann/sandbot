@@ -192,33 +192,34 @@ void pfnChangePitch(edict_t* ent)
 
 	(*g_engfuncs.pfnChangePitch)(ent);
 }
+
 edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszField, const char *pszValue)
 {
-	UTIL_LogDPrintf("pfnFindEntityByString: pEdictStartSearchAfter=%x, pszField=%s, pszValue=%s\n", pEdictStartSearchAfter, pszField, pszValue);
+	if (mod_id == CSTRIKE_DLL)
+	{
+		// new round in CS 1.5
+		if (strcmp ("info_map_parameters", pszValue) == 0)
+		{
+			for (int bot_index = 0; bot_index < MAX_PLAYERS; bot_index++)
+			{
+				bot_t *pBot = pBots[bot_index];
 
-  int bot_index;
-  bot_t *pBot;
+				if (pBot->is_used)
+					BotSpawnInit (pBot); // reset bots for new round
+			}
+		}
+	}
 
-  if (mod_id == CSTRIKE_DLL)
-  {
-     // new round in CS 1.5
-     if (strcmp ("info_map_parameters", pszValue) == 0)
-     {
-        for (bot_index = 0; bot_index < MAX_PLAYERS; bot_index++)
-        {
-           pBot = pBots[bot_index];
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
 
-           if (pBot->is_used)
-              BotSpawnInit (pBot); // reset bots for new round
-        }
-     }
-  }
+	edict_t *pFound = (*g_engfuncs.pfnFindEntityByString)(pEdictStartSearchAfter, pszField, pszValue);
 
-  if( g_bIsMMPlugin )
-	  RETURN_META_VALUE( MRES_IGNORED, 0 );
+	UTIL_LogDPrintf( "pfnFindEntityByString: pEdictStartSearchAfter=%x, pszField=%s, pszValue=%s; result=%x\n", pEdictStartSearchAfter, pszField, pszValue, pFound );
 
-   return (*g_engfuncs.pfnFindEntityByString)(pEdictStartSearchAfter, pszField, pszValue);
+	return pFound;
 }
+
 int pfnGetEntityIllum(edict_t* pEnt)
 {
 	if( g_bIsMMPlugin )

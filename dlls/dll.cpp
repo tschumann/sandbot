@@ -1250,175 +1250,178 @@ float g_fCountDownTime = 0.0;
 
 void StartFrame( void )
 {
-	edict_t *pPlayer;
-	static float check_server_cmd = 0.0;
-	static int i, index, player_index, bot_index;
-	static float previous_time = -1.0;
-	int count;
-
-	if( !g_bInGame )
+	if (pGame->IsMultiplayer())
 	{
-		if( mod_id == NS_DLL )
+		edict_t *pPlayer;
+		static float check_server_cmd = 0.0;
+		static int i, index, player_index, bot_index;
+		static float previous_time = -1.0;
+		int count;
+
+		if (!g_bInGame)
 		{
-			// if the Countdown message has been sent, make a note of the time
-			if( g_iCountDown && !g_fCountDownTime )
+			if (mod_id == NS_DLL)
 			{
-				g_fCountDownTime = gpGlobals->time;
-			}
-
-			// if the Countdown time (plus a bit) has passed, we're in-game
-			if( g_iCountDown && g_fCountDownTime + (float)g_iCountDown + 1.0 < gpGlobals->time )
-			{
-				g_bInGame = true;
-			}
-		}
-	}
-
-	// if a new map has started then (MUST BE FIRST IN StartFrame)...
-	if( (gpGlobals->time + 0.1) < previous_time )
-	{
-		check_server_cmd = 0.0;  // reset at start of map
-
-		msecnum = 0;
-		msecdel = 0;
-		msecval = 0;
-
-		count = 0;
-
-		// mark the bots as needing to be respawned...
-		for( index = 0; index < MAX_PLAYERS; index++ )
-		{
-			if( count >= prev_num_bots )
-			{
-				pBots[index]->is_used = FALSE;
-				pBots[index]->respawn_state = 0;
-				pBots[index]->kick_time = 0.0;
-			}
-
-			if( pBots[index]->is_used )  // is this slot used?
-			{
-				pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
-				count++;
-			}
-
-			// check for any bots that were very recently kicked...
-			if( (pBots[index]->kick_time + 5.0) > previous_time )
-			{
-				pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
-				count++;
-			}
-			else
-				pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
-		}
-
-		// set the respawn time
-		if( IS_DEDICATED_SERVER() )
-			respawn_time = gpGlobals->time + 5.0;
-		else
-			respawn_time = gpGlobals->time + 20.0;
-
-		bot_check_time = gpGlobals->time + 30.0;
-	}
-
-	// adjust the millisecond delay based on the frame rate interval...
-	if( msecdel <= gpGlobals->time )
-	{
-		msecdel = gpGlobals->time + 0.5;
-		if( msecnum > 0 )
-			msecval = 450.0 / msecnum;
-		msecnum = 0;
-	}
-	else
-		msecnum++;
-
-	if( msecval < 1 )    // don't allow msec to be less than 1...
-		msecval = 1;
-
-	if( msecval > 100 )  // ...or greater than 100
-		msecval = 100;
-
-	count = 0;
-
-	for( bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++ )
-	{
-		// is this slot used AND not respawning
-		if( !pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE )
-		{
-			BotThink( pBots[bot_index] );
-
-			count++;
-		}
-		else if( pBots[bot_index]->IsKicked() )
-		{
-			// TODO: is_used is set to by IsKicked - probably don't touch iBotCount - adjusting things based on it would be more complicated
-		}
-	}
-
-	if( count > num_bots )
-		num_bots = count;
-
-	for( player_index = 1; player_index <= gpGlobals->maxClients; player_index++ )
-	{
-		pPlayer = INDEXENT( player_index );
-
-		if( pPlayer && !pPlayer->free )
-		{
-			if( (g_waypoint_on) && FBitSet( pPlayer->v.flags, FL_CLIENT ) )
-			{
-				WaypointThink( pPlayer );
-			}
-		}
-	}
-
-	if( g_GameRules )
-	{
-		if( !IS_DEDICATED_SERVER() && !spawn_time_reset )
-		{
-			if( listenserver_edict != NULL )
-			{
-				if( IsAlive( listenserver_edict ) )
+				// if the Countdown message has been sent, make a note of the time
+				if (g_iCountDown && !g_fCountDownTime)
 				{
-					spawn_time_reset = TRUE;
+					g_fCountDownTime = gpGlobals->time;
+				}
 
-					if( respawn_time >= 1.0 )
-						respawn_time = min( respawn_time, gpGlobals->time + (float)1.0 );
+				// if the Countdown time (plus a bit) has passed, we're in-game
+				if (g_iCountDown && g_fCountDownTime + (float)g_iCountDown + 1.0 < gpGlobals->time)
+				{
+					g_bInGame = true;
 				}
 			}
 		}
-	}
 
-	// check if time to see if a bot needs to be created...
-	if( bot_check_time < gpGlobals->time )
-	{
-		int count = 0;
-
-		bot_check_time = gpGlobals->time + 5.0;
-
-		for( i = 0; i < MAX_PLAYERS; i++ )
+		// if a new map has started then (MUST BE FIRST IN StartFrame)...
+		if ((gpGlobals->time + 0.1) < previous_time)
 		{
-			if( clients[i] != NULL )
+			check_server_cmd = 0.0;  // reset at start of map
+
+			msecnum = 0;
+			msecdel = 0;
+			msecval = 0;
+
+			count = 0;
+
+			// mark the bots as needing to be respawned...
+			for (index = 0; index < MAX_PLAYERS; index++)
+			{
+				if (count >= prev_num_bots)
+				{
+					pBots[index]->is_used = FALSE;
+					pBots[index]->respawn_state = 0;
+					pBots[index]->kick_time = 0.0;
+				}
+
+				if (pBots[index]->is_used)  // is this slot used?
+				{
+					pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+					count++;
+				}
+
+				// check for any bots that were very recently kicked...
+				if ((pBots[index]->kick_time + 5.0) > previous_time)
+				{
+					pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+					count++;
+				}
+				else
+					pBots[index]->kick_time = 0.0;  // reset to prevent false spawns later
+			}
+
+			// set the respawn time
+			if (IS_DEDICATED_SERVER())
+				respawn_time = gpGlobals->time + 5.0;
+			else
+				respawn_time = gpGlobals->time + 20.0;
+
+			bot_check_time = gpGlobals->time + 30.0;
+		}
+
+		// adjust the millisecond delay based on the frame rate interval...
+		if (msecdel <= gpGlobals->time)
+		{
+			msecdel = gpGlobals->time + 0.5;
+			if (msecnum > 0)
+				msecval = 450.0 / msecnum;
+			msecnum = 0;
+		}
+		else
+			msecnum++;
+
+		if (msecval < 1)    // don't allow msec to be less than 1...
+			msecval = 1;
+
+		if (msecval > 100)  // ...or greater than 100
+			msecval = 100;
+
+		count = 0;
+
+		for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
+		{
+			// is this slot used AND not respawning
+			if (!pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
+			{
+				BotThink(pBots[bot_index]);
+
 				count++;
+			}
+			else if (pBots[bot_index]->IsKicked())
+			{
+				// TODO: is_used is set to by IsKicked - probably don't touch iBotCount - adjusting things based on it would be more complicated
+			}
 		}
 
-		// if there are currently less than the maximum number of "players"
-		// then add another bot using the default skill level...
-		if( (count < max_bots) && (max_bots != -1) )
+		if (count > num_bots)
+			num_bots = count;
+
+		for (player_index = 1; player_index <= gpGlobals->maxClients; player_index++)
 		{
-			BotCreate( NULL, NULL, NULL, NULL, NULL );
+			pPlayer = INDEXENT(player_index);
+
+			if (pPlayer && !pPlayer->free)
+			{
+				if ((g_waypoint_on) && FBitSet(pPlayer->v.flags, FL_CLIENT))
+				{
+					WaypointThink(pPlayer);
+				}
+			}
 		}
-	}
 
-	previous_time = gpGlobals->time;
+		if (g_GameRules)
+		{
+			if (!IS_DEDICATED_SERVER() && !spawn_time_reset)
+			{
+				if (listenserver_edict != NULL)
+				{
+					if (IsAlive(listenserver_edict))
+					{
+						spawn_time_reset = TRUE;
 
-	if( bBaseLinesCreated )
-	{
-		bCanAddBots = true;
-		bBaseLinesCreated = false;
-	}
+						if (respawn_time >= 1.0)
+							respawn_time = min(respawn_time, gpGlobals->time + (float)1.0);
+					}
+				}
+			}
+		}
 
-	if( gpGlobals->deathmatch && pGame->CanAddBots() && bCanAddBots && GetBotCount() < bot_count.value )
-	{
-		BotCreate( NULL, NULL, NULL, NULL, NULL );
+		// check if time to see if a bot needs to be created...
+		if (bot_check_time < gpGlobals->time)
+		{
+			int count = 0;
+
+			bot_check_time = gpGlobals->time + 5.0;
+
+			for (i = 0; i < MAX_PLAYERS; i++)
+			{
+				if (clients[i] != NULL)
+					count++;
+			}
+
+			// if there are currently less than the maximum number of "players"
+			// then add another bot using the default skill level...
+			if ((count < max_bots) && (max_bots != -1))
+			{
+				BotCreate(NULL, NULL, NULL, NULL, NULL);
+			}
+		}
+
+		previous_time = gpGlobals->time;
+
+		if (bBaseLinesCreated)
+		{
+			bCanAddBots = true;
+			bBaseLinesCreated = false;
+		}
+
+		if (gpGlobals->deathmatch && pGame->CanAddBots() && bCanAddBots && GetBotCount() < bot_count.value)
+		{
+			BotCreate(NULL, NULL, NULL, NULL, NULL);
+		}
 	}
 
 	if( g_bIsMMPlugin )

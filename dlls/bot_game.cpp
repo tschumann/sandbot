@@ -8,6 +8,16 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+bool Game::IsMultiplayer()
+{
+	return gpGlobals->deathmatch > 0.0f;
+}
+
+int Game::GetMaxPlayers()
+{
+	return gpGlobals->maxClients;
+}
+
 bool Game::CanAddBots()
 {
 	return true;
@@ -15,7 +25,7 @@ bool Game::CanAddBots()
 
 bool Game::IsTeamPlay()
 {
-	return CVAR_GET_FLOAT("mp_teamplay") > 0;
+	return CVAR_GET_FLOAT("mp_teamplay") > 0.0f;
 }
 
 bool Game::IsCTF()

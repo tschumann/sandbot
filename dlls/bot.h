@@ -784,6 +784,8 @@ extern bot_t **pBots;
 class Game
 {
 public:
+	virtual bool IsMultiplayer();
+	virtual int GetMaxPlayers();
 	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();
 	virtual bool IsCTF();
