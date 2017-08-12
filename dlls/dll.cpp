@@ -1250,7 +1250,7 @@ float g_fCountDownTime = 0.0;
 
 void StartFrame( void )
 {
-	if (pGame->IsMultiplayer())
+	// if (pGame->IsMultiplayer())
 	{
 		edict_t *pPlayer;
 		static float check_server_cmd = 0.0;
