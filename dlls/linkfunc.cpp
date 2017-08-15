@@ -63,8 +63,8 @@ extern void *h_Library;
 
 #endif
 
-
 // entities for Valve's hl.dll and Standard SDK...
+LINK_ENTITY_TO_FUNC(DelayedUse);
 LINK_ENTITY_TO_FUNC(aiscripted_sequence);
 LINK_ENTITY_TO_FUNC(ambient_generic);
 LINK_ENTITY_TO_FUNC(ammo_357);
@@ -383,7 +383,6 @@ LINK_ENTITY_TO_FUNC(tf_weapon_tranq);
 LINK_ENTITY_TO_FUNC(timer);
 
 // additional entities for Counter-Strike
-LINK_ENTITY_TO_FUNC(DelayedUse);
 LINK_ENTITY_TO_FUNC(CountTeamPlayers);
 LINK_ENTITY_TO_FUNC(CountTeams);
 LINK_ENTITY_TO_FUNC(ammo_338magnum);

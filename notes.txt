@@ -1,3 +1,5 @@
 git tag -a v0.x -m "Sandbot v0.x"
 
 Change gamedll to addons/metamod/dlls/metamod.dll to test MetaMod. sandbot.dll should go in the same directory (but change the path in plugins.ini so it points to the top level dlls/ directory).
+
+windows_exports.bat and linux_exports.sh generate formatted exports that can be copy+pasted into exports.cpp - you may need to change the paths to some things.

@@ -11,3 +11,9 @@ dlls/*.so
 *.o
 
 *~
+
+windows_exports.txt
+sandbot_windows_exports.txt
+
+linux_exports.txt
+sandbot_linux_exports.txt
