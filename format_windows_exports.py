@@ -11,7 +11,8 @@ with open("windows_exports.txt") as file:
 	for line in lines:
 		items = line.split()
 		
-		if len(items) == 4 and is_hex(items[1]) and is_hex(items[2]):
+		# TODO: should probably exclude the non-entity exports here too
+		if len(items) == 4 and is_hex(items[1]) and is_hex(items[2]) and items[3][0] != '?':
 			exports.append("LINK_ENTITY_TO_FUNC(" + items[3] + ");")
 
 for item in sorted(set(exports)):
