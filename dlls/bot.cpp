@@ -2379,3 +2379,8 @@ void bot_t::FixIdealPitch()
 		this->pEdict->v.idealpitch += 360.0 * ((int)(-this->pEdict->v.idealpitch / 360.0) + 1);
 	}
 }
+
+bool bot_t::HasFlag()
+{
+	return false;
+}

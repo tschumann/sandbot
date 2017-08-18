@@ -150,6 +150,20 @@ bool TFCBot::IsSniper()
 	return this->pEdict->v.playerclass == TFCBot::CLASS_SNIPER;
 }
 
+bool TFCBot::HasFlag()
+{
+	edict_t *pent = NULL;
+
+	while( pent = UTIL_FindEntityByClassname( pent, "item_tfgoal" ) )
+	{
+		// if the bot has the flag then it has the flag
+		if ( pent->v.owner == this->pEdict )
+		{
+			return true;
+		}
+	}
+}
+
 bool TFCBot::FindFlag()
 {
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];

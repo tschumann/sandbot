@@ -81,13 +81,27 @@ int OpposingForceBot::GetPistol()
 
 int OpposingForceBot::GetGoalType()
 {
-	// TODO: this doesn't get reset once a bot gets a flag to a capture point
-	if( this->bot_has_flag )
+	// TODO: has flag is probably pretty slow to run each frame for each bot - only check it sometimes?
+	if( this->HasFlag() )
 	{
 		// find a base
 		return W_FL_FLAG_GOAL;
 	}
 	return W_FL_FLAG;
+}
+
+bool OpposingForceBot::HasFlag()
+{
+	edict_t *pent = NULL;
+
+	while( pent = UTIL_FindEntityByClassname( pent, "item_ctfflag" ) )
+	{
+		// if the bot has the flag and the flag is at the same place as this bot, it has the flag
+		if( (pent->v.owner == this->pEdict) && (pent->v.origin == this->GetOrigin()) )
+		{
+			return true;
+		}
+	}
 }
 
 bool OpposingForceBot::FindFlag()

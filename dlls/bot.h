@@ -362,6 +362,8 @@ public:
 	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
 
+	virtual bool HasFlag();
+
 	bool is_used;
 	int respawn_state;
 	int index;
@@ -534,6 +536,7 @@ public:
 
 	virtual int GetGoalType();
 
+	virtual bool HasFlag();
 	virtual bool FindFlag();
 
 	const static int TEAM_BLACK_MESA = 0;
@@ -584,7 +587,9 @@ public:
 
 	virtual bool IsSniper();
 
+	virtual bool HasFlag();
 	virtual bool FindFlag();
+
 	virtual void Build();
 	virtual bool CanBuildDispenser();
 	virtual bool CanBuildSentryGun();
