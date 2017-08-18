@@ -24,8 +24,14 @@ OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
 	bot_tfc.o bot_gunman.o bot_ns.o bot_ship.o bot_hunger.o
 
 sandbot.so: ${OBJ}
+	# build for release
 	${CPP} -m32 -fPIC -shared -o $@ ${OBJ} -ldl
 	# cp -f sandbot.so /home/$USER/.local/share/steam/steamapps/half-life/valve/dlls
+
+sandbot.so.debug: ${OBJ}
+	# build debug symbols
+	${CPP} -m32 -fPIC -shared -g -o $@ ${OBJ} -ldl
+	objcopy --only-keep-debug $@ $@
 
 clean:
 	-rm -f *.o
