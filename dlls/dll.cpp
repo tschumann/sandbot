@@ -129,7 +129,7 @@ void GameDLLInit( void )
 		bot_count.value = 11;
 		break;
 	case GEARBOX_DLL:
-		bot_count.value = 1;
+		bot_count.value = 11;
 		break;
 	case DOD_DLL:
 		bot_count.value = 15;

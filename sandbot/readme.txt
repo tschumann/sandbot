@@ -46,6 +46,7 @@ v0.4.1 (??/??/??)
 - [Linux] Added debug symbol generation to Makefile.
 - [Day of Defeat] Bots will now move at walk speed instead of sprinting everywhere.
 - [Day of Defeat] Marine bots will now say when they're reloading.
+- [Opposing Force] Added Opposing Force CTF support.
 - [Natural Selection] Marine bots will now say when they're reloading.
 - [Natural Selection] Marine bots are now slightly less accurate to compensate for the fact their isn't reduced in dark areas.
 
