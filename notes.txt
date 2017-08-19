@@ -6,3 +6,5 @@ scripts/windows_exports.bat and scripts/linux_exports.sh generate formatted expo
 
 Copy dlls/Release/vc141.pdb and dlls/Release/sandbot.pdb to symbols/
 
+gdb -s sandbot.so.debug -e sandbot.so to load Sandbot into gdb with debug symbols (if you "list functions" you'll get a per-file breakdown whereas if you do the same with gdb -e sandbot.so you won't).
+

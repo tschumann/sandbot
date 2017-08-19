@@ -1,44 +1,78 @@
 #
-# HPB_bot makefile for Linux
-#
-# created: 12/16/2000 botman (botman@mailandnews.com)
+# Sandbot Linux Makefile
 #
 
 CPP = gcc
 
-ARCHFLAG = -march=i686
-
+# gcc preprocessor flags
 BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
 
-# from https://github.com/APGRoboCop/hpb_bot_plugin/blob/master/Makefile
-OPTFLAGS = -mtune=pentium4 -mmmx -msse -msse2 -O2 -m32 -mfpmath=sse \
+# gcc compiler flags - thanks RoboCop
+OPTFLAGS = \
+		-march=i686 -mtune=pentium4 -mmmx -msse -msse2 -mfpmath=sse \
 		-funroll-loops -ffunction-sections -fomit-frame-pointer \
 		-fexpensive-optimizations -finline-functions -ffast-math \
-		-falign-loops=2 -falign-jumps=2 -falign-functions=2 \
+		-falign-loops=2 -falign-jumps=2 -falign-functions=2 -O2 -m32 \
 
-CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} ${ARCHFLAG} -w -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
+CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -w -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
-OBJ = bot.o bot_client.o bot_combat.o bot_navigate.o bot_start.o \
-	dll.o engine.o h_export.o linkfunc.o meta_api.o util.o waypoint.o \
-	bot_game.o bot_halflife.o bot_opposingforce.o bot_cstrike.o bot_dod.o \
-	bot_tfc.o bot_gunman.o bot_ns.o bot_ship.o bot_hunger.o
+OBJ = \
+	bot.o \
+	bot_client.o \
+	bot_combat.o \
+	bot_game.o \
+	bot_navigate.o \
+	bot_start.o \
+	bot_halflife.o \
+	bot_opposingforce.o \
+	bot_cstrike.o \
+	bot_dod.o \
+	bot_tfc.o \
+	bot_gunman.o \
+	bot_ns.o \
+	bot_ship.o \
+	bot_hunger.o \
+	dll.o \
+	engine.o \
+	h_export.o \
+	linkfunc.o \
+	meta_api.o \
+	util.o \
+	waypoint.o
 
+# by default build sandbot.so in release mode
+.DEFAULT_GOAL := sandbot.so
+
+# if debug is requested add debug flags and build sandbot.so
+# could have debug: BASEFLAGS += -DDEBUG as well but that would
+# mean the symbols are from a build that is different to release
+debug: OPTFLAGS += -g
+debug: sandbot.so
+
+symbols: debug
+symbols: 
+	-objcopy --only-keep-debug sandbot.so sandbot.so.debug
+	-cp sandbot.so.debug ../symbols/
+
+# build sandbot.so
 sandbot.so: ${OBJ}
-	# build for release
 	${CPP} -m32 -fPIC -shared -o $@ ${OBJ} -ldl
-	# cp -f sandbot.so /home/$USER/.local/share/steam/steamapps/half-life/valve/dlls
+	-cp $@ ../symbols/
+	-cp $@ ../sandbot/half-life/valve/dlls/
+	-cp $@ ../sandbot/half-life/gearbox/dlls/
+	-cp $@ ../sandbot/half-life/dod/dlls/
+	-cp $@ ../sandbot/half-life/ns/dlls/
+	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
-sandbot.so.debug: ${OBJ}
-	# build debug symbols
-	${CPP} -m32 -fPIC -shared -g -o $@ ${OBJ} -ldl
-	objcopy --only-keep-debug $@ $@
-
+# clean up non-source files
 clean:
 	-rm -f *.o
-	-rm -f *.so	
+	-rm -f *.so
+	-rm -f *.debug
 
-%.o:	%.cpp
+%.o: %.cpp
 	${CPP} ${CPPFLAGS} -c $< -o $@
 
-%.o:	%.c
+%.o: %.c
 	${CPP} ${CPPFLAGS} -c $< -o $@
+
