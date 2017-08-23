@@ -2,7 +2,7 @@ Sandbot
 
 == About ==
 Name: Sandbot
-Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
+Description: A deathmatch bot for Half-Life, Half-Life Opposing Force (Deathmatch and Capture the Flag), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (under the hood there is support for Half-Life Opposing Force (Capture the Flag), Team Fortress Classic, Natural Selection (Classic) and The Ship but they are still experimental).
 Requirements: Steam versions of either Half-Life, Half-Life Opposing Force or Day of Defeat and the latest versions of Gunman Chronicles, Natural Selection or They Hunger.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
@@ -41,11 +41,11 @@ v0.4.1 (??/??/??)
 - [All] Replaced botdonshoot console command with bot_shoot cvar.
 - [Windows] Updated Windows compiler to Visual Studio 2017 (from Visual Studio 2008).
 - [Linux] Updated Linux compiler to gcc 6.3.0 (from I'm not sure what - gcc 4.8.2? gcc 4.9.0?).
-- [Linux] Added a bunch of extra gcc flags to better optimise the code (thanks Robocop@Bots United).
+- [Linux] Added a bunch of extra gcc flags to better optimise the code (thanks RoboCop@Bots United).
 - [Linux] Tidied up the Makefile.
 - [Linux] Added debug symbol generation to Makefile.
 - [Day of Defeat] Bots will now move at walk speed instead of sprinting everywhere.
-- [Day of Defeat] Marine bots will now say when they're reloading.
+- [Day of Defeat] Bots will now say when they're reloading.
 - [Opposing Force] Added Opposing Force CTF support.
 - [Natural Selection] Marine bots will now say when they're reloading.
 - [Natural Selection] Marine bots are now slightly less accurate to compensate for the fact their isn't reduced in dark areas.
