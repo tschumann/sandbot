@@ -215,7 +215,7 @@ edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszF
 
 	edict_t *pFound = (*g_engfuncs.pfnFindEntityByString)(pEdictStartSearchAfter, pszField, pszValue);
 
-	UTIL_LogDPrintf( "pfnFindEntityByString: pEdictStartSearchAfter=%x, pszField=%s, pszValue=%s; result=%x\n", pEdictStartSearchAfter, pszField, pszValue, pFound );
+	UTIL_LogTPrintf( "pfnFindEntityByString: pEdictStartSearchAfter=%x, pszField=%s, pszValue=%s; result=%x\n", pEdictStartSearchAfter, pszField, pszValue, pFound );
 
 	return pFound;
 }
@@ -485,7 +485,7 @@ int pfnPointContents(const float *rgflVector)
 void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
 {
 	int index = -1;
-	UTIL_LogDPrintf("pfnMessageBegin: msg_dest=%d msg_type=%d ed=%x\n", msg_dest, msg_type, ed);
+	UTIL_LogTPrintf( "pfnMessageBegin: msg_dest=%d msg_type=%d ed=%x\n", msg_dest, msg_type, ed );
 
   if (ed)
   {
@@ -778,7 +778,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 
 void pfnMessageEnd(void)
 {
-	UTIL_LogDPrintf("pfnMessageEnd\n");
+	UTIL_LogTPrintf( "pfnMessageEnd\n" );
 
 	if( botMsgEndFunction )
 	{
@@ -797,7 +797,7 @@ void pfnMessageEnd(void)
 
 void pfnWriteByte(int iValue)
 {
-	UTIL_LogDPrintf("pfnWriteByte: %d\n", iValue);
+	UTIL_LogTPrintf( "pfnWriteByte: %d\n", iValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -813,7 +813,7 @@ void pfnWriteByte(int iValue)
 
 void pfnWriteChar(int iValue)
 {
-	UTIL_LogDPrintf("pfnWriteChar: %d\n", iValue);
+	UTIL_LogTPrintf( "pfnWriteChar: %d\n", iValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -829,7 +829,7 @@ void pfnWriteChar(int iValue)
 
 void pfnWriteShort(int iValue)
 {
-	UTIL_LogDPrintf("pfnWriteShort: %d\n", iValue);
+	UTIL_LogTPrintf( "pfnWriteShort: %d\n", iValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -845,7 +845,7 @@ void pfnWriteShort(int iValue)
 
 void pfnWriteLong(int iValue)
 {
-	UTIL_LogDPrintf("pfnWriteLong: %d\n", iValue);
+	UTIL_LogTPrintf( "pfnWriteLong: %d\n", iValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -861,7 +861,7 @@ void pfnWriteLong(int iValue)
 
 void pfnWriteAngle(float flValue)
 {
-	UTIL_LogDPrintf("pfnWriteAngle: flValue=%f\n", flValue);
+	UTIL_LogTPrintf( "pfnWriteAngle: flValue=%f\n", flValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -877,7 +877,7 @@ void pfnWriteAngle(float flValue)
 
 void pfnWriteCoord(float flValue)
 {
-	UTIL_LogDPrintf("pfnWriteCoord: flValue=%f\n", flValue);
+	UTIL_LogTPrintf( "pfnWriteCoord: flValue=%f\n", flValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -893,7 +893,7 @@ void pfnWriteCoord(float flValue)
 
 void pfnWriteString(const char *sz)
 {
-	UTIL_LogDPrintf("pfnWriteString: sz=%s\n", sz);
+	UTIL_LogTPrintf( "pfnWriteString: sz=%s\n", sz );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )
@@ -909,7 +909,7 @@ void pfnWriteString(const char *sz)
 
 void pfnWriteEntity(int iValue)
 {
-	UTIL_LogDPrintf("pfnWriteEntity: iValue=%d\n", iValue);
+	UTIL_LogTPrintf( "pfnWriteEntity: iValue=%d\n", iValue );
 
 	// if this message is for a bot, call the client message function...
 	if( botMsgFunction )

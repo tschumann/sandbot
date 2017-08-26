@@ -469,22 +469,6 @@ extern DLL_GLOBAL int			g_Language;
 extern char gszallsentencenames[CVOXFILESENTENCEMAX][CBSENTENCENAME_MAX];
 extern int gcallsentences;
 
-int USENTENCEG_Pick(int isentenceg, char *szfound);
-int USENTENCEG_PickSequential(int isentenceg, char *szfound, int ipick, int freset);
-void USENTENCEG_InitLRU(unsigned char *plru, int count);
-
-void SENTENCEG_Init();
-void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick);
-int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg, float volume, float attenuation, int flags, int pitch);
-int SENTENCEG_PlayRndSz(edict_t *entity, const char *szrootname, float volume, float attenuation, int flags, int pitch);
-int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szrootname, float volume, float attenuation, int flags, int pitch, int ipick, int freset);
-int SENTENCEG_GetIndex(const char *szrootname);
-int SENTENCEG_Lookup(const char *sample, char *sentencenum);
-
-void TEXTURETYPE_Init();
-char TEXTURETYPE_Find(char *name);
-float TEXTURETYPE_PlaySound(TraceResult *ptr,  Vector vecSrc, Vector vecEnd, int iBulletType);
-
 // NOTE: use EMIT_SOUND_DYN to set the pitch of a sound. Pitch of 100
 // is no pitch shift.  Pitch > 100 up to 255 is a higher pitch, pitch < 100
 // down to 1 is a lower pitch.   150 to 70 is the realistic range.
@@ -505,10 +489,6 @@ inline void STOP_SOUND(edict_t *entity, int channel, const char *sample)
 	EMIT_SOUND_DYN(entity, channel, sample, 0, 0, SND_STOP, PITCH_NORM);
 }
 
-void EMIT_SOUND_SUIT(edict_t *entity, const char *sample);
-void EMIT_GROUPID_SUIT(edict_t *entity, int isentenceg);
-void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
-
 #define PRECACHE_SOUND_ARRAY( a ) \
 	{ for (int i = 0; i < ARRAYSIZE( a ); i++ ) PRECACHE_SOUND((char *) a [i]); }
 
@@ -526,25 +506,8 @@ void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
 extern int g_groupmask;
 extern int g_groupop;
 
-class UTIL_GroupTrace
-{
-public:
-	UTIL_GroupTrace( int groupmask, int op );
-	~UTIL_GroupTrace( void );
-
-private:
-	int m_oldgroupmask, m_oldgroupop;
-};
-
-void UTIL_SetGroupTrace( int groupmask, int op );
-void UTIL_UnsetGroupTrace( void );
-
-int UTIL_SharedRandomLong( unsigned int seed, int low, int high );
-float UTIL_SharedRandomFloat( unsigned int seed, float low, float high );
-
-float UTIL_WeaponTimeBase( void );
-
 void UTIL_LogDPrintf( char *fmt, ... );
+void UTIL_LogTPrintf( char *fmt, ... );
 
 bool UTIL_IsBuilt( edict_t *pent );
 

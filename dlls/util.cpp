@@ -654,6 +654,27 @@ void UTIL_LogDPrintf( char *fmt, ... )
 	}
 }
 
+//=========================================================
+// UTIL_LogTPrintf - Prints a logged message to console.
+// Preceded by LOG: ( timestamp ) < message >
+//=========================================================
+void UTIL_LogTPrintf( char *fmt, ... )
+{
+	if( DEBUG_CODE && 0 )
+	{
+		va_list argptr;
+		static char string[1024];
+
+		va_start( argptr, fmt );
+		vsprintf( string, fmt, argptr );
+		va_end( argptr );
+
+		// Print to server console 
+		// TODO: revert back to at_logged and get it working
+		ALERT( at_console, "%s", string );
+	}
+}
+
 Vector UTIL_GetOrigin( edict_t *pEdict )
 {
 	if( !strncmp( STRING(pEdict->v.classname), "func_", 5 ) )

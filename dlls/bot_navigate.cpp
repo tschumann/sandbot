@@ -915,12 +915,11 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             waypoint_found = TRUE;
             pBot->curr_waypoint_index = i;
             pBot->waypoint_origin = waypoints[i].origin;
-
             pBot->f_waypoint_time = gpGlobals->time;
          }
 		 else
 		 {
-			 UTIL_LogDPrintf("Unable to get route from waypoint %d to waypoint %d\n");
+			 UTIL_LogDPrintf("Bot %s unable to get route from waypoint %d to waypoint %d\n", STRING(pBot->pEdict->v.netname), pBot->curr_waypoint_index, pBot->waypoint_goal);
 		 }
       }
 
