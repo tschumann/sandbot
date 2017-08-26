@@ -37,8 +37,8 @@ A. No but it will be fixed in a future version.
 
 == Changelog ==
 
-v0.4.1 (??/??/??)
-- [All] Replaced botdonshoot console command with bot_shoot cvar.
+v0.4.1 (??/??/17)
+- [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).
 - [Windows] Updated Windows compiler to Visual Studio 2017 (from Visual Studio 2008).
 - [Linux] Updated Linux compiler to gcc 6.3.0 (from I'm not sure what - gcc 4.8.2? gcc 4.9.0?).
 - [Linux] Added a bunch of extra gcc flags to better optimise the code (thanks RoboCop@Bots United).
@@ -48,7 +48,7 @@ v0.4.1 (??/??/??)
 - [Day of Defeat] Bots will now say when they're reloading.
 - [Opposing Force] Added Opposing Force CTF support.
 - [Natural Selection] Marine bots will now say when they're reloading.
-- [Natural Selection] Marine bots are now slightly less accurate to compensate for the fact their isn't reduced in dark areas.
+- [Natural Selection] Marine bots are now slightly less accurate to compensate for the fact their vision isn't reduced in dark areas.
 
 v0.4.0.1 (18/06/17)
 - [All] Fixed single player not loading (thanks shardthefox200@ModDB)
