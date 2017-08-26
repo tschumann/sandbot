@@ -102,6 +102,8 @@ bool OpposingForceBot::HasFlag()
 			return true;
 		}
 	}
+
+	return false;
 }
 
 bool OpposingForceBot::FindFlag()

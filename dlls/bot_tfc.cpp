@@ -162,6 +162,8 @@ bool TFCBot::HasFlag()
 			return true;
 		}
 	}
+
+	return false;
 }
 
 bool TFCBot::FindFlag()
