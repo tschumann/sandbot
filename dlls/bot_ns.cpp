@@ -561,6 +561,20 @@ bool NSBot::ShouldReload()
 	}
 }
 
+int NSBot::GetGoalType()
+{
+	if( this->IsMarine() )
+	{
+		// TODO: or W_FL_NS_RESNODE if in Classic and some per-bot flag is set
+		return W_FL_NS_HIVE;
+	}
+	else
+	{
+		// TODO: or W_FL_NS_RESNODE if in Classic and a Gorge
+		return W_FL_NS_COMMAND_CHAIR;
+	}
+}
+
 bool NSBot::IsNearHive()
 {
 	edict_t *pent = NULL;

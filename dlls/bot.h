@@ -667,6 +667,8 @@ public:
 	virtual void Reload();
 	virtual bool ShouldReload();
 
+	virtual int GetGoalType();
+
 	virtual bool IsNearHive();
 	virtual bool IsInReadyRoom();
 	virtual int GetDesiredClass();

@@ -1445,7 +1445,7 @@ void pfnGetGameDir(char *szGetGameDir)
 }
 void pfnCvar_RegisterVariable(cvar_t *variable)
 {
-	UTIL_LogDPrintf("pfnCvar_RegisterVariable: variable->name=%s\n", variable->name );
+	UTIL_LogTPrintf("pfnCvar_RegisterVariable: variable->name=%s\n", variable->name );
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
@@ -1454,7 +1454,7 @@ void pfnCvar_RegisterVariable(cvar_t *variable)
 }
 void pfnFadeClientVolume(const edict_t *pEdict, int fadePercent, int fadeOutSeconds, int holdTime, int fadeInSeconds)
 {
-	UTIL_LogDPrintf("pfnFadeClientVolume: pEdict=%x fadePercent=%d fadeOutSeconds=%d holdTime=%d fadeInSeconds=%d\n", pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
+	UTIL_LogTPrintf("pfnFadeClientVolume: pEdict=%x fadePercent=%d fadeOutSeconds=%d holdTime=%d fadeInSeconds=%d\n", pEdict, fadePercent, fadeOutSeconds, holdTime, fadeInSeconds);
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
@@ -1463,7 +1463,7 @@ void pfnFadeClientVolume(const edict_t *pEdict, int fadePercent, int fadeOutSeco
 }
 void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 {
-	UTIL_LogDPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
+	UTIL_LogTPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
 	// TODO: NS_DLL and TFC_DLL too? different classes have different speeds
 	if( mod_id == CSTRIKE_DLL || mod_id == DOD_DLL )

@@ -885,16 +885,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		 }
 		 else if (mod_id == NS_DLL)
 		 {
-			 if( pBot->pEdict->v.team == NSBot::TEAM_ALIEN )
-			 {
-				 UTIL_LogDPrintf("looking for command chair\n");
-				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_COMMAND_CHAIR);
-             }
-			 else if( pBot->pEdict->v.team == NSBot::TEAM_MARINE )
-			 {
-				 UTIL_LogDPrintf("looking for hive\n");
-				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_NS_HIVE);
-             }
+			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
             if (index != -1)
             {
