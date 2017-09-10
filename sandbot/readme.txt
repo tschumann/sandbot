@@ -37,7 +37,7 @@ A. No but it will be fixed in a future version.
 
 == Changelog ==
 
-v0.4.1 (??/??/17)
+v0.4.1 (10/09/17)
 - [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).
 - [Windows] Updated Windows compiler to Visual Studio 2017 (from Visual Studio 2008).
 - [Linux] Updated Linux compiler to gcc 6.3.0 (from I'm not sure what - gcc 4.8.2? gcc 4.9.0?).
