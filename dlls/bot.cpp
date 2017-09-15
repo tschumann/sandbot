@@ -32,7 +32,6 @@ extern int mod_id;
 extern edict_t *clients[32];
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
-extern int default_bot_skill;
 
 extern int max_team_players[4];
 extern int team_class_limits[4];
@@ -578,9 +577,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	// create the bot
 	pBotData[iIndex].bIsUsed = true;
 
-	// TODO: make skill a per-round changeable cvar
-   skill = default_bot_skill;
-
    // TODO: move this to a utility function: it may be useful
    // remove any illegal characters from name...
    /*
@@ -734,8 +730,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 		pBot->idle_angle = 0.0;
 		pBot->idle_angle_time = 0.0;
-
-		pBot->bot_skill = skill - 1;  // 0 based for array indexes
 
 		pBot->bot_team = -1;
 		pBot->bot_class = -1;
@@ -1783,10 +1777,10 @@ void BotThink( bot_t *pBot )
 
             // should the bot pause for a while here?
             // (don't pause on ladders or while being "used"...
-            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->bot_skill]) && (pEdict->v.movetype != MOVETYPE_FLY) && (pBot->pBotUser == NULL) && mod_id != NS_DLL )
+            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->GetSkill()]) && (pEdict->v.movetype != MOVETYPE_FLY) && (pBot->pBotUser == NULL) && mod_id != NS_DLL )
             {
                // set the time that the bot will stop "pausing"
-               pBot->f_pause_time = gpGlobals->time + RANDOM_FLOAT(pause_time[pBot->bot_skill][0], pause_time[pBot->bot_skill][1]);
+               pBot->f_pause_time = gpGlobals->time + RANDOM_FLOAT(pause_time[pBot->GetSkill()][0], pause_time[pBot->GetSkill()][1]);
             }
          }
       }
@@ -1954,6 +1948,24 @@ void bot_t::PostThink()
 	BotFixViewAngles( this->pEdict );
 }
 
+int bot_t::GetSkill()
+{
+	extern cvar_t bot_skill;
+
+	int iSkill = bot_skill.value;
+
+	if( iSkill < 0 )
+	{
+		iSkill = 0;
+	}
+	if( iSkill > 5 )
+	{
+		iSkill = 5;
+	}
+
+	return iSkill;
+}
+
 int bot_t::GetTeam()
 {
 	return this->pEdict->v.team;
@@ -2082,7 +2094,7 @@ Vector bot_t::GetPointToShootAt()
 
 	edict_t *pEdict = this->pEdict;
 
-	switch( this->bot_skill )
+	switch( this->GetSkill() )
 	{
 	case 0:
 		// VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)

@@ -318,6 +318,8 @@ public:
 	virtual void Think();
 	virtual void PostThink();
 
+	virtual int GetSkill();
+
 	virtual int GetTeam();
 
 	virtual bool HasEnemy();
@@ -371,7 +373,6 @@ public:
 	bool bShouldInit;
 	char name[BOT_NAME_LEN+1];
 	char skin[BOT_SKIN_LEN+1];
-	int bot_skill;
 	int not_started;
 	int start_action;
 	float kick_time;

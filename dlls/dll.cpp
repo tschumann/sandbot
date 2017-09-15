@@ -52,7 +52,6 @@ DLL_GLOBAL const Vector g_vecZero = Vector(0,0,0);
 
 int mod_id = 0;
 int m_spriteTexture = 0;
-int default_bot_skill = 2;
 bool isFakeClientCommand = false;
 int fake_arg_count;
 float bot_check_time = 30.0;
@@ -633,27 +632,6 @@ void ClientCommand( edict_t *pEntity )
             ClientPrint(pEntity, HUD_PRINTNOTIFY, "observer mode ENABLED\n");
          else
             ClientPrint(pEntity, HUD_PRINTNOTIFY, "observer mode DISABLED\n");
-
-		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
-
-         return;
-      }
-	  // TODO: make this a cvar
-      else if (FStrEq(pcmd, "botskill"))
-      {
-         if ((arg1 != NULL) && (*arg1 != 0))
-         {
-            int temp = atoi(arg1);
-
-            if ((temp < 1) || (temp > 5))
-               ClientPrint(pEntity, HUD_PRINTNOTIFY, "invalid botskill value!\n");
-            else
-               default_bot_skill = temp;
-         }
-
-         sprintf(msg, "botskill is %d\n", default_bot_skill);
-         ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
 
 		 if( g_bIsMMPlugin )
 			 RETURN_META( MRES_SUPERCEDE );

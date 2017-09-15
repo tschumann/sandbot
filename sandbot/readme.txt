@@ -15,7 +15,7 @@ MetaMod-P should work across the board but has been found to freeze even without
 addbot		Add a bot to the server
 		In Day of Defeat you can addbot allies or addbot axis
 		In Natural Selection you can addbot alien or addbot marine
-botskill [1-5]	Set the bot skill level
+bot_skill [1-5]	Set the bot skill level
 waypoint add	Add a waypoint
 waypoint delete	Delete a waypoint
 waypoint save	Write waypoints to file
@@ -36,6 +36,9 @@ Q. Does single player work?
 A. No but it will be fixed in a future version.
 
 == Changelog ==
+
+v0.4.2 (??/??/??)
+- [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 
 v0.4.1 (10/09/17)
 - [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).

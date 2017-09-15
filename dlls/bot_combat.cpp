@@ -810,7 +810,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 
 #if 0
          // is the bot NOT skilled enough to use this weapon?
-         if ((pBot->bot_skill+1) > pSelect[select_index].skill_level)
+         if ((pBot->GetSkill() +1) > pSelect[select_index].skill_level)
          {
             select_index++;  // skip to next weapon
             continue;
