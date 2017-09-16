@@ -145,6 +145,41 @@ void TFCBot::Join()
 	}
 }
 
+int TFCBot::GetGoalType()
+{
+	if( this->IsSniper() )
+	{
+		if( RANDOM_LONG(1, 100) <= 10 )
+		{
+			return W_FL_FLAG;
+		}
+		else
+		{
+			return W_FL_SNIPER;
+		}
+	}
+	else if( this->IsEngineer() )
+	{
+		if( RANDOM_LONG(1, 100) <= 20 )
+		{
+			return W_FL_FLAG;
+		}
+		else
+		{
+			return W_FL_TFC_BUILD_ZONE;
+		}
+	}
+	else
+	{
+		return W_FL_FLAG;
+	}
+}
+
+bool TFCBot::IsEngineer()
+{
+	return this->pEdict->v.playerclass == TFCBot::CLASS_ENGINEER;
+}
+
 bool TFCBot::IsSniper()
 {
 	return this->pEdict->v.playerclass == TFCBot::CLASS_SNIPER;
@@ -263,6 +298,11 @@ bool TFCBot::FindFlag()
 	}
 
 	return false;
+}
+
+bool TFCBot::ShouldBuild()
+{
+	return this->f_engineer_build_time <= gpGlobals->time;
 }
 
 void TFCBot::Build()

@@ -815,52 +815,18 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
          }
          else if (mod_id == TFC_DLL)
          {
-            if (pBot->IsSniper())
+            if (((TFCBot *)pBot)->IsEngineer() && ((TFCBot *)pBot)->ShouldBuild())
             {
-               if (RANDOM_LONG(1, 100) <= 10)
-               {
-                  // find the nearest flag waypoint...
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
-               }
-               else
-               {
-                  // find a random sniper waypoint...
-                  index = WaypointFindRandomGoal(pEdict, team, W_FL_SNIPER);
-               }
-
-               if (index != -1)
-                  pBot->waypoint_goal = index;
-            }
-            else if (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER)
-            {
-               // is it time to build sentry gun or dispenser yet?
-               if (pBot->f_engineer_build_time <= gpGlobals->time)
-               {
-                  ((TFCBot *)pBot)->Build();
-               }
-               else
-               {
-                  if (RANDOM_LONG(1, 100) <= 20)
-                  {
-                     // find the nearest flag waypoint...
-                     index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
-
-                     if (index != -1)
-                        pBot->waypoint_goal = index;
-                  }
-               }
+				((TFCBot *)pBot)->Build();
             }
             else
             {
-               if (RANDOM_LONG(1, 100) <= 40)
-               {
-                  // find the nearest flag waypoint...
+				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
-                  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG);
-
-                  if (index != -1)
-                     pBot->waypoint_goal = index;
-               }
+				if (index != -1)
+				{
+					pBot->waypoint_goal = index;
+				}
             }
          }
 		 else if (mod_id == GEARBOX_DLL && pGame->IsCTF())

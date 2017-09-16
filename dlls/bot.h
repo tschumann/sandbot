@@ -586,11 +586,15 @@ class TFCBot : public bot_t
 public:
 	virtual void Join();
 
+	virtual int GetGoalType();
+
+	virtual bool IsEngineer();
 	virtual bool IsSniper();
 
 	virtual bool HasFlag();
 	virtual bool FindFlag();
 
+	virtual bool ShouldBuild();
 	virtual void Build();
 	virtual bool CanBuildDispenser();
 	virtual bool CanBuildSentryGun();

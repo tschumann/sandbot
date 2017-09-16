@@ -38,11 +38,9 @@ typedef unsigned __int64 uint64_t;
 
 #define W_FL_FLAG			(1<<11) /* flag position (or hostage or president) */
 #define W_FL_TFC_FLAG		(1<<11) /* flag position (or hostage or president) */
-#define W_FL_FLF_CAP		(1<<11) /* Front Line Force capture point */
 
 #define W_FL_FLAG_GOAL		(1<<12) /* flag return position (or rescue zone) */
 #define W_FL_TFC_FLAG_GOAL	(1<<12) /* flag return position (or rescue zone) */
-#define W_FL_FLF_DEFEND		(1<<12) /* Front Line Force defend point */
 
 #define W_FL_PRONE			(1<<13) /* go prone (laying down) */
 #define W_FL_AIMING			(1<<14) /* aiming waypoint */
@@ -56,6 +54,8 @@ typedef unsigned __int64 uint64_t;
 #define W_FL_NS_HIVE		(1<<20)
 #define W_FL_NS_COMMAND_CHAIR	(1<<21)
 #define W_FL_NS_RESNODE		(1<<22)
+
+#define W_FL_TFC_BUILD_ZONE	(1<<25)
 
 #define W_FL_DOD_OBJ		(1<<29)
 #define W_FL_DOD_CAP		(1<<30)
