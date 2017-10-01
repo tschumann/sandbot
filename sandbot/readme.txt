@@ -39,6 +39,7 @@ A. No but it will be fixed in a future version.
 
 v0.4.2 (??/??/??)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
+- [All] Fixed bots attacking bots that had been kicked.
 
 v0.4.1 (10/09/17)
 - [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).

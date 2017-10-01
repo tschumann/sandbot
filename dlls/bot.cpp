@@ -558,7 +558,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 {
 	edict_t *BotEnt;
 	bot_t *pBot;
-	int skill;
 	int start_action = 0;
 
 	int iIndex = RANDOM_LONG( 0, 31 );

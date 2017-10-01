@@ -802,6 +802,7 @@ public:
 	virtual bool IsTeamPlay();
 	virtual bool IsCTF();
 	virtual unsigned int BotsOnTeam( int team );
+	virtual bool IsValidEdict( edict_t *pEdict );
 };
 
 class GearboxGame : public Game

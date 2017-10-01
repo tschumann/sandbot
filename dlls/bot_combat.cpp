@@ -571,8 +571,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
          edict_t *pPlayer = INDEXENT(i);
 
          // skip invalid players and skip self (i.e. this bot)
-		 // TODO: read http://forums.bots-united.com/printthread.php?t=3517&pp=10
-         if (pPlayer && !pPlayer->free && !(pEdict->v.flags & FL_KILLME) && (pPlayer != pEdict))
+         if (pGame->IsValidEdict(pPlayer) && (pPlayer != pEdict))
          {
             // skip this player if not alive (i.e. dead or dying)
             if (!IsAlive(pPlayer))
