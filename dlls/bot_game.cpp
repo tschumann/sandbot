@@ -54,7 +54,9 @@ unsigned int Game::BotsOnTeam( int team )
 // to make sure the given edict doesn't belong to a bot that has
 // been kicked
 // see http://forums.bots-united.com/printthread.php?t=3517&pp=10
-bool Game::IsValidEdict( edict_t *pEdict )
+// TODO: in Opposing Force CTF at least, bots will also target
+// spectators - check iuser2 or something to see if spectator?
+bool Game::IsValidEnemy( edict_t *pEdict )
 {
 	if( pEdict == NULL )
 	{
