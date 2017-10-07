@@ -541,6 +541,7 @@ void ClientDisconnect( edict_t *pEntity )
 	{
 		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
 		{
+			// TODO: does this actually get called when a bot is kicked? do what will be done in StartFrame
 			pBots[i]->SetKicked();
 			// TODO: experiment in kicking all bots at the end of each map
 			// don't put this in SetKicked because we only want to try setting this when all
@@ -1230,7 +1231,7 @@ void StartFrame( void )
 {
 	edict_t *pPlayer;
 	static float check_server_cmd = 0.0;
-	static int i, index, player_index, bot_index;
+	static int i, index, player_index;
 	static float previous_time = -1.0;
 	int count;
 
@@ -1317,16 +1318,22 @@ void StartFrame( void )
 
 	count = 0;
 
-	for (bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++)
+	for( int bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++ )
 	{
-		// is this slot used AND not respawning
-		if (!pBots[bot_index]->IsKicked() && pBots[bot_index]->is_used && pBots[bot_index]->respawn_state == RESPAWN_IDLE)
-		{
-			BotThink(pBots[bot_index]);
+		bot_t *pBot = pBots[bot_index];
 
+		if( !pGame->IsValidEnemy( pBot->pEdict ) )
+		{
+			// TODO: set pBotData[pBot->iBotDataIndex].bIsUsed = false; pBot->is_used = false;
+			// maybe call pBot->SetKicked() too?
+		}
+		// is this slot used AND not respawning
+		if( !pBot->IsKicked() && pBot->is_used && pBot->respawn_state == RESPAWN_IDLE )
+		{
+			BotThink(pBot);
 			count++;
 		}
-		else if (pBots[bot_index]->IsKicked())
+		else if( pBot->IsKicked() )
 		{
 			// TODO: is_used is set to by IsKicked - probably don't touch iBotCount - adjusting things based on it would be more complicated
 		}

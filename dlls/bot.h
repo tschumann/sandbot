@@ -367,6 +367,7 @@ public:
 	virtual bool HasFlag();
 
 	bool is_used;
+	int iBotDataIndex;
 	int respawn_state;
 	int index;
 	edict_t *pEdict;

@@ -684,6 +684,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  pBot->index = clientIndex;
 
       pBot->is_used = TRUE;
+	  pBot->iBotDataIndex = iIndex;
       pBot->respawn_state = RESPAWN_IDLE;
       pBot->create_time = gpGlobals->time;
       pBot->name[0] = 0;  // name not set by server yet
@@ -1877,6 +1878,7 @@ bot_t::bot_t()
 {
 	// is_used gets set to true in ServerActivate
 	this->is_used = false;
+	this->iBotDataIndex = -1;
 	this->index = -1;
 	// TODO: needed? already set in BotThink - not BotCreate?
 	this->name[0] = '\0';
