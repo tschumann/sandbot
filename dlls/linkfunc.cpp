@@ -32,10 +32,63 @@ extern void *h_Library;
 		} \
 		(*otherClassName)(pev); }
 
-LINK_ENTITY_TO_FUNC(CountTeamPlayers);
-LINK_ENTITY_TO_FUNC(CountTeams);
-LINK_ENTITY_TO_FUNC(DelayedUse);
-LINK_ENTITY_TO_FUNC(DmlHandGrenade);
+// to get singleplayer working the below two functions need to know about
+// the mangled name exports - take a look at https://msdn.microsoft.com/en-us/library/ms809762.aspx
+// in conjuction with singlep.cpp from MetaMod singleplayer to get an idea
+// about how to translate offsets etc, or better yet just use the output of
+// dumpbin in conjunction with the real return values of the below methods
+// to figure it out - that way the export scripts can be modified to output
+// appropriate offsets etc and the output can just be dumped into a .cpp
+// file so the implementation of pfnFunctionFromName and pfnNameForFunction
+// can be platform independent (hopefully) while the offsets etc will be
+// platform dependent (which is unavoidable)
+
+#ifdef WIN32
+// offset of first exported function?
+int g_iBaseOffset = 0;
+int g_iOrdinalCount = 0;
+
+char *pFunctionNames[4096];
+
+WORD *pOrdinals;
+DWORD *pFunctionAddresses;
+
+uint32 NameToAddress( const char *pName )
+{
+	uint32 iAddress = 0;
+
+	for (int i = 0; i < g_iOrdinalCount; i++)
+	{
+		if (!strcmp(pName, pFunctionNames[i]))
+		{
+			// get the address of the function
+			iAddress = pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset;
+			ALERT(at_console, "pfnFunctionFromName: %s found at address %d\n", pName, iAddress);
+		}
+		else
+		{
+			ALERT(at_console, "pfnFunctionFromName: %s not found\n", pName);
+		}
+	}
+
+	return iAddress;
+}
+#endif // WIN32
+
+#ifdef __linux__
+uint32 NameToAddress(const char *pName)
+{
+	uint32 iAddress = 0;
+
+	return iAddress;
+}
+#endif // __linux__
+
+// TODO: these aren't entities?
+// LINK_ENTITY_TO_FUNC(CountTeamPlayers);
+// LINK_ENTITY_TO_FUNC(CountTeams);
+// LINK_ENTITY_TO_FUNC(DelayedUse);
+// LINK_ENTITY_TO_FUNC(DmlHandGrenade);
 LINK_ENTITY_TO_FUNC(aiscripted_sequence);
 LINK_ENTITY_TO_FUNC(alienresourcetower);
 LINK_ENTITY_TO_FUNC(ambient_generic);

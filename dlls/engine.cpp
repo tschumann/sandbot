@@ -15,12 +15,11 @@
 #include "bot_client.h"
 #include "engine.h"
 #include "dll.h"
-
+#include "linkfunc.h"
 
 extern enginefuncs_t g_engfuncs;
 extern bot_t **pBots;
 extern int mod_id;
-
 
 int debug_engine = 0;
 
@@ -1281,28 +1280,23 @@ void pfnGetBonePosition(const edict_t* pEdict, int iBone, float *rgflOrigin, flo
 	(*g_engfuncs.pfnGetBonePosition)(pEdict, iBone, rgflOrigin, rgflAngles);
 }
 
-// to get singleplayer working the below two functions need to know about
-// the mangled name exports - take a look at https://msdn.microsoft.com/en-us/library/ms809762.aspx
-// in conjuction with singlep.cpp from MetaMod singleplayer to get an idea
-// about how to translate offsets etc, or better yet just use the output of
-// dumpbin in conjunction with the real return values of the below methods
-// to figure it out - that way the export scripts can be modified to output
-// appropriate offsets etc and the output can just be dumped into a .cpp
-// file so the implementation of pfnFunctionFromName and pfnNameForFunction
-// can be platform independent (hopefully) while the offsets etc will be
-// platform dependent (which is unavoidable)
-
 uint32 pfnFunctionFromName( const char *pName )
 {
+	uint32 iAddress = NameToAddress( pName );
+
 	if( g_bIsMMPlugin )
 	{
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
-#if 0
-		RETURN_META_VALUE( MRES_SUPERCEDE, 0 );
-#endif
+		RETURN_META_VALUE( MRES_SUPERCEDE, iAddress );
 	}
 
-	return (*g_engfuncs.pfnFunctionFromName)(pName);
+	if( iAddress )
+	{
+		return iAddress;
+	}
+	else
+	{
+		return (*g_engfuncs.pfnFunctionFromName)(pName);
+	}
 }
 
 const char *pfnNameForFunction( uint32 function )

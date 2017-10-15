@@ -178,6 +178,7 @@
     <ClInclude Include="cdll_dll.h" />
     <ClInclude Include="enginecallback.h" />
     <ClInclude Include="extdll.h" />
+    <ClInclude Include="linkfunc.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="waypoint.h" />
