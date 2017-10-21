@@ -1301,15 +1301,21 @@ uint32 pfnFunctionFromName( const char *pName )
 
 const char *pfnNameForFunction( uint32 function )
 {
+	const char *szName = AddressToName( function );
+
 	if( g_bIsMMPlugin )
 	{
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
-#if 0
-		RETURN_META_VALUE( MRES_SUPERCEDE, 0 );
-#endif
+		RETURN_META_VALUE( MRES_SUPERCEDE, szName );
 	}
 
-	return (*g_engfuncs.pfnNameForFunction)(function);
+	if( szName )
+	{
+		return szName;
+	}
+	else
+	{
+		return (*g_engfuncs.pfnNameForFunction)(function);
+	}
 }
 
 void pfnClientPrintf( edict_t* pEdict, PRINT_TYPE ptype, const char *szMsg )

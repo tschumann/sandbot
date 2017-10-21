@@ -12,5 +12,6 @@
 #include "archtypes.h"
 
 uint32 NameToAddress( const char *pName );
+const char *AddressToName(uint32 function);
 
 #endif // LINKFUNC_H

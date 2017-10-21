@@ -57,21 +57,41 @@ uint32 NameToAddress( const char *pName )
 {
 	uint32 iAddress = 0;
 
-	for (int i = 0; i < g_iOrdinalCount; i++)
+	for( int i = 0; i < g_iOrdinalCount; i++ )
 	{
-		if (!strcmp(pName, pFunctionNames[i]))
+		if( !strcmp(pName, pFunctionNames[i]) )
 		{
 			// get the address of the function
 			iAddress = pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset;
-			ALERT(at_console, "pfnFunctionFromName: %s found at address %d\n", pName, iAddress);
+			ALERT( at_console, "NameToAddress: %s found at address %d\n", pName, iAddress );
 		}
 		else
 		{
-			ALERT(at_console, "pfnFunctionFromName: %s not found\n", pName);
+			ALERT( at_console, "NameToAddress: %s not found\n", pName );
 		}
 	}
 
 	return iAddress;
+}
+
+const char *AddressToName(uint32 function)
+{
+	const char *szName = NULL;
+
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		if( (function - g_iBaseOffset) == pFunctionAddresses[pOrdinals[i]] )
+		{
+			szName = pFunctionNames[i];
+			ALERT( at_console, "AddressToName: %s found at address %d\n", szName, function );
+		}
+		else
+		{
+			ALERT( at_console, "AddressToName: %d not found\n", function );
+		}
+	}
+
+	return szName;
 }
 #endif // WIN32
 
@@ -81,6 +101,13 @@ uint32 NameToAddress(const char *pName)
 	uint32 iAddress = 0;
 
 	return iAddress;
+}
+
+const char *AddressToName( uint32 function )
+{
+	const char *szName = NULL;
+
+	return szName;
 }
 #endif // __linux__
 
