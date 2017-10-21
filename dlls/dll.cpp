@@ -56,7 +56,6 @@ bool isFakeClientCommand = false;
 int fake_arg_count;
 float bot_check_time = 30.0;
 int min_bots = -1;
-int max_bots = -1;
 int num_bots = 0;
 int prev_num_bots = 0;
 bool g_GameRules = FALSE;
@@ -1363,27 +1362,6 @@ void StartFrame( void )
 		}
 	}
 
-	// check if time to see if a bot needs to be created...
-	if (bot_check_time < gpGlobals->time)
-	{
-		int count = 0;
-
-		bot_check_time = gpGlobals->time + 5.0;
-
-		for (i = 0; i < MAX_PLAYERS; i++)
-		{
-			if (clients[i] != NULL)
-				count++;
-		}
-
-		// if there are currently less than the maximum number of "players"
-		// then add another bot using the default skill level...
-		if ((count < max_bots) && (max_bots != -1))
-		{
-			BotCreate(NULL, NULL, NULL, NULL, NULL);
-		}
-	}
-
 	previous_time = gpGlobals->time;
 
 	if( bBaseLinesCreated )
@@ -1392,9 +1370,9 @@ void StartFrame( void )
 		bBaseLinesCreated = false;
 	}
 
-	if( gpGlobals->deathmatch && pGame->CanAddBots() && bCanAddBots && GetBotCount() < bot_count.value )
+	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < bot_count.value )
 	{
-		BotCreate(NULL, NULL, NULL, NULL, NULL);
+		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
 
 	if( g_bIsMMPlugin )

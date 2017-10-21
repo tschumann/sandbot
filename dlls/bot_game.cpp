@@ -20,7 +20,7 @@ int Game::GetMaxPlayers()
 
 bool Game::CanAddBots()
 {
-	return true;
+	return gpGlobals->deathmatch > 0;
 }
 
 bool Game::IsTeamPlay()
