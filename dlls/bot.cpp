@@ -1882,8 +1882,6 @@ bot_t::bot_t()
 	this->index = -1;
 	// TODO: needed? already set in BotThink - not BotCreate?
 	this->name[0] = '\0';
-
-	this->bIsKicked = false;
 }
 
 void bot_t::OnSpawn()
@@ -2277,16 +2275,6 @@ bool bot_t::IsUnderWater()
 bool bot_t::IsSniper()
 {
 	return false;
-}
-
-void bot_t::SetKicked()
-{
-	this->bIsKicked = true;
-}
-
-bool bot_t::IsKicked()
-{
-	return this->bIsKicked;
 }
 
 void bot_t::UpdateSounds()

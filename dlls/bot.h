@@ -352,9 +352,6 @@ public:
 	virtual bool IsUnderWater();
 	virtual bool IsSniper();
 
-	virtual void SetKicked();
-	virtual bool IsKicked();
-
 	virtual void UpdateSounds();
 
 	virtual bool ShouldLookForNewGoal();
@@ -503,8 +500,6 @@ public:
 	const static int PLAYER_SEARCH_RADIUS = 40.0f;
 protected:
 	Vector GetOrigin();
-
-	bool bIsKicked;
 
 	edict_t *pLightEnt;
 	float fMaxSpeed;
@@ -931,7 +926,8 @@ int UTIL_GetTeam(edict_t *pEntity);
 int UTIL_GetClass(edict_t *pEntity);
 int UTIL_GetBotIndex(edict_t *pEdict);
 bot_t *UTIL_GetBotPointer(edict_t *pEdict);
-bool IsAlive(edict_t *pEdict);
+bool IsAlive( edict_t *pEdict );
+bool IsValidEntity( edict_t *pEdict );
 bool FInViewCone(Vector *pOrigin, edict_t *pEdict);
 bool FVisible( const Vector &vecOrigin, edict_t *pEdict );
 Vector Center(edict_t *pEdict);

@@ -48,40 +48,9 @@ unsigned int Game::BotsOnTeam( int team )
 	return iOnTeam;
 }
 
-// player edicts seem to be reused (they are always the first
-// ones in the edict list) and bot edicts don't seem to be
-// properly marked as invalid so a few extra checks are needed
-// to make sure the given edict doesn't belong to a bot that has
-// been kicked
-// see http://forums.bots-united.com/printthread.php?t=3517&pp=10
 // TODO: in Opposing Force CTF at least, bots will also target
 // spectators - check iuser2 or something to see if spectator?
 bool Game::IsValidEnemy( edict_t *pEdict )
 {
-	if( pEdict == NULL )
-	{
-		return false;
-	}
-	if( pEdict->free )
-	{
-		return false;
-	}
-	if( pEdict->v.flags & FL_KILLME )
-	{
-		return false;
-	}
-	if( FStrEq(STRING(pEdict->v.netname), "") )
-	{
-		return false;
-	}
-	if( pEdict->v.classname == 0 )
-	{
-		return false;
-	}
-	if( STRING(pEdict->v.classname)[0] == 0 )
-	{
-		return false;
-	}
-
-	return true;
+	return IsValidEntity( pEdict );
 }

@@ -44,9 +44,9 @@ int gmsgShowMenu = 0;
 
 Vector UTIL_VecToAngles( const Vector &vec )
 {
-   float rgflVecOut[3];
-   VEC_TO_ANGLES(vec, rgflVecOut);
-   return Vector(rgflVecOut);
+	float rgflVecOut[3];
+	VEC_TO_ANGLES(vec, rgflVecOut);
+	return Vector(rgflVecOut);
 }
 
 
@@ -407,11 +407,46 @@ bot_t *UTIL_GetBotPointer(edict_t *pEdict)
 }
 
 
-bool IsAlive(edict_t *pEdict)
+bool IsAlive( edict_t *pEdict )
 {
-	return ((pEdict->v.deadflag == DEAD_NO) && (pEdict->v.health > 0) && !(pEdict->v.flags & FL_NOTARGET));
+	return ( (pEdict->v.deadflag == DEAD_NO) && (pEdict->v.health > 0) && !(pEdict->v.flags & FL_NOTARGET) );
 }
 
+// player edicts seem to be reused (they are always the first
+// ones in the edict list) and bot edicts don't seem to be
+// properly marked as invalid so a few extra checks are needed
+// to make sure the given edict doesn't belong to a bot that has
+// been kicked
+// see http://forums.bots-united.com/printthread.php?t=3517&pp=10
+bool IsValidEntity( edict_t *pEdict )
+{
+	if( pEdict == NULL )
+	{
+		return false;
+	}
+	if( pEdict->free )
+	{
+		return false;
+	}
+	if( pEdict->v.flags & FL_KILLME )
+	{
+		return false;
+	}
+	if( FStrEq( STRING(pEdict->v.netname), "" ) )
+	{
+		return false;
+	}
+	if( pEdict->v.classname == 0 )
+	{
+		return false;
+	}
+	if( STRING(pEdict->v.classname)[0] == 0 )
+	{
+		return false;
+	}
+
+	return true;
+}
 
 bool FInViewCone(Vector *pOrigin, edict_t *pEdict)
 {
