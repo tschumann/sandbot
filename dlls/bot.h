@@ -524,7 +524,7 @@ public:
 	virtual bool CanUseEgon( bool really );
 };
 
-class OpposingForceBot : public HalfLifeBot
+class OpposingForceBot : public bot_t
 {
 public:
 	virtual void Join();

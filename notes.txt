@@ -9,3 +9,13 @@ On Linux run make then make symbols (make symbols shouldn't stomp on the first m
 
 gdb -s sandbot.so.debug -e sandbot.so to load Sandbot into gdb with debug symbols (if you "list functions" you'll get a per-file breakdown whereas if you do the same with gdb -e sandbot.so you won't).
 
+Crash dumps on Ubuntu
+---------------------
+Enable crash dumps:
+ulimit -c unlimited
+
+See what generates crash dumps:
+sysctl kernel.core_pattern
+
+Steam generates minidumps at /tmp/dumps/
+
