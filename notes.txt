@@ -17,5 +17,26 @@ ulimit -c unlimited
 See what generates crash dumps:
 sysctl kernel.core_pattern
 
+Start Steam in debug mode:
+STEAM_DEBUGGER=gdb ~/.steam/steam/steam.sh
+
 Steam generates minidumps at /tmp/dumps/
+
+Debugging minidumps
+-------------------
+Clone and build Google Breakpad:
+git clone https://github.com/google/breakpad
+cd breakpad
+git clone https://chromium.googlesource.com/linux-syscall-support src/third_party/lss
+./configure CXXFLAGS=-m32 CFLAGS=-m32 CPPFLAGS=-m32 && make
+
+If you want to recompile for 64-bit you'll need to make distclean first.
+
+If you can an error about N_UNDF being undefined see https://stackoverflow.com/a/36455846
+(in src/common/stabs_reader.h change #include <a.out.h> to #include <linux/a.out.h> and run env ac_cv_header_a_out_h=yes CXXFLAGS=-m32 CFLAGS=-m32 CPPFLAGS=-m32 ./configure)
+
+Convert the minidump to a core dump:
+~/Documents/breakpad/src/tools/linux/md2core/minidump-2-core /tmp/dumps/assert_*_1.dmp > out.core
+Load it all up in gdb:
+gdb -s ~/Documents/sandbot/symbols/sandbot.so.debug -e ~/.steam/steam/steamapps/common/Half-Life/valve/dlls/sandbot.so -c out.core
 
