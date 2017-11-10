@@ -8,6 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+OpposingForceBot::OpposingForceBot()
+{
+}
+
 void OpposingForceBot::Join()
 {
 	if( pGame->IsCTF() )

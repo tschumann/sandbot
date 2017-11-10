@@ -500,7 +500,7 @@ public:
 
 	const static int PLAYER_SEARCH_RADIUS = 40.0f;
 protected:
-	Vector GetOrigin();
+	virtual Vector GetOrigin();
 
 	bool bIsKicked;
 
@@ -524,9 +524,11 @@ public:
 	virtual bool CanUseEgon( bool really );
 };
 
-class OpposingForceBot : public bot_t
+class OpposingForceBot : public HalfLifeBot
 {
 public:
+	OpposingForceBot();
+
 	virtual void Join();
 	virtual void PreThink();
 

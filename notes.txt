@@ -9,16 +9,18 @@ On Linux run make then make symbols (make symbols shouldn't stomp on the first m
 
 gdb -s sandbot.so.debug -e sandbot.so to load Sandbot into gdb with debug symbols (if you "list functions" you'll get a per-file breakdown whereas if you do the same with gdb -e sandbot.so you won't).
 
-Crash dumps on Ubuntu
----------------------
-Enable crash dumps:
+Core dumps on Ubuntu
+--------------------
+Enable core dumps:
 ulimit -c unlimited
 
-See what generates crash dumps:
+See what generates core dumps:
 sysctl kernel.core_pattern
 
 Start Steam in debug mode:
 STEAM_DEBUGGER=gdb ~/.steam/steam/steam.sh
+
+Note that Steam games don't seem to generate core dumps, but rather generates breakpad minidumps.
 
 Steam generates minidumps at /tmp/dumps/
 
@@ -38,5 +40,7 @@ If you can an error about N_UNDF being undefined see https://stackoverflow.com/a
 Convert the minidump to a core dump:
 ~/Documents/breakpad/src/tools/linux/md2core/minidump-2-core /tmp/dumps/assert_*_1.dmp > out.core
 Load it all up in gdb:
-gdb -s ~/Documents/sandbot/symbols/sandbot.so.debug -e ~/.steam/steam/steamapps/common/Half-Life/valve/dlls/sandbot.so -c out.core
+gdb -s ~/Documents/sandbot/symbols/sandbot.so.debug -e ~/.steam/steam/steamapps/common/Half-Life/hl_linux -c out.core
+
+TODO: figure out loading sandbot symbols into gdb
 
