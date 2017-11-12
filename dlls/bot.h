@@ -651,10 +651,9 @@ protected:
 
 class NSBot : public bot_t
 {
-protected:
-	int iDesiredClass;
-	bool bIsEvolving;
 public:
+	NSBot();
+
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
@@ -709,6 +708,9 @@ public:
 	virtual void EvolveToFade();
 	virtual void EvolveToOnos();
 
+	virtual bool ShouldBecomeCommander();
+	virtual bool IsCommander();
+
 	virtual bool ShouldBecomeGorge();
 	virtual bool IsGorge();
 	virtual bool ShouldBecomeLerk();
@@ -717,6 +719,8 @@ public:
 	virtual bool IsFade();
 	virtual bool ShouldBecomeOnos();
 	virtual bool IsOnos();
+
+	virtual bool ShouldBuildResourceTower();
 
 	virtual edict_t* FindEnemy();
 
@@ -767,6 +771,12 @@ public:
 	const static int EVOLVE_TO_LERK = ALIEN_LIFEFORM_THREE;
 	const static int EVOLVE_TO_FADE = ALIEN_LIFEFORM_FOUR;
 	const static int EVOLVE_TO_ONOS = ALIEN_LIFEFORM_FIVE;
+
+protected:
+	int iDesiredClass;
+
+	bool bIsEvolving;
+	bool bShouldBuildResourceNode;
 };
 
 class ShipBot : public bot_t

@@ -11,6 +11,14 @@
 // http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html
 // http://www.unknownworlds.com/oldwebsite/manuals/comm_manual/basic/index.htm
 
+NSBot::NSBot()
+{
+	this->iDesiredClass = AVH_USER3_NONE;
+
+	this->bIsEvolving = false;
+	this->bShouldBuildResourceNode = false;
+}
+
 void NSBot::OnSpawn()
 {
 	bot_t::OnSpawn();
@@ -563,6 +571,11 @@ bool NSBot::ShouldReload()
 
 int NSBot::GetGoalType()
 {
+	if( ((NSGame *)pGame)->IsClassic() && this->ShouldBuildResourceTower() )
+	{
+		return W_FL_NS_RESNODE;
+	}
+
 	if( this->IsMarine() )
 	{
 		// TODO: or W_FL_NS_RESNODE if in Classic and some per-bot flag is set
@@ -924,6 +937,16 @@ void NSBot::EvolveToGorge()
 	this->pEdict->v.impulse = NSBot::EVOLVE_TO_GORGE;
 }
 
+bool NSBot::ShouldBecomeCommander()
+{
+	return false;
+}
+
+bool NSBot::IsCommander()
+{
+	return this->pEdict->v.iuser3 == AVH_USER3_COMMANDER_PLAYER;
+}
+
 bool NSBot::ShouldBecomeGorge()
 {
 	return this->GetDesiredClass() == NSBot::CLASS_GORGE;
@@ -980,6 +1003,22 @@ bool NSBot::ShouldBecomeOnos()
 bool NSBot::IsOnos()
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5;
+}
+
+bool NSBot::ShouldBuildResourceTower()
+{
+	if (this->IsMarine() && !this->IsCommander() && this->bShouldBuildResourceNode)
+	{
+		return true;
+	}
+	else if (this->IsAlien() && this->IsGorge() && this->ShouldBuildResourceTower())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 edict_t* NSBot::FindEnemy()
