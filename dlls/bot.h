@@ -781,14 +781,14 @@ protected:
 
 class ShipBot : public bot_t
 {
-protected:
-	edict_t *pQuarry;
 public:
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual void PickUpItem();
 	virtual void SetQuarry( int iEntIndex );
 	virtual edict_t* GetQuarry();
 	virtual bool HasQuarry();
+protected:
+	edict_t *pQuarry;
 };
 
 class HungerBot : public HalfLifeBot

@@ -27,13 +27,16 @@ Q. Can you add support for mod x?
 A. I'm not planning to at the moment - I'm planning support for Half-Life, Opposing Force, Day of Defeat, Team Fortress Classic, Gunman Chronicles, Natural Selection, The Ship and They Hunger which is likely going to take a while.
 
 Q. Can it be used for dedicated servers?
-A. Maybe - I haven't tested it, but it should.
+A. Maybe - I haven't tested it, but it should work.
 
 Q. Can I make some waypoints?
 A. Yes, please do!
 
 Q. Does single player work?
 A. No but it will be fixed in a future version.
+
+Q. Can you fix Sandbot not working on my distro?
+A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms.
 
 == Changelog ==
 

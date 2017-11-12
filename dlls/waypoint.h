@@ -10,10 +10,8 @@
 #define WAYPOINT_H
 
 #ifdef _MSC_VER
-
 typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
-
 #else
 #include <stdint.h>
 #endif
@@ -130,7 +128,7 @@ bool WaypointReachable(Vector v_srv, Vector v_dest, edict_t *pEntity);
 int  WaypointFindReachable(edict_t *pEntity, float range, int team);
 void WaypointPrintInfo(edict_t *pEntity);
 void WaypointThink(edict_t *pEntity);
-void WaypointFloyds(short *shortest_path, short *from_to);
+void WaypointFloyds(unsigned short *shortest_path, unsigned short *from_to);
 void WaypointRouteInit(void);
 unsigned short WaypointRouteFromTo(int src, int dest, int team);
 int  WaypointDistanceFromTo(int src, int dest, int team);
