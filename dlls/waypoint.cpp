@@ -615,6 +615,28 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 			return true;
 		}
 	}
+	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_RESNODE && ((NSGame *)pGame)->IsClassic() )
+	{
+		if( !((NSBot *)pBot)->IsMarine() )
+		{
+			// TODO: find resourcetower in radius?
+			edict_t *pResourceTower = UTIL_FindEntityInSphere( (edict_t *)NULL, waypoints[index].origin, 0.1 );
+			// TODO: build a dropped but unbuilt resourcetower
+		}
+		else if( !((NSBot *)pBot)->IsAlien() )
+		{
+			if( !((NSBot *)pBot)->IsGorge() )
+			{
+				// TODO: skip it if there is an alienresourcetower there already
+				return true;
+			}
+			// all other classes can ignore it
+			else
+			{
+				return false;
+			}
+		}
+	}
 
 	return false;
 }
