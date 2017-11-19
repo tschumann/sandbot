@@ -608,7 +608,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	}
 	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_HIVE )
 	{
-		edict_t *nearest_hive = FindNearest(waypoints[index].origin, "team_hive");
+		edict_t *nearest_hive = FindNearest( waypoints[index].origin, "team_hive" );
 
 		if( !((NSBot *)pBot)->ShouldAttackHive( nearest_hive ) )
 		{
@@ -619,15 +619,27 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	{
 		if( !((NSBot *)pBot)->IsMarine() )
 		{
-			// TODO: find resourcetower in radius?
-			edict_t *pResourceTower = UTIL_FindEntityInSphere( (edict_t *)NULL, waypoints[index].origin, 0.1 );
-			// TODO: build a dropped but unbuilt resourcetower
+			edict_t *pResourceTower = FindNearest( waypoints[index].origin, "resourcetower", 5.0f );
+
+			// TODO: check if resourcetower is unbuilt or damaged
+			if( pResourceTower )
+			{
+				// return true;
+			}
 		}
 		else if( !((NSBot *)pBot)->IsAlien() )
 		{
 			if( !((NSBot *)pBot)->IsGorge() )
 			{
-				// TODO: skip it if there is an alienresourcetower there already
+				edict_t *pResourceTower = FindNearest( waypoints[index].origin, "alienresourcetower", 5.0f );
+
+				// if there's already a resource tower then ignore this waypoint
+				// TODO: if it's damaged heal it?
+				if( pResourceTower )
+				{
+					return false;
+				}
+
 				return true;
 			}
 			// all other classes can ignore it
