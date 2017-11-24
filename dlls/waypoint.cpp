@@ -2284,7 +2284,7 @@ void WaypointRouteInit(void)
             close(file1);
             close(file2);
 
-            if (stat1.st_mtime < stat2.st_mtime)  // is .wpt older than .HPB_wpX file?
+            if (stat1.st_mtime <= stat2.st_mtime)  // is .wpt older than .HPB_wpX file?
             {
                sprintf(msg, "loading HPB bot waypoint paths for team %d\n", matrix+1);
                ALERT(at_console, msg);
