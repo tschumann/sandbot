@@ -14,7 +14,7 @@ OPTFLAGS = \
 		-fexpensive-optimizations -finline-functions -ffast-math \
 		-falign-loops=2 -falign-jumps=2 -falign-functions=2 -O2 -m32 \
 
-CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -w -lm -lstdc++ -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
+CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -w -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
 OBJ = \
 	bot.o \
