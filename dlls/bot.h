@@ -551,6 +551,8 @@ public:
 class CStrikeBot : public bot_t
 {
 public:
+	CStrikeBot();
+
 	virtual void Join();
 
 	virtual float GetMaxSpeed();
@@ -559,6 +561,8 @@ public:
 class DODBot : public bot_t
 {
 public:
+	DODBot();
+
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
@@ -585,6 +589,8 @@ public:
 class TFCBot : public bot_t
 {
 public:
+	TFCBot();
+
 	virtual void Join();
 
 	virtual bool IsSniper();
@@ -619,6 +625,7 @@ class GunmanBot : public bot_t
 {
 public:
 	GunmanBot();
+
 	virtual void OnSpawn();
 	virtual void Think();
 
@@ -656,6 +663,8 @@ protected:
 	int iDesiredClass;
 	bool bIsEvolving;
 public:
+	NSBot();
+
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
@@ -775,6 +784,8 @@ class ShipBot : public bot_t
 protected:
 	edict_t *pQuarry;
 public:
+	ShipBot();
+
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual void PickUpItem();
 	virtual void SetQuarry( int iEntIndex );
@@ -785,6 +796,8 @@ public:
 class HungerBot : public HalfLifeBot
 {
 public:
+	HungerBot();
+
 	virtual int GetPistol();
 };
 

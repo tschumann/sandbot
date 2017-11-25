@@ -8,6 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+CStrikeBot::CStrikeBot()
+{
+}
+
 void CStrikeBot::Join()
 {
 	if (this->start_action == MSG_CS_TEAM_SELECT)

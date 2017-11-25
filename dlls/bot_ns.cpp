@@ -11,6 +11,10 @@
 // http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html
 // http://www.unknownworlds.com/oldwebsite/manuals/comm_manual/basic/index.htm
 
+NSBot::NSBot()
+{
+}
+
 void NSBot::OnSpawn()
 {
 	bot_t::OnSpawn();
