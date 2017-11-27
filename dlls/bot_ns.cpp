@@ -573,17 +573,16 @@ int NSBot::GetGoalType()
 {
 	if( ((NSGame *)pGame)->IsClassic() && this->ShouldBuildResourceTower() )
 	{
+		// TODO: need to work out a way to not return this is there are no resource towers to build/repair
 		return W_FL_NS_RESNODE;
 	}
 
 	if( this->IsMarine() )
 	{
-		// TODO: or W_FL_NS_RESNODE if in Classic and some per-bot flag is set
 		return W_FL_NS_HIVE;
 	}
 	else
 	{
-		// TODO: or W_FL_NS_RESNODE if in Classic and a Gorge
 		return W_FL_NS_COMMAND_CHAIR;
 	}
 }
@@ -1007,11 +1006,11 @@ bool NSBot::IsOnos()
 
 bool NSBot::ShouldBuildResourceTower()
 {
-	if (this->IsMarine() && !this->IsCommander() && this->bShouldBuildResourceNode)
+	if( this->IsMarine() && !this->IsCommander() && this->bShouldBuildResourceNode )
 	{
 		return true;
 	}
-	else if (this->IsAlien() && this->IsGorge() && this->ShouldBuildResourceTower())
+	else if( this->IsAlien() && this->IsGorge() && this->ShouldBuildResourceTower() )
 	{
 		return true;
 	}

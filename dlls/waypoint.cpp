@@ -619,28 +619,33 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	{
 		if( !((NSBot *)pBot)->IsMarine() )
 		{
+			// get the resource tower nearest this waypoint
 			edict_t *pResourceTower = FindNearest( waypoints[index].origin, "resourcetower", 5.0f );
 
-			// TODO: check if resourcetower is unbuilt or damaged
+			// if there is a resource tower near this waypoint
 			if( pResourceTower )
 			{
-				// return true;
+				return UTIL_IsBuilt( pResourceTower );
 			}
 		}
 		else if( !((NSBot *)pBot)->IsAlien() )
 		{
 			if( !((NSBot *)pBot)->IsGorge() )
 			{
+				// get the resource tower nearest this waypoint
 				edict_t *pResourceTower = FindNearest( waypoints[index].origin, "alienresourcetower", 5.0f );
 
-				// if there's already a resource tower then ignore this waypoint
+				// if there is a resource tower near this waypoint and it's built, skip it
 				// TODO: if it's damaged heal it?
-				if( pResourceTower )
+				if( pResourceTower && UTIL_IsBuilt( pResourceTower ) )
 				{
 					return false;
 				}
-
-				return true;
+				// go and build one
+				else
+				{
+					return true;
+				}
 			}
 			// all other classes can ignore it
 			else
