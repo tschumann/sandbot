@@ -8,6 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+Game::~Game()
+{
+}
+
 bool Game::IsMultiplayer()
 {
 	return gpGlobals->deathmatch > 0.0f;

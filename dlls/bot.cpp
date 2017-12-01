@@ -1891,6 +1891,10 @@ bot_t::bot_t()
 	this->bIsKicked = false;
 }
 
+bot_t::~bot_t()
+{
+}
+
 void bot_t::OnSpawn()
 {
 }

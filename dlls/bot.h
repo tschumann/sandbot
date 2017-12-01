@@ -311,6 +311,8 @@ class bot_t
 {
 public:
 	bot_t();
+	virtual ~bot_t();
+
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Respawn();
@@ -806,6 +808,8 @@ extern bot_t **pBots;
 class Game
 {
 public:
+	virtual ~Game();
+
 	virtual bool IsMultiplayer();
 	virtual int GetMaxPlayers();
 	virtual bool CanAddBots();
