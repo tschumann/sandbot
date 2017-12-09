@@ -472,9 +472,9 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 
 	if( g_bIsMMPlugin )
+	{
 		return;
-
-	ALERT(at_console, "pBotData set %d\n", pBotData);
+	}
 
 	GetEngineFunctions( pengfuncsFromEngine, NULL );
 

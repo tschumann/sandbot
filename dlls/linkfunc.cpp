@@ -184,10 +184,6 @@ void LoadExtaExports()
 			break;
 		}
 	}
-	for (int i = 0; i < g_iOrdinalCount; i++)
-	{
-		ALERT( at_console, "%s %d\n", szFunctionNames[i], pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset );
-	}
 }
 
 uint32 NameToAddress( const char *pName )
@@ -200,11 +196,6 @@ uint32 NameToAddress( const char *pName )
 		{
 			// get the address of the function
 			iAddress = pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset;
-			ALERT( at_console, "NameToAddress: %s found at address %d\n", pName, iAddress );
-		}
-		else
-		{
-			ALERT( at_console, "NameToAddress: %s not found\n", pName );
 		}
 	}
 
@@ -220,11 +211,6 @@ const char *AddressToName(uint32 function)
 		if( (function - g_iBaseOffset) == pFunctionAddresses[pOrdinals[i]] )
 		{
 			szName = szFunctionNames[i];
-			ALERT( at_console, "AddressToName: %s found at address %d\n", szName, function );
-		}
-		else
-		{
-			ALERT( at_console, "AddressToName: %d not found\n", function );
 		}
 	}
 

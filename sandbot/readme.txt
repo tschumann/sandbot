@@ -43,6 +43,7 @@ A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough wor
 v0.4.2 (??/??/??)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
+- [Windows] Sandbot no longer breaks level transitions in single player.
 
 v0.4.1 (10/09/17)
 - [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).
