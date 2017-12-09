@@ -75,14 +75,12 @@ typedef struct {
    char mapname[32];	// name of map for these waypoints
 } WAYPOINT_HDR;
 
-
 // define the structure for waypoints...
 typedef struct {
    uint64_t flags;	// button, lift, flag, health, ammo, etc.
    // int unused;
    Vector origin;	// location
 } WAYPOINT;
-
 
 
 #define WAYPOINT_UNREACHABLE   USHRT_MAX
@@ -96,7 +94,7 @@ typedef struct {
 // connections between two points.  There is an array called "paths" that
 // contains head pointers to these structures for each waypoint index.
 typedef struct path {
-   short int index[MAX_PATH_INDEX];  // indexes of waypoints (index -1 means not used)
+   int16_t index[MAX_PATH_INDEX];  // indexes of waypoints (index -1 means not used)
    struct path *next;   // link to next structure
 } PATH;
 

@@ -1569,6 +1569,14 @@ bool WaypointLoad(edict_t *pEntity)
    short int path_index;
    bool need_rename;
 
+   // compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
+   static_assert(sizeof(WAYPOINT) == 24, "WAYPOINT should be 24 bytes");
+   static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
+   static_assert(offsetof(WAYPOINT, origin) == 8, "origin should be 8 bytes into WAYPOINT");
+
+   static_assert(sizeof(PATH) == 12, "PATH should be 12 bytes");
+   static_assert(offsetof(PATH, next) == 8, "next should be 8 bytes into PATH");
+
    strcpy(mapname, STRING(gpGlobals->mapname));
    strcat(mapname, ".wpt");
 
@@ -1616,12 +1624,17 @@ bool WaypointLoad(edict_t *pEntity)
 
          header.mapname[31] = 0;
 
+		 ALERT(at_console, "vector %d\n", sizeof(Vector));
+		 ALERT(at_console, "uint64_t %d\n", sizeof(uint64_t));
+		 ALERT(at_console, "v offeset %d\n", offsetof(WAYPOINT, origin));
+
          if (strcmp(header.mapname, STRING(gpGlobals->mapname)) == 0)
          {
             WaypointInit();  // remove any existing waypoints
 
             for (i=0; i < header.number_of_waypoints; i++)
             {
+				ALERT(at_console, "here %d\n", ftell(bfp));
                fread(&waypoints[i], sizeof(waypoints[0]), 1, bfp);
                num_waypoints++;
             }
@@ -2240,19 +2253,30 @@ void WaypointRouteInit(void)
    build_matrix[2] = FALSE;
    build_matrix[3] = FALSE;
 
+   ALERT(at_console, "got %d waypoints\n", route_num_waypoints);
+
    // find out how many route matrixes to create...
    for (index=0; index < route_num_waypoints; index++)
    {
       if (waypoints[index].flags & W_FL_TEAM_SPECIFIC)
       {
-         if ((waypoints[index].flags & W_FL_TEAM) == 0x01)  // team 2?
-            build_matrix[1] = TRUE;
+		  if ((waypoints[index].flags & W_FL_TEAM) == 0x01)  // team 2?
+		  {
+			  ALERT(at_console, "waypoint %d for team 2\n", index);
+			  build_matrix[1] = TRUE;
+		  }
 
-         if ((waypoints[index].flags & W_FL_TEAM) == 0x02)  // team 3?
-            build_matrix[2] = TRUE;
+		  if ((waypoints[index].flags & W_FL_TEAM) == 0x02)  // team 3?
+		  {
+			  ALERT(at_console, "waypoint %d for team 3\n", index);
+			  build_matrix[2] = TRUE;
+		  }
 
-         if ((waypoints[index].flags & W_FL_TEAM) == 0x03)  // team 4?
-            build_matrix[3] = TRUE;
+		  if ((waypoints[index].flags & W_FL_TEAM) == 0x03)  // team 4?
+		  {
+			  ALERT(at_console, "waypoint %d for team 4\n", index);
+			  build_matrix[3] = TRUE;
+		  }
       }
    }
 
