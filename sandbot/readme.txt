@@ -37,6 +37,9 @@ A. No but it will be fixed in a future version.
 
 == Changelog ==
 
+v0.4.1.1 (??/??/??)
+- [Linux] Fixed crash in waypoint loading.
+
 v0.4.1 (10/09/17)
 - [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).
 - [Windows] Updated Windows compiler to Visual Studio 2017 (from Visual Studio 2008).

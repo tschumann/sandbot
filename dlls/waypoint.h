@@ -80,6 +80,9 @@ typedef struct {
    uint64_t flags;	// button, lift, flag, health, ammo, etc.
    // int unused;
    Vector origin;	// location
+#if __GNUC__
+   uint32_t iPack;
+#endif
 } WAYPOINT;
 
 
