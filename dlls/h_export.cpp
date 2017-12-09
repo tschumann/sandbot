@@ -16,6 +16,7 @@
 #include "bot.h"
 #include "engine.h"
 #include "dll.h"
+#include "linkfunc.h"
 
 #ifndef __linux__
 #include <io.h>
@@ -37,6 +38,8 @@ int Cmd_Argc( void );
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
 
+char g_szLibraryPath[64];
+
 extern DLL_FUNCTIONS other_gFunctionTable;
 
 extern int mod_id;
@@ -53,7 +56,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 	{
 		if( h_Library )
 		{
-			FreeLibrary(h_Library);
+			FreeLibrary( h_Library );
 		}
 	}
 
@@ -242,13 +245,14 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 {
 	// get the engine functions from the engine...
-	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
+	memcpy( &g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t) );
 	// get the globals from the engine
 	gpGlobals = pGlobals;
 
 	// find the directory name of the currently running mod
 	// this returns just the mod directory's name: http://metamod.org/engine_notes.html#GetGameDir
 	char game_dir[256];
+	char *szLibraryPath = "";
 	GET_GAME_DIR(game_dir);
 
 	if (strcmpi(game_dir, "valve") == 0)
@@ -258,9 +262,11 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "valve/dlls/hl.dll" ); // and load the library
+			szLibraryPath = "valve/dlls/hl.dll";
+			h_Library = LoadLibrary( szLibraryPath ); // and load the library
 #else
-			h_Library = dlopen( "valve/dlls/hl.so", RTLD_NOW ); // and load the library
+			szLibraryPath = "valve/dlls/hl.so";
+			h_Library = dlopen( szLibraryPath, RTLD_NOW ); // and load the library
 #endif
 		}
 	}
@@ -421,6 +427,8 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		}
 	}
 
+	strncpy( g_szLibraryPath, szLibraryPath, strlen( szLibraryPath ) );
+
 	if( !g_bIsMMPlugin && h_Library == NULL )
 	{
 		ALERT( at_error, "Library not found or not supported!" );
@@ -469,9 +477,12 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	GetEngineFunctions( pengfuncsFromEngine, NULL );
 
 	// give the engine functions to the other DLL...
-	(*(GIVEFNPTRSTODLL) GetProcAddress (h_Library, "GiveFnptrsToDll")) (pengfuncsFromEngine, pGlobals);
+	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))( pengfuncsFromEngine, pGlobals );
 
-	return; // finished, interfacing from gamedll to engine complete
+	LoadExtaExports();
+
+	// finished, interfacing from gamedll to engine complete
+	return;
 }
 
 gamedll_funcs_t gGameDLLFunc;

@@ -12,6 +12,7 @@
 #include "studio.h"
 
 #include "bot.h"
+#include "linkfunc.h"
 
 #if _WIN32
 extern HINSTANCE h_Library;
@@ -43,15 +44,156 @@ extern void *h_Library;
 // can be platform independent (hopefully) while the offsets etc will be
 // platform dependent (which is unavoidable)
 
+extern char g_szLibraryPath[64];
+
+#define MAX_FUNCTION_NAME_LENGTH 256
+
 #ifdef WIN32
 // offset of first exported function?
 int g_iBaseOffset = 0;
 int g_iOrdinalCount = 0;
 
-char *pFunctionNames[4096];
+char szFunctionNames[4096][MAX_FUNCTION_NAME_LENGTH];
 
 WORD *pOrdinals;
 DWORD *pFunctionAddresses;
+DWORD *pNameAddresses;
+
+void LoadExtaExports()
+{
+	IMAGE_DOS_HEADER sDOSHeader;
+	LONG iNTSignature;
+	IMAGE_FILE_HEADER sPEHeader;
+	IMAGE_OPTIONAL_HEADER sOptionalHeader;
+	IMAGE_SECTION_HEADER *pSectionHeader;
+	LONG iedataOffset;
+	LONG iedataDelta;
+	IMAGE_EXPORT_DIRECTORY sExportDirectory;
+
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		// reset function names
+		szFunctionNames[i][0] = '\0';
+	}
+
+	// open the game .dll
+	FILE *fp = fopen( g_szLibraryPath, "rb" );
+	// read the DOS header
+	fread( &sDOSHeader, sizeof(IMAGE_DOS_HEADER), 1, fp );
+	// go to the PE header
+	fseek( fp, sDOSHeader.e_lfanew, SEEK_SET );
+	// reader the NT signature
+	fread( &iNTSignature, sizeof(iNTSignature), 1, fp );
+	// read the PE header
+	fread( &sPEHeader, sizeof(IMAGE_FILE_HEADER), 1, fp );
+	// read the optional header
+	fread( &sOptionalHeader, sizeof(IMAGE_OPTIONAL_HEADER), 1, fp );
+
+	iedataOffset = sOptionalHeader.DataDirectory[0].VirtualAddress;
+	iedataDelta = 0;
+
+	// TODO: read into sHeader instead of creating a fake sHeader for IMAGE_FIRST_SECTION
+	IMAGE_NT_HEADERS32 sHeader;
+	sHeader.Signature = iNTSignature;
+	sHeader.FileHeader = sPEHeader;
+	sHeader.OptionalHeader = sOptionalHeader;
+
+	pSectionHeader = IMAGE_FIRST_SECTION(&sHeader);
+
+	// look at each section
+	for( int i = 0; i < sPEHeader.NumberOfSections; i++ )
+	{
+		// if it's the export data
+		if( !strcmp((char *)pSectionHeader->Name, ".edata") )
+		{
+			iedataOffset = pSectionHeader->PointerToRawData;
+			iedataDelta = pSectionHeader->VirtualAddress - pSectionHeader->PointerToRawData;
+			break;
+		}
+		else
+		{
+			// try the next one
+			pSectionHeader++;
+		}
+	}
+
+	fseek( fp, iedataOffset, SEEK_SET );
+	// read the export directory
+	fread( &sExportDirectory, sizeof(IMAGE_EXPORT_DIRECTORY), 1, fp );
+
+	// save number of ordinals
+	g_iOrdinalCount = sExportDirectory.NumberOfNames;
+
+	// remember the offset to the ordinals
+	LONG iOrdinalOffset = sExportDirectory.AddressOfNameOrdinals - iedataDelta;
+	fseek( fp, iOrdinalOffset, SEEK_SET );
+	// allocate space for ordinals
+	pOrdinals = (WORD *)malloc( g_iOrdinalCount * sizeof(WORD) );
+	// get the list of ordinals
+	fread( pOrdinals, g_iOrdinalCount * sizeof(WORD), 1, fp );
+
+	// remember the offset to the function addresses
+	LONG iFunctionOffset = sExportDirectory.AddressOfFunctions - iedataDelta;
+	fseek( fp, iFunctionOffset, SEEK_SET );
+	pFunctionAddresses = (DWORD *)malloc( g_iOrdinalCount * sizeof(DWORD) );
+	// get the list of functions
+	fread( pFunctionAddresses, g_iOrdinalCount * sizeof(DWORD), 1, fp );
+
+	// remember the offset to the name addresses
+	LONG iNameOffset = sExportDirectory.AddressOfNames - iedataDelta;
+	fseek( fp, iNameOffset, SEEK_SET );
+	// allocate space for names
+	pNameAddresses = (DWORD *)malloc( g_iOrdinalCount * sizeof(DWORD) );
+	// get the list of names
+	fread( pNameAddresses, g_iOrdinalCount * sizeof(DWORD), 1, fp );
+
+	// populate the exports array
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		if( !fseek( fp, pNameAddresses[i] - iedataDelta, SEEK_SET ) )
+		{
+			char szFunctionName[MAX_FUNCTION_NAME_LENGTH];
+			char *pFunctionName;
+			char *pEnd;
+
+			int iFunctionNameLength = fread( szFunctionName, sizeof(char), sizeof(szFunctionName) - 1, 	fp );
+			szFunctionName[iFunctionNameLength - 1] = '\0';
+			ALERT( at_console, "Found %s", szFunctionName );
+
+			pFunctionName = szFunctionName;
+			// possibly skip the leading ? in a Visual Studio mangled name
+			if( pFunctionName[0] == '?' )
+			{
+				pFunctionName++;
+			}
+			// possibly truncate after @@ in a Visual Studio mangled name
+			if( pEnd = strstr(pFunctionName, "@@") )
+			{
+				*pEnd = '\0';
+			}
+
+			strncpy( szFunctionNames[i], pFunctionName, strlen( pFunctionName ) );
+			ALERT( at_console, "Stored %s", szFunctionNames[i] );
+		}
+	}
+
+	fclose( fp );
+
+	// cycle through all function names to find the GiveFnptrsToDll function
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		if( !strcmp( "GiveFnptrsToDll", szFunctionNames[i] ) )
+		{
+			void *pGiveFnptrsToDll = (void *)GetProcAddress( h_Library, "GiveFnptrsToDll" );
+			g_iBaseOffset = (unsigned long)(pGiveFnptrsToDll) - pFunctionAddresses[pOrdinals[i]];
+			break;
+		}
+	}
+	for (int i = 0; i < g_iOrdinalCount; i++)
+	{
+		ALERT( at_console, "%s %d", szFunctionNames[i], pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset );
+	}
+}
 
 uint32 NameToAddress( const char *pName )
 {
@@ -59,7 +201,7 @@ uint32 NameToAddress( const char *pName )
 
 	for( int i = 0; i < g_iOrdinalCount; i++ )
 	{
-		if( !strcmp(pName, pFunctionNames[i]) )
+		if( !strcmp( pName, szFunctionNames[i] ) )
 		{
 			// get the address of the function
 			iAddress = pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset;
@@ -82,7 +224,7 @@ const char *AddressToName(uint32 function)
 	{
 		if( (function - g_iBaseOffset) == pFunctionAddresses[pOrdinals[i]] )
 		{
-			szName = pFunctionNames[i];
+			szName = szFunctionNames[i];
 			ALERT( at_console, "AddressToName: %s found at address %d\n", szName, function );
 		}
 		else
