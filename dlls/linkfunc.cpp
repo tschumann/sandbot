@@ -59,6 +59,7 @@ WORD *pOrdinals;
 DWORD *pFunctionAddresses;
 DWORD *pNameAddresses;
 
+// https://blog.kowalczyk.info/articles/pefileformat.html has a lot of useful information
 void LoadExtaExports()
 {
 	IMAGE_DOS_HEADER sDOSHeader;
@@ -69,12 +70,6 @@ void LoadExtaExports()
 	LONG iedataOffset;
 	LONG iedataDelta;
 	IMAGE_EXPORT_DIRECTORY sExportDirectory;
-
-	for( int i = 0; i < g_iOrdinalCount; i++ )
-	{
-		// reset function names
-		szFunctionNames[i][0] = '\0';
-	}
 
 	// open the game .dll
 	FILE *fp = fopen( g_szLibraryPath, "rb" );
@@ -104,7 +99,7 @@ void LoadExtaExports()
 	for( int i = 0; i < sPEHeader.NumberOfSections; i++ )
 	{
 		// if it's the export data
-		if( !strcmp((char *)pSectionHeader->Name, ".edata") )
+		if( !strcmp( (char *)pSectionHeader->Name, ".edata" ) )
 		{
 			iedataOffset = pSectionHeader->PointerToRawData;
 			iedataDelta = pSectionHeader->VirtualAddress - pSectionHeader->PointerToRawData;
@@ -158,7 +153,7 @@ void LoadExtaExports()
 
 			int iFunctionNameLength = fread( szFunctionName, sizeof(char), sizeof(szFunctionName) - 1, 	fp );
 			szFunctionName[iFunctionNameLength - 1] = '\0';
-			ALERT( at_console, "Found %s", szFunctionName );
+			ALERT( at_console, "Found %s\n", szFunctionName );
 
 			pFunctionName = szFunctionName;
 			// possibly skip the leading ? in a Visual Studio mangled name
@@ -173,7 +168,7 @@ void LoadExtaExports()
 			}
 
 			strncpy( szFunctionNames[i], pFunctionName, strlen( pFunctionName ) );
-			ALERT( at_console, "Stored %s", szFunctionNames[i] );
+			ALERT( at_console, "Stored %s\n", szFunctionNames[i] );
 		}
 	}
 
@@ -191,7 +186,7 @@ void LoadExtaExports()
 	}
 	for (int i = 0; i < g_iOrdinalCount; i++)
 	{
-		ALERT( at_console, "%s %d", szFunctionNames[i], pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset );
+		ALERT( at_console, "%s %d\n", szFunctionNames[i], pFunctionAddresses[pOrdinals[i]] + g_iBaseOffset );
 	}
 }
 

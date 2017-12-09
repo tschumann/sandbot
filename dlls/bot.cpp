@@ -39,9 +39,9 @@ extern int max_teams;
 
 static FILE *fp;
 
-bot_player_t *pBotData = NULL;
+bot_player_t *pBotData = nullptr;
 
-bot_t **pBots; // [MAX_PLAYERS];
+bot_t **pBots = nullptr; // [MAX_PLAYERS];
 bool b_observer_mode = FALSE;
 
 #define MAX_BOT_NAMES 100
@@ -1878,10 +1878,11 @@ bot_t::bot_t()
 {
 	// is_used gets set to true in ServerActivate
 	this->is_used = false;
-	this->iBotDataIndex = -1;
+	this->iBotDataIndex = BOTDATA_INDEX_UNSET;
 	this->index = -1;
 	// TODO: needed? already set in BotThink - not BotCreate?
 	this->name[0] = '\0';
+	this->pEdict = nullptr;
 }
 
 void bot_t::OnSpawn()

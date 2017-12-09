@@ -498,6 +498,8 @@ public:
 	void FixIdealPitch();
 
 	const static int PLAYER_SEARCH_RADIUS = 40.0f;
+
+	const static int BOTDATA_INDEX_UNSET = -1;
 protected:
 	Vector GetOrigin();
 

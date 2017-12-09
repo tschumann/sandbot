@@ -541,7 +541,10 @@ void ClientDisconnect( edict_t *pEntity )
 		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
 		{
 			pBots[i]->is_used = false;
-			pBotData[pBots[i]->iBotDataIndex].bIsUsed = false;
+			if( pBots[i]->iBotDataIndex != bot_t::BOTDATA_INDEX_UNSET )
+			{
+				pBotData[pBots[i]->iBotDataIndex].bIsUsed = false;
+			}
 			break;
 		}
 	}
@@ -1314,18 +1317,27 @@ void StartFrame( void )
 
 	for( int bot_index = 0; bot_index < gpGlobals->maxClients; bot_index++ )
 	{
-		bot_t *pBot = pBots[bot_index];
+		if( pBots )
+		{
+			bot_t *pBot = pBots[bot_index];
 
-		if( !IsValidEntity( pBot->pEdict ) )
-		{
-			pBot->is_used = false;
-			pBotData[pBot->iBotDataIndex].bIsUsed = false;
-		}
-		// is this slot used AND not respawning
-		if( pBot->is_used && pBot->respawn_state == RESPAWN_IDLE )
-		{
-			BotThink( pBot );
-			count++;
+			if( pBot && pBotData )
+			{
+				if( !IsValidEntity( pBot->pEdict ) )
+				{
+					pBot->is_used = false;
+					if( pBot->iBotDataIndex != bot_t::BOTDATA_INDEX_UNSET )
+					{
+						pBotData[pBot->iBotDataIndex].bIsUsed = false;
+					}
+				}
+				// is this slot used AND not respawning
+				if( pBot->is_used && pBot->respawn_state == RESPAWN_IDLE )
+				{
+					BotThink( pBot );
+					count++;
+				}
+			}
 		}
 	}
 
