@@ -1569,6 +1569,9 @@ bool WaypointLoad(edict_t *pEntity)
    short int path_index;
    bool need_rename;
 
+// only supported in newer versions of C++ (which Visual Studio doesn't say it supports, but is only supported by
+// Visual Studio 2010 onwards: https://msdn.microsoft.com/en-us/library/dd293588.aspx)
+#if (_MSC_VER >= 1600) || (__cplusplus >= 201103L)
    // compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
    static_assert(sizeof(WAYPOINT) == 24, "WAYPOINT should be 24 bytes");
    static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
@@ -1576,6 +1579,9 @@ bool WaypointLoad(edict_t *pEntity)
 
    static_assert(sizeof(PATH) == 12, "PATH should be 12 bytes");
    static_assert(offsetof(PATH, next) == 8, "next should be 8 bytes into PATH");
+#else
+#warning No checking of waypoint structure layouts - there may be problems
+#endif
 
    strcpy(mapname, STRING(gpGlobals->mapname));
    strcat(mapname, ".wpt");
