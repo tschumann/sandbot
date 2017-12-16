@@ -65,11 +65,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 
 #endif
 
-#ifdef __BORLANDC__
-int EXPORT GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, int *interfaceVersion )
-#else
 extern "C" EXPORT int GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, int *interfaceVersion )
-#endif
 {
 	if( g_bIsMMPlugin )
 		memset( pengfuncsFromEngine, 0, sizeof( enginefuncs_t ) );
@@ -235,11 +231,7 @@ extern "C" EXPORT int GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, i
 }
 
 #ifndef __linux__
-#ifdef __BORLANDC__
-extern "C" DLLEXPORT void EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals)
-#else
 void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
-#endif
 #else
 extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
 #endif
@@ -489,11 +481,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 gamedll_funcs_t gGameDLLFunc;
 
-#ifdef __BORLANDC__
-int EXPORT GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
-#else
 extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
-#endif
 {
    // check if engine's pointer is valid and version is correct...
    if ((pFunctionTable == NULL) || (interfaceVersion != INTERFACE_VERSION))
@@ -569,11 +557,7 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
    return TRUE; // finished, interfacing from engine to gamedll complete
 }
 
-#ifdef __BORLANDC__
-int EXPORT GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
-#else
 extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
-#endif
 {
 	memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
 
@@ -582,11 +566,7 @@ extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int inte
 	return (TRUE);
 }
 
-#ifdef __BORLANDC__
-int EXPORT GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
-#else
 extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
-#endif
 {
    if( !g_bIsMMPlugin )
    {
@@ -617,12 +597,7 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
    return TRUE;
 }
 
-
-#ifdef __BORLANDC__
-int EXPORT Server_GetBlendingInterface( int version, struct sv_blending_interface_s **ppinterface, struct engine_studio_api_s *pstudio, float (*rotationmatrix)[3][4], float (*bonetransform)[MAXSTUDIOBONES][3][4] )
-#else
 extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blending_interface_s **ppinterface, struct engine_studio_api_s *pstudio, float (*rotationmatrix)[3][4], float (*bonetransform)[MAXSTUDIOBONES][3][4] )
-#endif
 {
    static SERVER_GETBLENDINGINTERFACE other_Server_GetBlendingInterface = NULL;
    static bool missing = FALSE;
@@ -646,11 +621,7 @@ extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blendi
    return ((other_Server_GetBlendingInterface) (version, ppinterface, pstudio, rotationmatrix, bonetransform));
 }
 
-#ifdef __BORLANDC__
-void EXPORT SV_SaveGameComment( char *pBuffer, int maxLength )
-#else
 extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
-#endif
 {
    static SV_SAVEGAMECOMMENT other_SV_SaveGameComment = NULL;
    static bool missing = FALSE;
