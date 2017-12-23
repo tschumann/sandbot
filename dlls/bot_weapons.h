@@ -32,7 +32,17 @@ typedef struct
 	float secondary_charge_delay; // time to charge weapon
 	// int iPrimaryAmmoIndex;
 	// int iSecondaryAmmoIndex;
+	int flags;
 } bot_weapon_select_t;
+
+#define WEAPON_NONE 0
+#define WEAPON_MELEE 1
+#define WEAPON_PISTOL 2
+#define WEAPON_SHOTGUN 4
+#define WEAPON_MACHINEGUN 8
+#define WEAPON_RIFLE 16
+#define WEAPON_ROCKETLAUNCHER 32
+#define WEAPON_GRENADE 64
 
 // weapon ID values for Half-Life
 #define VALVE_WEAPON_CROWBAR		1
