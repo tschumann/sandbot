@@ -1059,14 +1059,12 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       if (tr.flFraction >= 1.0)
       {
          strcpy(item_name, STRING(pent->v.classname));
-		 ALERT( at_console, "%s is visible\n", item_name );
-		 ALERT(at_console, "%d\n", pent->v.owner);
 
          if ((!strncmp("item_health", item_name, 11) || !strncmp("item_armor", item_name, 10) ||
-             !strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
-             !strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
-			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
-             !strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name)) &&
+			!strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
+			!strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
+			!strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
+			!strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name)) &&
 			 (pent->v.owner == NULL)
 			 )
          {
@@ -1630,17 +1628,12 @@ bool WaypointLoad(edict_t *pEntity)
 
          header.mapname[31] = 0;
 
-		 ALERT(at_console, "vector %d\n", sizeof(Vector));
-		 ALERT(at_console, "uint64_t %d\n", sizeof(uint64_t));
-		 ALERT(at_console, "v offeset %d\n", offsetof(WAYPOINT, origin));
-
          if (strcmp(header.mapname, STRING(gpGlobals->mapname)) == 0)
          {
             WaypointInit();  // remove any existing waypoints
 
             for (i=0; i < header.number_of_waypoints; i++)
             {
-				ALERT(at_console, "here %d\n", ftell(bfp));
                fread(&waypoints[i], sizeof(waypoints[0]), 1, bfp);
                num_waypoints++;
             }
@@ -2259,8 +2252,6 @@ void WaypointRouteInit(void)
    build_matrix[2] = FALSE;
    build_matrix[3] = FALSE;
 
-   ALERT(at_console, "got %d waypoints\n", route_num_waypoints);
-
    // find out how many route matrixes to create...
    for (index=0; index < route_num_waypoints; index++)
    {
@@ -2268,19 +2259,16 @@ void WaypointRouteInit(void)
       {
 		  if ((waypoints[index].flags & W_FL_TEAM) == 0x01)  // team 2?
 		  {
-			  ALERT(at_console, "waypoint %d for team 2\n", index);
 			  build_matrix[1] = TRUE;
 		  }
 
 		  if ((waypoints[index].flags & W_FL_TEAM) == 0x02)  // team 3?
 		  {
-			  ALERT(at_console, "waypoint %d for team 3\n", index);
 			  build_matrix[2] = TRUE;
 		  }
 
 		  if ((waypoints[index].flags & W_FL_TEAM) == 0x03)  // team 4?
 		  {
-			  ALERT(at_console, "waypoint %d for team 4\n", index);
 			  build_matrix[3] = TRUE;
 		  }
       }

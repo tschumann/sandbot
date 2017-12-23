@@ -16,6 +16,7 @@ void OpposingForceBot::Join()
 {
 	if( pGame->IsCTF() )
 	{
+		ALERT( at_console, "OpposingForce bot joining a CTF game\n" );
 		if (this->start_action == MSG_OPFOR_TEAM_SELECT)
 		{
 			this->start_action = MSG_OPFOR_IDLE;  // switch back to idle
@@ -30,7 +31,6 @@ void OpposingForceBot::Join()
 
 			return;
 		}
-
 		if (this->start_action == MSG_OPFOR_CLASS_SELECT)
 		{
 			this->start_action = MSG_OPFOR_IDLE;  // switch back to idle
