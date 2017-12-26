@@ -8,6 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+DODBot::DODBot()
+{
+}
+
 void DODBot::OnSpawn()
 {
 	bot_t::OnSpawn();

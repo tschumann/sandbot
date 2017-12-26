@@ -8,6 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+TFCBot::TFCBot()
+{
+}
+
 void TFCBot::Join()
 {
 	extern int max_teams;

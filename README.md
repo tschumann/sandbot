@@ -6,13 +6,13 @@ Based on HPB Bot written by Jeffrey "botman" Broome, without whose framework and
 
 Playing
 =======
-Use one of the tagged releases if you want to play. The head of master can be unstable.
+Use one of the tagged releases if you want to play. The head of master is often in an untested state..
 
 Building
 ========
 Windows
 -------
-Open Sandbot-2017.sln in Visual Studio 2017. You can probably load it in older (or newer) versions too.
+Open dlls/Sandbot-2017.sln in Visual Studio 2017. You can probably load it in older (or newer) versions too.
 
 Linux
 -----

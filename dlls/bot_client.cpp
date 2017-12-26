@@ -92,11 +92,16 @@ void BotClient_CS_ShowMenu(void *p, int bot_index)
 // This message is sent when the TFC VGUI menu is displayed.
 void BotClient_Gearbox_VGUI(void *p, int bot_index)
 {
-   if ((*(int *)p) == 2)  // is it a team select menu?
-      pBots[bot_index]->start_action = MSG_OPFOR_TEAM_SELECT;
-
-   else if ((*(int *)p) == 3)  // is is a class selection menu?
-      pBots[bot_index]->start_action = MSG_OPFOR_CLASS_SELECT;
+	if ((*(int *)p) == 2)  // is it a team select menu?
+	{
+		ALERT( at_console, "gearbox team select menu\n" );
+		pBots[bot_index]->start_action = MSG_OPFOR_TEAM_SELECT;
+	}
+	else if ((*(int *)p) == 3)  // is is a class selection menu?
+	{
+		ALERT( at_console, "gearbox class select menu\n" );
+		pBots[bot_index]->start_action = MSG_OPFOR_CLASS_SELECT;
+	}
 }
 
 // This message is sent when a client joins the game.  All of the weapons

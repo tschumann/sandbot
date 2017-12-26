@@ -36,7 +36,7 @@ Q. Does single player work?
 A. No but it will be fixed in a future version.
 
 Q. Can you fix Sandbot not working on my distro?
-A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms.
+A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.
 
 == Changelog ==
 
@@ -44,6 +44,10 @@ v0.4.2 (??/??/??)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
 - [Windows] Sandbot no longer breaks level transitions in single player.
+
+v0.4.1.1 (26/12/17)
+- [Linux] Fixed crash in waypoint loading (thanks RoboCop@Bots United and Nubzior@Bots United).
+- [Linux] Fixed undefined symbols in some distros due to not being compiled with g++ (thanks RoboCop@Bots United and Nubzior@Bots United).
 
 v0.4.1 (10/09/17)
 - [All] Replaced botdonshoot console command with bot_shoot cvar (controls whether bots will shoot at real players).

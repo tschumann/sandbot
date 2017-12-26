@@ -8,6 +8,10 @@
 #include "waypoint.h"
 #include "bot_weapons.h"
 
+ShipBot::ShipBot()
+{
+}
+
 bool ShipBot::IsValidEnemy( edict_t *pEdict )
 {
 	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );

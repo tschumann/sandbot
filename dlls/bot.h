@@ -311,6 +311,8 @@ class bot_t
 {
 public:
 	bot_t();
+	virtual ~bot_t();
+
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Respawn();
@@ -501,7 +503,7 @@ public:
 
 	const static int BOTDATA_INDEX_UNSET = -1;
 protected:
-	Vector GetOrigin();
+	virtual Vector GetOrigin();
 
 	edict_t *pLightEnt;
 	float fMaxSpeed;
@@ -526,6 +528,8 @@ public:
 class OpposingForceBot : public HalfLifeBot
 {
 public:
+	OpposingForceBot();
+
 	virtual void Join();
 	virtual void PreThink();
 
@@ -548,6 +552,8 @@ public:
 class CStrikeBot : public bot_t
 {
 public:
+	CStrikeBot();
+
 	virtual void Join();
 
 	virtual float GetMaxSpeed();
@@ -556,6 +562,8 @@ public:
 class DODBot : public bot_t
 {
 public:
+	DODBot();
+
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
@@ -582,6 +590,8 @@ public:
 class TFCBot : public bot_t
 {
 public:
+	TFCBot();
+
 	virtual void Join();
 
 	virtual int GetGoalType();
@@ -620,6 +630,7 @@ class GunmanBot : public bot_t
 {
 public:
 	GunmanBot();
+
 	virtual void OnSpawn();
 	virtual void Think();
 
@@ -784,6 +795,8 @@ protected:
 class ShipBot : public bot_t
 {
 public:
+	ShipBot();
+
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual void PickUpItem();
 	virtual void SetQuarry( int iEntIndex );
@@ -796,6 +809,8 @@ protected:
 class HungerBot : public HalfLifeBot
 {
 public:
+	HungerBot();
+
 	virtual int GetPistol();
 };
 
@@ -804,6 +819,8 @@ extern bot_t **pBots;
 class Game
 {
 public:
+	virtual ~Game();
+
 	virtual bool IsMultiplayer();
 	virtual int GetMaxPlayers();
 	virtual bool CanAddBots();

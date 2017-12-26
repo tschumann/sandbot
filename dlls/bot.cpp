@@ -1885,6 +1885,10 @@ bot_t::bot_t()
 	this->pEdict = nullptr;
 }
 
+bot_t::~bot_t()
+{
+}
+
 void bot_t::OnSpawn()
 {
 }

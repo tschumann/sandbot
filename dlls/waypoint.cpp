@@ -1098,14 +1098,12 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       if (tr.flFraction >= 1.0)
       {
          strcpy(item_name, STRING(pent->v.classname));
-		 ALERT( at_console, "%s is visible\n", item_name );
-		 ALERT(at_console, "%d\n", pent->v.owner);
 
          if ((!strncmp("item_health", item_name, 11) || !strncmp("item_armor", item_name, 10) ||
-             !strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
-             !strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
-			 !strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
-             !strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name)) &&
+			!strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
+			!strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
+			!strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
+			!strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name)) &&
 			 (pent->v.owner == NULL)
 			 )
          {
@@ -1607,6 +1605,20 @@ bool WaypointLoad(edict_t *pEntity)
    short int num;
    short int path_index;
    bool need_rename;
+
+// only supported in newer versions of C++ (which Visual Studio doesn't say it supports, but is only supported by
+// Visual Studio 2010 onwards: https://msdn.microsoft.com/en-us/library/dd293588.aspx)
+#if (_MSC_VER >= 1600) || (__cplusplus >= 201103L)
+   // compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
+   static_assert(sizeof(WAYPOINT) == 24, "WAYPOINT should be 24 bytes");
+   static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
+   static_assert(offsetof(WAYPOINT, origin) == 8, "origin should be 8 bytes into WAYPOINT");
+
+   static_assert(sizeof(PATH) == 12, "PATH should be 12 bytes");
+   static_assert(offsetof(PATH, next) == 8, "next should be 8 bytes into PATH");
+#else
+#warning No checking of waypoint structure layouts - there may be problems
+#endif
 
    strcpy(mapname, STRING(gpGlobals->mapname));
    strcat(mapname, ".wpt");
@@ -2284,14 +2296,20 @@ void WaypointRouteInit(void)
    {
       if (waypoints[index].flags & W_FL_TEAM_SPECIFIC)
       {
-         if ((waypoints[index].flags & W_FL_TEAM) == 0x01)  // team 2?
-            build_matrix[1] = TRUE;
+		  if ((waypoints[index].flags & W_FL_TEAM) == 0x01)  // team 2?
+		  {
+			  build_matrix[1] = TRUE;
+		  }
 
-         if ((waypoints[index].flags & W_FL_TEAM) == 0x02)  // team 3?
-            build_matrix[2] = TRUE;
+		  if ((waypoints[index].flags & W_FL_TEAM) == 0x02)  // team 3?
+		  {
+			  build_matrix[2] = TRUE;
+		  }
 
-         if ((waypoints[index].flags & W_FL_TEAM) == 0x03)  // team 4?
-            build_matrix[3] = TRUE;
+		  if ((waypoints[index].flags & W_FL_TEAM) == 0x03)  // team 4?
+		  {
+			  build_matrix[3] = TRUE;
+		  }
       }
    }
 
