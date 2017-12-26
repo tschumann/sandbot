@@ -13,9 +13,7 @@
 //prototypes of bot functions...
 
 void BotSpawnInit( bot_t *pBot );
-void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2,
-                const char *arg3, const char *arg4 );
-void BotStartGame( bot_t *pBot );
+void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char *arg3, const char *arg4 );
 void BotFindItem( bot_t *pBot );
 void BotThink( bot_t *pBot );
 

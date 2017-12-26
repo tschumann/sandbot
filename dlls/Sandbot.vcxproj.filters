@@ -54,9 +54,6 @@
     <ClCompile Include="bot_ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot_start.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot_tfc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -1251,8 +1251,7 @@ void BotThink( bot_t *pBot )
    // if the bot hasn't selected stuff to start the game yet, go do that...
    if (pBot->not_started)
    {
-		BotStartGame( pBot );
-
+		pBot->Join();
 		pBot->FixIdealPitch();
 		BotFixIdealYaw( pEdict );
 		BotFixBodyAngles( pEdict );

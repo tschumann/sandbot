@@ -22,7 +22,6 @@ OBJ = \
 	bot_combat.o \
 	bot_game.o \
 	bot_navigate.o \
-	bot_start.o \
 	bot_halflife.o \
 	bot_opposingforce.o \
 	bot_cstrike.o \
@@ -61,7 +60,7 @@ sandbot.so: ${OBJ}
 	-cp $@ ../sandbot/half-life/valve/dlls/
 	-cp $@ ../sandbot/half-life/gearbox/dlls/
 	-cp $@ ../sandbot/half-life/dod/dlls/
-	-cp $@ ../sandbot/half-life/ns/dlls/
+	# -cp $@ ../sandbot/half-life/ns/dlls/
 	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
 # clean up non-source files
