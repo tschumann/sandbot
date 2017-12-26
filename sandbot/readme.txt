@@ -37,7 +37,7 @@ A. No but it will be fixed in a future version.
 
 == Changelog ==
 
-v0.4.1.1 (??/12/17)
+v0.4.1.1 (26/12/17)
 - [Linux] Fixed crash in waypoint loading.
 - [Linux] Fixed undefined symbols in some distros due to not being compiled with g++.
 
