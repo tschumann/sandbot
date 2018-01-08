@@ -46,7 +46,8 @@ typedef struct
 #define WEAPON_ENERGY 128  
 #define WEAPON_ORGANIC 256
 #define WEAPON_GRENADE 512
-#define WEAPON_OTHER 1024 // there's always one...
+// TODO: just classify better
+#define WEAPON_OTHER 1024
 
 // weapon ID values for Half-Life
 #define VALVE_WEAPON_CROWBAR		1

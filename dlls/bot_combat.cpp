@@ -20,6 +20,18 @@ extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 extern int team_allies[4];
 
+extern cvar_t bot_use_melee;
+extern cvar_t bot_use_pistol;
+extern cvar_t bot_use_shotgun;
+extern cvar_t bot_use_machinegun;
+extern cvar_t bot_use_rifle;
+extern cvar_t bot_use_sniper;
+extern cvar_t bot_use_rocketlauncher;
+extern cvar_t bot_use_energy;
+extern cvar_t bot_use_organic;
+extern cvar_t bot_use_grenade;
+extern cvar_t bot_use_other;
+
 // weapons are stored in priority order, most desired weapon should be at
 // the start of the array and least desired should be at the end
 // presumably the no ammo ones are at the top so they can always be selected
@@ -794,19 +806,107 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
       // loop through all the weapons until terminator is found...
       while (pSelect[select_index].iId)
       {
-         // was a weapon choice specified? (and if so do they NOT match?)
-         if ((weapon_choice != 0) && (weapon_choice != pSelect[select_index].iId))
-         {
-            select_index++;  // skip to next weapon
-            continue;
-         }
+		// was a weapon choice specified? (and if so do they NOT match?)
+		if( ( weapon_choice != 0 ) && ( weapon_choice != pSelect[select_index].iId ) )
+		{
+			select_index++;  // skip to next weapon
+			continue;
+		}
 
-         // is the bot NOT carrying this weapon?
-         if (!(pEdict->v.weapons & (1<<pSelect[select_index].iId)))
-         {
-            select_index++;  // skip to next weapon
-            continue;
-         }   
+		// if it's a melee weapon and melee weapons have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_MELEE) && bot_use_melee.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a pistol and pistols have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_PISTOL) && bot_use_pistol.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a shotgun and shotguns have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_SHOTGUN) && bot_use_shotgun.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a machine gun and machine guns have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_MACHINEGUN) && bot_use_machinegun.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a rifle and rifles have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_RIFLE) && bot_use_rifle.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a sniping weapon and sniping weapons have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_SNIPER) && bot_use_sniper.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a rocket launcher and rocket launchers have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_ROCKETLAUNCHER) && bot_use_rocketlauncher.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's an energy weapon and energy weapons have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_ENERGY) && bot_use_energy.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's an organic weapon and organic weapons have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_ORGANIC) && bot_use_organic.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's a grenade and grenades have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_GRENADE) && bot_use_grenade.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+		// if it's an unclassified weapon and unclassified weapons have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_OTHER) && bot_use_other.value < 1 )
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
+        // is the bot NOT carrying this weapon?
+        if( !( pEdict->v.weapons & (1 << pSelect[select_index].iId) ) )
+        {
+			select_index++;  // skip to next weapon
+			continue;
+        }   
 
 #if 0
          // is the bot NOT skilled enough to use this weapon?

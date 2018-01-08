@@ -98,6 +98,18 @@ cvar_t bot_skill = {"bot_skill", "3"};
 cvar_t bot_count = {"bot_count", "11"};
 cvar_t bot_shoot = {"bot_shoot", "1"};
 
+cvar_t bot_use_melee = {"bot_use_melee", "1"};
+cvar_t bot_use_pistol = {"bot_use_pistol", "1"};
+cvar_t bot_use_shotgun = {"bot_use_shotgun", "1"};
+cvar_t bot_use_machinegun = {"bot_use_machinegun", "1"};
+cvar_t bot_use_rifle = {"bot_use_rifle", "1"};
+cvar_t bot_use_sniper = {"bot_use_sniper", "1"};
+cvar_t bot_use_rocketlauncher = {"bot_use_rocketlauncher", "1"};
+cvar_t bot_use_energy = {"bot_use_energy", "1"};
+cvar_t bot_use_organic = {"bot_use_organic", "1"};
+cvar_t bot_use_grenade = {"bot_use_grenade", "1"};
+cvar_t bot_use_other = {"bot_use_other", "1"};
+
 cvar_t *developer;
 
 // a fresh install of Natural Selection 3.2 will spam the console about the non-existence of this cvar
