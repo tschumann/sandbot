@@ -41,8 +41,12 @@ typedef struct
 #define WEAPON_SHOTGUN 4
 #define WEAPON_MACHINEGUN 8
 #define WEAPON_RIFLE 16
-#define WEAPON_ROCKETLAUNCHER 32
-#define WEAPON_GRENADE 64
+#define WEAPON_SNIPER 32
+#define WEAPON_ROCKETLAUNCHER 64
+#define WEAPON_ENERGY 128  
+#define WEAPON_ORGANIC 256
+#define WEAPON_GRENADE 512
+#define WEAPON_OTHER 1024 // there's always one...
 
 // weapon ID values for Half-Life
 #define VALVE_WEAPON_CROWBAR		1
