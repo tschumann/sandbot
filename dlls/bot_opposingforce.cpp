@@ -78,6 +78,12 @@ int OpposingForceBot::GetTeam()
 	return UTIL_GetTeam(this->pEdict);
 }
 
+bool OpposingForceBot::ShouldSeekEnemy()
+{
+	// if the bot has high health and the flag, don't look for an enemy
+	return !(this->bBotHasFlag && this->pEdict->v.health > 75);
+}
+
 int OpposingForceBot::GetPistol()
 {
 	return GEARBOX_WEAPON_GLOCK;
@@ -126,7 +132,7 @@ bool OpposingForceBot::FindFlag()
 		if ((pent->v.owner == pEdict) && (pent->v.origin == this->GetOrigin()))
 		{
 			// we are carrying the flag
-			this->bot_has_flag = TRUE;
+			this->bBotHasFlag = true;
 
 			break;  // break out of while loop
 		}

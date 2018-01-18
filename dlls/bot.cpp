@@ -505,7 +505,7 @@ void BotSpawnInit( bot_t *pBot )
 
 	pBot->f_pause_time = 0.0;
 	pBot->f_sound_update_time = 0.0;
-	pBot->bot_has_flag = FALSE;
+	pBot->bBotHasFlag = false;
 
 	pBot->b_see_tripmine = FALSE;
 	pBot->b_shoot_tripmine = FALSE;
@@ -1366,30 +1366,31 @@ void BotThink( bot_t *pBot )
    }
    else  // else handle movement related actions...
    {
-	   if (pBot->CanShoot())
-      {
-         if (pGame->IsCTF() && pBot->bot_has_flag)
-         {
-            // is it time to check whether bot should look for enemies yet?
-            if (pBot->f_bot_find_enemy_time <= gpGlobals->time)
-            {
-               pBot->f_bot_find_enemy_time = gpGlobals->time + 5.0;
+		if( pBot->CanShoot() && pBot->ShouldSeekEnemy() )
+		{
+			if( pGame->IsCTF() && pBot->bBotHasFlag )
+			{
+				// is it time to check whether bot should look for enemies yet?
+				if( pBot->f_bot_find_enemy_time <= gpGlobals->time )
+				{
+					pBot->f_bot_find_enemy_time = gpGlobals->time + 5.0;
 
-               if (RANDOM_LONG(1, 100) <= 40)
-			   {
-                  pBot->pBotEnemy = BotFindEnemy( pBot );
-			   }
-            }
-         }
-         else
-         {
-            pBot->pBotEnemy = BotFindEnemy( pBot );
-         }
-      }
-      else
-	  {
-         pBot->pBotEnemy = NULL;  // clear enemy pointer (no enemy for you!)
-	  }
+					if( RANDOM_LONG(1, 100) <= 30 )
+					{
+						pBot->pBotEnemy = BotFindEnemy( pBot );
+					}
+				}
+			}
+			else
+			{
+				pBot->pBotEnemy = BotFindEnemy( pBot );
+			}
+		}
+		else
+		{
+			// clear enemy pointer (no enemy for you!)
+			pBot->pBotEnemy = NULL;
+		}
 
       if (pBot->HasEnemy())  // does an enemy exist?
       {
@@ -1982,6 +1983,11 @@ bool bot_t::HasEnemy()
 	}
 
 	return this->pBotEnemy != NULL;
+}
+
+bool bot_t::ShouldSeekEnemy()
+{
+	return true;
 }
 
 bool bot_t::IsValidEnemy( edict_t *pEdict )

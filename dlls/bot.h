@@ -325,6 +325,7 @@ public:
 	virtual int GetTeam();
 
 	virtual bool HasEnemy();
+	virtual bool ShouldSeekEnemy();
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();
@@ -453,7 +454,7 @@ public:
 	int   charging_weapon_id;
 	float f_pause_time;
 	float f_sound_update_time;
-	bool  bot_has_flag;
+	bool bBotHasFlag;
 
 	bool  b_see_tripmine;
 	bool  b_shoot_tripmine;
@@ -534,6 +535,8 @@ public:
 	virtual void PreThink();
 
 	virtual int GetTeam();
+
+	virtual bool ShouldSeekEnemy();
 
 	virtual int GetPistol();
 

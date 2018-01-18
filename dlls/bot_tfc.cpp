@@ -222,7 +222,7 @@ bool TFCBot::FindFlag()
 		if (pent->v.owner == pEdict)  // is this bot carrying the item?
 		{
 			// we are carrying the flag/card/ball
-			bot_has_flag = TRUE;
+			bBotHasFlag = true;
 			break;  // break out of while loop
 		}
 		// can bot see it?

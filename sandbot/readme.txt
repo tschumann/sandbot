@@ -44,6 +44,7 @@ v0.4.2 (??/??/??)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
 - [Windows] Sandbot no longer breaks level transitions in single player.
+- [Opposing Force] Made bots less likely to get distracted by enemies when they have the flag in CTF.
 
 v0.4.1.1 (26/12/17)
 - [Linux] Fixed crash in waypoint loading (thanks RoboCop@Bots United and Nubzior@Bots United).
