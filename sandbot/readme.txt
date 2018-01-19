@@ -43,7 +43,8 @@ A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough wor
 v0.4.2 (??/??/??)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
-- [Windows] Sandbot no longer breaks level transitions in single player.
+- [All] Bots will now be removed if the quota exceeds the bot_count cvar.
+- [Windows] Sandbot no longer breaks level transitions in single player (thanks shardthefox200@ModDB).
 - [Opposing Force] Made bots less likely to get distracted by enemies when they have the flag in CTF.
 
 v0.4.1.1 (26/12/17)

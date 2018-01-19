@@ -1398,6 +1398,18 @@ void StartFrame( void )
 	{
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
+	else if( GetBotCount() > bot_count.value )
+	{
+		for( int i = 0; i < MAX_PLAYERS; i++ )
+		{
+			if( pBots[i] && pBots[i]->is_used )
+			{
+				ALERT( at_notice, "Bots over quota, kicking bot at index %d\n", i );
+				KickBot( i );
+				break;
+			}
+		}
+	}
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );

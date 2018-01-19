@@ -353,6 +353,25 @@ void NewActiveClient( edict_t *pEntity )
 	}
 }
 
+void KickBot( int iIndex )
+{
+	if( pBots && pBots[iIndex]->is_used )	// is this slot used?
+	{
+		char cmd[40];
+
+		sprintf( cmd, "kick \"%s\"\n", pBots[iIndex]->name );
+
+		pBots[iIndex]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+
+		// kick the bot using (kick "name")
+		SERVER_COMMAND(cmd);
+	}
+	else
+	{
+		ALERT( at_warning, "Bot at index %d is not in use\n", iIndex );
+	}
+}
+
 void KickAllBots()
 {
 	for( int index = 0; index < MAX_PLAYERS; index++ )
@@ -361,7 +380,7 @@ void KickAllBots()
 		{
 			char cmd[40];
 
-			sprintf(cmd, "kick \"%s\"\n", pBots[index]->name);
+			sprintf( cmd, "kick \"%s\"\n", pBots[index]->name );
 
 			pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
 
@@ -613,14 +632,18 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
 
 	  // Make sure that when creating new bot, the previous one private data is freed
-	  if( BotEnt->pvPrivateData != NULL )
-		  FREE_PRIVATE( BotEnt );
+	  if (BotEnt->pvPrivateData != NULL)
+	  {
+		  FREE_PRIVATE(BotEnt);
+	  }
 	  BotEnt->pvPrivateData = NULL;
 	  BotEnt->v.frags = 0;
 
       index = 0;
 	  while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
-         index++;
+	  {
+		  index++;
+	  }
 
       if (index == MAX_PLAYERS)
       {
@@ -650,8 +673,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  }
       else // other mods
 	  {
-		  // TODO: is this even needed?
-		SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );
+			// TODO: is this even needed?
+			SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );
 	  }
 
       if (mod_id == CSTRIKE_DLL)
