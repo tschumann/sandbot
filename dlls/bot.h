@@ -322,6 +322,7 @@ public:
 
 	virtual int GetSkill();
 
+	virtual int GetHealth();
 	virtual int GetTeam();
 
 	virtual bool HasEnemy();

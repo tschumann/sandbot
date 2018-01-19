@@ -1368,7 +1368,8 @@ void BotThink( bot_t *pBot )
    {
 		if( pBot->CanShoot() && pBot->ShouldSeekEnemy() )
 		{
-			if( pGame->IsCTF() && pBot->bBotHasFlag )
+			// if it's CTF, prioritise looking for the flag
+			if( pGame->IsCTF() )
 			{
 				// is it time to check whether bot should look for enemies yet?
 				if( pBot->f_bot_find_enemy_time <= gpGlobals->time )
@@ -1968,6 +1969,11 @@ int bot_t::GetSkill()
 	}
 
 	return iSkill;
+}
+
+int bot_t::GetHealth()
+{
+	return this->pEdict->v.health;
 }
 
 int bot_t::GetTeam()

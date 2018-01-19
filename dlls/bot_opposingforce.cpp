@@ -80,8 +80,15 @@ int OpposingForceBot::GetTeam()
 
 bool OpposingForceBot::ShouldSeekEnemy()
 {
-	// if the bot has high health and the flag, don't look for an enemy
-	return !(this->bBotHasFlag && this->pEdict->v.health > 75);
+	if( this->bBotHasFlag )
+	{
+		// only seek out enemies if health is low
+		return this->GetHealth() < 40;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 int OpposingForceBot::GetPistol()
