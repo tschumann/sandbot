@@ -317,7 +317,7 @@ bot_weapon_select_t gunman_weapon_select[] = {
 	{GUNMAN_WEAPON_CHEMGUN, "weapon_chemgun", 1.0f, 0.0f,
 	100.0f, 400.0f, 0.0f, 0.0f,
 	100, true, 100, 2, 0,
-	false, false, false, false, 0.0f, 0.0f, WEAPON_OTHER},
+	false, false, false, false, 0.0f, 0.0f, WEAPON_CHEMICAL},
 	{GUNMAN_WEAPON_DML, "weapon_dml", 1.5f, 0.0f,
 	250.0f, 9999.0f, 0.0f, 0.0f,
 	100, true, 100, 1, 0,
@@ -383,7 +383,7 @@ bot_weapon_select_t ns_weapon_select[] = {
 	{NS_WEAPON_SPIT, "weapon_spit", 0.8f, 0.0f,
 	0.0f, 250.0f, 0.0f, 0.0f,
     100, TRUE, 100, 0, 0,
-	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f},
+	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_CHEMICAL},
 
 	// lerk
 	{NS_WEAPON_BITE2GUN, "weapon_bite2gun", 0.7f, 0.0f,
@@ -407,7 +407,7 @@ bot_weapon_select_t ns_weapon_select[] = {
 	{NS_WEAPON_ACIDROCKETGUN, "weapon_acidrocketgun", 1.0f, 0.0f,
 	50.0f, 1200.0f, 0.0f, 0.0f,
     100, TRUE, 100, 0, 0,
-	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f},
+	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_CHEMICAL},
 
 	// onos
 	{NS_WEAPON_CLAWS, "weapon_claws", 0.9f, 0.0f,
@@ -893,8 +893,8 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 			continue;
 		}
 
-		// if it's an unclassified weapon and unclassified weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_OTHER) && bot_use_other.value < 1 )
+		// if it's a chemical weapon and chemical weapons have been disabled for bots
+		if( (pSelect[select_index].flags & WEAPON_CHEMICAL) && bot_use_other.value < 1 )
 		{
 			// skip to next weapon
 			select_index++;
