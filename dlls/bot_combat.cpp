@@ -30,7 +30,7 @@ extern cvar_t bot_use_rocketlauncher;
 extern cvar_t bot_use_energy;
 extern cvar_t bot_use_organic;
 extern cvar_t bot_use_grenade;
-extern cvar_t bot_use_other;
+extern cvar_t bot_use_chemical;
 
 // weapons are stored in priority order, most desired weapon should be at
 // the start of the array and least desired should be at the end
@@ -894,7 +894,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a chemical weapon and chemical weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_CHEMICAL) && bot_use_other.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_CHEMICAL) && bot_use_chemical.value < 1 )
 		{
 			// skip to next weapon
 			select_index++;

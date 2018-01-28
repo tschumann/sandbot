@@ -108,7 +108,7 @@ cvar_t bot_use_rocketlauncher = {"bot_use_rocketlauncher", "1"};
 cvar_t bot_use_energy = {"bot_use_energy", "1"};
 cvar_t bot_use_organic = {"bot_use_organic", "1"};
 cvar_t bot_use_grenade = {"bot_use_grenade", "1"};
-cvar_t bot_use_other = {"bot_use_other", "1"};
+cvar_t bot_use_chemical = {"bot_use_chemical", "1"};
 
 cvar_t *developer;
 
