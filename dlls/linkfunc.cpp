@@ -55,6 +55,7 @@ int g_iOrdinalCount = 0;
 
 char szFunctionNames[4096][MAX_FUNCTION_NAME_LENGTH];
 
+// TODO: memory leak here - need to find a function that is only called once on shutdown
 WORD *pOrdinals;
 DWORD *pFunctionAddresses;
 DWORD *pNameAddresses;
@@ -123,14 +124,14 @@ void LoadExtaExports()
 	LONG iOrdinalOffset = sExportDirectory.AddressOfNameOrdinals - iedataDelta;
 	fseek( fp, iOrdinalOffset, SEEK_SET );
 	// allocate space for ordinals
-	pOrdinals = (WORD *)malloc( g_iOrdinalCount * sizeof(WORD) );
+	pOrdinals = new WORD[g_iOrdinalCount];
 	// get the list of ordinals
 	fread( pOrdinals, g_iOrdinalCount * sizeof(WORD), 1, fp );
 
 	// remember the offset to the function addresses
 	LONG iFunctionOffset = sExportDirectory.AddressOfFunctions - iedataDelta;
 	fseek( fp, iFunctionOffset, SEEK_SET );
-	pFunctionAddresses = (DWORD *)malloc( g_iOrdinalCount * sizeof(DWORD) );
+	pFunctionAddresses = new DWORD[g_iOrdinalCount];
 	// get the list of functions
 	fread( pFunctionAddresses, g_iOrdinalCount * sizeof(DWORD), 1, fp );
 
@@ -138,7 +139,7 @@ void LoadExtaExports()
 	LONG iNameOffset = sExportDirectory.AddressOfNames - iedataDelta;
 	fseek( fp, iNameOffset, SEEK_SET );
 	// allocate space for names
-	pNameAddresses = (DWORD *)malloc( g_iOrdinalCount * sizeof(DWORD) );
+	pNameAddresses = new DWORD[g_iOrdinalCount];
 	// get the list of names
 	fread( pNameAddresses, g_iOrdinalCount * sizeof(DWORD), 1, fp );
 
