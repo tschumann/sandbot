@@ -327,7 +327,7 @@ int GetBotCount()
 
 		if( pPlayer && !pPlayer->free )
 		{
-			if( FBitSet(pPlayer->v.flags, FL_CLIENT) )
+			if( FBitSet(pPlayer->v.flags, FL_CLIENT) && IsValidEntity( pPlayer ) )
 			{
 				count++;
 			}
