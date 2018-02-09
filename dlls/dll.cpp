@@ -133,6 +133,18 @@ void GameDLLInit( void )
 	CVAR_REGISTER(&bot_count);
 	CVAR_REGISTER(&bot_shoot);
 
+	CVAR_REGISTER(&bot_use_melee);
+	CVAR_REGISTER(&bot_use_pistol);
+	CVAR_REGISTER(&bot_use_shotgun);
+	CVAR_REGISTER(&bot_use_machinegun);
+	CVAR_REGISTER(&bot_use_rifle);
+	CVAR_REGISTER(&bot_use_sniper);
+	CVAR_REGISTER(&bot_use_rocketlauncher);
+	CVAR_REGISTER(&bot_use_energy);
+	CVAR_REGISTER(&bot_use_organic);
+	CVAR_REGISTER(&bot_use_grenade);
+	CVAR_REGISTER(&bot_use_chemical);
+
 	switch( mod_id )
 	{
 	case VALVE_DLL:
