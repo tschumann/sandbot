@@ -73,17 +73,25 @@ void LoadExtaExports()
 	IMAGE_EXPORT_DIRECTORY sExportDirectory;
 
 	// open the game .dll
-	FILE *fp = fopen( g_szLibraryPath, "rb" );
+	FILE *pFile = fopen( g_szLibraryPath, "rb" );
+
+	if( !pFile )
+	{
+		ALERT( at_error, "Unable to fopen %s with errno %d\n", g_szLibraryPath, errno );
+
+		return;
+	}
+
 	// read the DOS header
-	fread( &sDOSHeader, sizeof(IMAGE_DOS_HEADER), 1, fp );
+	fread( &sDOSHeader, sizeof(IMAGE_DOS_HEADER), 1, pFile );
 	// go to the PE header
-	fseek( fp, sDOSHeader.e_lfanew, SEEK_SET );
+	fseek(pFile, sDOSHeader.e_lfanew, SEEK_SET );
 	// reader the NT signature
-	fread( &iNTSignature, sizeof(iNTSignature), 1, fp );
+	fread( &iNTSignature, sizeof(iNTSignature), 1, pFile );
 	// read the PE header
-	fread( &sPEHeader, sizeof(IMAGE_FILE_HEADER), 1, fp );
+	fread( &sPEHeader, sizeof(IMAGE_FILE_HEADER), 1, pFile );
 	// read the optional header
-	fread( &sOptionalHeader, sizeof(IMAGE_OPTIONAL_HEADER), 1, fp );
+	fread( &sOptionalHeader, sizeof(IMAGE_OPTIONAL_HEADER), 1, pFile );
 
 	iedataOffset = sOptionalHeader.DataDirectory[0].VirtualAddress;
 	iedataDelta = 0;
@@ -113,46 +121,46 @@ void LoadExtaExports()
 		}
 	}
 
-	fseek( fp, iedataOffset, SEEK_SET );
+	fseek( pFile, iedataOffset, SEEK_SET );
 	// read the export directory
-	fread( &sExportDirectory, sizeof(IMAGE_EXPORT_DIRECTORY), 1, fp );
+	fread( &sExportDirectory, sizeof(IMAGE_EXPORT_DIRECTORY), 1, pFile );
 
 	// save number of ordinals
 	g_iOrdinalCount = sExportDirectory.NumberOfNames;
 
 	// remember the offset to the ordinals
 	LONG iOrdinalOffset = sExportDirectory.AddressOfNameOrdinals - iedataDelta;
-	fseek( fp, iOrdinalOffset, SEEK_SET );
+	fseek( pFile, iOrdinalOffset, SEEK_SET );
 	// allocate space for ordinals
 	pOrdinals = new WORD[g_iOrdinalCount];
 	// get the list of ordinals
-	fread( pOrdinals, g_iOrdinalCount * sizeof(WORD), 1, fp );
+	fread( pOrdinals, g_iOrdinalCount * sizeof(WORD), 1, pFile );
 
 	// remember the offset to the function addresses
 	LONG iFunctionOffset = sExportDirectory.AddressOfFunctions - iedataDelta;
-	fseek( fp, iFunctionOffset, SEEK_SET );
+	fseek( pFile, iFunctionOffset, SEEK_SET );
 	pFunctionAddresses = new DWORD[g_iOrdinalCount];
 	// get the list of functions
-	fread( pFunctionAddresses, g_iOrdinalCount * sizeof(DWORD), 1, fp );
+	fread( pFunctionAddresses, g_iOrdinalCount * sizeof(DWORD), 1, pFile );
 
 	// remember the offset to the name addresses
 	LONG iNameOffset = sExportDirectory.AddressOfNames - iedataDelta;
-	fseek( fp, iNameOffset, SEEK_SET );
+	fseek( pFile, iNameOffset, SEEK_SET );
 	// allocate space for names
 	pNameAddresses = new DWORD[g_iOrdinalCount];
 	// get the list of names
-	fread( pNameAddresses, g_iOrdinalCount * sizeof(DWORD), 1, fp );
+	fread( pNameAddresses, g_iOrdinalCount * sizeof(DWORD), 1, pFile );
 
 	// populate the exports array
 	for( int i = 0; i < g_iOrdinalCount; i++ )
 	{
-		if( !fseek( fp, pNameAddresses[i] - iedataDelta, SEEK_SET ) )
+		if( !fseek( pFile, pNameAddresses[i] - iedataDelta, SEEK_SET ) )
 		{
 			char szFunctionName[MAX_FUNCTION_NAME_LENGTH];
 			char *pFunctionName;
 			char *pEnd;
 
-			int iFunctionNameLength = fread( szFunctionName, sizeof(char), sizeof(szFunctionName) - 1, 	fp );
+			int iFunctionNameLength = fread( szFunctionName, sizeof(char), sizeof(szFunctionName) - 1, pFile );
 			szFunctionName[iFunctionNameLength - 1] = '\0';
 			ALERT( at_console, "Found %s\n", szFunctionName );
 
@@ -173,7 +181,7 @@ void LoadExtaExports()
 		}
 	}
 
-	fclose( fp );
+	fclose( pFile );
 
 	// cycle through all function names to find the GiveFnptrsToDll function
 	for( int i = 0; i < g_iOrdinalCount; i++ )
