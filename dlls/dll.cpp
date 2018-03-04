@@ -188,93 +188,93 @@ void GameDLLInit( void )
 
 int DispatchSpawn( edict_t *pent )
 {
-	int index;
+	const char *szClassname = STRING(pent->v.classname);
+	const char *szModel = "";
 
-	char *pClassname = (char *)STRING(pent->v.classname);
+	if( pent->v.model != 0 )
+	{
+		szModel = STRING(pent->v.model);
+	}
 
-  if (debug_engine)
-  {
-     fp=fopen("bot.txt","a");
-     fprintf(fp, "DispatchSpawn: %p %s\n",pent,pClassname);
-     if (pent->v.model != 0)
-        fprintf(fp, " model=%s\n",STRING(pent->v.model));
-     fclose(fp);
-  }
+	// TODO: return -1 here (see http://metamod.org/dllapi_notes.html#DispatchSpawn) to block spawning certain things?
+	// use this to work out missing Day of Defeat weapon constants by blocking some?
 
-  if (strcmp(pClassname, "worldspawn") == 0)
-  {
-     // do level initialization stuff here...
+	UTIL_LogTPrintf( "DispatchSpawn: %p %s %s\n", pent, szClassname, szModel );
 
-     WaypointInit();
-     WaypointLoad(NULL);
+	if( !strcmp(szClassname, "worldspawn") )
+	{
+		// do level initialization stuff here...
 
-     pent_info_tfdetect = NULL;
-     pent_info_ctfdetect = NULL;
-     pent_item_tfgoal = NULL;
+		WaypointInit();
+		WaypointLoad(NULL);
 
-     for (index=0; index < 4; index++)
-     {
-        max_team_players[index] = 0;  // no player limit
-        team_class_limits[index] = 0;  // no class limits
-        team_allies[index] = 0;
-     }
+		pent_info_tfdetect = NULL;
+		pent_info_ctfdetect = NULL;
+		pent_item_tfgoal = NULL;
 
-     max_teams = 0;
-     num_flags = 0;
+		for (int index=0; index < 4; index++)
+		{
+			max_team_players[index] = 0;  // no player limit
+			team_class_limits[index] = 0;  // no class limits
+			team_allies[index] = 0;
+		}
 
-     for (index=0; index < MAX_FLAGS; index++)
-     {
-        flags[index].edict = NULL;
-        flags[index].team_no = 0;  // any team unless specified
-     }
+		max_teams = 0;
+		num_flags = 0;
 
-     num_backpacks = 0;
+		for (int index=0; index < MAX_FLAGS; index++)
+		{
+			flags[index].edict = NULL;
+			flags[index].team_no = 0;  // any team unless specified
+		}
 
-     for (index=0; index < MAX_BACKPACKS; index++)
-     {
-        backpacks[index].edict = NULL;
-        backpacks[index].armor = 0;
-        backpacks[index].health = 0;
-        backpacks[index].ammo = 0;
-        backpacks[index].team = 0;  // any team unless specified
-     }
+		num_backpacks = 0;
 
-     PRECACHE_SOUND("weapons/xbow_hit1.wav");      // waypoint add
-     PRECACHE_SOUND("weapons/mine_activate.wav");  // waypoint delete
-     PRECACHE_SOUND("common/wpn_hudoff.wav");      // path add/delete start
-     PRECACHE_SOUND("common/wpn_hudon.wav");       // path add/delete done
-     PRECACHE_SOUND("common/wpn_moveselect.wav");  // path add/delete cancel
-     PRECACHE_SOUND("common/wpn_denyselect.wav");  // path add/delete error
-	 PRECACHE_MODEL("models/mechgibs.mdl");
+		for (int index=0; index < MAX_BACKPACKS; index++)
+		{
+			backpacks[index].edict = NULL;
+			backpacks[index].armor = 0;
+			backpacks[index].health = 0;
+			backpacks[index].ammo = 0;
+			backpacks[index].team = 0;  // any team unless specified
+		}
 
-     m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
+		PRECACHE_SOUND("weapons/xbow_hit1.wav");      // waypoint add
+		PRECACHE_SOUND("weapons/mine_activate.wav");  // waypoint delete
+		PRECACHE_SOUND("common/wpn_hudoff.wav");      // path add/delete start
+		PRECACHE_SOUND("common/wpn_hudon.wav");       // path add/delete done
+		PRECACHE_SOUND("common/wpn_moveselect.wav");  // path add/delete cancel
+		PRECACHE_SOUND("common/wpn_denyselect.wav");  // path add/delete error
+		PRECACHE_MODEL("models/mechgibs.mdl");
 
-     g_GameRules = TRUE;
+		m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
 
-     memset(team_names, 0, sizeof(team_names));
-     num_teams = 0;
+		g_GameRules = TRUE;
 
-     respawn_time = 0.0;
-     spawn_time_reset = FALSE;
+		memset(team_names, 0, sizeof(team_names));
+		num_teams = 0;
 
-     prev_num_bots = num_bots;
-     num_bots = 0;
+		respawn_time = 0.0;
+		spawn_time_reset = FALSE;
 
-     bot_check_time = gpGlobals->time + 30.0;
-  }
+		prev_num_bots = num_bots;
+		num_bots = 0;
 
-  if( g_bIsMMPlugin )
-	  RETURN_META_VALUE( MRES_IGNORED, 0 );
+		bot_check_time = gpGlobals->time + 30.0;
+	}
 
-   int result = (*other_gFunctionTable.pfnSpawn)(pent);
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
 
-   // solves the bots unable to see through certain types of glass bug.
-   // MAPPERS: NEVER EVER ALLOW A TRANSPARENT ENTITY TO WEAR THE FL_WORLDBRUSH FLAG !!!
+	int result = (*other_gFunctionTable.pfnSpawn)(pent);
 
-   if( pent->v.rendermode == kRenderTransTexture )
-	   pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
+	// solves the bots unable to see through certain types of glass bug.
+	// MAPPERS: NEVER EVER ALLOW A TRANSPARENT ENTITY TO WEAR THE FL_WORLDBRUSH FLAG !!!
 
-   return result;
+	if( pent->v.rendermode == kRenderTransTexture )
+		pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
+
+	return result;
 }
 
 int DispatchSpawn_Post( edict_t * pent )

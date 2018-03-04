@@ -122,17 +122,6 @@ const char *GetArg( const char *command, int arg_number );
 #define MSG_NS_JOIN_MARINE		2
 #define MSG_NS_JOIN_AUTO		3
 
-// game start messages for FrontLineForce...
-#define MSG_FLF_IDLE            1
-#define MSG_FLF_TEAM_SELECT     2
-#define MSG_FLF_CLASS_SELECT    3
-#define MSG_FLF_PISTOL_SELECT   4
-#define MSG_FLF_WEAPON_SELECT   5
-#define MSG_FLF_RIFLE_SELECT    6
-#define MSG_FLF_SHOTGUN_SELECT  7
-#define MSG_FLF_SUBMACHINE_SELECT   8
-#define MSG_FLF_HEAVYWEAPONS_SELECT 9
-
 
 #define kGorgeCost 10
 #define kLerkCost 30
