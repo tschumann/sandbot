@@ -15,9 +15,7 @@
 #ifndef ENGINECALLBACK_H
 #define ENGINECALLBACK_H
 #ifdef _WIN32
-#ifndef __MINGW32__
 #pragma once
-#endif /* not __MINGW32__ */
 #endif
 
 #include "event_flags.h"
@@ -158,5 +156,26 @@ inline void *GET_PRIVATE( edict_t *pent )
 #define ENGINE_FORCE_UNMODIFIED	( *g_engfuncs.pfnForceUnmodified )
 
 #define PLAYER_CNX_STATS		( *g_engfuncs.pfnGetPlayerStats )
+
+
+inline edict_t *CREATE_FAKE_CLIENT( const char *netname )
+{
+	return (*g_engfuncs.pfnCreateFakeClient)( netname );
+}
+
+inline char *GET_INFOBUFFER( edict_t *e )
+{
+	return (*g_engfuncs.pfnGetInfoKeyBuffer)( e );
+}
+
+inline char *GET_INFO_KEY_VALUE( char *infobuffer, char *key )
+{
+	return (g_engfuncs.pfnInfoKeyValue( infobuffer, key ));
+}
+
+inline void SET_CLIENT_KEY_VALUE( int clientIndex, char *infobuffer, char *key, char *value )
+{
+	(*g_engfuncs.pfnSetClientKeyValue)( clientIndex, infobuffer, key, value );
+}
 
 #endif		//ENGINECALLBACK_H

@@ -417,27 +417,6 @@ void CleanupGameAndBots()
 }
 
 
-inline edict_t *CREATE_FAKE_CLIENT( const char *netname )
-{
-	return (*g_engfuncs.pfnCreateFakeClient)( netname );
-}
-
-inline char *GET_INFOBUFFER( edict_t *e )
-{
-	return (*g_engfuncs.pfnGetInfoKeyBuffer)( e );
-}
-
-inline char *GET_INFO_KEY_VALUE( char *infobuffer, char *key )
-{
-	return (g_engfuncs.pfnInfoKeyValue( infobuffer, key ));
-}
-
-inline void SET_CLIENT_KEY_VALUE( int clientIndex, char *infobuffer, char *key, char *value )
-{
-	(*g_engfuncs.pfnSetClientKeyValue)( clientIndex, infobuffer, key, value );
-}
-
-
 // this is the LINK_ENTITY_TO_CLASS function that creates a player (bot)
 void player( entvars_t *pev )
 {
@@ -575,7 +554,6 @@ void BotSpawnInit( bot_t *pBot )
 
 void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char *arg3, const char *arg4)
 {
-	edict_t *BotEnt;
 	bot_t *pBot;
 	int start_action = 0;
 
@@ -586,39 +564,39 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	{
 		iIndex++;
 
-		if( iIndex == 31 )
+		// loop around
+		if( iIndex == 32 )
 		{
 			iIndex = 0;
 		}
 	}
 
-	// create the bot
+	// mark the bit as used
 	pBotData[iIndex].bIsUsed = true;
 
-   // TODO: move this to a utility function: it may be useful
-   // remove any illegal characters from name...
-   /*
-   for (i = 0; i < length; i++)
-   {
-      if ((c_name[i] <= ' ') || (c_name[i] > '~') ||
-          (c_name[i] == '"'))
-      {
-         for (j = i; j < length; j++)  // shuffle chars left (and null)
-            c_name[j] = c_name[j+1];
-         length--;
-      }               
-   }
-   */
+	// TODO: move this to a utility function: it may be useful
+	// remove any illegal characters from name...
+	/*
+	for (i = 0; i < length; i++)
+	{
+		if ((c_name[i] <= ' ') || (c_name[i] > '~') || (c_name[i] == '"'))
+		{
+			for (j = i; j < length; j++)  // shuffle chars left (and null)
+				c_name[j] = c_name[j+1];
+			length--;
+		}
+	}
+	*/
 
-   BotEnt = CREATE_FAKE_CLIENT( pBotData[iIndex].szName );
+	edict_t *pBotEdict = CREATE_FAKE_CLIENT( pBotData[iIndex].szName );
 
-   if (FNullEnt( BotEnt ))
-   {
-      if (pPlayer)
-	  {
-         ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Max. Players reached.  Can't create bot!\n");
-	  }
-   }
+	if( FNullEnt( pBotEdict ) )
+	{
+		if( pPlayer )
+		{
+			ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Cannot create bot - player limit reached\n");
+		}
+	}
    else
    {
       char ptr[128];  // allocate space for message from ClientConnect
@@ -632,12 +610,12 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
 
 	  // Make sure that when creating new bot, the previous one private data is freed
-	  if (BotEnt->pvPrivateData != NULL)
+	  if (pBotEdict->pvPrivateData != NULL)
 	  {
-		  FREE_PRIVATE(BotEnt);
+		  FREE_PRIVATE(pBotEdict);
 	  }
-	  BotEnt->pvPrivateData = NULL;
-	  BotEnt->v.frags = 0;
+	  pBotEdict->pvPrivateData = NULL;
+	  pBotEdict->v.frags = 0;
 
       index = 0;
 	  while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
@@ -654,22 +632,23 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       // create the player entity by calling MOD's player function
       // (from LINK_ENTITY_TO_CLASS for player object)
 	  if( g_bIsMMPlugin )
-		  CALL_GAME_ENTITY( PLID, "player", VARS(BotEnt) );
+		  CALL_GAME_ENTITY( PLID, "player", VARS(pBotEdict) );
 	  else
-		  player( VARS(BotEnt) );
+		  player( VARS(pBotEdict) );
 
-      infobuffer = GET_INFOBUFFER( BotEnt );
-      clientIndex = ENTINDEX( BotEnt );
+      infobuffer = GET_INFOBUFFER( pBotEdict );
+      clientIndex = ENTINDEX( pBotEdict );
 
       if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
 	  {
-		  char color[4];
+		  char szColour[4];
+
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szModel );
-		  // TODO: these might only work for Half-Life and Opposing Force?
-		  sprintf(color, "%d", RANDOM_LONG(0, 255));
-		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "topcolor", color );
-		  sprintf(color, "%d", RANDOM_LONG(0, 255));
-		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "bottomcolor", color );
+		  // the engine supports this but not all modes have customisable player models
+		  sprintf( szColour, "%d", RANDOM_LONG(0, 255) );
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "topcolor", szColour );
+		  sprintf( szColour, "%d", RANDOM_LONG(0, 255) );
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "bottomcolor", szColour );
 	  }
       else // other mods
 	  {
@@ -691,14 +670,14 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
          SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "ah", "1");
       }
 
-      MDLL_ClientConnect( BotEnt, pBotData[iIndex].szName, "127.0.0.1", ptr );
+      MDLL_ClientConnect( pBotEdict, pBotData[iIndex].szName, "127.0.0.1", ptr );
 
-	  NewActiveClient( BotEnt );
+	  NewActiveClient( pBotEdict );
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
-	  MDLL_ClientPutInServer( BotEnt );
+	  MDLL_ClientPutInServer( pBotEdict );
 
-      BotEnt->v.flags |= FL_FAKECLIENT;
+      pBotEdict->v.flags |= FL_FAKECLIENT;
 
       // initialize all the variables for this bot...
 
@@ -722,7 +701,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		  strcpy(pBot->skin, "");
 	  }
 
-		pBot->pEdict = BotEnt;
+		pBot->pEdict = pBotEdict;
 
 		pBot->not_started = 1;  // hasn't joined game yet
 
@@ -746,10 +725,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 		pBot->bShouldInit = FALSE;  // don't need to initialize yet
 
-		BotEnt->v.idealpitch = BotEnt->v.v_angle.x;
-		BotEnt->v.ideal_yaw = BotEnt->v.v_angle.y;
-		BotEnt->v.pitch_speed = BOT_PITCH_SPEED;
-		BotEnt->v.yaw_speed = BOT_YAW_SPEED;
+		pBotEdict->v.idealpitch = pBotEdict->v.v_angle.x;
+		pBotEdict->v.ideal_yaw = pBotEdict->v.v_angle.y;
+		pBotEdict->v.pitch_speed = BOT_PITCH_SPEED;
+		pBotEdict->v.yaw_speed = BOT_YAW_SPEED;
 
 		pBot->idle_angle = 0.0;
 		pBot->idle_angle_time = 0.0;
