@@ -119,12 +119,8 @@ char *show_menu_1 =
    {"Waypoint Tags\n\n1. Team Specific\n2. Wait for Lift\n3. Door\n4. Sniper Spot\n5. More..."};
 char *show_menu_2 =
    {"Waypoint Tags\n\n1. Team 1\n2. Team 2\n3. Team 3\n4. Team 4\n5. CANCEL"};
-char *show_menu_2_flf =
-   {"Waypoint Tags\n\n1. Attackers\n2. Defenders\n\n5. CANCEL"};
 char *show_menu_3 =
    {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n\n5. CANCEL"};
-char *show_menu_3_flf =
-   {"Waypoint Tags\n\n1. Capture Point\n2. Defend Point\n3. Prone\n\n5. CANCEL"};
 
 void GameDLLInit( void )
 {
