@@ -639,18 +639,18 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       infobuffer = GET_INFOBUFFER( pBotEdict );
       clientIndex = ENTINDEX( pBotEdict );
 
-      if ((mod_id == VALVE_DLL) || (mod_id == GEARBOX_DLL) || (mod_id == REWOLF_DLL) || (mod_id == HUNGER_DLL))
+      if (pGame->CanChoosePlayerModel())
 	  {
 		  char szColour[4];
 
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szModel );
-		  // the engine supports this but not all modes have customisable player models
+		  // the engine supports this but not all modes have customisable player models - set it anyway
 		  sprintf( szColour, "%d", RANDOM_LONG(0, 255) );
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "topcolor", szColour );
 		  sprintf( szColour, "%d", RANDOM_LONG(0, 255) );
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "bottomcolor", szColour );
 	  }
-      else // other mods
+      else
 	  {
 			// TODO: is this even needed?
 			SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );

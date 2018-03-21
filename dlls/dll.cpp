@@ -110,17 +110,14 @@ cvar_t bot_use_organic = {"bot_use_organic", "1"};
 cvar_t bot_use_grenade = {"bot_use_grenade", "1"};
 cvar_t bot_use_chemical = {"bot_use_chemical", "1"};
 
-cvar_t *developer;
+cvar_t *developer = nullptr;
 
 // a fresh install of Natural Selection 3.2 will spam the console about the non-existence of this cvar
 cvar_t sv_airmove = {"sv_airmove", "0"};
 
-char *show_menu_1 =
-   {"Waypoint Tags\n\n1. Team Specific\n2. Wait for Lift\n3. Door\n4. Sniper Spot\n5. More..."};
-char *show_menu_2 =
-   {"Waypoint Tags\n\n1. Team 1\n2. Team 2\n3. Team 3\n4. Team 4\n5. CANCEL"};
-char *show_menu_3 =
-   {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n\n5. CANCEL"};
+char *show_menu_1 = {"Waypoint Tags\n\n1. Team Specific\n2. Wait for Lift\n3. Door\n4. Sniper Spot\n5. More..."};
+char *show_menu_2 = {"Waypoint Tags\n\n1. Team 1\n2. Team 2\n3. Team 3\n4. Team 4\n5. CANCEL"};
+char *show_menu_3 = {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n\n5. CANCEL"};
 
 void GameDLLInit( void )
 {

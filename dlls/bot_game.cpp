@@ -58,3 +58,8 @@ bool Game::IsValidEnemy( edict_t *pEdict )
 {
 	return IsValidEntity( pEdict );
 }
+
+bool Game::CanChoosePlayerModel()
+{
+	return true;
+}
