@@ -55,7 +55,7 @@ symbols:
 
 # build sandbot.so
 sandbot.so: ${OBJ}
-	${CPP} -m32 -fPIC -shared -o $@ ${OBJ} -ldl
+	${CPP} -m32 -fPIC -shared -o $@ ${OBJ}
 	-cp $@ ../symbols/
 	-cp $@ ../sandbot/half-life/valve/dlls/
 	-cp $@ ../sandbot/half-life/gearbox/dlls/
