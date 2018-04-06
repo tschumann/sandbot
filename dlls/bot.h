@@ -822,6 +822,7 @@ public:
 	virtual bool IsCTF();
 	virtual unsigned int BotsOnTeam( int team );
 	virtual bool IsValidEnemy( edict_t *pEdict );
+	virtual bool CanChoosePlayerModel();
 };
 
 class GearboxGame : public Game
@@ -837,6 +838,11 @@ public:
 		extern edict_t *pent_info_ctfdetect;
 		return pent_info_ctfdetect != NULL;
 	}
+
+	virtual bool CanChoosePlayerModel()
+	{
+		return !this->IsCTF();
+	}
 };
 
 class DecayGame : public Game
@@ -845,6 +851,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return true;
+	}
+
+	virtual bool CanChoosePlayerModel()
+	{
+		return false;
 	}
 };
 
@@ -855,6 +866,11 @@ public:
 	{
 		return true;
 	}
+
+	virtual bool CanChoosePlayerModel()
+	{
+		return false;
+	}
 };
 
 class DODGame : public Game
@@ -863,6 +879,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return true;
+	}
+
+	virtual bool CanChoosePlayerModel()
+	{
+		return false;
 	}
 };
 
@@ -873,6 +894,11 @@ public:
 	{
 		return true;
 	}
+
+	virtual bool CanChoosePlayerModel()
+	{
+		return false;
+	}
 };
 
 class NSGame : public Game
@@ -881,6 +907,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return true;
+	}
+
+	virtual bool CanChoosePlayerModel()
+	{
+		return false;
 	}
 
 	bool IsClassic()
