@@ -473,7 +473,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	// give the engine functions to the other DLL...
 	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))( pengfuncsFromEngine, pGlobals );
 
-	LoadExtaExports();
+	LoadExtraExports();
 
 	// finished, interfacing from gamedll to engine complete
 	return;

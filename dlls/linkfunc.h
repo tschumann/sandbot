@@ -11,7 +11,7 @@
 
 #include "archtypes.h"
 
-void LoadExtaExports();
+void LoadExtraExports();
 
 uint32 NameToAddress( const char *pName );
 const char *AddressToName(uint32 function);

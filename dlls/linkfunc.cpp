@@ -61,7 +61,7 @@ DWORD *pFunctionAddresses;
 DWORD *pNameAddresses;
 
 // https://blog.kowalczyk.info/articles/pefileformat.html has a lot of useful information
-void LoadExtaExports()
+void LoadExtraExports()
 {
 	IMAGE_DOS_HEADER sDOSHeader;
 	LONG iNTSignature;
@@ -228,6 +228,11 @@ const char *AddressToName(uint32 function)
 #endif // WIN32
 
 #ifdef __linux__
+void LoadExtraExports()
+{
+	//
+}
+
 uint32 NameToAddress(const char *pName)
 {
 	uint32 iAddress = 0;
