@@ -278,7 +278,7 @@ struct bot_player_t
 {
 	char szName[32];
 	char szModel[16];
-	BOOL bIsUsed;
+	bool bIsUsed;
 };
 
 void NewActiveClient( edict_t *pEntity );

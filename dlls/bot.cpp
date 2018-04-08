@@ -559,20 +559,17 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 	int iIndex = RANDOM_LONG( 0, 31 );
 
-	// find an unused bot slot
-	while( pBotData[iIndex].bIsUsed == TRUE )
+	// find an unused bot data slot
+	while( pBotData[iIndex].bIsUsed == true )
 	{
 		iIndex++;
 
 		// loop around
-		if( iIndex == 32 )
+		if( iIndex == MAX_PLAYERS )
 		{
 			iIndex = 0;
 		}
 	}
-
-	// mark the bit as used
-	pBotData[iIndex].bIsUsed = true;
 
 	// TODO: move this to a utility function: it may be useful
 	// remove any illegal characters from name...
@@ -596,6 +593,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		{
 			ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Cannot create bot - player limit reached\n");
 		}
+
+		return;
 	}
    else
    {
@@ -639,6 +638,8 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       infobuffer = GET_INFOBUFFER( pBotEdict );
       clientIndex = ENTINDEX( pBotEdict );
 
+	  ALERT( at_console, "Using bot data %d for client %d\n", iIndex, clientIndex );
+
       if (pGame->CanChoosePlayerModel())
 	  {
 		  char szColour[4];
@@ -681,25 +682,27 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
       // initialize all the variables for this bot...
 
-      pBot = pBots[index];
+		pBot = pBots[index];
+		pBot->index = clientIndex;
 
-	  pBot->index = clientIndex;
+		// mark the bot data slot as used
+		pBotData[iIndex].bIsUsed = true;
+		// tie this bot back to the bot data slot it's using
+		pBot->iBotDataIndex = iIndex;
+		pBot->is_used = TRUE;
+		pBot->respawn_state = RESPAWN_IDLE;
+		pBot->create_time = gpGlobals->time;
+		pBot->name[0] = 0;  // name not set by server yet
+		pBot->bot_money = 0;
 
-      pBot->is_used = TRUE;
-	  pBot->iBotDataIndex = iIndex;
-      pBot->respawn_state = RESPAWN_IDLE;
-      pBot->create_time = gpGlobals->time;
-      pBot->name[0] = 0;  // name not set by server yet
-      pBot->bot_money = 0;
-
-	  if (pBotData[iIndex].szModel)
-	  {
-		strcpy(pBot->skin, pBotData[iIndex].szModel);
-	  }
-	  else
-	  {
-		  strcpy(pBot->skin, "");
-	  }
+		if( pBotData[iIndex].szModel )
+		{
+			strcpy( pBot->skin, pBotData[iIndex].szModel );
+		}
+		else
+		{
+			strcpy( pBot->skin, "" );
+		}
 
 		pBot->pEdict = pBotEdict;
 

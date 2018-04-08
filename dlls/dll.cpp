@@ -548,18 +548,25 @@ void ClientDisconnect( edict_t *pEntity )
 
 	int i = 0;
 	while( (i < MAX_PLAYERS) && (clients[i] != pEntity) )
+	{
 		i++;
+	}
 
 	if( i < MAX_PLAYERS )
+	{
 		clients[i] = NULL;
+	}
 
 	for( i = 0; i < MAX_PLAYERS; i++ )
 	{
 		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
 		{
 			pBots[i]->is_used = false;
+			// if the bot used a bot data slot
 			if( pBots[i]->iBotDataIndex != bot_t::BOTDATA_INDEX_UNSET )
 			{
+				 ALERT( at_console, "Freeing bot data %d for client %d\n", pBots[i]->iBotDataIndex, pBots[i]->index );
+				// free it too
 				pBotData[pBots[i]->iBotDataIndex].bIsUsed = false;
 			}
 			break;
@@ -1343,8 +1350,11 @@ void StartFrame( void )
 				if( !IsValidEntity( pBot->pEdict ) )
 				{
 					pBot->is_used = false;
+					// if the bot used a bot data slot
 					if( pBot->iBotDataIndex != bot_t::BOTDATA_INDEX_UNSET )
 					{
+						ALERT( at_console, "Freeing bot data %d for client %d\n", pBots[i]->iBotDataIndex, pBot->index );
+						// free it too
 						pBotData[pBot->iBotDataIndex].bIsUsed = false;
 					}
 				}
