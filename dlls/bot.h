@@ -17,6 +17,20 @@
 using std::vector;
 using std::min;
 
+// use this to block stuff that shouldn't be allowed in release builds (like dumping information about arbitray players)
+#if _DEBUG
+#define DEBUG_CODE 1
+#else
+#define DEBUG_CODE 0
+#endif // _DEBUG
+
+extern cvar_t bot_log_level;
+
+const int iBotLogLevelDebug = 2;
+const int iBotLogLevelTrace = 3;
+
+const int iLogBufferSize = 1024;
+
 // stuff for Win32 vs. Linux builds
 // TODO: are far pointers still a thing?
 
@@ -47,15 +61,7 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 
 #endif
 
-
-#if _DEBUG
-#define DEBUG_CODE 1
-#else
-#define DEBUG_CODE 0
-#endif // _DEBUG
-
 extern bool g_bIsMMPlugin;
-
 
 // define constants used to identify the MOD we are playing...
 

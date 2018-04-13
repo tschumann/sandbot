@@ -44,6 +44,7 @@ v0.4.2 (??/??/??)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
 - [All] Bots will now be removed if the quota exceeds the bot_count cvar.
+- [All] Enabled debug logging in release builds with bot_log_level cvar.
 - [Windows] Sandbot no longer breaks level transitions in single player (thanks shardthefox200@ModDB).
 - [Opposing Force] Made bots less likely to get distracted by enemies when they have the flag in CTF.
 
@@ -134,6 +135,7 @@ Valve, for the Half-Life SDK and the Valve ERC.
 Todd Aspeotis, for teaching me C++.
 Jeffrey 'botman' Broome for his bot code and other cool stuff.
 Sam 'solokiller' VanHeer for his knowledge of the GoldSource engine.
+Bascu for helping to resolve issues with libstdc++ on Linux.
 Maleficus for setting a high standard of how good bots can be.
 ModDB for being a good host.
 Bots United for their support.

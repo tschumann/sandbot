@@ -672,20 +672,16 @@ void UTIL_LogPrintf( char *fmt, ... )
 //=========================================================
 void UTIL_LogDPrintf( char *fmt, ... )
 {
-	extern cvar_t *developer;
+	if( bot_log_level.value >= iBotLogLevelDebug )
+	{
+		va_list argptr;
+		static char string[iLogBufferSize];
 
-	if (DEBUG_CODE /*developer->value*/)
-    {
-		va_list        argptr;
-		static char    string[1024];
+		va_start( argptr, fmt );
+		vsprintf( string, fmt, argptr );
+		va_end( argptr );
 
-		va_start ( argptr, fmt );
-		vsprintf ( string, fmt, argptr );
-		va_end   ( argptr );
-
-		// Print to server console 
-		// TODO: revert back to at_logged and get it working
-		ALERT( at_console, "%s", string );
+		ALERT( at_console, "Debug: %s", string );
 	}
 }
 
@@ -695,18 +691,16 @@ void UTIL_LogDPrintf( char *fmt, ... )
 //=========================================================
 void UTIL_LogTPrintf( char *fmt, ... )
 {
-	if( DEBUG_CODE && 0 )
+	if( bot_log_level.value >= iBotLogLevelTrace )
 	{
 		va_list argptr;
-		static char string[1024];
+		static char string[iLogBufferSize];
 
 		va_start( argptr, fmt );
 		vsprintf( string, fmt, argptr );
 		va_end( argptr );
 
-		// Print to server console 
-		// TODO: revert back to at_logged and get it working
-		ALERT( at_console, "%s", string );
+		ALERT( at_console, "Trace: %s", string );
 	}
 }
 

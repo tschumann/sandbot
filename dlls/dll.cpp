@@ -93,7 +93,13 @@ int msecnum;
 float msecdel;
 float msecval;
 
+cvar_t bot_log_level = { "bot_log_level", "1" };
+
+#ifdef _DEBUG
 cvar_t bot_skill = {"bot_skill", "3"};
+#else
+cvar_t bot_skill = {"bot_skill", "1"};
+#endif
 
 cvar_t bot_count = {"bot_count", "11"};
 cvar_t bot_shoot = {"bot_shoot", "1"};
@@ -122,6 +128,7 @@ char *show_menu_3 = {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n
 void GameDLLInit( void )
 {
 	CVAR_REGISTER(&sv_airmove);
+	CVAR_REGISTER(&bot_log_level);
 	CVAR_REGISTER(&bot_skill);
 	CVAR_REGISTER(&bot_count);
 	CVAR_REGISTER(&bot_shoot);
@@ -1083,10 +1090,12 @@ void ClientCommand( edict_t *pEntity )
 
 void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 {
-	UTIL_LogDPrintf("ClientUserInfoChanged: pEntity=%x infobuffer=%s\n", pEntity, infobuffer);
+	UTIL_LogTPrintf( "ClientUserInfoChanged: pEntity=%x infobuffer=%s\n", pEntity, infobuffer );
 
 	if( g_bIsMMPlugin )
+	{
 		RETURN_META( MRES_IGNORED );
+	}
 
 	(*other_gFunctionTable.pfnClientUserInfoChanged)(pEntity, infobuffer);
 }
@@ -1458,10 +1467,12 @@ const char *GetGameDescription( void )
 
 void PlayerCustomization( edict_t *pEntity, customization_t *pCust )
 {
-	UTIL_LogDPrintf("PlayerCustomization: pEntity=%x pCust=%x\n", pEntity, pCust);
+	UTIL_LogTPrintf( "PlayerCustomization: pEntity=%x pCust=%x\n", pEntity, pCust );
 
 	if( g_bIsMMPlugin )
+	{
 		RETURN_META( MRES_IGNORED );
+	}
 
 	(*other_gFunctionTable.pfnPlayerCustomization)(pEntity, pCust);
 }
@@ -1618,10 +1629,12 @@ void CreateInstancedBaselines( void )
 
 int InconsistentFile( const edict_t *player, const char *filename, char *disconnect_message )
 {
-	UTIL_LogDPrintf("InconsistentFile: player=%x filename=%s disconnect_message=%s\n", player, filename, disconnect_message);
+	UTIL_LogTPrintf( "InconsistentFile: player=%x filename=%s disconnect_message=%s\n", player, filename, disconnect_message );
 
 	if( g_bIsMMPlugin )
+	{
 		RETURN_META_VALUE( MRES_IGNORED, 0 );
+	}
 
 	return (*other_gFunctionTable.pfnInconsistentFile)(player, filename, disconnect_message);
 }
