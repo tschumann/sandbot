@@ -1010,7 +1010,7 @@ bool NSBot::ShouldBuildResourceTower()
 	{
 		return true;
 	}
-	else if( this->IsAlien() && this->IsGorge() && this->ShouldBuildResourceTower() )
+	else if( this->IsAlien() && this->IsGorge() && this->bShouldBuildResourceNode )
 	{
 		return true;
 	}
