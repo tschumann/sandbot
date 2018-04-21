@@ -93,7 +93,7 @@ int msecnum;
 float msecdel;
 float msecval;
 
-cvar_t bot_log_level = { "bot_log_level", "1" };
+cvar_t bot_log_level = {"bot_log_level", "1"};
 
 #ifdef _DEBUG
 cvar_t bot_skill = {"bot_skill", "3"};
@@ -104,17 +104,17 @@ cvar_t bot_skill = {"bot_skill", "1"};
 cvar_t bot_count = {"bot_count", "11"};
 cvar_t bot_shoot = {"bot_shoot", "1"};
 
-cvar_t bot_use_melee = {"bot_use_melee", "1"};
-cvar_t bot_use_pistol = {"bot_use_pistol", "1"};
-cvar_t bot_use_shotgun = {"bot_use_shotgun", "1"};
-cvar_t bot_use_machinegun = {"bot_use_machinegun", "1"};
-cvar_t bot_use_rifle = {"bot_use_rifle", "1"};
-cvar_t bot_use_sniper = {"bot_use_sniper", "1"};
-cvar_t bot_use_rocketlauncher = {"bot_use_rocketlauncher", "1"};
-cvar_t bot_use_energy = {"bot_use_energy", "1"};
-cvar_t bot_use_organic = {"bot_use_organic", "1"};
-cvar_t bot_use_grenade = {"bot_use_grenade", "1"};
-cvar_t bot_use_chemical = {"bot_use_chemical", "1"};
+cvar_t bot_use_melee = {"bot_use_melee", "1", 0, 1.0f};
+cvar_t bot_use_pistol = {"bot_use_pistol", "1", 0, 1.0f};
+cvar_t bot_use_shotgun = {"bot_use_shotgun", "1", 0, 1.0f};
+cvar_t bot_use_machinegun = {"bot_use_machinegun", "1", 0, 1.0f};
+cvar_t bot_use_rifle = {"bot_use_rifle", "1", 0, 1.0f};
+cvar_t bot_use_sniper = {"bot_use_sniper", "1", 0, 1.0f};
+cvar_t bot_use_rocketlauncher = {"bot_use_rocketlauncher", "1", 0, 1.0f};
+cvar_t bot_use_energy = {"bot_use_energy", "1", 0, 1.0f};
+cvar_t bot_use_organic = {"bot_use_organic", "1", 0, 1.0f};
+cvar_t bot_use_grenade = {"bot_use_grenade", "1", 0, 1.0f};
+cvar_t bot_use_chemical = {"bot_use_chemical", "1", 0, 1.0f};
 
 cvar_t *developer = nullptr;
 
@@ -572,7 +572,7 @@ void ClientDisconnect( edict_t *pEntity )
 			// if the bot used a bot data slot
 			if( pBots[i]->iBotDataIndex != bot_t::BOTDATA_INDEX_UNSET )
 			{
-				 ALERT( at_console, "Freeing bot data %d for client %d\n", pBots[i]->iBotDataIndex, pBots[i]->index );
+				 ALERT( at_console, "Freeing bot data %d for client %d in ClientDisconnect\n", pBots[i]->iBotDataIndex, pBots[i]->index );
 				// free it too
 				pBotData[pBots[i]->iBotDataIndex].bIsUsed = false;
 			}
@@ -1356,13 +1356,13 @@ void StartFrame( void )
 
 			if( pBot && pBotData )
 			{
-				if( !IsValidEntity( pBot->pEdict ) )
+				if( !IsValidEntity( pBot->pEdict ) && pBot->is_used )
 				{
 					pBot->is_used = false;
 					// if the bot used a bot data slot
 					if( pBot->iBotDataIndex != bot_t::BOTDATA_INDEX_UNSET )
 					{
-						ALERT( at_console, "Freeing bot data %d for client %d\n", pBots[i]->iBotDataIndex, pBot->index );
+						ALERT( at_console, "Freeing bot data %d for client %d in StartFrame\n", pBots[i]->iBotDataIndex, pBot->index );
 						// free it too
 						pBotData[pBot->iBotDataIndex].bIsUsed = false;
 					}

@@ -288,7 +288,7 @@ struct bot_player_t
 };
 
 void NewActiveClient( edict_t *pEntity );
-void KickBot(int iIndex);
+void KickBot( int iIndex );
 void KickAllBots();
 void CleanupGameAndBots();
 

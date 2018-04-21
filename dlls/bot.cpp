@@ -357,14 +357,15 @@ void KickBot( int iIndex )
 {
 	if( pBots && pBots[iIndex]->is_used )	// is this slot used?
 	{
-		char cmd[40];
+		char szCmd[64];
 
-		sprintf( cmd, "kick \"%s\"\n", pBots[iIndex]->name );
+		sprintf( szCmd, "kick \"%s\"\n", pBots[iIndex]->name );
 
-		pBots[iIndex]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+		pBots[iIndex]->is_used = false;
+		pBotData[pBots[iIndex]->iBotDataIndex].bIsUsed = false;
 
 		// kick the bot using (kick "name")
-		SERVER_COMMAND(cmd);
+		SERVER_COMMAND(szCmd);
 	}
 	else
 	{
@@ -378,13 +379,15 @@ void KickAllBots()
 	{
 		if( pBots && pBots[index]->is_used )	// is this slot used?
 		{
-			char cmd[40];
+			char szCmd[64];
 
-			sprintf( cmd, "kick \"%s\"\n", pBots[index]->name );
+			sprintf( szCmd, "kick \"%s\"\n", pBots[index]->name );
 
-			pBots[index]->respawn_state = RESPAWN_NEED_TO_RESPAWN;
+			pBots[index]->is_used = false;
+			pBotData[pBots[index]->iBotDataIndex].bIsUsed = false;
 
-			SERVER_COMMAND(cmd);	// kick the bot using (kick "name")
+			// kick the bot using (kick "name")
+			SERVER_COMMAND(szCmd);
 		}
 	}
 }

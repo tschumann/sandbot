@@ -944,11 +944,9 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          // the bot is far enough away to use primary fire AND
          // the bot is close enough to the enemy to use primary fire
 
-         if ((primary_percent <= pSelect[select_index].primary_fire_percent) &&
-             ((weapon_defs[iId].iAmmo1 == -1) ||
+         if ((primary_percent <= pSelect[select_index].primary_fire_percent) && ((weapon_defs[iId].iAmmo1 == -1) ||
               (pBot->m_rgAmmo[weapon_defs[iId].iAmmo1] >= pSelect[select_index].min_primary_ammo)) &&
-             (distance >= pSelect[select_index].primary_min_distance) &&
-             (distance <= pSelect[select_index].primary_max_distance))
+             (distance >= pSelect[select_index].primary_min_distance) && (distance <= pSelect[select_index].primary_max_distance))
          {
             use_primary = TRUE;
          }
@@ -957,10 +955,8 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
          // the bot is far enough away to use secondary fire AND
          // the bot is close enough to the enemy to use secondary fire
 
-         else if (((weapon_defs[iId].iAmmo2 == -1) ||
-                   (pBot->m_rgAmmo[weapon_defs[iId].iAmmo2] >= pSelect[select_index].min_secondary_ammo)) &&
-                  (distance >= pSelect[select_index].secondary_min_distance) &&
-                  (distance <= pSelect[select_index].secondary_max_distance))
+         else if (((weapon_defs[iId].iAmmo2 == -1) || (pBot->m_rgAmmo[weapon_defs[iId].iAmmo2] >= pSelect[select_index].min_secondary_ammo)) &&
+                  (distance >= pSelect[select_index].secondary_min_distance) && (distance <= pSelect[select_index].secondary_max_distance))
          {
             use_secondary = TRUE;
          }

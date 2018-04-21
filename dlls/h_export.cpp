@@ -488,6 +488,7 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
       return FALSE;
 
    memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
+
    if( !g_bIsMMPlugin )
    {
 	   // pass other DLLs engine callbacks to function table...
