@@ -148,27 +148,35 @@ void GameDLLInit( void )
 	switch( mod_id )
 	{
 	case VALVE_DLL:
+		bot_count.string = "11";
 		bot_count.value = 11;
 		break;
 	case GEARBOX_DLL:
+		bot_count.string = "11";
 		bot_count.value = 11;
 		break;
 	case DOD_DLL:
+		bot_count.string = "15";
 		bot_count.value = 15;
 		break;
 	case TFC_DLL:
+		bot_count.string = "15";
 		bot_count.value = 15;
 		break;
 	case REWOLF_DLL:
+		bot_count.string = "11";
 		bot_count.value = 11;
 		break;
 	case NS_DLL:
+		bot_count.string = "15";
 		bot_count.value = 15;
 		break;
 	case HUNGER_DLL:
+		bot_count.string = "11";
 		bot_count.value = 11;
 		break;
 	case SHIP_DLL:
+		bot_count.string = "7";
 		bot_count.value = 7;
 		break;
 	}
