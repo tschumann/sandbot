@@ -34,8 +34,8 @@ static META_FUNCTIONS gMetaFunctionTable = {
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
 	"Sandbot",		// name
-	"0.4.1.1",		// version
-	"2017/12/26",	// date
+	"0.4.2",		// version
+	"2018/04/21",	// date
 	"Team Sandpit",	// author
 	"http://www.teamsandpit.com/",	// url
 	"SANDBOT",	// logtag, all caps please
