@@ -1284,14 +1284,7 @@ uint32 pfnFunctionFromName( const char *pName )
 
 	if( g_bIsMMPlugin )
 	{
-		if( iAddress )
-		{
-			RETURN_META_VALUE( MRES_SUPERCEDE, iAddress );
-		}
-		else
-		{
-			RETURN_META_VALUE( MRES_IGNORED, 0 );
-		}
+		RETURN_META_VALUE( MRES_SUPERCEDE, iAddress );
 	}
 
 	if( iAddress )
@@ -1310,14 +1303,7 @@ const char *pfnNameForFunction( uint32 function )
 
 	if( g_bIsMMPlugin )
 	{
-		if( szName )
-		{
-			RETURN_META_VALUE( MRES_SUPERCEDE, szName );
-		}
-		else
-		{
-			RETURN_META_VALUE( MRES_IGNORED, 0 );
-		}
+		RETURN_META_VALUE( MRES_SUPERCEDE, szName );
 	}
 
 	if( szName )
