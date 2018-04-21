@@ -49,7 +49,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 
 == Changelog ==
 
-v0.4.2 (??/04/18)
+v0.4.2 (21/04/18)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
 - [All] Bots will now be removed if the quota exceeds the bot_count cvar.
