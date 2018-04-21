@@ -56,6 +56,7 @@ v0.4.2 (??/??/??)
 - [All] Enabled debug logging in release builds with bot_log_level cvar.
 - [Windows] Sandbot no longer breaks level transitions in single player (thanks shardthefox200@ModDB).
 - [Opposing Force] Made bots less likely to get distracted by enemies when they have the flag in CTF.
+- [Natural Selection] Fixed bots doing the opposite of what they should when approaching unbuilt resource towers in Classic mode.
 
 v0.4.1.1 (26/12/17)
 - [Linux] Fixed crash in waypoint loading (thanks RoboCop@Bots United and Nubzior@Bots United).

@@ -617,7 +617,7 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 	}
 	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_RESNODE && ((NSGame *)pGame)->IsClassic() )
 	{
-		if( !((NSBot *)pBot)->IsMarine() )
+		if( ((NSBot *)pBot)->IsMarine() )
 		{
 			// get the resource tower nearest this waypoint
 			edict_t *pResourceTower = FindNearest( waypoints[index].origin, "resourcetower", 5.0f );
@@ -628,29 +628,21 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 				return UTIL_IsBuilt( pResourceTower );
 			}
 		}
-		else if( !((NSBot *)pBot)->IsAlien() )
+		else if( ((NSBot *)pBot)->IsAlien() && ((NSBot *)pBot)->IsGorge() )
 		{
-			if( !((NSBot *)pBot)->IsGorge() )
-			{
-				// get the resource tower nearest this waypoint
-				edict_t *pResourceTower = FindNearest( waypoints[index].origin, "alienresourcetower", 5.0f );
+			// get the resource tower nearest this waypoint
+			edict_t *pResourceTower = FindNearest( waypoints[index].origin, "alienresourcetower", 5.0f );
 
-				// if there is a resource tower near this waypoint and it's built, skip it
-				// TODO: if it's damaged heal it?
-				if( pResourceTower && UTIL_IsBuilt( pResourceTower ) )
-				{
-					return false;
-				}
-				// go and build one
-				else
-				{
-					return true;
-				}
-			}
-			// all other classes can ignore it
-			else
+			// if there is a resource tower near this waypoint and it's built, skip it
+			// TODO: if it's damaged heal it?
+			if( pResourceTower && UTIL_IsBuilt( pResourceTower ) )
 			{
 				return false;
+			}
+			// go and build one
+			else
+			{
+				return true;
 			}
 		}
 	}
