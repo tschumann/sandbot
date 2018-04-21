@@ -127,24 +127,7 @@ char *show_menu_3 = {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n
 
 void GameDLLInit( void )
 {
-	CVAR_REGISTER(&sv_airmove);
-	CVAR_REGISTER(&bot_log_level);
-	CVAR_REGISTER(&bot_skill);
-	CVAR_REGISTER(&bot_count);
-	CVAR_REGISTER(&bot_shoot);
-
-	CVAR_REGISTER(&bot_use_melee);
-	CVAR_REGISTER(&bot_use_pistol);
-	CVAR_REGISTER(&bot_use_shotgun);
-	CVAR_REGISTER(&bot_use_machinegun);
-	CVAR_REGISTER(&bot_use_rifle);
-	CVAR_REGISTER(&bot_use_sniper);
-	CVAR_REGISTER(&bot_use_rocketlauncher);
-	CVAR_REGISTER(&bot_use_energy);
-	CVAR_REGISTER(&bot_use_organic);
-	CVAR_REGISTER(&bot_use_grenade);
-	CVAR_REGISTER(&bot_use_chemical);
-
+	// do this before CVAR_REGISTER because changing string after registration causes Z_Free: freed a pointer without ZONEID
 	switch( mod_id )
 	{
 	case VALVE_DLL:
@@ -180,6 +163,24 @@ void GameDLLInit( void )
 		bot_count.value = 7;
 		break;
 	}
+
+	CVAR_REGISTER(&sv_airmove);
+	CVAR_REGISTER(&bot_log_level);
+	CVAR_REGISTER(&bot_skill);
+	CVAR_REGISTER(&bot_count);
+	CVAR_REGISTER(&bot_shoot);
+
+	CVAR_REGISTER(&bot_use_melee);
+	CVAR_REGISTER(&bot_use_pistol);
+	CVAR_REGISTER(&bot_use_shotgun);
+	CVAR_REGISTER(&bot_use_machinegun);
+	CVAR_REGISTER(&bot_use_rifle);
+	CVAR_REGISTER(&bot_use_sniper);
+	CVAR_REGISTER(&bot_use_rocketlauncher);
+	CVAR_REGISTER(&bot_use_energy);
+	CVAR_REGISTER(&bot_use_organic);
+	CVAR_REGISTER(&bot_use_grenade);
+	CVAR_REGISTER(&bot_use_chemical);
 
 	developer = CVAR_GET_POINTER("developer");
 
