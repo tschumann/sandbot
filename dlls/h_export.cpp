@@ -539,6 +539,8 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		pBotData = g_shipBots;
 	}
 
+	LoadExtraExports();
+
 	if( g_bIsMMPlugin )
 	{
 		return;
@@ -548,8 +550,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	// give the engine functions to the other DLL...
 	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))( pengfuncsFromEngine, pGlobals );
-
-	LoadExtraExports();
 
 	// finished, interfacing from gamedll to engine complete
 	return;
