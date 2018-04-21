@@ -49,6 +49,9 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 
 == Changelog ==
 
+v0.4.3 (??/??/??)
+- [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
+
 v0.4.2 (21/04/18)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
 - [All] Fixed bots attacking bots that had been kicked.
