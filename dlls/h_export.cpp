@@ -251,14 +251,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = VALVE_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "valve/dlls/hl.dll";
+#else
+		szLibraryPath = "valve/dlls/hl.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			szLibraryPath = "valve/dlls/hl.dll";
-			h_Library = LoadLibrary( szLibraryPath ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			szLibraryPath = "valve/dlls/hl.so";
-			h_Library = dlopen( szLibraryPath, RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -266,12 +270,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = BSHIFT_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "bshift/dlls/hl.dll";
+#else
+		szLibraryPath = "bshift/dlls/bshift.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "bshift/dlls/hl.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "bshift/dlls/bshift.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -279,12 +289,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = GEARBOX_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "gearbox/dlls/opfor.dll";
+#else
+		szLibraryPath = "gearbox/dlls/opfor.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "gearbox/dlls/opfor.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "gearbox/dlls/opfor.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -292,12 +308,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = DECAY_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "decay/dlls/decay.dll";
+#else
+		szLibraryPath = "decay/dlls/decay_i386.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "decay/dlls/decay.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "decay/dlls/decay_i386.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -305,12 +327,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = CSTRIKE_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "cstrike/dlls/mp.dll";
+#else
+		szLibraryPath = "cstrike/dlls/cs.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "cstrike/dlls/mp.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "cstrike/dlls/cs.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -318,12 +346,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = CZERO_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "czero/dlls/mp.dll";
+#else
+		szLibraryPath = "czero/dlls/cs.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "czero/dlls/mp.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "czero/dlls/cs.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -331,12 +365,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = CZEROR_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "czeror/dlls/cz.dll";
+#else
+		szLibraryPath = "czeror/dlls/cz.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "czeror/dlls/cz.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "czeror/dlls/cz.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -344,12 +384,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = DOD_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "dod/dlls/dod.dll";
+#else
+		szLibraryPath = "dod/dlls/dod.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "dod/dlls/dod.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "dod/dlls/dod.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -357,12 +403,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = TFC_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "tfc/dlls/tfc.dll";
+#else
+		szLibraryPath = "tfc/dlls/tfc.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "tfc/dlls/tfc.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "tfc/dlls/tfc.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -370,12 +422,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = REWOLF_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "rewolf/dlls/gunman.dll";
+#else
+		szLibraryPath = nullptr;
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "rewolf/dlls/gunman.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = NULL;
+			h_Library = nullptr;
 #endif
 		}
 	}
@@ -383,12 +441,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = HUNGER_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "hunger/dlls/einar.dll";
+#else
+		szLibraryPath = nullptr;
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "hunger/dlls/einar.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = NULL;
+			h_Library = nullptr;
 #endif
 		}
 	}
@@ -396,12 +460,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = NS_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "ns/dlls/ns.dll";
+#else
+		szLibraryPath = "ns/dlls/ns_i386.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "ns/dlls/ns.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "ns/dlls/ns_i386.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
@@ -409,12 +479,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	{
 		mod_id = SHIP_DLL;
 
+#ifndef __linux__
+		szLibraryPath = "ship/dlls/ship.dll";
+#else
+		szLibraryPath = "ship/dlls/ship_i386.so";
+#endif
+
 		if( !g_bIsMMPlugin )
 		{
 #ifndef __linux__
-			h_Library = LoadLibrary( "ship/dlls/ship.dll" ); // and load the library
+			h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( "ship/dlls/ship_i386.so", RTLD_NOW ); // and load the library
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}
