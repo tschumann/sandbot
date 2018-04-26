@@ -80,7 +80,7 @@ int OpposingForceBot::GetTeam()
 
 bool OpposingForceBot::ShouldSeekEnemy()
 {
-	if( this->bBotHasFlag )
+	if( this->HasFlag() )
 	{
 		// only seek out enemies if health is low
 		return this->GetHealth() < 40;

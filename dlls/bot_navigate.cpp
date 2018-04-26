@@ -709,10 +709,10 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       }
 
       // check if the bot is carrying the flag/card/ball...
-      if (pBot->bBotHasFlag)
+      if( pBot->HasFlag() )
       {
          // find the nearest flag goal waypoint...
-         index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
+         index = WaypointFindNearestGoal( pEdict, pBot->curr_waypoint_index, team, W_FL_FLAG_GOAL );
 
          pBot->waypoint_goal = index;  // goal index or -1
 
@@ -721,7 +721,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	  else
 	  {
 		  // find the nearest flag goal waypoint...
-		  index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
+		  index = WaypointFindNearestGoal( pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType() );
 
 		  pBot->waypoint_goal = index;  // goal index or -1
 	  }
