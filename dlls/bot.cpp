@@ -2119,35 +2119,35 @@ Vector bot_t::GetPointToShootAt()
 
 	switch( this->GetSkill() )
 	{
-	case 0:
+	case 1:
 		// VERY GOOD, same as from CBasePlayer::BodyTarget (in player.h)
 		target = enemyOrigin + this->pBotEnemy->v.view_ofs * RANDOM_FLOAT( 0.5, 1.1 );
 		d_x = 0;  // no offset
 		d_y = 0;
 		d_z = 0;
 		break;
-	case 1:
+	case 2:
 		// GOOD, offset a little for x, y, and z
 		target = enemyOrigin + this->pBotEnemy->v.view_ofs;  // aim for the head (if you can find it)
 		d_x = RANDOM_FLOAT(-5, 5) * fSpread;
 		d_y = RANDOM_FLOAT(-5, 5) * fSpread;
 		d_z = RANDOM_FLOAT(-10, 10) * fSpread;
 		break;
-	case 2:
+	case 3:
 		// FAIR, offset somewhat for x, y, and z
 		target = enemyOrigin;  // aim for the body
 		d_x = RANDOM_FLOAT(-10, 10) * fSpread;
 		d_y = RANDOM_FLOAT(-10, 10) * fSpread;
 		d_z = RANDOM_FLOAT(-18, 18) * fSpread;
 		break;
-	case 3:
+	case 4:
 		// POOR, offset for x, y, and z
 		target = enemyOrigin;  // aim for the body
 		d_x = RANDOM_FLOAT(-20, 20) * fSpread;
 		d_y = RANDOM_FLOAT(-20, 20) * fSpread;
 		d_z = RANDOM_FLOAT(-32, 32) * fSpread;
 		break;
-	case 4:
+	case 5:
 		// BAD, offset lots for x, y, and z
 		target = enemyOrigin;  // aim for the body
 		d_x = RANDOM_FLOAT(-35, 35) * fSpread;

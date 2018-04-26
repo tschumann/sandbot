@@ -95,11 +95,7 @@ float msecval;
 
 cvar_t bot_log_level = {"bot_log_level", "1"};
 
-#ifdef _DEBUG
 cvar_t bot_skill = {"bot_skill", "3"};
-#else
-cvar_t bot_skill = {"bot_skill", "1"};
-#endif
 
 cvar_t bot_count = {"bot_count", "11"};
 cvar_t bot_shoot = {"bot_shoot", "1"};

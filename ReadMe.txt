@@ -16,7 +16,7 @@ MetaMod-P should work across the board but has been found to freeze even without
 addbot		Add a bot to the server
 		In Day of Defeat you can addbot allies or addbot axis
 		In Natural Selection you can addbot alien or addbot marine
-bot_skill [1-5]	Set the bot skill level
+bot_skill [1-5]	Set the bot skill level (1 is highest skill)
 waypoint add	Add a waypoint
 waypoint delete	Delete a waypoint
 waypoint save	Write waypoints to file
@@ -50,6 +50,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 == Changelog ==
 
 v0.4.3 (??/??/??)
+- [All] Fixed bot_skill 5 not working.
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
 
 v0.4.2 (21/04/18)
