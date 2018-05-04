@@ -821,7 +821,6 @@ class Game
 public:
 	virtual ~Game();
 
-	virtual bool IsMultiplayer();
 	virtual int GetMaxPlayers();
 	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();

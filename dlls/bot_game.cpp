@@ -12,11 +12,6 @@ Game::~Game()
 {
 }
 
-bool Game::IsMultiplayer()
-{
-	return gpGlobals->deathmatch > 0.0f;
-}
-
 int Game::GetMaxPlayers()
 {
 	return gpGlobals->maxClients;
@@ -24,7 +19,7 @@ int Game::GetMaxPlayers()
 
 bool Game::CanAddBots()
 {
-	return gpGlobals->deathmatch > 0;
+	return gpGlobals->deathmatch > 0.0f;
 }
 
 bool Game::IsTeamPlay()
