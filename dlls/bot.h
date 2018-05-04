@@ -989,7 +989,6 @@ bool IsAlive( edict_t *pEdict );
 bool IsValidEntity( edict_t *pEdict );
 bool FInViewCone(Vector *pOrigin, edict_t *pEdict);
 bool FVisible( const Vector &vecOrigin, edict_t *pEdict );
-Vector Center(edict_t *pEdict);
 Vector GetGunPosition(edict_t *pEdict);
 void UTIL_SelectItem(edict_t *pEdict, char *item_name);
 Vector VecBModelOrigin(edict_t *pEdict);

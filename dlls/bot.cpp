@@ -20,22 +20,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-
 #ifndef __linux__
 extern HINSTANCE h_Library;
 #else
 extern void *h_Library;
 #endif
 
-
 extern int mod_id;
 extern edict_t *clients[32];
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
-
-extern int max_team_players[4];
-extern int team_class_limits[4];
-extern int max_teams;
 
 static FILE *fp;
 

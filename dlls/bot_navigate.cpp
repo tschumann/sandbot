@@ -16,14 +16,9 @@
 #include "bot_weapons.h"
 #include "waypoint.h"
 
-
 extern int mod_id;
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
-extern int team_allies[4];
-extern FLAG_S flags[MAX_FLAGS];
-extern int num_flags;
-extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 
 float BotChangePitch( bot_t *pBot, float speed )
 {

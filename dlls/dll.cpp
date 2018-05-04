@@ -37,7 +37,6 @@ extern bool g_auto_waypoint;
 extern bool g_path_waypoint;
 extern int num_waypoints;  // number of waypoints currently in use
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
-extern float wp_display_time[MAX_WAYPOINTS];
 extern bot_t **pBots;
 extern bool b_observer_mode;
 extern bot_player_t *pBotData;
