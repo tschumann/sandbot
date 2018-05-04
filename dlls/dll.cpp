@@ -403,9 +403,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
          pent_item_tfgoal = NULL;  // reset for non-flag item_tfgoal's
       }
 
-      if ((strcmp(pkvd->szKeyName, "classname") == 0) &&
-          ((strcmp(pkvd->szValue, "info_player_teamspawn") == 0) ||
-           (strcmp(pkvd->szValue, "i_p_t") == 0)))
+      if ((strcmp(pkvd->szKeyName, "classname") == 0) && ((strcmp(pkvd->szValue, "info_player_teamspawn") == 0) || (strcmp(pkvd->szValue, "i_p_t") == 0)))
       {
          temp_pent = pentKeyvalue;
       }
@@ -1664,20 +1662,20 @@ void FakeClientCommand( edict_t *pFakeClient, const char *fmt, ... )
 	int length, fieldstart, fieldstop, i, index, stringindex = 0;
 
 	if( FNullEnt( pFakeClient ) )
-		return;                   // reliability check
+		return; // reliability check
 
-								  // concatenate all the arguments in one string
+	// concatenate all the arguments in one string
 	va_start( argptr, fmt );
 	_vsnprintf( command, sizeof( command ), fmt, argptr );
 	va_end( argptr );
 
 	if( command == NULL || *command == '\0' )
-		return;                   // if nothing in the command buffer, return
+		return; // if nothing in the command buffer, return
 
 	isFakeClientCommand = true;  // set the "fakeclient command" flag
 	length = strlen( command );    // get the total length of the command string
 
-								   // process all individual commands (separated by a semicolon) one each a time
+	// process all individual commands (separated by a semicolon) one each a time
 	while( stringindex < length )
 	{
 		fieldstart = stringindex; // save field start position (first character)
@@ -1695,7 +1693,7 @@ void FakeClientCommand( edict_t *pFakeClient, const char *fmt, ... )
 		index = 0;
 		fake_arg_count = 0;       // let's now parse that command and count the different arguments
 
-								  // count the number of arguments
+		// count the number of arguments
 		while( index < i - fieldstart )
 		{
 			while( index < i - fieldstart && g_argv[index] == ' ' )
@@ -1739,13 +1737,13 @@ const char *GetArg( const char *command, int arg_number )
 	arg[0] = 0;                  // reset arg
 	length = strlen( command );    // get length of command
 
-								   // while we have not reached end of line
+	// while we have not reached end of line
 	while( index < length && arg_count <= arg_number )
 	{
 		while( index < length && command[index] == ' ' )
 			index++;               // ignore spaces
 
-								   // is this field multi-word between quotes or single word?
+		// is this field multi-word between quotes or single word?
 		if( command[index] == '"' )
 		{
 			index++;               // move one step further to bypass the quote

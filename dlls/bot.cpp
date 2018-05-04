@@ -1695,8 +1695,7 @@ void BotThink( bot_t *pBot )
                      {
                         // if there was a wall on the right over 1/2 a second ago then
                         // 20% of the time randomly turn between 45 and 60 degrees
-                        if ((pBot->f_wall_on_right != 0) && (pBot->f_wall_on_right <= gpGlobals->time - 0.5) &&
-                            (RANDOM_LONG(1, 100) <= 20))
+                        if ((pBot->f_wall_on_right != 0) && (pBot->f_wall_on_right <= gpGlobals->time - 0.5) && (RANDOM_LONG(1, 100) <= 20))
                         {
                            pEdict->v.ideal_yaw -= RANDOM_LONG(45, 60);
             
@@ -1724,8 +1723,7 @@ void BotThink( bot_t *pBot )
 
             // check if bot is on a ladder and has been on a ladder for
             // more than 5 seconds...
-            if ((pEdict->v.movetype == MOVETYPE_FLY) && (pBot->f_start_use_ladder_time > 0.0) &&
-                ((pBot->f_start_use_ladder_time + 5.0) <= gpGlobals->time))
+            if ((pEdict->v.movetype == MOVETYPE_FLY) && (pBot->f_start_use_ladder_time > 0.0) && ((pBot->f_start_use_ladder_time + 5.0) <= gpGlobals->time))
             {
                // bot is stuck on a ladder...
 
@@ -1740,8 +1738,7 @@ void BotThink( bot_t *pBot )
             // check if the bot hasn't moved much since the last location
             // (and NOT on a ladder since ladder stuck handled elsewhere)
             // (don't check for stuck if f_dont_check_stuck in the future)
-            if ((moved_distance <= 1.0) && (pBot->prev_speed >= 1.0) && (pEdict->v.movetype != MOVETYPE_FLY) &&
-                (pBot->f_dont_check_stuck < gpGlobals->time))
+            if ((moved_distance <= 1.0) && (pBot->prev_speed >= 1.0) && (pEdict->v.movetype != MOVETYPE_FLY) && (pBot->f_dont_check_stuck < gpGlobals->time))
             {
                // the bot must be stuck!
                pBot->f_dont_avoid_wall_time = gpGlobals->time + 1.0;
