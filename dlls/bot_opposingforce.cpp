@@ -14,7 +14,7 @@ OpposingForceBot::OpposingForceBot()
 
 void OpposingForceBot::Join()
 {
-	if( pGame->IsCTF() )
+	if( pGame->IsCTF() || pGame->IsCapturePoint() )
 	{
 		ALERT( at_console, "OpposingForce bot joining a CTF game - action %d\n", this->start_action );
 		if (this->start_action == MSG_OPFOR_TEAM_SELECT)

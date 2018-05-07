@@ -32,6 +32,11 @@ bool Game::IsCTF()
 	return false;
 }
 
+bool Game::IsCapturePoint()
+{
+	return false;
+}
+
 unsigned int Game::BotsOnTeam( int team )
 {
 	int iOnTeam = 0;

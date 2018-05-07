@@ -279,7 +279,7 @@ int UTIL_GetTeam(edict_t *pEntity)
 	{
 		return pEntity->v.team;
 	}
-   else if ((mod_id == GEARBOX_DLL) && pGame->IsCTF())
+   else if ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint()))
    {
       // OpFor CTF map...
 

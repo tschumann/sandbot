@@ -778,7 +778,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 // GO FIND WEAPONS HERE!!!
 
 
-         if (mod_id == VALVE_DLL || (mod_id == GEARBOX_DLL && !pGame->IsCTF()) || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
+         if (mod_id == VALVE_DLL || (mod_id == GEARBOX_DLL && !pGame->IsCTF() && !pGame->IsCapturePoint()) || mod_id == REWOLF_DLL || mod_id == HUNGER_DLL)
          {
             if (RANDOM_LONG(1, 100) <= 50)
             {

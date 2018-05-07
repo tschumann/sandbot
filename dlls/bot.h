@@ -825,6 +825,7 @@ public:
 	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();
 	virtual bool IsCTF();
+	virtual bool IsCapturePoint();
 	virtual unsigned int BotsOnTeam( int team );
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual bool CanChoosePlayerModel();
@@ -835,18 +836,24 @@ class GearboxGame : public Game
 public:
 	virtual bool IsTeamPlay()
 	{
-		return this->IsCTF() || Game::IsTeamPlay();
+		return this->IsCTF() || this->IsCapturePoint() || Game::IsTeamPlay();
 	}
 
 	virtual bool IsCTF()
 	{
 		extern edict_t *pent_info_ctfdetect;
-		return pent_info_ctfdetect != NULL;
+
+		return pent_info_ctfdetect != nullptr;
+	}
+
+	virtual bool IsCapturePoint()
+	{
+		return false;
 	}
 
 	virtual bool CanChoosePlayerModel()
 	{
-		return !this->IsCTF();
+		return !this->IsCTF() && !this->IsCapturePoint();
 	}
 };
 

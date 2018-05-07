@@ -711,7 +711,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			pBot->start_action = MSG_CS_IDLE;
 		else if (mod_id == DOD_DLL)
 			pBot->start_action = MSG_DOD_IDLE;
-		else if ((mod_id == GEARBOX_DLL) && pGame->IsCTF())
+		else if ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint()))
 			pBot->start_action = MSG_OPFOR_IDLE;
 		else if (mod_id == NS_DLL && start_action != 0)
 		{
@@ -795,7 +795,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || ((mod_id == GEARBOX_DLL) && pGame->IsCTF()))
+	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint())))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
          {
