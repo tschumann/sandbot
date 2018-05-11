@@ -38,7 +38,7 @@ const int iLogBufferSize = 1024;
 
 typedef int (FAR *GETENTITYAPI)(DLL_FUNCTIONS *, int);
 typedef int (FAR *GETNEWDLLFUNCTIONS)(NEW_DLL_FUNCTIONS *, int *);
-typedef void (__stdcall *GIVEFNPTRSTODLL)(enginefuncs_t *, globalvars_t *);
+typedef void (WINAPI *GIVEFNPTRSTODLL)(enginefuncs_t *, globalvars_t *);
 typedef int (*SERVER_GETBLENDINGINTERFACE) (int, struct sv_blending_interface_s **, struct engine_studio_api_s *, float (*)[3][4], float (*)[MAXSTUDIOBONES][3][4]);
 typedef void (*SV_SAVEGAMECOMMENT)(char *, int);
 

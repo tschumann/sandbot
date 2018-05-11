@@ -13,6 +13,12 @@
       <UniqueIdentifier>{19b67708-588c-4bc6-996f-cd060ecef238}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{e67ce237-3994-4f8d-b729-d8cedb720b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{a08d76e3-428e-42f2-829b-f8c8e9aa6475}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bot.cpp">
@@ -78,6 +84,12 @@
     <ClCompile Include="waypoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stub_engine.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="h_export_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">
@@ -112,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="linkfunc.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stub_engine.h">
+      <Filter>Header Files\test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
