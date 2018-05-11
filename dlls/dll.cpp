@@ -15,19 +15,12 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "waypoint.h"
-
+#include "h_export.h"
 
 #define MENU_NONE  0
 #define MENU_1     1
 #define MENU_2     2
 #define MENU_3     3
-
-
-#ifndef __linux__
-extern HINSTANCE h_Library;
-#else
-extern void *h_Library;
-#endif
 
 extern enginefuncs_t g_engfuncs;
 extern int debug_engine;

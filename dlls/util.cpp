@@ -615,7 +615,7 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 	{
 		strcpy(filename, "tfc/");
 	}
-	else if (mod_id == REWOLF_DLL)
+	else if (pGame->IsGunmanChronicles())
 	{
 		strcpy(filename, "rewolf/");
 	}

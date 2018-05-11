@@ -65,6 +65,12 @@ extern bool g_bIsMMPlugin;
 
 // define constants used to identify the MOD we are playing...
 
+enum eGame
+{
+	VALVE,
+	REWOLF
+};
+
 #define VALVE_DLL		1
 #define BSHIFT_DLL		2
 #define GEARBOX_DLL		3
@@ -829,6 +835,11 @@ public:
 	virtual unsigned int BotsOnTeam( int team );
 	virtual bool IsValidEnemy( edict_t *pEdict );
 	virtual bool CanChoosePlayerModel();
+
+	virtual void SetGame( eGame game );
+	virtual bool IsGunmanChronicles();
+private:
+	eGame m_iModId;
 };
 
 class GearboxGame : public Game

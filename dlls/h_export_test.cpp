@@ -9,8 +9,8 @@ void reset()
 	g_bIsMMPlugin = false;
 }
 
-// need the "C" because something (sandbot.def?) makes the function get exported, regardless of the definition
-extern "C" void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals );
+// now it's happy without the "C": sense - this makes none
+extern void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals );
 
 void testGiveFnptrsToDll()
 {

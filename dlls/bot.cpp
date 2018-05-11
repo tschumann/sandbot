@@ -15,16 +15,11 @@
 #include "bot_func.h"
 #include "waypoint.h"
 #include "bot_weapons.h"
+#include "h_export.h"
 
 #include <cctype>
 #include <sys/types.h>
 #include <sys/stat.h>
-
-#ifndef __linux__
-extern HINSTANCE h_Library;
-#else
-extern void *h_Library;
-#endif
 
 extern int mod_id;
 extern edict_t *clients[32];

@@ -152,7 +152,6 @@
     <ClCompile Include="bot_combat.cpp" />
     <ClCompile Include="bot_cstrike.cpp" />
     <ClCompile Include="bot_dod.cpp" />
-    <ClCompile Include="bot_game.cpp" />
     <ClCompile Include="bot_gunman.cpp" />
     <ClCompile Include="bot_halflife.cpp" />
     <ClCompile Include="bot_hunger.cpp" />
@@ -163,6 +162,7 @@
     <ClCompile Include="bot_tfc.cpp" />
     <ClCompile Include="dll.cpp" />
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="h_export.cpp" />
     <ClCompile Include="h_export_test.cpp" />
     <ClCompile Include="linkfunc.cpp" />
@@ -179,6 +179,8 @@
     <ClInclude Include="cdll_dll.h" />
     <ClInclude Include="enginecallback.h" />
     <ClInclude Include="extdll.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="h_export.h" />
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="stub_engine.h" />
     <ClInclude Include="util.h" />

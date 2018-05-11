@@ -11,6 +11,10 @@
 
 #include "archtypes.h"
 
+extern WORD *pOrdinals;
+extern DWORD *pFunctionAddresses;
+extern DWORD *pNameAddresses;
+
 void LoadExtraExports();
 
 uint32 NameToAddress( const char *pName );

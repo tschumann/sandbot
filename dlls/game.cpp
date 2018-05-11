@@ -63,3 +63,13 @@ bool Game::CanChoosePlayerModel()
 {
 	return true;
 }
+
+void Game::SetGame( eGame game )
+{
+	this->m_iModId = game;
+}
+
+bool Game::IsGunmanChronicles()
+{
+	return this->m_iModId == eGame::REWOLF;
+}

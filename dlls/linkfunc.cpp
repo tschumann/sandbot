@@ -13,12 +13,7 @@
 
 #include "bot.h"
 #include "linkfunc.h"
-
-#if _WIN32
-extern HINSTANCE h_Library;
-#else
-extern void *h_Library;
-#endif
+#include "h_export.h"
 
 #define LINK_ENTITY_TO_FUNC(mapClassName) \
 	extern "C" EXPORT void mapClassName( entvars_t *pev ); \
@@ -55,10 +50,9 @@ int g_iOrdinalCount = 0;
 
 char szFunctionNames[4096][MAX_FUNCTION_NAME_LENGTH];
 
-// TODO: memory leak here - need to find a function that is only called once on shutdown
-WORD *pOrdinals;
-DWORD *pFunctionAddresses;
-DWORD *pNameAddresses;
+WORD *pOrdinals = nullptr;
+DWORD *pFunctionAddresses = nullptr;
+DWORD *pNameAddresses = nullptr;
 
 // https://blog.kowalczyk.info/articles/pefileformat.html has a lot of useful information
 void LoadExtraExports()

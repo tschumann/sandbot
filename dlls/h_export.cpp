@@ -17,6 +17,7 @@
 #include "engine.h"
 #include "dll.h"
 #include "linkfunc.h"
+#include "h_export.h"
 
 #ifndef __linux__
 #include <io.h>
@@ -48,7 +49,6 @@ extern bot_player_t *pBotData;
 
 
 #ifndef __linux__
-
 // required DLL entry point
 BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 {
@@ -58,11 +58,22 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 		{
 			FreeLibrary( h_Library );
 		}
+		if( pOrdinals )
+		{
+			delete[] pOrdinals;
+		}
+		if( pFunctionAddresses )
+		{
+			delete[] pFunctionAddresses;
+		}
+		if( pNameAddresses )
+		{
+			delete[] pNameAddresses;
+		}
 	}
 
 	return TRUE;
 }
-
 #endif
 
 extern "C" EXPORT int GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, int *interfaceVersion )
@@ -676,48 +687,48 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
 
 extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blending_interface_s **ppinterface, struct engine_studio_api_s *pstudio, float (*rotationmatrix)[3][4], float (*bonetransform)[MAXSTUDIOBONES][3][4] )
 {
-   static SERVER_GETBLENDINGINTERFACE other_Server_GetBlendingInterface = NULL;
-   static bool missing = FALSE;
+	static SERVER_GETBLENDINGINTERFACE other_Server_GetBlendingInterface = nullptr;
+	static bool missing = false;
 
-   // if the blending interface has been formerly reported as missing, give up
-   if (missing)
-      return FALSE;
+	// if the blending interface has been formerly reported as missing, give up
+	if (missing)
+		return false;
 
-   // do we NOT know if the blending interface is provided ? if so, look for its address
-   if (other_Server_GetBlendingInterface == NULL)
-      other_Server_GetBlendingInterface = (SERVER_GETBLENDINGINTERFACE)GetProcAddress(h_Library, "Server_GetBlendingInterface");
+	// do we NOT know if the blending interface is provided ? if so, look for its address
+	if (other_Server_GetBlendingInterface == nullptr)
+	other_Server_GetBlendingInterface = (SERVER_GETBLENDINGINTERFACE)GetProcAddress(h_Library, "Server_GetBlendingInterface");
 
-   // have we NOT found it ?
-   if (!other_Server_GetBlendingInterface)
-   {
-      missing = TRUE; // then mark it as missing, no use to look for it again in the future
-      return FALSE; // and give up
-   }
+	// have we NOT found it ?
+	if (!other_Server_GetBlendingInterface)
+	{
+		missing = true; // then mark it as missing, no use to look for it again in the future
+		return false; // and give up
+	}
 
-   // else call the function that provides the blending interface on request
-   return ((other_Server_GetBlendingInterface) (version, ppinterface, pstudio, rotationmatrix, bonetransform));
+	// else call the function that provides the blending interface on request
+	return ((other_Server_GetBlendingInterface) (version, ppinterface, pstudio, rotationmatrix, bonetransform));
 }
 
 extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
 {
-   static SV_SAVEGAMECOMMENT other_SV_SaveGameComment = NULL;
-   static bool missing = FALSE;
+	static SV_SAVEGAMECOMMENT other_SV_SaveGameComment = nullptr;
+	static bool missing = false;
 
-   // if the save game commenet interface has been formerly reported as missing, give up
-   if (missing)
-      return;
+	// if the save game commenet interface has been formerly reported as missing, give up
+	if (missing)
+		return;
 
-   // do we NOT know if the save game commenet interface is provided ? if so, look for its address
-   if (other_SV_SaveGameComment == NULL)
-      other_SV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
+	// do we NOT know if the save game commenet interface is provided ? if so, look for its address
+	if (other_SV_SaveGameComment == nullptr)
+		other_SV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
 
-   // have we NOT found it ?
-   if (!other_SV_SaveGameComment)
-   {
-      missing = TRUE; // then mark it as missing, no use to look for it again in the future
-      return; // and give up
-   }
+	// have we NOT found it ?
+	if (!other_SV_SaveGameComment)
+	{
+		missing = true; // then mark it as missing, no use to look for it again in the future
+		return; // and give up
+	}
 
-   // else call the function that provides the save game commenet interface on request
-   ((other_SV_SaveGameComment) (pBuffer, maxLength));
+	// else call the function that provides the save game commenet interface on request
+	((other_SV_SaveGameComment) (pBuffer, maxLength));
 }
