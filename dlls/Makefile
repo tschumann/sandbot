@@ -20,7 +20,6 @@ OBJ = \
 	bot.o \
 	bot_client.o \
 	bot_combat.o \
-	bot_game.o \
 	bot_navigate.o \
 	bot_halflife.o \
 	bot_opposingforce.o \
@@ -33,6 +32,7 @@ OBJ = \
 	bot_hunger.o \
 	dll.o \
 	engine.o \
+	game.o \
 	h_export.o \
 	linkfunc.o \
 	meta_api.o \

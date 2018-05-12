@@ -11,9 +11,11 @@
 
 #include "archtypes.h"
 
+#ifdef WIN32
 extern WORD *pOrdinals;
 extern DWORD *pFunctionAddresses;
 extern DWORD *pNameAddresses;
+#endif // WIN32
 
 void LoadExtraExports();
 
