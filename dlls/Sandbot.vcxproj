@@ -168,6 +168,7 @@
     <ClCompile Include="linkfunc.cpp" />
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="stub_engine.cpp" />
+    <ClCompile Include="test_run.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="waypoint.cpp" />
   </ItemGroup>
