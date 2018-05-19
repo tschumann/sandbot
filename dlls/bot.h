@@ -853,13 +853,17 @@ public:
 	virtual bool IsCTF()
 	{
 		extern edict_t *pent_info_ctfdetect;
+		extern edict_t *pent_trigger_ctfgeneric;
 
-		return pent_info_ctfdetect != nullptr;
+		// info_ctfdetect will be present in op4cp_ maps too
+		return pent_info_ctfdetect != nullptr && pent_trigger_ctfgeneric == nullptr;
 	}
 
 	virtual bool IsCapturePoint()
 	{
-		return false;
+		extern edict_t *pent_trigger_ctfgeneric;
+
+		return pent_trigger_ctfgeneric != nullptr;
 	}
 
 	virtual bool CanChoosePlayerModel()

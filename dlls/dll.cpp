@@ -58,9 +58,10 @@ int g_menu_state = 0;
 
 char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 int num_teams = 0;
-edict_t *pent_info_tfdetect = NULL;
-edict_t *pent_info_ctfdetect = NULL;
-edict_t *pent_item_tfgoal = NULL;
+edict_t *pent_info_tfdetect = nullptr;
+edict_t *pent_item_tfgoal = nullptr;
+edict_t *pent_info_ctfdetect = nullptr;
+edict_t *pent_trigger_ctfgeneric = nullptr;
 int max_team_players[4];  // for TFC
 int team_class_limits[4];  // for TFC
 int team_allies[4];  // TFC bit mapped allies BLUE, RED, YELLOW, and GREEN
@@ -205,9 +206,9 @@ int DispatchSpawn( edict_t *pent )
 		WaypointInit();
 		WaypointLoad(NULL);
 
-		pent_info_tfdetect = NULL;
-		pent_info_ctfdetect = NULL;
-		pent_item_tfgoal = NULL;
+		pent_info_tfdetect = nullptr;
+		pent_info_ctfdetect = nullptr;
+		pent_item_tfgoal = nullptr;
 
 		for (int index=0; index < 4; index++)
 		{
@@ -353,7 +354,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
          else if (strcmp(pkvd->szKeyName, "team4_allies") == 0)  // GREEN allies
             team_allies[3] = atoi(pkvd->szValue);
       }
-      else if (pent_info_tfdetect == NULL)
+      else if (pent_info_tfdetect == nullptr)
       {
          if ((strcmp(pkvd->szKeyName, "classname") == 0) && (strcmp(pkvd->szValue, "info_tfdetect") == 0))
          {
@@ -375,7 +376,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
             num_flags++;
          }
       }
-      else if (pent_item_tfgoal == NULL)
+      else if (pent_item_tfgoal == nullptr)
       {
          if ((strcmp(pkvd->szKeyName, "classname") == 0) && (strcmp(pkvd->szValue, "item_tfgoal") == 0))
          {
@@ -393,7 +394,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
       }
       else
       {
-         pent_item_tfgoal = NULL;  // reset for non-flag item_tfgoal's
+         pent_item_tfgoal = nullptr;  // reset for non-flag item_tfgoal's
       }
 
       if ((strcmp(pkvd->szKeyName, "classname") == 0) && ((strcmp(pkvd->szValue, "info_player_teamspawn") == 0) || (strcmp(pkvd->szValue, "i_p_t") == 0)))
@@ -411,21 +412,28 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
          }
       }
    }
-   else if (mod_id == GEARBOX_DLL)
-   {
-      if (pent_info_ctfdetect == NULL)
-      {
-         if ((strcmp(pkvd->szKeyName, "classname") == 0) && (strcmp(pkvd->szValue, "info_ctfdetect") == 0))
-         {
-            pent_info_ctfdetect = pentKeyvalue;
-         }
-      }
-   }
+	else if (mod_id == GEARBOX_DLL)
+	{
+		if( pent_info_ctfdetect == nullptr )
+		{
+			if( !strcmp(pkvd->szKeyName, "classname") && !strcmp(pkvd->szValue, "info_ctfdetect") )
+			{
+				pent_info_ctfdetect = pentKeyvalue;
+			}
+		}
+		if( pent_trigger_ctfgeneric == nullptr )
+		{
+			if( !strcmp(pkvd->szKeyName, "classname") && !strcmp(pkvd->szValue, "pent_trigger_ctfgeneric") )
+			{
+				pent_trigger_ctfgeneric = pentKeyvalue;
+			}
+		}
+	}
 
-   if( g_bIsMMPlugin )
-	   RETURN_META( MRES_IGNORED );
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
-   (*other_gFunctionTable.pfnKeyValue)(pentKeyvalue, pkvd);
+	(*other_gFunctionTable.pfnKeyValue)(pentKeyvalue, pkvd);
 }
 
 void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
