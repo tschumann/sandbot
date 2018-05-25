@@ -12,6 +12,28 @@ CStrikeBot::CStrikeBot()
 {
 }
 
+int CStrikeBot::GetTeam()
+{
+	char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( this->pEdict );
+	char szModelName[32];
+
+	strcpy(szModelName, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
+
+	if( !strcmp(szModelName, "terror") || !strcmp(szModelName, "arab") ||! strcmp(szModelName, "leet") ||
+		!strcmp(szModelName, "arctic") || !strcmp(szModelName, "guerilla") )
+	{
+		return 0;
+	}
+	else if( !strcmp(szModelName, "urban") || !strcmp(szModelName, "gsg9") || !strcmp(szModelName, "sas") ||
+		!strcmp(szModelName, "gign") || !strcmp(szModelName, "vip") )
+	{
+		return 1;
+	}
+
+	// unknown team
+	return 0;
+}
+
 void CStrikeBot::Join()
 {
 	if (this->start_action == MSG_CS_TEAM_SELECT)

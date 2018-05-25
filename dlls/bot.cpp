@@ -1972,7 +1972,53 @@ int bot_t::GetHealth()
 
 int bot_t::GetTeam()
 {
-	return this->pEdict->v.team;
+	extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
+	extern int num_teams;
+
+	char *infobuffer;
+	char model_name[32];
+
+	if (team_names[0][0] == 0)
+	{
+		char *pName;
+		char teamlist[MAX_TEAMS*MAX_TEAMNAME_LENGTH];
+		int i;
+
+		num_teams = 0;
+		strcpy(teamlist, CVAR_GET_STRING("mp_teamlist"));
+		pName = teamlist;
+		pName = strtok(pName, ";");
+
+		while (pName != NULL && *pName)
+		{
+			// check that team isn't defined twice
+			for (i=0; i < num_teams; i++)
+			{
+				if (strcmp(pName, team_names[i]) == 0)
+				{
+					break;
+				}
+			}
+
+			if (i == num_teams)
+			{
+				strcpy(team_names[num_teams], pName);
+				num_teams++;
+			}
+			pName = strtok(NULL, ";");
+		}
+	}
+
+	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( this->pEdict );
+	strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
+
+	for (int index=0; index < num_teams; index++)
+	{
+		if (strcmp(model_name, team_names[index]) == 0)
+			return index;
+	}
+
+	return 0;
 }
 
 bool bot_t::HasEnemy()

@@ -560,6 +560,8 @@ class CStrikeBot : public bot_t
 public:
 	CStrikeBot();
 
+	virtual int GetTeam();
+
 	virtual void Join();
 
 	virtual float GetMaxSpeed();
@@ -569,6 +571,8 @@ class DODBot : public bot_t
 {
 public:
 	DODBot();
+
+	virtual int GetTeam();
 
 	virtual void OnSpawn();
 	virtual void Join();
@@ -597,6 +601,8 @@ class TFCBot : public bot_t
 {
 public:
 	TFCBot();
+
+	virtual int GetTeam();
 
 	virtual void Join();
 
@@ -672,6 +678,8 @@ class NSBot : public bot_t
 {
 public:
 	NSBot();
+
+	virtual int GetTeam();
 
 	virtual void OnSpawn();
 	virtual void Join();

@@ -241,117 +241,10 @@ edict_t *DBG_EntOfVars( const entvars_t *pev )
 #endif //DEBUG
 
 
-// return team number 0 through 3 based what MOD uses for team numbers
 int UTIL_GetTeam(edict_t *pEntity)
 {
-   if (mod_id == TFC_DLL)
-   {
-      return pEntity->v.team - 1;  // TFC teams are 1-4 based
-   }
-   else if (mod_id == CSTRIKE_DLL)
-   {
-      char *infobuffer;
-      char model_name[32];
-
-      infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEntity );
-      strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
-
-      if ((strcmp(model_name, "terror") == 0) ||  // Phoenix Connektion
-          (strcmp(model_name, "arab") == 0) ||    // old L337 Krew
-          (strcmp(model_name, "leet") == 0) ||    // L337 Krew
-          (strcmp(model_name, "arctic") == 0) ||   // Artic Avenger
-          (strcmp(model_name, "guerilla") == 0))  // Gorilla Warfare
-      {
-         return 0;
-      }
-      else if ((strcmp(model_name, "urban") == 0) ||  // Seal Team 6
-               (strcmp(model_name, "gsg9") == 0) ||   // German GSG-9
-               (strcmp(model_name, "sas") == 0) ||    // UK SAS
-               (strcmp(model_name, "gign") == 0) ||   // French GIGN
-               (strcmp(model_name, "vip") == 0))      // VIP
-      {
-         return 1;
-      }
-
-      return 0;  // return zero if team is unknown
-   }
-	else if( mod_id == DOD_DLL || mod_id == NS_DLL )
-	{
-		return pEntity->v.team;
-	}
-   else if ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint()))
-   {
-      // OpFor CTF map...
-
-      char *infobuffer;
-      char model_name[32];
-
-      infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEntity );
-      strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
-
-      if ((strcmp(model_name, "ctf_barney") == 0) ||
-          (strcmp(model_name, "cl_suit") == 0) ||
-          (strcmp(model_name, "ctf_gina") == 0) ||
-          (strcmp(model_name, "ctf_gordon") == 0) ||
-          (strcmp(model_name, "otis") == 0) ||
-          (strcmp(model_name, "ctf_scientist") == 0))
-      {
-         return OpposingForceBot::TEAM_BLACK_MESA;
-      }
-      else if ((strcmp(model_name, "beret") == 0) ||
-               (strcmp(model_name, "drill") == 0) ||
-               (strcmp(model_name, "grunt") == 0) ||
-               (strcmp(model_name, "recruit") == 0) ||
-               (strcmp(model_name, "shephard") == 0) ||
-               (strcmp(model_name, "tower") == 0))
-      {
-         return OpposingForceBot::TEAM_OPPOSING_FORCE;
-      }
-
-      return 0;  // return zero if team is unknown
-   }
-   else  // must be HL or OpFor deathmatch...
-   {
-      char *infobuffer;
-      char model_name[32];
-
-      if (team_names[0][0] == 0)
-      {
-         char *pName;
-         char teamlist[MAX_TEAMS*MAX_TEAMNAME_LENGTH];
-         int i;
-
-         num_teams = 0;
-         strcpy(teamlist, CVAR_GET_STRING("mp_teamlist"));
-         pName = teamlist;
-         pName = strtok(pName, ";");
-
-         while (pName != NULL && *pName)
-         {
-            // check that team isn't defined twice
-            for (i=0; i < num_teams; i++)
-               if (strcmp(pName, team_names[i]) == 0)
-                  break;
-            if (i == num_teams)
-            {
-               strcpy(team_names[num_teams], pName);
-               num_teams++;
-            }
-            pName = strtok(NULL, ";");
-         }
-      }
-
-      infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEntity );
-      strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
-
-      for (int index=0; index < num_teams; index++)
-      {
-         if (strcmp(model_name, team_names[index]) == 0)
-            return index;
-      }
-
-      return 0;
-   }
+	bot_t *pBot = UTIL_GetBotPointer(pEntity);
+	return pBot->GetTeam();
 }
 
 
@@ -403,7 +296,7 @@ bot_t *UTIL_GetBotPointer(edict_t *pEdict)
    if (index < MAX_PLAYERS)
       return (pBots[index]);
 
-   return NULL;  // return NULL if edict is not a bot
+   return nullptr;  // return NULL if edict is not a bot
 }
 
 

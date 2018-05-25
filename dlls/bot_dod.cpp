@@ -20,6 +20,11 @@ void DODBot::OnSpawn()
 	this->iGoalIndex = 0;
 }
 
+int DODBot::GetTeam()
+{
+	return this->pEdict->v.team;
+}
+
 void DODBot::Join()
 {
 	if( this->start_action == MSG_DOD_TEAM_SELECT )

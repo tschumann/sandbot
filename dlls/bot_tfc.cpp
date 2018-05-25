@@ -12,6 +12,11 @@ TFCBot::TFCBot()
 {
 }
 
+int TFCBot::GetTeam()
+{
+	return this->pEdict->v.team - 1;
+}
+
 void TFCBot::Join()
 {
 	extern int max_teams;
