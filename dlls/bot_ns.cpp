@@ -26,11 +26,6 @@ void NSBot::OnSpawn()
 	this->bIsEvolving = false;
 }
 
-int NSBot::GetTeam()
-{
-	return this->pEdict->v.team;
-}
-
 void NSBot::Join()
 {
 	this->Reset();

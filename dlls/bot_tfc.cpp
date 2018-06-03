@@ -12,11 +12,6 @@ TFCBot::TFCBot()
 {
 }
 
-int TFCBot::GetTeam()
-{
-	return this->pEdict->v.team - 1;
-}
-
 void TFCBot::Join()
 {
 	extern int max_teams;
@@ -159,12 +154,9 @@ bool TFCBot::IsValidEnemy( edict_t *pEnemy )
 	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );
 	bool bTFCIsValid = bBaseIsValid;
 
-	bot_t *pEnemyBot = UTIL_GetBotPointer( pEnemy );
-	int iBotTeam = pEnemyBot->GetTeam();
-
 	extern int team_allies[4];
 
-	if( team_allies[this->GetTeam()] & (1 << iBotTeam) )
+	if( team_allies[pGame->GetTeam( this->pEdict )] & (1 << pGame->GetTeam( pEnemy )) )
 	{
 		bTFCIsValid = false;
 	}

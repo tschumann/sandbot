@@ -325,7 +325,6 @@ public:
 	virtual int GetSkill();
 
 	virtual int GetHealth();
-	virtual int GetTeam();
 
 	virtual bool HasEnemy();
 	virtual bool ShouldSeekEnemy();
@@ -539,8 +538,6 @@ public:
 	virtual void Join();
 	virtual void PreThink();
 
-	virtual int GetTeam();
-
 	virtual bool ShouldSeekEnemy();
 
 	virtual int GetPistol();
@@ -562,8 +559,6 @@ class CStrikeBot : public bot_t
 public:
 	CStrikeBot();
 
-	virtual int GetTeam();
-
 	virtual void Join();
 
 	virtual float GetMaxSpeed();
@@ -573,8 +568,6 @@ class DODBot : public bot_t
 {
 public:
 	DODBot();
-
-	virtual int GetTeam();
 
 	virtual void OnSpawn();
 	virtual void Join();
@@ -603,8 +596,6 @@ class TFCBot : public bot_t
 {
 public:
 	TFCBot();
-
-	virtual int GetTeam();
 
 	virtual void Join();
 
@@ -682,8 +673,6 @@ class NSBot : public bot_t
 {
 public:
 	NSBot();
-
-	virtual int GetTeam();
 
 	virtual void OnSpawn();
 	virtual void Join();
@@ -850,6 +839,7 @@ public:
 	virtual unsigned int BotsOnTeam( int team );
 	virtual bool IsValidEdict( edict_t *pEdict );
 	virtual bool CanChoosePlayerModel();
+	virtual int GetTeam( edict_t *pEdict );
 
 	virtual void SetGame( eGame game );
 	virtual bool IsGunmanChronicles();
@@ -885,6 +875,8 @@ public:
 	{
 		return !this->IsCTF() && !this->IsCapturePoint();
 	}
+
+	virtual int GetTeam( edict_t *pEdict );
 };
 
 class DecayGame : public Game
@@ -913,6 +905,8 @@ public:
 	{
 		return false;
 	}
+
+	virtual int GetTeam( edict_t *pEdict );
 };
 
 class DODGame : public Game
@@ -927,6 +921,8 @@ public:
 	{
 		return false;
 	}
+
+	virtual int GetTeam( edict_t *pEdict );
 };
 
 class TFCGame : public Game
@@ -941,6 +937,8 @@ public:
 	{
 		return false;
 	}
+
+	virtual int GetTeam( edict_t *pEdict );
 };
 
 class NSGame : public Game
@@ -955,6 +953,8 @@ public:
 	{
 		return false;
 	}
+
+	virtual int GetTeam( edict_t *pEdict );
 
 	bool IsClassic()
 	{

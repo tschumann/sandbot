@@ -20,11 +20,6 @@ void DODBot::OnSpawn()
 	this->iGoalIndex = 0;
 }
 
-int DODBot::GetTeam()
-{
-	return this->pEdict->v.team;
-}
-
 void DODBot::Join()
 {
 	if( this->start_action == MSG_DOD_TEAM_SELECT )
@@ -219,13 +214,13 @@ bool DODBot::ShouldCapturePoint( edict_t * pControlPoint )
 	if( !strcmp(STRING(pControlPoint->v.model), "models/mapmodels/flags.mdl"))
 	{
 		// if it's currently captured by the Axis and the player is Allied
-		if( pControlPoint->v.body == 0 && this->GetTeam() == DODBot::TEAM_ALLIES )
+		if( pControlPoint->v.body == 0 && pGame->GetTeam( this->pEdict ) == DODBot::TEAM_ALLIES )
 		{
 			return true;
 		}
 
 		// if it's currently captured by the Allies and the player is Axis
-		if( pControlPoint->v.body == 1 && this->GetTeam() == DODBot::TEAM_AXIS )
+		if( pControlPoint->v.body == 1 && pGame->GetTeam( this->pEdict ) == DODBot::TEAM_AXIS )
 		{
 			return true;
 		}

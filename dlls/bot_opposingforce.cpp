@@ -72,34 +72,6 @@ void OpposingForceBot::PreThink()
 	}
 }
 
-int OpposingForceBot::GetTeam()
-{
-	if( pGame->IsCTF() || !pGame->IsCapturePoint() )
-	{
-		char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( this->pEdict );
-		char szModelName[32];
-
-		strcpy( szModelName, g_engfuncs.pfnInfoKeyValue(infobuffer, "model") );
-
-		if( !strcmp(szModelName, "ctf_barney") || !strcmp(szModelName, "cl_suit") || !strcmp(szModelName, "ctf_gina") ||
-			!strcmp(szModelName, "ctf_gordon") || !strcmp(szModelName, "otis") || !strcmp(szModelName, "ctf_scientist") )
-		{
-			return OpposingForceBot::TEAM_BLACK_MESA;
-		}
-		else if( !strcmp(szModelName, "beret") || !strcmp(szModelName, "drill") || !strcmp(szModelName, "grunt") ||
-			!strcmp(szModelName, "recruit") || !strcmp(szModelName, "shephard") || !strcmp(szModelName, "tower") )
-		{
-			return OpposingForceBot::TEAM_OPPOSING_FORCE;
-		}
-
-		// unknown team
-		return 0;
-	}
-
-	// use default deathmatch behaviour
-	return HalfLifeBot::GetTeam();
-}
-
 bool OpposingForceBot::ShouldSeekEnemy()
 {
 	if( this->HasFlag() )
@@ -150,7 +122,7 @@ bool OpposingForceBot::FindFlag()
 	extern WAYPOINT waypoints[MAX_WAYPOINTS];
 
 	int skin = 0;
-	int team = UTIL_GetTeam(pEdict);
+	int team = pGame->GetTeam( this->pEdict );
 	float waypoint_distance = 0.0;
 	float distance = 0.0;
 	edict_t *pent = NULL;

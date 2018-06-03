@@ -241,10 +241,9 @@ edict_t *DBG_EntOfVars( const entvars_t *pev )
 #endif //DEBUG
 
 
-int UTIL_GetTeam(edict_t *pEntity)
+int UTIL_GetTeam( edict_t *pEntity )
 {
-	bot_t *pBot = UTIL_GetBotPointer(pEntity);
-	return pBot->GetTeam();
+	return pGame->GetTeam( pEntity );
 }
 
 
