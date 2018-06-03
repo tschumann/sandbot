@@ -154,6 +154,24 @@ void TFCBot::Join()
 	}
 }
 
+bool TFCBot::IsValidEnemy( edict_t *pEnemy )
+{
+	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );
+	bool bTFCIsValid = bBaseIsValid;
+
+	bot_t *pEnemyBot = UTIL_GetBotPointer( pEnemy );
+	int iBotTeam = pEnemyBot->GetTeam();
+
+	extern int team_allies[4];
+
+	if( team_allies[this->GetTeam()] & (1 << iBotTeam) )
+	{
+		bTFCIsValid = false;
+	}
+
+	return bBaseIsValid && bTFCIsValid;
+}
+
 int TFCBot::GetGoalType()
 {
 	if( this->IsSniper() )

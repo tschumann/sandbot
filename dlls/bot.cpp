@@ -2036,22 +2036,22 @@ bool bot_t::ShouldSeekEnemy()
 	return true;
 }
 
-bool bot_t::IsValidEnemy( edict_t *pEdict )
+bool bot_t::IsValidEnemy( edict_t *pEnemy )
 {
-	if( !pEdict )
+	if( !pEnemy )
 	{
 		return false;
 	}
-	if( pEdict->free )
+	if( pEnemy->free )
 	{
 		return false;
 	}
 	// a bot can't be its own enemy
-	if( pEdict == this->pEdict )
+	if( pEnemy == this->pEdict )
 	{
 		return false;
 	}
-	if( !IsAlive( pEdict ) )
+	if( !IsAlive( pEnemy ) )
 	{
 		return false;
 	}
@@ -2435,6 +2435,11 @@ void bot_t::FixIdealPitch()
 	{
 		this->pEdict->v.idealpitch += 360.0 * ((int)(-this->pEdict->v.idealpitch / 360.0) + 1);
 	}
+}
+
+bool bot_t::ShouldJumpAfterDeath()
+{
+	return RANDOM_LONG(1, 100) <= 10;
 }
 
 bool bot_t::HasFlag()

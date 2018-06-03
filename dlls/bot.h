@@ -329,7 +329,7 @@ public:
 
 	virtual bool HasEnemy();
 	virtual bool ShouldSeekEnemy();
-	virtual bool IsValidEnemy( edict_t *pEdict );
+	virtual bool IsValidEnemy( edict_t *pEnemy );
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();
 	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
@@ -366,6 +366,8 @@ public:
 
 	virtual bool BaseCanUseWeapon();
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
+
+	virtual bool ShouldJumpAfterDeath();
 
 	virtual bool HasFlag();
 
@@ -606,6 +608,8 @@ public:
 
 	virtual void Join();
 
+	virtual bool IsValidEnemy( edict_t *pEnemy );
+
 	virtual int GetGoalType();
 
 	virtual bool IsEngineer();
@@ -811,8 +815,11 @@ class ShipBot : public bot_t
 public:
 	ShipBot();
 
-	virtual bool IsValidEnemy( edict_t *pEdict );
+	virtual bool IsValidEnemy( edict_t *pEnemy );
 	virtual void PickUpItem();
+
+	virtual bool ShouldJumpAfterDeath();
+
 	virtual void SetQuarry( int iEntIndex );
 	virtual edict_t* GetQuarry();
 	virtual bool HasQuarry();
@@ -841,7 +848,7 @@ public:
 	virtual bool IsCTF();
 	virtual bool IsCapturePoint();
 	virtual unsigned int BotsOnTeam( int team );
-	virtual bool IsValidEnemy( edict_t *pEdict );
+	virtual bool IsValidEdict( edict_t *pEdict );
 	virtual bool CanChoosePlayerModel();
 
 	virtual void SetGame( eGame game );

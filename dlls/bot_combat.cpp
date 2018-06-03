@@ -523,15 +523,13 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		// SOLID_NOT check is for Natural Selection
 		if (!IsAlive(pBot->pBotEnemy) || pBot->pBotEnemy->v.solid == SOLID_NOT)
 		{
-			// the enemy is dead, jump for joy about 10% of the time,
-			// except in The Ship where this would be too conspicuous
-			if (RANDOM_LONG(1, 100) <= 10 && mod_id != SHIP_DLL)
+			if( pBot->ShouldJumpAfterDeath() )
 			{
 				pEdict->v.button |= IN_JUMP;
 			}
 
 			// don't have an enemy anymore so null out the pointer
-			pBot->pBotEnemy = NULL;
+			pBot->pBotEnemy = nullptr;
 		}
 		else if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 		{
@@ -540,7 +538,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 				if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
 				{
 					// player is healed, null out pointer
-					pBot->pBotEnemy = NULL;
+					pBot->pBotEnemy = nullptr;
 				}
 			}
 			else
@@ -583,11 +581,16 @@ edict_t *BotFindEnemy( bot_t *pBot )
          edict_t *pPlayer = INDEXENT(i);
 
          // skip invalid players and skip self (i.e. this bot)
-         if (pGame->IsValidEnemy(pPlayer) && (pPlayer != pEdict))
+         if (pGame->IsValidEdict( pPlayer ) && ( pPlayer != pEdict ) )
          {
             // skip this player if not alive (i.e. dead or dying)
             if (!IsAlive(pPlayer))
                continue;
+
+			if( !pBot->IsValidEnemy(pPlayer) )
+			{
+				continue;
+			}
 
             if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
                continue;
@@ -601,23 +604,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
                // don't target your teammates...
                if (bot_team == player_team)
                   continue;
-
-               if (mod_id == TFC_DLL)
-               {
-                  // don't target your allies either...
-                  if (team_allies[bot_team] & (1<<player_team))
-                     continue;
-               }
             }
-
-			if( mod_id == SHIP_DLL )
-			{
-				// if the bot has no quarry or the quarry isn't this player, keep looking
-				if( !((ShipBot *)pBot)->HasQuarry() || ( ((ShipBot *)pBot)->GetQuarry() != pPlayer ) )
-				{
-					continue;
-				}
-			}
 
             vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
 

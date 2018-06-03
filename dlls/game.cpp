@@ -54,7 +54,7 @@ unsigned int Game::BotsOnTeam( int team )
 
 // TODO: in Opposing Force CTF at least, bots will also target
 // spectators - check iuser2 or something to see if spectator?
-bool Game::IsValidEnemy( edict_t *pEdict )
+bool Game::IsValidEdict( edict_t *pEdict )
 {
 	return IsValidEntity( pEdict );
 }
