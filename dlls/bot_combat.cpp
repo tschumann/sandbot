@@ -580,13 +580,9 @@ edict_t *BotFindEnemy( bot_t *pBot )
       {
          edict_t *pPlayer = INDEXENT(i);
 
-         // skip invalid players and skip self (i.e. this bot)
-         if (pGame->IsValidEdict( pPlayer ) && ( pPlayer != pEdict ) )
+         // skip invalid players
+         if (pGame->IsValidEdict( pPlayer ) )
          {
-            // skip this player if not alive (i.e. dead or dying)
-            if (!IsAlive(pPlayer))
-               continue;
-
 			if( !pBot->IsValidEnemy(pPlayer) )
 			{
 				continue;
