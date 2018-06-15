@@ -27,16 +27,31 @@ void DODBot::Join()
 		// switch back to idle
 		this->start_action = MSG_DOD_IDLE;
 
-		// TODO: British?
-		if ((this->bot_team != DODBot::TEAM_ALLIES) && (this->bot_team != DODBot::TEAM_AXIS))
+		if( this->bot_team != DODBot::TEAM_ALLIES && this->bot_team != DODBot::TEAM_AXIS && this->bot_team != DODBot::TEAM_BRITISH )
 		{
-			this->bot_team = -1;
+			this->bot_team = TEAM_UNKNOWN;
 		}
 
 		// TODO: count how many each team has because even teams seems to be off by default
-		if (this->bot_team == -1)
+		if( this->bot_team == TEAM_UNKNOWN )
 		{
-			this->bot_team = RANDOM_LONG(1, 2);
+			if( ((DODGame *)pGame)->AreAlliesBritish() )
+			{
+				int iRand = RANDOM_LONG(1, 2);
+
+				if( iRand == 1 )
+				{
+					this->bot_team = DODBot::TEAM_BRITISH;
+				}
+				else
+				{
+					this->bot_team = DODBot::TEAM_AXIS;
+				}
+			}
+			else
+			{
+				this->bot_team = RANDOM_LONG(DODBot::TEAM_ALLIES, DODBot::TEAM_AXIS);
+			}
 		}
 
 		// select the team the bot wishes to join...
@@ -214,7 +229,8 @@ bool DODBot::ShouldCapturePoint( edict_t * pControlPoint )
 	if( !strcmp(STRING(pControlPoint->v.model), "models/mapmodels/flags.mdl"))
 	{
 		// if it's currently captured by the Axis and the player is Allied
-		if( pControlPoint->v.body == 0 && pGame->GetTeam( this->pEdict ) == DODBot::TEAM_ALLIES )
+		// TODO: check this re British
+		if( pControlPoint->v.body == 0 && ( pGame->GetTeam( this->pEdict ) == DODBot::TEAM_ALLIES || pGame->GetTeam( this->pEdict ) == DODBot::TEAM_BRITISH ) )
 		{
 			return true;
 		}

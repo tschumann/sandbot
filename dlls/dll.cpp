@@ -1017,6 +1017,10 @@ void ClientCommand( edict_t *pEntity )
 				{
 					ALERT( at_console, "Team: Axis\n" );
 				}
+				else if( player->v.team == DODBot::TEAM_BRITISH )
+				{
+					ALERT( at_console, "Team: British\n" );
+				}
 
 				if( pBot )
 				{

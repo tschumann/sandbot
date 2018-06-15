@@ -507,6 +507,8 @@ public:
 	const static int PLAYER_SEARCH_RADIUS = 40.0f;
 
 	const static int BOTDATA_INDEX_UNSET = -1;
+
+	const static int TEAM_UNKNOWN = -1;
 protected:
 	virtual Vector GetOrigin();
 
@@ -590,6 +592,7 @@ public:
 
 	const static int TEAM_ALLIES = 1;
 	const static int TEAM_AXIS = 2;
+	const static int TEAM_BRITISH = 3; // TODO: work out what it really is!
 };
 
 class TFCBot : public bot_t
@@ -918,6 +921,11 @@ public:
 	}
 
 	virtual bool CanChoosePlayerModel()
+	{
+		return false;
+	}
+
+	virtual bool AreAlliesBritish()
 	{
 		return false;
 	}
