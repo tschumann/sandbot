@@ -52,6 +52,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 v0.4.3 (??/??/??)
 - [All] Fixed bot_skill 5 not working.
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
+- [Natural Selection] Increased range at which marines will use weapon_machinegun and weapon_heavymachinegun.
 
 v0.4.2 (21/04/18)
 - [All] Made bot_skill a cvar which dynamically changes a bot's skill.
