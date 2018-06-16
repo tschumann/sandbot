@@ -743,14 +743,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			{
 				if( !strcmp(arg1, "allies") )
 				{
-					if( ((DODGame *)pGame)->AreAlliesBritish() )
-					{
-						pBot->bot_team = DODBot::TEAM_BRITISH;
-					}
-					else
-					{
-						pBot->bot_team = DODBot::TEAM_ALLIES;
-					}
+					pBot->bot_team = DODBot::TEAM_ALLIES;
 				}
 				else if( !strcmp(arg1, "axis") )
 				{

@@ -592,7 +592,12 @@ public:
 
 	const static int TEAM_ALLIES = 1;
 	const static int TEAM_AXIS = 2;
-	const static int TEAM_BRITISH = 3; // TODO: work out what it really is!
+
+	const static int PANZERJAGER_AXIS = 19;
+
+	const static int RIFLEMAN_BRITISH = 21;
+	const static int SERGEANT_MAJOR_BRITISH = 22;
+	const static int PIAT_BRITISH = 25;
 };
 
 class TFCBot : public bot_t
@@ -927,7 +932,8 @@ public:
 
 	virtual bool AreAlliesBritish()
 	{
-		return false;
+		extern int g_iAlliesCountry;
+		return g_iAlliesCountry == 1;
 	}
 
 	virtual int GetTeam( edict_t *pEdict );

@@ -56,10 +56,13 @@ edict_t *listenserver_edict = NULL;
 int g_menu_waypoint;
 int g_menu_state = 0;
 
+int g_iAlliesCountry = 0;
+
 char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 int num_teams = 0;
 edict_t *pent_info_tfdetect = nullptr;
 edict_t *pent_item_tfgoal = nullptr;
+edict_t *pent_info_doddetect = nullptr;
 edict_t *pent_info_ctfdetect = nullptr;
 edict_t *pent_trigger_ctfgeneric = nullptr;
 int max_team_players[4];  // for TFC
@@ -208,6 +211,7 @@ int DispatchSpawn( edict_t *pent )
 
 		pent_info_tfdetect = nullptr;
 		pent_info_ctfdetect = nullptr;
+		pent_info_doddetect = nullptr;
 		pent_item_tfgoal = nullptr;
 
 		for (int index=0; index < 4; index++)
@@ -427,6 +431,20 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			{
 				pent_trigger_ctfgeneric = pentKeyvalue;
 			}
+		}
+	}
+	else if (mod_id == DOD_DLL)
+	{
+		if( pkvd->szClassName && !strcmp(pkvd->szClassName, "info_doddetect") && !strcmp(pkvd->szKeyName, "detect_allies_country") )
+		{
+			pent_info_doddetect = pentKeyvalue;
+
+			if(!strcmp(pkvd->szValue, "1"))
+			{
+				g_iAlliesCountry = 1;
+			}
+				
+			ALERT( at_console, "%s %s\n", pkvd->szKeyName, pkvd->szValue);
 		}
 	}
 
@@ -1016,10 +1034,6 @@ void ClientCommand( edict_t *pEntity )
 				else if( player->v.team == DODBot::TEAM_AXIS )
 				{
 					ALERT( at_console, "Team: Axis\n" );
-				}
-				else if( player->v.team == DODBot::TEAM_BRITISH )
-				{
-					ALERT( at_console, "Team: British\n" );
 				}
 
 				if( pBot )

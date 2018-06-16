@@ -27,7 +27,7 @@ void DODBot::Join()
 		// switch back to idle
 		this->start_action = MSG_DOD_IDLE;
 
-		if( this->bot_team != DODBot::TEAM_ALLIES && this->bot_team != DODBot::TEAM_AXIS && this->bot_team != DODBot::TEAM_BRITISH )
+		if( this->bot_team != DODBot::TEAM_ALLIES && this->bot_team != DODBot::TEAM_AXIS )
 		{
 			this->bot_team = TEAM_UNKNOWN;
 		}
@@ -35,23 +35,7 @@ void DODBot::Join()
 		// TODO: count how many each team has because even teams seems to be off by default
 		if( this->bot_team == TEAM_UNKNOWN )
 		{
-			if( ((DODGame *)pGame)->AreAlliesBritish() )
-			{
-				int iRand = RANDOM_LONG(1, 2);
-
-				if( iRand == 1 )
-				{
-					this->bot_team = DODBot::TEAM_BRITISH;
-				}
-				else
-				{
-					this->bot_team = DODBot::TEAM_AXIS;
-				}
-			}
-			else
-			{
-				this->bot_team = RANDOM_LONG(DODBot::TEAM_ALLIES, DODBot::TEAM_AXIS);
-			}
+			this->bot_team = RANDOM_LONG(DODBot::TEAM_ALLIES, DODBot::TEAM_AXIS);
 		}
 
 		// select the team the bot wishes to join...
@@ -65,8 +49,15 @@ void DODBot::Join()
 
 		if (this->bot_class == -1)
 		{
-			// do this to control what classes bots will spawn as (not everything is supported yet)
-			this->bot_class = RANDOM_LONG(1, 4);
+			if( ((DODGame *)pGame)->AreAlliesBritish() )
+			{
+				this->bot_class = RANDOM_LONG(DODBot::RIFLEMAN_BRITISH, DODBot::RIFLEMAN_BRITISH);
+			}
+			else
+			{
+				// do this to control what classes bots will spawn as (not everything is supported yet)
+				this->bot_class = RANDOM_LONG(1, 4);
+			}
 		}
 
 		switch( this->bot_class )
@@ -229,8 +220,7 @@ bool DODBot::ShouldCapturePoint( edict_t * pControlPoint )
 	if( !strcmp(STRING(pControlPoint->v.model), "models/mapmodels/flags.mdl"))
 	{
 		// if it's currently captured by the Axis and the player is Allied
-		// TODO: check this re British
-		if( pControlPoint->v.body == 0 && ( pGame->GetTeam( this->pEdict ) == DODBot::TEAM_ALLIES || pGame->GetTeam( this->pEdict ) == DODBot::TEAM_BRITISH ) )
+		if( pControlPoint->v.body == 0 && pGame->GetTeam( this->pEdict ) == DODBot::TEAM_ALLIES )
 		{
 			return true;
 		}
