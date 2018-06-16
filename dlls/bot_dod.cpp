@@ -51,7 +51,7 @@ void DODBot::Join()
 		{
 			if( ((DODGame *)pGame)->AreAlliesBritish() )
 			{
-				this->bot_class = RANDOM_LONG(DODBot::RIFLEMAN_BRITISH, DODBot::RIFLEMAN_BRITISH);
+				this->bot_class = RANDOM_LONG(DODBot::RIFLEMAN_BRITISH, DODBot::SERGEANT_MAJOR_BRITISH);
 			}
 			else
 			{

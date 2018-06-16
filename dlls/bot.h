@@ -933,10 +933,15 @@ public:
 	virtual bool AreAlliesBritish()
 	{
 		extern int g_iAlliesCountry;
-		return g_iAlliesCountry == 1;
+
+		return g_iAlliesCountry == DODGame::ALLIES_COUNTRY_BRITISH;
 	}
 
 	virtual int GetTeam( edict_t *pEdict );
+
+	// in info_doddetect entity's detect_allies_country property
+	const static int ALLIES_COUNTRY_UNITED_STATES = 0;
+	const static int ALLIES_COUNTRY_BRITISH = 1;
 };
 
 class TFCGame : public Game
