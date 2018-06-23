@@ -329,6 +329,7 @@ public:
 	virtual bool HasEnemy();
 	virtual bool ShouldSeekEnemy();
 	virtual bool CanHeal();
+	virtual edict_t *FindEnemyToHeal();
 	virtual bool IsValidEnemy( edict_t *pEnemy );
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();

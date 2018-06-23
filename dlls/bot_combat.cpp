@@ -508,9 +508,8 @@ edict_t *BotFindEnemy( bot_t *pBot )
 {
 	Vector vecEnd;
 	static bool flag=TRUE;
-	edict_t *pent = NULL;
+	edict_t *pent = nullptr;
 	edict_t *pNewEnemy;
-	float nearestdistance;
 	int i;
 
 	edict_t *pEdict = pBot->pEdict;
@@ -535,7 +534,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		{
 			if( pBot->CanHeal() )
 			{
-				if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
+				if( pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health )
 				{
 					// player is healed, null out pointer
 					pBot->pBotEnemy = nullptr;
@@ -551,7 +550,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 
 				pEdict->v.ideal_yaw = bot_angles.y;
 
-				BotFixIdealYaw(pEdict);
+				BotFixIdealYaw( pEdict );
 
 				// keep track of when we last saw an enemy
 				pBot->f_bot_see_enemy_time = gpGlobals->time;
@@ -561,17 +560,17 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		}
 	}
 
-   pent = NULL;
-   pNewEnemy = NULL;
-   nearestdistance = 1000;
+	pent = nullptr;
+	pNewEnemy = nullptr;
+	float nearestdistance = 1000.0f;
 
-   if( mod_id == TFC_DLL )
-   {
-	   pNewEnemy = ((TFCBot *)pBot)->FindEnemy();
-   }
+	if( mod_id == TFC_DLL )
+	{
+		pNewEnemy = ((TFCBot *)pBot)->FindEnemy();
+	}
 
    // look for an enemy from players
-   if (pNewEnemy == NULL)
+   if (pNewEnemy == nullptr)
    {
       nearestdistance = 2500;
 
@@ -581,13 +580,8 @@ edict_t *BotFindEnemy( bot_t *pBot )
          edict_t *pPlayer = INDEXENT(i);
 
          // skip invalid players
-         if (pGame->IsValidEdict( pPlayer ) )
+         if( pGame->IsValidEdict( pPlayer ) && pBot->IsValidEnemy( pPlayer ) )
          {
-			if( !pBot->IsValidEnemy(pPlayer) )
-			{
-				continue;
-			}
-
             if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
                continue;
 

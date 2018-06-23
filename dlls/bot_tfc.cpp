@@ -403,62 +403,18 @@ bool TFCBot::CanBuildSentryGun()
 
 edict_t* TFCBot::FindEnemy()
 {
-	Vector vecEnd;
-	edict_t *pent = NULL;
-	edict_t *pNewEnemy = NULL;
-	float nearestdistance = 1000.0;
+	edict_t *pent = nullptr;
+	edict_t *pNewEnemy = nullptr;
+	float nearestdistance = 1000.0f;
 
-	extern bool b_observer_mode;
 	extern int team_allies[];
 
 	if( this->CanHeal() )
 	{
-		// search the world for players...
-		for( int i = 1; i <= gpGlobals->maxClients; i++ )
-		{
-			edict_t *pPlayer = INDEXENT(i);
-
-			// skip invalid players and skip self (i.e. this bot)
-			if ((pPlayer) && (!pPlayer->free) && (pPlayer != this->pEdict))
-			{
-				// skip this player if not alive (i.e. dead or dying)
-				if (!IsAlive(pPlayer))
-					continue;
-
-				if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
-					continue;
-
-				int player_team = UTIL_GetTeam(pPlayer);
-				int bot_team = UTIL_GetTeam(this->pEdict);
-
-				// don't target your enemies...
-				if ((bot_team != player_team) && !(team_allies[bot_team] & (1<<player_team)))
-					continue;
-
-				// check if player needs to be healed...
-				if ((pPlayer->v.health / pPlayer->v.max_health) > 0.50)
-					continue;  // health greater than 50% so ignore
-
-				vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
-
-				// see if bot can see the player...
-				if (FInViewCone( &vecEnd, this->pEdict ) && FVisible( vecEnd, this->pEdict ))
-				{
-					float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
-
-					if (distance < nearestdistance)
-					{
-						nearestdistance = distance;
-						pNewEnemy = pPlayer;
-
-						this->pBotUser = NULL;  // don't follow user when enemy found
-					}
-				}
-			}
-		}
+		pNewEnemy = this->FindEnemyToHeal();
 	}
 
-	if (pNewEnemy == NULL)
+	if (pNewEnemy == nullptr)
 	{
 		while ((pent = UTIL_FindEntityByClassname( pent, "building_sentrygun" )) != NULL)
 		{
@@ -482,7 +438,7 @@ edict_t* TFCBot::FindEnemy()
 			if (team_allies[bot_team] & (1<<sentry_team))
 				continue;
 
-			vecEnd = pent->v.origin + pent->v.view_ofs;
+			Vector vecEnd = pent->v.origin + pent->v.view_ofs;
 
 			// is this sentry gun visible?
 			if (FInViewCone( &vecEnd, this->pEdict ) && FVisible( vecEnd, this->pEdict ))

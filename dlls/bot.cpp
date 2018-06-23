@@ -1990,6 +1990,57 @@ bool bot_t::CanHeal()
 	return false;
 }
 
+edict_t *bot_t::FindEnemyToHeal()
+{
+	edict_t *pNewEnemy = nullptr;
+	float fNearestDistance = 1000.0f;
+
+	extern bool b_observer_mode;
+	extern int team_allies[];
+
+	// search the world for players...
+	for( int i = 1; i <= gpGlobals->maxClients; i++ )
+	{
+		edict_t *pPlayer = INDEXENT(i);
+
+		// skip invalid players and skip self (i.e. this bot)
+		if( pGame->IsValidEdict( pPlayer ) && this->IsValidEnemy( pPlayer ) )
+		{
+			if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
+				continue;
+
+			int player_team = UTIL_GetTeam(pPlayer);
+			int bot_team = UTIL_GetTeam(this->pEdict);
+
+			// don't target your enemies...
+			if ((bot_team != player_team) && !(team_allies[bot_team] & (1<<player_team)))
+				continue;
+
+			// check if player needs to be healed...
+			if ((pPlayer->v.health / pPlayer->v.max_health) > 0.50)
+				continue;  // health greater than 50% so ignore
+
+			Vector vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
+
+			// see if bot can see the player...
+			if (FInViewCone( &vecEnd, this->pEdict ) && FVisible( vecEnd, this->pEdict ))
+			{
+				float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
+
+				if (distance < fNearestDistance)
+				{
+					fNearestDistance = distance;
+					pNewEnemy = pPlayer;
+
+					this->pBotUser = nullptr;  // don't follow user when enemy found
+				}
+			}
+		}
+	}
+
+	return pNewEnemy;
+}
+
 bool bot_t::IsValidEnemy( edict_t *pEnemy )
 {
 	if( !pEnemy )
