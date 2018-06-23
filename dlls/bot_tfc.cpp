@@ -149,6 +149,11 @@ void TFCBot::Join()
 	}
 }
 
+bool TFCBot::CanHeal()
+{
+	return pEdict->v.playerclass == TFCBot::CLASS_MEDIC;
+}
+
 bool TFCBot::IsValidEnemy( edict_t *pEnemy )
 {
 	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );
@@ -406,10 +411,10 @@ edict_t* TFCBot::FindEnemy()
 	extern bool b_observer_mode;
 	extern int team_allies[];
 
-	if (this->pEdict->v.playerclass == TFCBot::CLASS_MEDIC)
+	if( this->CanHeal() )
 	{
 		// search the world for players...
-		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		for( int i = 1; i <= gpGlobals->maxClients; i++ )
 		{
 			edict_t *pPlayer = INDEXENT(i);
 

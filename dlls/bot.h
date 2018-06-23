@@ -328,6 +328,7 @@ public:
 
 	virtual bool HasEnemy();
 	virtual bool ShouldSeekEnemy();
+	virtual bool CanHeal();
 	virtual bool IsValidEnemy( edict_t *pEnemy );
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();
@@ -607,6 +608,8 @@ public:
 
 	virtual void Join();
 
+	virtual bool CanHeal();
+
 	virtual bool IsValidEnemy( edict_t *pEnemy );
 
 	virtual int GetGoalType();
@@ -685,6 +688,8 @@ public:
 	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
+
+	virtual bool CanHeal();
 
 	virtual bool CanUseItem( edict_t *pItem );
 

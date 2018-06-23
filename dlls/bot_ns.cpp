@@ -66,6 +66,11 @@ void NSBot::Think()
 	bot_t::PostThink();
 }
 
+bool NSBot::CanHeal()
+{
+	return this->IsGorge();
+}
+
 bool NSBot::CanUseItem( edict_t *pItem )
 {
 	Vector vecStart = pEdict->v.origin + pEdict->v.view_ofs;

@@ -533,7 +533,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		}
 		else if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
 		{
-			if ((mod_id == TFC_DLL) && (pEdict->v.playerclass == TFCBot::CLASS_MEDIC))
+			if( pBot->CanHeal() )
 			{
 				if (pBot->pBotEnemy->v.health >= pBot->pBotEnemy->v.max_health)
 				{

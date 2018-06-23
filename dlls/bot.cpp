@@ -1985,6 +1985,11 @@ bool bot_t::ShouldSeekEnemy()
 	return true;
 }
 
+bool bot_t::CanHeal()
+{
+	return false;
+}
+
 bool bot_t::IsValidEnemy( edict_t *pEnemy )
 {
 	if( !pEnemy )
