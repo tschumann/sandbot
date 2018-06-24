@@ -848,6 +848,7 @@ public:
 	virtual int GetMaxPlayers();
 	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();
+	virtual bool IsDeathmatch();
 	virtual bool IsCTF();
 	virtual bool IsCapturePoint();
 	virtual unsigned int BotsOnTeam( int team );
@@ -867,6 +868,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return this->IsCTF() || this->IsCapturePoint() || Game::IsTeamPlay();
+	}
+
+	virtual bool IsDeathmatch()
+	{
+		return !this->IsCTF() && !this->IsCapturePoint();
 	}
 
 	virtual bool IsCTF()
@@ -901,6 +907,11 @@ public:
 		return true;
 	}
 
+	virtual bool IsDeathmatch()
+	{
+		return false;
+	}
+
 	virtual bool CanChoosePlayerModel()
 	{
 		return false;
@@ -913,6 +924,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return true;
+	}
+
+	virtual bool IsDeathmatch()
+	{
+		return false;
 	}
 
 	virtual bool CanChoosePlayerModel()
@@ -929,6 +945,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return true;
+	}
+
+	virtual bool IsDeathmatch()
+	{
+		return false;
 	}
 
 	virtual bool CanChoosePlayerModel()
@@ -958,6 +979,11 @@ public:
 		return true;
 	}
 
+	virtual bool IsDeathmatch()
+	{
+		return false;
+	}
+
 	virtual bool CanChoosePlayerModel()
 	{
 		return false;
@@ -972,6 +998,11 @@ public:
 	virtual bool IsTeamPlay()
 	{
 		return true;
+	}
+
+	virtual bool IsDeathmatch()
+	{
+		return false;
 	}
 
 	virtual bool CanChoosePlayerModel()

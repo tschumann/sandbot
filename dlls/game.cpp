@@ -27,6 +27,11 @@ bool Game::IsTeamPlay()
 	return CVAR_GET_FLOAT("mp_teamplay") > 0.0f;
 }
 
+bool Game::IsDeathmatch()
+{
+	return true;
+}
+
 bool Game::IsCTF()
 {
 	return false;

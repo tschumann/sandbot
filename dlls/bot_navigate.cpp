@@ -639,8 +639,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 		 if (mod_id == TFC_DLL)
 		 {
 			 // see if this waypoint is a sentry gun waypoint...
-			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SENTRYGUN) &&
-				 (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
+			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_SENTRYGUN) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
 			 {
 				if (((TFCBot *)pBot)->CanBuildSentryGun())
 				{
@@ -670,8 +669,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			 }
 
 			 // see if this waypoint is a dispenser waypoint...
-			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DISPENSER) &&
-				(pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
+			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_DISPENSER) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
 			 {
 				// does bot have enough metal to build a dispenser?
 				if (((TFCBot *)pBot)->CanBuildDispenser())
@@ -778,7 +776,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 // GO FIND WEAPONS HERE!!!
 
 
-         if (mod_id == VALVE_DLL || (mod_id == GEARBOX_DLL && !pGame->IsCTF() && !pGame->IsCapturePoint()) || pGame->IsGunmanChronicles() || mod_id == HUNGER_DLL)
+         if( pGame->IsDeathmatch() )
          {
             if (RANDOM_LONG(1, 100) <= 50)
             {
