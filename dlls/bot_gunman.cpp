@@ -41,7 +41,7 @@ void GunmanBot::OnSpawn()
 
 	this->iPistolMode = RANDOM_LONG(GunmanBot::PISTOL_PULSE, GunmanBot::PISTOL_RAPID);
 
-	// currently the bots don't know that the charge requires 10 ammo
+	// currently the bots don't know that the charge requires 10 ammo so would get stuck using it
 	if( this->iPistolMode == PISTOL_CHARGE )
 	{
 		this->iPistolMode = GunmanBot::PISTOL_PULSE;
@@ -64,12 +64,22 @@ void GunmanBot::Think()
 	{
 		this->UseGaussPistolRapid();
 	}
+	else if( this->GetPistolMode() == GunmanBot::PISTOL_SNIPER )
+	{
+		this->UseGaussPistolSniper();
+	}
 
 	bot_t::PostThink();
 }
 
 bool GunmanBot::ShouldReload()
 {
+	return false;
+}
+
+bool GunmanBot::IsSniping()
+{
+	// TODO: this->charging_weapon_id == GUNMAN_WEAPON_GAUSSPISTOL && this->GetPistolMode() == GunmanBot::PISTOL_SNIPER etc
 	return false;
 }
 

@@ -456,17 +456,17 @@ bool UpdateSounds(edict_t *pEdict, edict_t *pPlayer)
 
 void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, char *pText )
 {
-   if (gmsgShowMenu == 0)
-      gmsgShowMenu = REG_USER_MSG( "ShowMenu", -1 );
+	if( gmsgShowMenu == 0 )
+	{
+		gmsgShowMenu = REG_USER_MSG( "ShowMenu", -1 );
+	}
 
-   MESSAGE_BEGIN( MSG_ONE, gmsgShowMenu, NULL, pEdict );
-
-   WRITE_SHORT( slots );
-   WRITE_CHAR( displaytime );
-   WRITE_BYTE( needmore );
-   WRITE_STRING( pText );
-
-   MESSAGE_END();
+	MESSAGE_BEGIN( MSG_ONE, gmsgShowMenu, NULL, pEdict );
+		WRITE_SHORT( slots );
+		WRITE_CHAR( displaytime );
+		WRITE_BYTE( needmore );
+		WRITE_STRING( pText );
+	MESSAGE_END();
 }
 
 void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)

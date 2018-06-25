@@ -186,7 +186,13 @@ void DODBot::Reload()
 {
 	bot_t::Reload();
 
-	UTIL_HostSay(this->pEdict, TRUE, "reloading");
+	UTIL_HostSay( this->pEdict, TRUE, "reloading" );
+}
+
+bool DODBot::IsSniping()
+{
+	// TODO: work out the weapon ids for the sniper rifles
+	return false;
 }
 
 float DODBot::GetMaxSpeed()

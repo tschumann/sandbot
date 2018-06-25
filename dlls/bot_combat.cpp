@@ -709,15 +709,12 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
       // are we charging the primary fire?
       if (pBot->f_primary_charging > 0)
       {
-         iId = pBot->charging_weapon_id;
+			iId = pBot->charging_weapon_id;
 
-         if (mod_id == TFC_DLL)
-         {
-            if (iId == TF_WEAPON_SNIPERRIFLE)
-            {
-               pBot->SetSpeed( 0.0 );  // don't move while using sniper rifle
-            }
-         }
+			if( pBot->IsSniping() )
+			{
+				pBot->SetSpeed( 0.0 );  // don't move while using sniper rifle
+			}
 
          // is it time to fire the charged weapon?
          if (pBot->f_primary_charging <= gpGlobals->time)

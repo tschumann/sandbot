@@ -2221,6 +2221,12 @@ int bot_t::GetPistol()
 	return VALVE_WEAPON_GLOCK;
 }
 
+bool bot_t::IsSniping()
+{
+	// TODO: crossbow/357?
+	return false;
+}
+
 bool bot_t::CanSeePoint(Vector point)
 {
 	TraceResult tr;

@@ -341,6 +341,7 @@ public:
 
 	virtual bool CanShoot();
 	virtual int GetPistol();
+	virtual bool IsSniping();
 
 	virtual bool CanSeePoint( Vector point );
 	virtual int GetAngleToPoint( Vector point );
@@ -580,6 +581,8 @@ public:
 	virtual float GetSpeedToEnemy();
 	virtual void Reload();
 
+	virtual bool IsSniping();
+
 	virtual float GetMaxSpeed();
 	virtual float GetSpeed();
 
@@ -612,6 +615,8 @@ public:
 	virtual bool CanHeal();
 
 	virtual bool IsValidEnemy( edict_t *pEnemy );
+
+	virtual bool IsSniping();
 
 	virtual int GetGoalType();
 
@@ -655,6 +660,8 @@ public:
 
 	virtual bool ShouldReload();
 
+	virtual bool IsSniping();
+
 	virtual int GetPistolMode();
 
 	virtual void UseGaussPistolPulse();
@@ -677,7 +684,8 @@ public:
 	const static int PISTOL_PULSE = 1;
 	const static int PISTOL_CHARGE = 2;
 	const static int PISTOL_RAPID = 3;
-protected:
+	const static int PISTOL_SNIPER = 4;
+private:
 	int iPistolMode;
 };
 

@@ -169,6 +169,11 @@ bool TFCBot::IsValidEnemy( edict_t *pEnemy )
 	return bBaseIsValid && bTFCIsValid;
 }
 
+bool TFCBot::IsSniping()
+{
+	return this->charging_weapon_id == TF_WEAPON_SNIPERRIFLE && this->f_primary_charging > 0.0f;
+}
+
 int TFCBot::GetGoalType()
 {
 	if( this->IsSniper() )
