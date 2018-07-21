@@ -35,6 +35,8 @@ typedef struct
 	int flags;
 } bot_weapon_select_t;
 
+#define NO_SUCH_WEAPON -1
+
 #define WEAPON_NONE 0
 #define WEAPON_MELEE 1
 #define WEAPON_PISTOL 2

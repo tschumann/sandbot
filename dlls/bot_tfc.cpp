@@ -154,6 +154,11 @@ bool TFCBot::CanHeal()
 	return pEdict->v.playerclass == TFCBot::CLASS_MEDIC;
 }
 
+int TFCBot::GetHealingWeapon()
+{
+	return TF_WEAPON_MEDIKIT;
+}
+
 bool TFCBot::IsValidEnemy( edict_t *pEnemy )
 {
 	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );

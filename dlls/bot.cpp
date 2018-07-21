@@ -1996,7 +1996,6 @@ edict_t *bot_t::FindEnemyToHeal()
 	float fNearestDistance = 1000.0f;
 
 	extern bool b_observer_mode;
-	extern int team_allies[];
 
 	// search the world for players...
 	for( int i = 1; i <= gpGlobals->maxClients; i++ )
@@ -2007,13 +2006,6 @@ edict_t *bot_t::FindEnemyToHeal()
 		if( pGame->IsValidEdict( pPlayer ) && this->IsValidEnemy( pPlayer ) )
 		{
 			if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
-				continue;
-
-			int player_team = UTIL_GetTeam(pPlayer);
-			int bot_team = UTIL_GetTeam(this->pEdict);
-
-			// don't target your enemies...
-			if ((bot_team != player_team) && !(team_allies[bot_team] & (1<<player_team)))
 				continue;
 
 			// check if player needs to be healed...
@@ -2043,14 +2035,6 @@ edict_t *bot_t::FindEnemyToHeal()
 
 bool bot_t::IsValidEnemy( edict_t *pEnemy )
 {
-	if( !pEnemy )
-	{
-		return false;
-	}
-	if( pEnemy->free )
-	{
-		return false;
-	}
 	// a bot can't be its own enemy
 	if( pEnemy == this->pEdict )
 	{
@@ -2059,6 +2043,15 @@ bool bot_t::IsValidEnemy( edict_t *pEnemy )
 	if( !IsAlive( pEnemy ) )
 	{
 		return false;
+	}
+	// is team play enabled?
+	if( pGame->IsTeamPlay() )
+	{
+		// don't target your teammates
+		if( UTIL_GetTeam( this->pEdict ) == UTIL_GetTeam( pEnemy ) )
+		{
+			return false;
+		}
 	}
 
 	return true;
@@ -2111,7 +2104,7 @@ int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )
 	{
 		edict_t *pPlayer = INDEXENT(i);
 
-		if( !this->IsValidEnemy( pPlayer ) )
+		if( !pGame->IsValidEdict( pPlayer ) && !this->IsValidEnemy( pPlayer ) )
 		{
 			continue;
 		}
@@ -2219,6 +2212,11 @@ bool bot_t::CanShoot()
 int bot_t::GetPistol()
 {
 	return VALVE_WEAPON_GLOCK;
+}
+
+int bot_t::GetHealingWeapon()
+{
+	return NO_SUCH_WEAPON;
 }
 
 bool bot_t::IsSniping()

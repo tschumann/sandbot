@@ -585,17 +585,6 @@ edict_t *BotFindEnemy( bot_t *pBot )
             if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
                continue;
 
-            // is team play enabled?
-			if (pGame->IsTeamPlay())
-            {
-               int player_team = UTIL_GetTeam(pPlayer);
-               int bot_team = UTIL_GetTeam(pEdict);
-
-               // don't target your teammates...
-               if (bot_team == player_team)
-                  continue;
-            }
-
             vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
 
             // see if bot can see the player...
@@ -960,13 +949,10 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
                }
             }
 
-            if (pEdict->v.playerclass == TFCBot::CLASS_MEDIC)
+            if( pBot->CanHeal() )
             {
-               int player_team = UTIL_GetTeam(pBot->pBotEnemy);
-               int bot_team = UTIL_GetTeam(pEdict);
-
                // only heal your teammates or allies...
-               if (((bot_team == player_team) || (team_allies[bot_team] & (1<<player_team))) && (iId != TF_WEAPON_MEDIKIT))
+               if( !pBot->IsValidEnemy(pBot->pBotEnemy) && iId != pBot->GetHealingWeapon() )
                {
                   return FALSE;  // don't "fire" unless weapon is medikit
                }

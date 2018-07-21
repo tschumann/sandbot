@@ -341,6 +341,7 @@ public:
 
 	virtual bool CanShoot();
 	virtual int GetPistol();
+	virtual int GetHealingWeapon();
 	virtual bool IsSniping();
 
 	virtual bool CanSeePoint( Vector point );
@@ -613,6 +614,8 @@ public:
 	virtual void Join();
 
 	virtual bool CanHeal();
+
+	virtual int GetHealingWeapon();
 
 	virtual bool IsValidEnemy( edict_t *pEnemy );
 
