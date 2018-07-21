@@ -1218,7 +1218,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == SHIP_DLL )
 	{
-		pGame = new Game();
+		pGame = new ShipGame();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{

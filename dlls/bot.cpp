@@ -995,7 +995,7 @@ void BotFindItem( bot_t *pBot )
                      pBot->b_use_button = FALSE;
                   }
                }
-			   else if( mod_id == SHIP_DLL && !strcmp( "func_door", item_name ) )
+			   else if( pGame->UseToOpenDoor() && !strcmp( "func_door", item_name ) )
                 {
                     // use the button about 100% of the time, if haven't
                     // used a button in at least 5 seconds...

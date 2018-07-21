@@ -863,6 +863,7 @@ public:
 	virtual bool IsValidEdict( edict_t *pEdict );
 	virtual bool CanChoosePlayerModel();
 	virtual int GetTeam( edict_t *pEdict );
+	virtual bool UseToOpenDoor();
 
 	virtual void SetGame( eGame game );
 	virtual bool IsGunmanChronicles();
@@ -1057,6 +1058,15 @@ public:
 private:
 	edict_t *pCommandChair;
 	edict_t **pHives;
+};
+
+class ShipGame : public Game
+{
+public:
+	virtual bool UseToOpenDoor()
+	{
+		return true;
+	}
 };
 
 extern Game *pGame;

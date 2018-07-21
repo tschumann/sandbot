@@ -130,6 +130,11 @@ bool Game::IsGunmanChronicles()
 	return this->m_iModId == eGame::REWOLF;
 }
 
+bool Game::UseToOpenDoor()
+{
+	return false;
+}
+
 int GearboxGame::GetTeam( edict_t *pEdict )
 {
 	if( this->IsCTF() || !this->IsCapturePoint() )
