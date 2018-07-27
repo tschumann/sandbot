@@ -417,7 +417,7 @@ edict_t* TFCBot::FindEnemy()
 	edict_t *pNewEnemy = nullptr;
 	float nearestdistance = 1000.0f;
 
-	extern int team_allies[];
+	extern int team_allies[4];
 
 	if( this->CanHeal() )
 	{

@@ -18,7 +18,6 @@
 extern int mod_id;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
-extern int team_allies[4];
 
 extern cvar_t bot_use_melee;
 extern cvar_t bot_use_pistol;

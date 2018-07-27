@@ -76,10 +76,10 @@ bool NSBot::CanUseItem( edict_t *pItem )
 	Vector vecStart = pEdict->v.origin + pEdict->v.view_ofs;
 	Vector vecEnd = pItem->v.origin;
 
-	if (this->IsMarine())
+	if( this->IsMarine() )
 	{
-		// check if entity is ammo
-		if (!strcmp("item_ammopack", STRING(pItem->v.classname)))
+		if( !strcmp("item_ammopack", STRING(pItem->v.classname)) || !strcmp("item_catalyst", STRING(pItem->v.classname)) ||
+			!strcmp("item_health", STRING(pItem->v.classname)) || !strcmp("item_genericammo", STRING(pItem->v.classname)) )
 		{
 			// check if the item is not visible (i.e. has not respawned)
 			if (pItem->v.effects & EF_NODRAW)
@@ -88,44 +88,6 @@ bool NSBot::CanUseItem( edict_t *pItem )
 			}
 
 			return true;
-		}
-		// check if entity is a catalyst
-		else if (!strcmp("item_catalyst", STRING(pItem->v.classname)))
-		{
-			// check if the item is not visible (i.e. has not respawned)
-			if (pItem->v.effects & EF_NODRAW)
-			{
-				return false;
-			}
-
-			return true;
-		}
-		// check if entity is ammo
-		else if (!strcmp("item_genericammo", STRING(pItem->v.classname)))
-		{
-			// check if the item is not visible (i.e. has not respawned)
-			if (pItem->v.effects & EF_NODRAW)
-			{
-				return false;
-			}
-
-			return true;
-		}
-
-		// check if entity is a healthkit
-		else if (!strcmp("item_health", STRING(pItem->v.classname)))
-		{
-			// check if the item is not visible (i.e. has not respawned)
-			if (pItem->v.effects & EF_NODRAW)
-			{
-				return false;
-			}
-
-			// check if the bot can make use of this item
-			if (pEdict->v.health < pEdict->v.max_health)
-			{
-				return true;
-			}
 		}
 		// check if entity is a resource tower
 		else if (!strcmp("resourcetower", STRING(pItem->v.classname)))
@@ -518,7 +480,7 @@ float NSBot::GetSpeedToEnemy()
 	else if( fDistanceToEnemy > 20.0 )
 	{
 		// TODO: this check should more generally look at whether the bot has a melee weapon or not
-		if (this->IsAlien())
+		if( this->IsAlien() )
 		{
 			// alien's should charge ahead due to the strength of their close-range attacks
 			fSpeed = this->GetMaxSpeed();
