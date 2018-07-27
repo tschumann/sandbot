@@ -24,6 +24,14 @@ void NSBot::OnSpawn()
 	bot_t::OnSpawn();
 
 	this->bIsEvolving = false;
+	this->bUseArmory = false;
+	this->fUseArmoryTime = 0.0f;
+	this->points_spent = 0;
+
+	this->bBuild = false;
+	this->fBuildTime = 0.0f;
+	this->bBuildAlienResourceTower = false;
+	this->bBuildHive = false;
 }
 
 void NSBot::Join()
@@ -89,305 +97,29 @@ bool NSBot::CanUseItem( edict_t *pItem )
 
 			return true;
 		}
-		// check if entity is a resource tower
-		else if (!strcmp("resourcetower", STRING(pItem->v.classname)))
+		else if( !strcmp("resourcetower", STRING(pItem->v.classname)) || !strcmp("team_armslab", STRING(pItem->v.classname)) ||
+			!strcmp("team_advarmory", STRING(pItem->v.classname)) || !strcmp("team_armory", STRING(pItem->v.classname)) ||
+			!strcmp("team_infportal", STRING(pItem->v.classname)) || !strcmp("team_observatory", STRING(pItem->v.classname)) ||
+			!strcmp("team_prototypelab", STRING(pItem->v.classname)) || !strcmp("team_turretfactory", STRING(pItem->v.classname)) ||
+			!strcmp("siegeturret", STRING(pItem->v.classname)) || !strcmp("turret", STRING(pItem->v.classname)))
 		{
 			float fDistance = (vecEnd - vecStart).Length();
 
-			if (!UTIL_IsBuilt(pItem))
+			if( !UTIL_IsBuilt( pItem ) )
 			{
-				if (!this->bBuild)
+				if( !this->bBuild )
 				{
 					// check if close enough and facing it directly...
-					if ((fDistance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
+					if( fDistance < bot_t::PLAYER_SEARCH_RADIUS * 2.0f /*&& ( angle_to_entity <= 10 )*/)
 					{
 						this->bBuild = true;
 						this->fBuildTime = gpGlobals->time;
 					}
 
 					// if close to resource tower...
-					if (fDistance < 100.0)
+					if( fDistance < 100.0f )
 					{
 						// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is an arms lab
-		else if (!strcmp("team_armslab", STRING(pItem->v.classname)))
-		{
-			float fDistance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((fDistance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (fDistance < 100.0)
-					{
-						// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is an advanced armory
-		else if (!strcmp("team_advarmory", STRING(pItem->v.classname)))
-		{
-			float fDistance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((fDistance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (fDistance < 100.0)
-					{
-					// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is an armory
-		else if (!strcmp("team_armory", STRING(pItem->v.classname)))
-		{
-			float fDistance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((fDistance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (fDistance < 100.0)
-					{
-					// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is an infantry portal...
-		else if (!strcmp("team_infportal", STRING(pItem->v.classname)))
-		{
-			float distance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((distance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (distance < 100.0)
-					{
-						// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is an observatory...
-		else if (!strcmp("team_observatory", STRING(pItem->v.classname)))
-		{
-			float distance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((distance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (distance < 100.0)
-					{
-						// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is a prototype lab...
-		else if (!strcmp("team_prototypelab", STRING(pItem->v.classname)))
-		{
-			float distance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((distance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (distance < 100.0)
-					{
-					// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is a turret factory...
-		else if (!strcmp("team_turretfactory", STRING(pItem->v.classname)))
-		{
-			float distance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((distance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (distance < 100.0)
-					{
-						// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is a siege turret...
-		else if (!strcmp("siegeturret", STRING(pItem->v.classname)))
-		{
-			float distance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((distance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (distance < 100.0)
-					{
-					// don't avoid walls for a while
-						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
-					}
-
-					return true;
-				}
-			}
-			else
-			{
-				this->bBuild = false;
-			}
-		}
-		// check if entity is a turret...
-		else if (!strcmp("turret", STRING(pItem->v.classname)))
-		{
-			float distance = (vecEnd - vecStart).Length();
-
-			if (!UTIL_IsBuilt(pItem))
-			{
-				if (!this->bBuild)
-				{
-					// check if close enough and facing it directly...
-					if ((distance < bot_t::PLAYER_SEARCH_RADIUS * 2.0) /*&& ( angle_to_entity <= 10 )*/)
-					{
-						this->bBuild = true;
-						this->fBuildTime = gpGlobals->time;
-					}
-
-					// if close to armory...
-					if (distance < 100.0)
-					{
-					// don't avoid walls for a while
 						this->f_dont_avoid_wall_time = gpGlobals->time + 5.0;
 					}
 

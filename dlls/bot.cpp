@@ -519,16 +519,6 @@ void BotSpawnInit( bot_t *pBot )
 	// pBot->iShotgunMode = SHOTGUN_SHOTGUN;
 	pBot->bMinigunSpin = false;
 
-	// Natural Selection
-	pBot->bUseArmory = false;
-	pBot->fUseArmoryTime = 0.0;
-	pBot->points_spent = 0;
-
-	pBot->bBuild = false;
-	pBot->fBuildTime = 0.0;
-	pBot->bBuildAlienResourceTower = false;
-	pBot->bBuildHive = false;
-
 	// The Ship
 	pBot->bUseDoor = false;
 	pBot->fUseDoorTime = 0.0;
