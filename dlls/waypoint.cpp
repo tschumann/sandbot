@@ -1158,10 +1158,8 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          waypoints[wpt_index].flags |= W_FL_ARMOR;
       }
 
-      if ((strncmp("ammo_", nearest_name, 5) == 0) ||
-          (strcmp("item_cells", nearest_name) == 0) ||
-          (strcmp("item_shells", nearest_name) == 0) ||
-          (strcmp("item_spikes", nearest_name) == 0) ||
+      if ((strncmp("ammo_", nearest_name, 5) == 0) || (strcmp("item_cells", nearest_name) == 0) ||
+          (strcmp("item_shells", nearest_name) == 0) || (strcmp("item_spikes", nearest_name) == 0) ||
           (strcmp("item_rockets", nearest_name) == 0))
       {
          if (pEntity)
@@ -1176,47 +1174,54 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
          waypoints[wpt_index].flags |= W_FL_WEAPON;
       }
 
-	  if ((strcmp("item_ctfbase", nearest_name) == 0))
-	  {
-		  if (pEntity)
-			  ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfbase\n");
-		  waypoints[wpt_index].flags |= W_FL_FLAG_GOAL;
-	  }
+		if ((strcmp("item_ctfbase", nearest_name) == 0))
+		{
+			if (pEntity)
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfbase\n");
+			waypoints[wpt_index].flags |= W_FL_FLAG_GOAL;
+		}
 
-	  if ((strcmp("item_ctfflag", nearest_name) == 0))
-	  {
-		  if (pEntity)
-			  ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfflag\n");
-		  waypoints[wpt_index].flags |= W_FL_FLAG;
-	  }
+		if ((strcmp("item_ctfflag", nearest_name) == 0))
+		{
+			if (pEntity)
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfflag\n");
+			waypoints[wpt_index].flags |= W_FL_FLAG;
+		}
 
-	  if ((strcmp("dod_object", nearest_name) == 0))
-      {
-         if (pEntity)
-            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a dod_object\n");
-         waypoints[wpt_index].flags |= W_FL_DOD_OBJ;
-      }
+		if ((strcmp("trigger_ctfgeneric", nearest_name) == 0))
+		{
+			if (pEntity)
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an trigger_ctfgeneric\n");
+			waypoints[wpt_index].flags |= W_FL_CAPTURE_POINT;
+		}
 
-	  if ((strcmp("dod_control_point", nearest_name) == 0))
-      {
-         if (pEntity)
-            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a control point!\n");
-         waypoints[wpt_index].flags |= W_FL_DOD_CAP;
-      }
+		if ((strcmp("dod_object", nearest_name) == 0))
+		{
+			if (pEntity)
+			ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a dod_object\n");
+			waypoints[wpt_index].flags |= W_FL_DOD_OBJ;
+		}
 
-	  if ((strcmp("team_hive", nearest_name) == 0))
-      {
-         if (pEntity)
-            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a hive!\n");
-         waypoints[wpt_index].flags |= W_FL_NS_HIVE;
-      }
+		if ((strcmp("dod_control_point", nearest_name) == 0))
+		{
+			if (pEntity)
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a control point!\n");
+			waypoints[wpt_index].flags |= W_FL_DOD_CAP;
+		}
 
-	  if ((strcmp("team_command", nearest_name) == 0))
-      {
-         if (pEntity)
-            ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a command chair!\n");
-         waypoints[wpt_index].flags |= W_FL_NS_COMMAND_CHAIR;
-      }
+		if ((strcmp("team_hive", nearest_name) == 0))
+		{
+			if (pEntity)
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a hive!\n");
+			waypoints[wpt_index].flags |= W_FL_NS_HIVE;
+		}
+
+		if ((strcmp("team_command", nearest_name) == 0))
+		{
+			if (pEntity)
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a command chair!\n");
+			waypoints[wpt_index].flags |= W_FL_NS_COMMAND_CHAIR;
+		}
    }
 
    if ((mod_id == TFC_DLL) && (tfc_backpack_index != -1))  // found a TFC backpack
@@ -2043,6 +2048,11 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
 		edict_t *pBase = FindNearest(waypoints[index].origin, "item_ctfbase");
 		ALERT(at_console, "Model %s\n", STRING(pBase->v.model));
+	}
+
+	if (flags & W_FL_CAPTURE_POINT)
+	{
+		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
 	}
 
 	if (flags & W_FL_PRONE)

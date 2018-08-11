@@ -92,13 +92,26 @@ int OpposingForceBot::GetPistol()
 
 int OpposingForceBot::GetGoalType()
 {
-	// TODO: has flag is probably pretty slow to run each frame for each bot - only check it sometimes?
-	if( this->HasFlag() )
+	if( pGame->IsCTF() )
 	{
-		// find a base
-		return W_FL_FLAG_GOAL;
+		// TODO: has flag is probably pretty slow to run each frame for each bot - only check it sometimes?
+		if( this->HasFlag() )
+		{
+			// find a base
+			return W_FL_FLAG_GOAL;
+		}
+		return W_FL_FLAG;
 	}
-	return W_FL_FLAG;
+	else if( pGame->IsCapturePoint() )
+	{
+		return W_FL_CAPTURE_POINT;
+	}
+	else
+	{
+		ALERT( at_error, "Unknown game mode for Opposing Force\n" );
+
+		return W_FL_DELETED;
+	}
 }
 
 bool OpposingForceBot::HasFlag()
