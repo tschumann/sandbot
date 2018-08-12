@@ -712,23 +712,48 @@ extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blendi
 extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
 {
 	static SV_SAVEGAMECOMMENT other_SV_SaveGameComment = nullptr;
-	static bool missing = false;
+	static bool bIsMissing = false;
 
-	// if the save game commenet interface has been formerly reported as missing, give up
-	if (missing)
-		return;
-
-	// do we NOT know if the save game commenet interface is provided ? if so, look for its address
-	if (other_SV_SaveGameComment == nullptr)
-		other_SV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
-
-	// have we NOT found it ?
-	if (!other_SV_SaveGameComment)
+	if( mod_id == VALVE_DLL )
 	{
-		missing = true; // then mark it as missing, no use to look for it again in the future
-		return; // and give up
+		if( !strcmp( STRING(gpGlobals->mapname), "c0a0" ) )
+		{
+			strncpy( pBuffer, "BLACK MESA INBOUND", maxLength );
+		}
+
+		return;
+	}
+	else if( mod_id == GEARBOX_DLL )
+	{
+		return;
+	}
+	else if( mod_id == REWOLF_DLL )
+	{
+		return;
 	}
 
-	// else call the function that provides the save game commenet interface on request
-	((other_SV_SaveGameComment) (pBuffer, maxLength));
+	// if the game .dll has no SV_SaveGameComment exported
+	if( bIsMissing )
+	{
+		// don't look again
+		return;
+	}
+
+	// do we not know if the save game comment interface is provided? if so, look for its address
+	if( other_SV_SaveGameComment == nullptr )
+	{
+		other_SV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
+	}
+
+	// if it wasn't found
+	if( !other_SV_SaveGameComment )
+	{
+		// mark it as missing
+		bIsMissing = true;
+
+		return;
+	}
+
+	// call the function that provides the save game commenet interface on request
+	(other_SV_SaveGameComment)(pBuffer, maxLength);
 }
