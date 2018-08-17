@@ -687,33 +687,37 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
 
 extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blending_interface_s **ppinterface, struct engine_studio_api_s *pstudio, float (*rotationmatrix)[3][4], float (*bonetransform)[MAXSTUDIOBONES][3][4] )
 {
-	static SERVER_GETBLENDINGINTERFACE other_Server_GetBlendingInterface = nullptr;
-	static bool missing = false;
+	static SERVER_GETBLENDINGINTERFACE pServer_GetBlendingInterface = nullptr;
+	static bool bIsMissing = false;
 
-	// if the blending interface has been formerly reported as missing, give up
-	if (missing)
-		return false;
-
-	// do we NOT know if the blending interface is provided ? if so, look for its address
-	if (other_Server_GetBlendingInterface == nullptr)
-	other_Server_GetBlendingInterface = (SERVER_GETBLENDINGINTERFACE)GetProcAddress(h_Library, "Server_GetBlendingInterface");
-
-	// have we NOT found it ?
-	if (!other_Server_GetBlendingInterface)
+	// if the game .dll has no Server_GetBlendingInterface exported
+	if( bIsMissing )
 	{
-		missing = true; // then mark it as missing, no use to look for it again in the future
-		return false; // and give up
+		return 0;
 	}
 
-	// else call the function that provides the blending interface on request
-	return ((other_Server_GetBlendingInterface) (version, ppinterface, pstudio, rotationmatrix, bonetransform));
+	// if the server blending function is unknown
+	if( !pServer_GetBlendingInterface )
+	{
+		pServer_GetBlendingInterface = (SERVER_GETBLENDINGINTERFACE)GetProcAddress(h_Library, "Server_GetBlendingInterface");
+	}
+
+	// if it wasn't found
+	if( !pServer_GetBlendingInterface )
+	{
+		bIsMissing = true;
+		return 0;
+	}
+
+	return (pServer_GetBlendingInterface)(version, ppinterface, pstudio, rotationmatrix, bonetransform);
 }
 
 extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
 {
-	static SV_SAVEGAMECOMMENT other_SV_SaveGameComment = nullptr;
+	static SV_SAVEGAMECOMMENT pSV_SaveGameComment = nullptr;
 	static bool bIsMissing = false;
 
+	// TODO: does GameUI.dll localise these names?
 	if( mod_id == VALVE_DLL )
 	{
 		if( !strncmp( STRING( gpGlobals->mapname ), "t0a0", strlen( "t0a0" ) ) ) // a, b, b1, b2, c, d
@@ -957,14 +961,14 @@ extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
 		return;
 	}
 
-	// do we not know if the save game comment interface is provided? if so, look for its address
-	if( other_SV_SaveGameComment == nullptr )
+	// if the save game comment function is unknown
+	if( !pSV_SaveGameComment )
 	{
-		other_SV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
+		pSV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
 	}
 
 	// if it wasn't found
-	if( !other_SV_SaveGameComment )
+	if( !pSV_SaveGameComment )
 	{
 		// mark it as missing
 		bIsMissing = true;
@@ -972,6 +976,5 @@ extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
 		return;
 	}
 
-	// call the function that provides the save game commenet interface on request
-	(other_SV_SaveGameComment)(pBuffer, maxLength);
+	(pSV_SaveGameComment)(pBuffer, maxLength);
 }
