@@ -2035,24 +2035,29 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if (flags & W_FL_SNIPER)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "This is a sniper waypoint\n");
 
-	if (flags & W_FL_FLAG)
+	if( flags & W_FL_FLAG )
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
+
 		edict_t *pFlag = FindNearest(waypoints[index].origin, "item_ctfflag");
-		ALERT(at_console, "Body %d\n", pFlag->v.body);
-		ALERT(at_console, "Skin %d\n", pFlag->v.skin);
+		ALERT( at_console, "item_ctfflag with body %d, skin %d\n", pFlag->v.body, pFlag->v.skin );
 	}
 
-	if (flags & W_FL_FLAG_GOAL)
+	if( flags & W_FL_FLAG_GOAL )
 	{
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag goal near this waypoint\n");
+
 		edict_t *pBase = FindNearest(waypoints[index].origin, "item_ctfbase");
-		ALERT(at_console, "Model %s\n", STRING(pBase->v.model));
+		ALERT( at_console, "item_ctfbase with model %s\n", STRING(pBase->v.model) );
 	}
 
-	if (flags & W_FL_CAPTURE_POINT)
+	if( flags & W_FL_CAPTURE_POINT )
 	{
-		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
+
+		edict_t *pCapturePoint = FindNearest( waypoints[index].origin, "trigger_ctfgeneric" );
+		// TODO: skin is the thing that determines its owner?
+		ALERT( at_console, "trigger_ctfgeneric with skin  %s\n", pCapturePoint->v.skin );
 	}
 
 	if (flags & W_FL_PRONE)

@@ -49,7 +49,7 @@ typedef unsigned __int64 uint64_t;
 #define W_FL_WEAPON			(1<<17) /* weapon_ entity location */
 #define W_FL_JUMP			(1<<18) /* jump waypoint */
 
-const int W_FL_CAPTURE_POINT = (1<<19);
+const int W_FL_CAPTURE_POINT = (1<<19); // Opposing Force CTF capture point
 
 #define W_FL_NS_HIVE		(1<<20)
 #define W_FL_NS_COMMAND_CHAIR	(1<<21)
