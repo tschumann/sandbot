@@ -414,7 +414,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
          }
       }
    }
-	else if (mod_id == GEARBOX_DLL)
+	else if( mod_id == GEARBOX_DLL )
 	{
 		if( pent_info_ctfdetect == nullptr )
 		{
@@ -431,21 +431,21 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			}
 		}
 	}
-	else if (mod_id == DOD_DLL)
+	else if( mod_id == DOD_DLL )
 	{
 		if( pkvd->szClassName && !strcmp(pkvd->szClassName, "info_doddetect") && !strcmp(pkvd->szKeyName, "detect_allies_country") )
 		{
-			if(!strcmp(pkvd->szValue, "1"))
+			if( !strcmp(pkvd->szValue, "1") )
 			{
 				g_iAlliesCountry = DODGame::ALLIES_COUNTRY_BRITISH;
 			}
-
-			ALERT( at_console, "%s %s\n", pkvd->szKeyName, pkvd->szValue);
 		}
 	}
 
 	if( g_bIsMMPlugin )
+	{
 		RETURN_META( MRES_IGNORED );
+	}
 
 	(*other_gFunctionTable.pfnKeyValue)(pentKeyvalue, pkvd);
 }

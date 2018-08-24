@@ -1020,11 +1020,10 @@ int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
 }
 
 
-void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
-        int noise, int red, int green, int blue, int brightness, int speed)
+void WaypointDrawBeam( edict_t *pEntity, Vector start, Vector end, int width, int noise, int red, int green, int blue, int brightness, int speed )
 {
 	// don't send waypoint render messages to bots
-	if (!(pEntity->v.flags & FL_FAKECLIENT))
+	if( !(pEntity->v.flags & FL_FAKECLIENT) )
 	{
 		MESSAGE_BEGIN(MSG_ONE, SVC_TEMPENTITY, NULL, pEntity);
 			WRITE_BYTE(TE_BEAMPOINTS);
@@ -1052,24 +1051,18 @@ void WaypointDrawBeam(edict_t *pEntity, Vector start, Vector end, int width,
 }
 
 // pEntity is the player
-void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
+void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 {
-   edict_t *pent = NULL;
-   float radius = 300;	// increased from 40 as team_hive hangs from the ceiling and isn't close enough by default
-   TraceResult tr;
-   float distance;
-   float min_distance;
-   char item_name[64];
-   char nearest_name[64];
-   edict_t *nearest_pent;
-   int bck_index;
-   int tfc_backpack_index;
-
-   nearest_name[0] = 0;      // null out nearest_name string
-   tfc_backpack_index = -1;  // "null" out backpack index
-   nearest_pent = NULL;
-
-   min_distance = 9999.0;
+	edict_t *pent = nullptr;
+	float radius = 300;	// increased from 40 as team_hive hangs from the ceiling and isn't close enough by default
+	TraceResult tr;
+	float distance;
+	float min_distance = 9999.0f;
+	char item_name[64];
+	char nearest_name[64] = "";
+	edict_t *nearest_pent = nullptr;
+	int bck_index;
+	int tfc_backpack_index = -1;  // "null" out backpack index
 
    //********************************************************
    // look for the nearest health, armor, ammo, weapon, etc.
@@ -1140,7 +1133,7 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
       }
    }
 
-   UTIL_LogPrintf("%s is closest", nearest_name);
+   UTIL_LogPrintf( "%s is the closest entity", nearest_name );
 
    if (nearest_name[0])  // found an entity name
    {
@@ -1188,10 +1181,12 @@ void WaypointSearchItems(edict_t *pEntity, Vector origin, int wpt_index)
 			waypoints[wpt_index].flags |= W_FL_FLAG;
 		}
 
-		if ((strcmp("trigger_ctfgeneric", nearest_name) == 0))
+		if ( !strcmp("trigger_ctfgeneric", nearest_name) )
 		{
-			if (pEntity)
-				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an trigger_ctfgeneric\n");
+			if( pEntity )
+			{
+				ClientPrint( pEntity, HUD_PRINTCONSOLE, "Found a trigger_ctfgeneric\n" );
+			}
 			waypoints[wpt_index].flags |= W_FL_CAPTURE_POINT;
 		}
 
@@ -2056,8 +2051,12 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
 
 		edict_t *pCapturePoint = FindNearest( waypoints[index].origin, "trigger_ctfgeneric" );
-		// TODO: skin is the thing that determines its owner?
-		ALERT( at_console, "trigger_ctfgeneric with skin  %s\n", pCapturePoint->v.skin );
+
+		if( pCapturePoint )
+		{
+			// TODO: skin is the thing that determines its owner?
+			ALERT( at_console, "trigger_ctfgeneric with skin  %s\n", pCapturePoint->v.skin );
+		}
 	}
 
 	if (flags & W_FL_PRONE)
