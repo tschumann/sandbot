@@ -1146,7 +1146,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 	if( mod_id == VALVE_DLL )
 	{
-		pGame = new Game();
+		pGame = new ValveGame();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{

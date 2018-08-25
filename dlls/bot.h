@@ -867,11 +867,18 @@ public:
 	virtual bool CanChoosePlayerModel();
 	virtual int GetTeam( edict_t *pEdict );
 	virtual bool UseToOpenDoor();
+	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength );
 
 	virtual void SetGame( eGame game );
 	virtual bool IsGunmanChronicles();
-private:
+protected:
 	eGame m_iModId;
+};
+
+class ValveGame : public Game
+{
+public:
+	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength );
 };
 
 class GearboxGame : public Game
