@@ -182,7 +182,7 @@ void WaypointAddPath(short int add_index, short int path_index)
 
    if (p == NULL)
    {
-      ALERT(at_error, "HPB_bot - Error allocating memory for path!");
+      ALERT(at_error, "Error allocating memory for path!\n");
    }
 
    p->index[0] = path_index;
@@ -2355,12 +2355,12 @@ void WaypointRouteInit(void)
                shortest_path[matrix] = (unsigned short *)malloc(sizeof(unsigned short) * array_size);
 
                if (shortest_path[matrix] == NULL)
-                  ALERT(at_error, "HPB_bot - Error allocating memory for shortest path!");
+                  ALERT(at_error, "Error allocating memory for shortest path!\n");
 
                from_to[matrix] = (unsigned short *)malloc(sizeof(unsigned short) * array_size);
 
                if (from_to[matrix] == NULL)
-                  ALERT(at_error, "HPB_bot - Error allocating memory for from to matrix!");
+                  ALERT(at_error, "Error allocating memory for from to matrix!\n");
 
                bfp = fopen(filename2, "rb");
 
@@ -2421,12 +2421,12 @@ void WaypointRouteInit(void)
             shortest_path[matrix] = (unsigned short *)malloc(sizeof(unsigned short) * array_size);
 
             if (shortest_path[matrix] == NULL)
-               ALERT(at_error, "HPB_bot - Error allocating memory for shortest path!");
+               ALERT(at_error, "Error allocating memory for shortest path!\n");
 
             from_to[matrix] = (unsigned short *)malloc(sizeof(unsigned short) * array_size);
 
             if (from_to[matrix] == NULL)
-               ALERT(at_error, "HPB_bot - Error allocating memory for from to matrix!");
+               ALERT(at_error, "Error allocating memory for from to matrix!\n");
 
             pShortestPath = shortest_path[matrix];
             pFromTo = from_to[matrix];
