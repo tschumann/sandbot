@@ -714,38 +714,19 @@ extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blendi
 
 extern "C" EXPORT void SV_SaveGameComment( char *pBuffer, int maxLength )
 {
-	static SV_SAVEGAMECOMMENT pSV_SaveGameComment = nullptr;
-	static bool bIsMissing = false;
-
-	if( pGame )
-	{
-		pGame->GetSaveGameComment( pBuffer, maxLength );
-	}
-	else
-	{
-		ALERT( at_error, "Call to SV_SaveGameComment before pGame is initialised!\n" );
-	}
-
-	// if the game .dll has no SV_SaveGameComment exported
-	if( bIsMissing )
-	{
-		// go with the mapname as a sensible default
-		strncpy( pBuffer, STRING(gpGlobals->mapname), maxLength );
-		// don't look again
-		return;
-	}
-
-	// if the save game comment function is unknown
-	if( !pSV_SaveGameComment )
-	{
-		pSV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
-	}
+	SV_SAVEGAMECOMMENT pSV_SaveGameComment = (SV_SAVEGAMECOMMENT)GetProcAddress(h_Library, "SV_SaveGameComment");
 
 	// if it wasn't found
 	if( !pSV_SaveGameComment )
 	{
-		// mark it as missing
-		bIsMissing = true;
+		if( pGame )
+		{
+			pGame->GetSaveGameComment( pBuffer, maxLength );
+		}
+		else
+		{
+			ALERT( at_error, "Call to SV_SaveGameComment before pGame is initialised!\n" );
+		}
 
 		return;
 	}
