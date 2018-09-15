@@ -633,3 +633,18 @@ int UTIL_GetPoints( bot_t *player )
 	// return iSpent;
 	return (int)(UTIL_GetExperience(player->pEdict) / 100.0) - player->points_spent;
 }
+
+// TODO: MetaMod seems to get confused about cvar values - just talk to the engine under MetaMod?
+float CvarGetValue( cvar_t *pCvar )
+{
+	extern bool g_bIsMMPlugin;
+
+	if( g_bIsMMPlugin )
+	{
+		return CVAR_GET_FLOAT(pCvar->name);
+	}
+	else
+	{
+		return pCvar->value;
+	}
+}
