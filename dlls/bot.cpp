@@ -1941,7 +1941,7 @@ int bot_t::GetSkill()
 {
 	extern cvar_t bot_skill;
 
-	int iSkill = bot_skill.value;
+	int iSkill = CvarGetValue( &bot_skill );
 
 	if( iSkill < 0 )
 	{
@@ -2196,7 +2196,7 @@ bool bot_t::CanShoot()
 {
 	extern cvar_t bot_shoot;
 	// TODO: in Natural Selection at least, bot_shoot.value is 0 but bot_shoot.string is 1
-	return bot_shoot.value > 0.0 || atof( bot_shoot.string ) > 0.0;
+	return CvarGetValue( &bot_shoot ) > 0.0 || atof( CvarGetString( &bot_shoot ) ) > 0.0;
 }
 
 int bot_t::GetPistol()

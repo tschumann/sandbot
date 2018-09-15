@@ -1435,11 +1435,11 @@ void StartFrame( void )
 		bBaseLinesCreated = false;
 	}
 
-	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < bot_count.value )
+	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < CvarGetValue( &bot_count ) )
 	{
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
-	else if( GetBotCount() > bot_count.value )
+	else if( GetBotCount() > CvarGetValue( &bot_count ) )
 	{
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{

@@ -564,7 +564,7 @@ void UTIL_LogPrintf( char *fmt, ... )
 //=========================================================
 void UTIL_LogDPrintf( char *fmt, ... )
 {
-	if( bot_log_level.value >= iBotLogLevelDebug )
+	if( CvarGetValue( &bot_log_level ) >= iBotLogLevelDebug )
 	{
 		va_list argptr;
 		static char string[iLogBufferSize];
@@ -583,7 +583,7 @@ void UTIL_LogDPrintf( char *fmt, ... )
 //=========================================================
 void UTIL_LogTPrintf( char *fmt, ... )
 {
-	if( bot_log_level.value >= iBotLogLevelTrace )
+	if( CvarGetValue( &bot_log_level ) >= iBotLogLevelTrace )
 	{
 		va_list argptr;
 		static char string[iLogBufferSize];
@@ -646,5 +646,19 @@ float CvarGetValue( cvar_t *pCvar )
 	else
 	{
 		return pCvar->value;
+	}
+}
+
+const char *CvarGetString( cvar_t *pCvar )
+{
+	extern bool g_bIsMMPlugin;
+
+	if( g_bIsMMPlugin )
+	{
+		return CVAR_GET_STRING(pCvar->name);
+	}
+	else
+	{
+		return pCvar->string;
 	}
 }

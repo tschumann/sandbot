@@ -511,4 +511,7 @@ void UTIL_LogTPrintf( char *fmt, ... );
 
 bool UTIL_IsBuilt( edict_t *pent );
 
+float CvarGetValue( cvar_t *pCvar );
+const char *CvarGetString( cvar_t *pCvar );
+
 #endif // UTIL_H

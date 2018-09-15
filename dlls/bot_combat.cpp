@@ -776,7 +776,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a melee weapon and melee weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_MELEE) && bot_use_melee.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_MELEE) && CvarGetValue( &bot_use_melee ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -784,7 +784,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a pistol and pistols have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_PISTOL) && bot_use_pistol.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_PISTOL) && CvarGetValue( &bot_use_pistol ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -792,7 +792,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a shotgun and shotguns have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_SHOTGUN) && bot_use_shotgun.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_SHOTGUN) && CvarGetValue( &bot_use_shotgun ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -800,7 +800,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a machine gun and machine guns have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_MACHINEGUN) && bot_use_machinegun.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_MACHINEGUN) && CvarGetValue( &bot_use_machinegun ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -808,7 +808,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a rifle and rifles have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_RIFLE) && bot_use_rifle.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_RIFLE) && CvarGetValue( &bot_use_rifle ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -816,7 +816,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a sniping weapon and sniping weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_SNIPER) && bot_use_sniper.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_SNIPER) && CvarGetValue( &bot_use_sniper ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -824,7 +824,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a rocket launcher and rocket launchers have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_ROCKETLAUNCHER) && bot_use_rocketlauncher.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_ROCKETLAUNCHER) && CvarGetValue( &bot_use_rocketlauncher ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -832,7 +832,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's an energy weapon and energy weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_ENERGY) && bot_use_energy.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_ENERGY) && CvarGetValue( &bot_use_energy ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -840,7 +840,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's an organic weapon and organic weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_ORGANIC) && bot_use_organic.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_ORGANIC) && CvarGetValue( &bot_use_organic ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -848,7 +848,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a grenade and grenades have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_GRENADE) && bot_use_grenade.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_GRENADE) && CvarGetValue( &bot_use_grenade ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -856,7 +856,7 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
 		// if it's a chemical weapon and chemical weapons have been disabled for bots
-		if( (pSelect[select_index].flags & WEAPON_CHEMICAL) && bot_use_chemical.value < 1 )
+		if( (pSelect[select_index].flags & WEAPON_CHEMICAL) && CvarGetValue( &bot_use_chemical ) < 1 )
 		{
 			// skip to next weapon
 			select_index++;
@@ -930,10 +930,10 @@ bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
             continue;
          }
 
-         // select this weapon if it isn't already selected
-         if (pBot->current_weapon.iId != iId)
+        // select this weapon if it isn't already selected
+        if (pBot->current_weapon.iId != iId)
 		{
-            UTIL_SelectItem(pEdict, pSelect[select_index].weapon_name);
+			UTIL_SelectItem(pEdict, pSelect[select_index].weapon_name);
 		}
 
          if (mod_id == TFC_DLL)
