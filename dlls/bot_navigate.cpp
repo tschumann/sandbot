@@ -816,42 +816,22 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             {
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
-				if (index != -1)
+				if (index != WAYPOINT_NOT_FOUND)
 				{
 					pBot->waypoint_goal = index;
 				}
             }
          }
-		 else if (mod_id == GEARBOX_DLL && pGame->IsCTF())
-		 {
-			 index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
+			else if( ( mod_id == GEARBOX_DLL && pGame->IsCTF() ) || mod_id == DOD_DLL || mod_id == NS_DLL )
+			{
+				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 
-			 if (index != -1)
-			 {
-				 UTIL_LogDPrintf("an opfor bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam(pBot->pEdict), index);
-				 pBot->waypoint_goal = index;
-			 }
-		 }
-		 else if (mod_id == DOD_DLL)
-		 {
-			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
-
-            if (index != -1)
-            {
-				UTIL_LogDPrintf("a dod bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam( pBot->pEdict ), index);
-               pBot->waypoint_goal = index;
+				if( index != WAYPOINT_NOT_FOUND )
+				{
+					UTIL_LogDPrintf("a bot (team %d) is heading for a goal (wpt %d)\n", UTIL_GetTeam( pBot->pEdict ), index);
+					pBot->waypoint_goal = index;
+				}
 			}
-		 }
-		 else if (mod_id == NS_DLL)
-		 {
-			index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
-
-            if (index != -1)
-            {
-				UTIL_LogDPrintf("an ns bot is heading for a goal\n");
-               pBot->waypoint_goal = index;
-			}
-		 }
       }
 
       // check if the bot has a goal waypoint...

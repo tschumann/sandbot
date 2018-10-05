@@ -657,7 +657,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
    int distance, min_distance;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find the nearest waypoint with the matching flags...
 

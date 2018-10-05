@@ -18,6 +18,8 @@ typedef unsigned __int64 uint64_t;
 
 #include <limits.h>
 
+const int WAYPOINT_NOT_FOUND = -1;
+
 #define MAX_WAYPOINTS 2048
 
 #define REACHABLE_RANGE 400.0
