@@ -532,85 +532,71 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 
 	if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG )
 	{
-		edict_t *nearest_flag = FindNearest(waypoints[index].origin, "item_ctfflag", 75.0);
+		edict_t *pNearestFlag = FindNearest(waypoints[index].origin, "item_ctfflag", 75.0);
 
 		// if there's not a nearby item_ctfflag
-		if( !nearest_flag )
+		if( !pNearestFlag )
 		{
-			// ALERT(at_console, "Couldn't find nearest item_ctfflag for waypoint %d in ShouldSkip - must be away from base\n", index);
-
 			return false;
 		}
 
-		// UTIL_LogDPrintf("Bot team %d, flag skin %d\n", UTIL_GetTeam(pBot->pEdict), nearest_flag->v.skin);
-
-		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && nearest_flag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN)
+		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && pNearestFlag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN )
 		{
-			// UTIL_LogDPrintf("Black Mesa member, Opposing Force flag - not skipping\n");
 			return false;
 		}
-		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && nearest_flag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
+		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && pNearestFlag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
 		{
-			// UTIL_LogDPrintf("Opposing Force member, Black Mesa flag - not skipping\n");
 			return false;
 		}
 		else
 		{
-			// ALERT(at_console, "Flag belongs to bot's team - skipping\n");
 			return true;
 		}
 	}
-	else if (mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG_GOAL)
+	else if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG_GOAL )
 	{
-		edict_t *nearest_base = FindNearest(waypoints[index].origin, "item_ctfbase");
+		edict_t *pNearestBase = FindNearest(waypoints[index].origin, "item_ctfbase");
 
 		// if there's not a nearby item_ctfbase
-		if (!nearest_base)
-		{
-			// ALERT(at_console, "Couldn't find nearest item_ctfbase in ShouldSkip\n");
-
-			return false;
-		}
-
-		// UTIL_LogDPrintf("Bot team %d, base model %s\n", UTIL_GetTeam(pBot->pEdict), STRING(nearest_base->v.model));
-
-		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && !strcmp(STRING(nearest_base->v.model), "models/civ_stand.mdl"))
+		if (!pNearestBase)
 		{
 			return false;
 		}
-		else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && !strcmp(STRING(nearest_base->v.model), "models/mil_stand.mdl"))
+
+		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && !strcmp(STRING(pNearestBase->v.model), "models/civ_stand.mdl") )
+		{
+			return false;
+		}
+		else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && !strcmp(STRING(pNearestBase->v.model), "models/mil_stand.mdl") )
 		{
 			return false;
 		}
 		else
 		{
-			// ALERT(at_console, "Base is the same as bot's team - skipping\n");
 			return true;
 		}
 	}
 	else if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
 	{
-		edict_t *nearest_control_point = FindNearest(waypoints[index].origin, "dod_control_point");
+		edict_t *pNearestControlPoint = FindNearest(waypoints[index].origin, "dod_control_point");
 
 		// if there's not a nearby dod_control_point
-		if( !nearest_control_point )
+		if( !pNearestControlPoint )
 		{
-			ALERT( at_console, "Couldn't find nearest dod_control_point in ShouldSkip\n" );
-
 			return false;
 		}
 
 		// if the dod_control_point nearest this waypoint already belongs to the same team as the player
-		if( !((DODBot *)pBot)->ShouldCapturePoint( nearest_control_point ) )
+		if( !((DODBot *)pBot)->ShouldCapturePoint( pNearestControlPoint ) )
 		{
 			return true;
 		}
 	}
 	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_HIVE )
 	{
-		edict_t *nearest_hive = FindNearest( waypoints[index].origin, "team_hive" );
+		edict_t *pNearestHive = FindNearest( waypoints[index].origin, "team_hive" );
 
-		if( !((NSBot *)pBot)->ShouldAttackHive( nearest_hive ) )
+		if( !((NSBot *)pBot)->ShouldAttackHive( pNearestHive ) )
 		{
 			return true;
 		}
@@ -620,22 +606,22 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		if( ((NSBot *)pBot)->IsMarine() )
 		{
 			// get the resource tower nearest this waypoint
-			edict_t *pResourceTower = FindNearest( waypoints[index].origin, "resourcetower", 5.0f );
+			edict_t *pNearestResourceTower = FindNearest( waypoints[index].origin, "resourcetower", 5.0f );
 
 			// if there is a resource tower near this waypoint
-			if( pResourceTower )
+			if( pNearestResourceTower )
 			{
-				return UTIL_IsBuilt( pResourceTower );
+				return UTIL_IsBuilt( pNearestResourceTower );
 			}
 		}
 		else if( ((NSBot *)pBot)->IsAlien() && ((NSBot *)pBot)->IsGorge() )
 		{
 			// get the resource tower nearest this waypoint
-			edict_t *pResourceTower = FindNearest( waypoints[index].origin, "alienresourcetower", 5.0f );
+			edict_t *pNearestResourceTower = FindNearest( waypoints[index].origin, "alienresourcetower", 5.0f );
 
 			// if there is a resource tower near this waypoint and it's built, skip it
 			// TODO: if it's damaged heal it?
-			if( pResourceTower && UTIL_IsBuilt( pResourceTower ) )
+			if( pNearestResourceTower && UTIL_IsBuilt( pNearestResourceTower ) )
 			{
 				return false;
 			}

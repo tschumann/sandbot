@@ -1151,7 +1151,7 @@ void BotUseLift( bot_t *pBot, float moved_distance )
    }
 
    // check if the bot has waited too long for the lift to move...
-   if (((pBot->f_use_button_time + 2.0) < gpGlobals->time) && (!pBot->b_lift_moving))
+   if (((pBot->f_use_button_time + 2.0) < gpGlobals->time) && !pBot->b_lift_moving)
    {
       // clear use button flag
       pBot->b_use_button = FALSE;
@@ -1163,13 +1163,13 @@ void BotUseLift( bot_t *pBot, float moved_distance )
    }
 
    // check if lift has started moving...
-   if ((moved_distance > 1) && (!pBot->b_lift_moving))
+   if ((moved_distance > 1) && !pBot->b_lift_moving)
    {
       pBot->b_lift_moving = TRUE;
    }
 
    // check if lift has stopped moving...
-   if ((moved_distance <= 1) && (pBot->b_lift_moving))
+   if ((moved_distance <= 1) && pBot->b_lift_moving)
    {
       TraceResult tr1, tr2;
       Vector v_src, v_forward, v_right, v_left;
@@ -1313,14 +1313,16 @@ void BotTurnAtWall( bot_t *pBot, TraceResult *tr )
    {
       Y1 = Y1 - RANDOM_FLOAT(5.0, 20.0);
    }
-   if (Y1 < 0) Y1 += 360;
+   if (Y1 < 0)
+	   Y1 += 360;
 
    Y2 = Normal.y + 90;
    if (RANDOM_LONG(1, 100) <= 50)
    {
       Y2 = Y2 + RANDOM_FLOAT(5.0, 20.0);
    }
-   if (Y2 > 359) Y2 -= 360;
+   if (Y2 > 359)
+	   Y2 -= 360;
 
    // D1 and D2 are the difference (in degrees) between the bot's current
    // angle and Y1 or Y2 (respectively).
@@ -1373,7 +1375,7 @@ bool BotCantMoveForward( bot_t *pBot, TraceResult *tr )
    v_forward = v_src + gpGlobals->v_forward * 40;
 
    // trace from the bot's eyes straight forward...
-   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, tr);
+   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, tr );
 
    // check if the trace hit something...
    if (tr->flFraction < 1.0)
@@ -1387,7 +1389,7 @@ bool BotCantMoveForward( bot_t *pBot, TraceResult *tr )
    v_forward = v_src + gpGlobals->v_forward * 40;
 
    // trace from the bot's waist straight forward...
-   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, tr);
+   UTIL_TraceLine( v_src, v_forward, dont_ignore_monsters, pEdict->v.pContainingEntity, tr );
 
    // check if the trace hit something...
    if (tr->flFraction < 1.0)
@@ -1442,8 +1444,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at maximum jump height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1454,7 +1455,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at maximum jump height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1473,7 +1474,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, -99);
 
    // trace a line straight down toward the ground...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1485,7 +1486,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, -99);
 
    // trace a line straight down toward the ground...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1497,7 +1498,7 @@ bool BotCanJumpUp( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, -99);
 
    // trace a line straight down toward the ground...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1536,7 +1537,7 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at duck height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1559,7 +1560,7 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + gpGlobals->v_forward * 24;
 
    // trace a line forward at duck height...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace hit something, return FALSE
    if (tr.flFraction < 1.0)
@@ -1575,7 +1576,7 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, 72);
 
    // trace a line straight up in the air...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace didn't hit something, return FALSE
    if (tr.flFraction >= 1.0)
@@ -1587,8 +1588,7 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, 72);
 
    // trace a line straight up in the air...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters,
-                   pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace didn't hit something, return FALSE
    if (tr.flFraction >= 1.0)
@@ -1600,7 +1600,7 @@ bool BotCanDuckUnder( bot_t *pBot )
    v_dest = v_source + Vector(0, 0, 72);
 
    // trace a line straight up in the air...
-   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_source, v_dest, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // if trace didn't hit something, return FALSE
    if (tr.flFraction >= 1.0)
@@ -1708,7 +1708,7 @@ bool BotCheckWallOnLeft( bot_t *pBot )
    v_src = pEdict->v.origin;
    v_left = v_src + gpGlobals->v_right * -40;  // 40 units to the left
 
-   UTIL_TraceLine( v_src, v_left, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_src, v_left, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // check if the trace hit something...
    if (tr.flFraction < 1.0)
@@ -1736,7 +1736,7 @@ bool BotCheckWallOnRight( bot_t *pBot )
    v_src = pEdict->v.origin;
    v_right = v_src + gpGlobals->v_right * 40;  // 40 units to the right
 
-   UTIL_TraceLine( v_src, v_right, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr);
+   UTIL_TraceLine( v_src, v_right, dont_ignore_monsters, pEdict->v.pContainingEntity, &tr );
 
    // check if the trace hit something...
    if (tr.flFraction < 1.0)
