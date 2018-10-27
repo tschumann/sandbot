@@ -1398,8 +1398,8 @@ void WaypointDelete(edict_t *pEntity)
    if (index == -1)
       return;
 
-   if ((waypoints[index].flags & W_FL_SNIPER) || (waypoints[index].flags & W_FL_SENTRYGUN) ||
-       (waypoints[index].flags & W_FL_DISPENSER) || (waypoints[index].flags & W_FL_JUMP))
+   if ((waypoints[index].flags & W_FL_SNIPER) || (waypoints[index].flags & W_FL_TFC_SENTRYGUN) ||
+       (waypoints[index].flags & W_FL_TFC_DISPENSER) || (waypoints[index].flags & W_FL_JUMP))
    {
       int i;
       int min_index = -1;
@@ -2048,10 +2048,10 @@ void WaypointPrintInfo(edict_t *pEntity)
 	if (flags & W_FL_PRONE)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Bot will go prone here\n");
 
-	if (flags & W_FL_SENTRYGUN)
+	if (flags & W_FL_TFC_SENTRYGUN)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a sentry gun here\n");
 
-	if (flags & W_FL_DISPENSER)
+	if (flags & W_FL_TFC_DISPENSER)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "Engineers will build a dispenser here\n");
 
 	if( flags & W_FL_NS_HIVE )

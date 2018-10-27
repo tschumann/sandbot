@@ -360,7 +360,7 @@ void TFCBot::Build()
 			if (this->sentrygun_waypoint == -1)
 			{
 				// find a random sentry gun waypoint...
-				index = WaypointFindRandomGoal(pEdict, team, W_FL_SENTRYGUN);
+				index = WaypointFindRandomGoal(pEdict, team, W_FL_TFC_SENTRYGUN);
 			}
 			else
 			{
@@ -386,7 +386,7 @@ void TFCBot::Build()
 		{
 			if (this->dispenser_waypoint == -1)
 			{
-				index = WaypointFindRandomGoal(pEdict, team, W_FL_DISPENSER);
+				index = WaypointFindRandomGoal(pEdict, team, W_FL_TFC_DISPENSER);
 			}
 			else
 			{
