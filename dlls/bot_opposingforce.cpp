@@ -104,7 +104,7 @@ int OpposingForceBot::GetGoalType()
 	}
 	else if( pGame->IsCapturePoint() )
 	{
-		return W_FL_CAPTURE_POINT;
+		return W_FL_OP4_CAPTURE_POINT;
 	}
 	else
 	{

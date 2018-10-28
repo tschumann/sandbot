@@ -518,8 +518,9 @@ float DistanceToNearest(Vector point, const char *szClassname)
 
 /**
  * index - the waypoint index
+ * this should really be in bot classes
  */
-bool ShouldSkip(edict_t *pPlayer, int index)
+bool ShouldSkip( edict_t *pPlayer, int index )
 {
 	bot_t *pBot = UTIL_GetBotPointer( pPlayer );
 
@@ -530,50 +531,68 @@ bool ShouldSkip(edict_t *pPlayer, int index)
 		return false;
 	}
 
-	if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG )
+	if( mod_id == GEARBOX_DLL && pGame->IsCTF() )
 	{
-		edict_t *pNearestFlag = FindNearest(waypoints[index].origin, "item_ctfflag", 75.0);
+		if( waypoints[index].flags == W_FL_FLAG )
+		{
+			edict_t *pNearestFlag = FindNearest(waypoints[index].origin, "item_ctfflag", 75.0);
 
-		// if there's not a nearby item_ctfflag
-		if( !pNearestFlag )
-		{
-			return false;
-		}
+			// if there's not a nearby item_ctfflag
+			if( !pNearestFlag )
+			{
+				return false;
+			}
 
-		if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && pNearestFlag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN )
-		{
-			return false;
+			if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && pNearestFlag->v.skin == OpposingForceBot::OPPOSING_FORCE_FLAG_SKIN )
+			{
+				return false;
+			}
+			else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && pNearestFlag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
-		else if( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && pNearestFlag->v.skin == OpposingForceBot::BLACK_MESA_FLAG_SKIN )
+		else if( waypoints[index].flags == W_FL_FLAG_GOAL )
 		{
-			return false;
-		}
-		else
-		{
-			return true;
+			edict_t *pNearestBase = FindNearest(waypoints[index].origin, "item_ctfbase");
+
+			// if there's not a nearby item_ctfbase
+			if (!pNearestBase)
+			{
+				return false;
+			}
+
+			if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && !strcmp(STRING(pNearestBase->v.model), "models/civ_stand.mdl") )
+			{
+				return false;
+			}
+			else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && !strcmp(STRING(pNearestBase->v.model), "models/mil_stand.mdl") )
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
-	else if( mod_id == GEARBOX_DLL && pGame->IsCTF() && waypoints[index].flags == W_FL_FLAG_GOAL )
+	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() )
 	{
-		edict_t *pNearestBase = FindNearest(waypoints[index].origin, "item_ctfbase");
+		if( waypoints[index].flags == W_FL_OP4_CAPTURE_POINT )
+		{
+			edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
 
-		// if there's not a nearby item_ctfbase
-		if (!pNearestBase)
-		{
-			return false;
-		}
+			// if there's not a nearby trigger_ctfgeneric
+			if( !pNearestCapturePoint )
+			{
+				return false;
+			}
 
-		if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_BLACK_MESA && !strcmp(STRING(pNearestBase->v.model), "models/civ_stand.mdl") )
-		{
-			return false;
-		}
-		else if ( UTIL_GetTeam(pBot->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE && !strcmp(STRING(pNearestBase->v.model), "models/mil_stand.mdl") )
-		{
-			return false;
-		}
-		else
-		{
-			return true;
+			// TODO: work out which if the player's team is right
 		}
 	}
 	else if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
@@ -1173,7 +1192,7 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 			{
 				ClientPrint( pEntity, HUD_PRINTCONSOLE, "Found a trigger_ctfgeneric\n" );
 			}
-			waypoints[wpt_index].flags |= W_FL_CAPTURE_POINT;
+			waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT;
 		}
 
 		if ((strcmp("dod_object", nearest_name) == 0))
@@ -1289,7 +1308,7 @@ void WaypointAdd(edict_t *pEntity, int flags = 0)
 	   WaypointSearchItems(pEntity, waypoints[index].origin, index);
    }
 
-   // TODO: this isn't working
+   // TODO: this isn't working - the colours that is
    if( waypoints[index].flags & W_FL_NS_HIVE )
    {
 	   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 0, 0);
@@ -2032,7 +2051,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ALERT( at_console, "item_ctfbase with model %s\n", STRING(pBase->v.model) );
 	}
 
-	if( flags & W_FL_CAPTURE_POINT )
+	if( flags & W_FL_OP4_CAPTURE_POINT )
 	{
 		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
 
