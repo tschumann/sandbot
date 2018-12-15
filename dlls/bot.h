@@ -373,6 +373,7 @@ public:
 	virtual bool ShouldJumpAfterDeath();
 
 	virtual bool HasFlag();
+	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
 
 	bool is_used;
 	int iBotDataIndex;
@@ -552,6 +553,8 @@ public:
 
 	virtual bool HasFlag();
 	virtual bool FindFlag();
+
+	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
 
 	const static int TEAM_BLACK_MESA = 0;
 	const static int TEAM_OPPOSING_FORCE = 1;

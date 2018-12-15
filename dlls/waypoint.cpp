@@ -580,19 +580,20 @@ bool ShouldSkip( edict_t *pPlayer, int index )
 			}
 		}
 	}
-	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() )
+	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && waypoints[index].flags == W_FL_OP4_CAPTURE_POINT)
 	{
-		if( waypoints[index].flags == W_FL_OP4_CAPTURE_POINT )
+		edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
+
+		// if there's not a nearby trigger_ctfgeneric
+		if( !pNearestCapturePoint )
 		{
-			edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
+			return false;
+		}
 
-			// if there's not a nearby trigger_ctfgeneric
-			if( !pNearestCapturePoint )
-			{
-				return false;
-			}
-
-			// TODO: work out which if the player's team is right
+		// if the trigger_ctfgeneric nearest this waypoint already belongs to the same team as the player
+		if( !pBot->ShouldCapturePoint( pNearestCapturePoint ) )
+		{
+			return true;
 		}
 	}
 	else if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
@@ -606,7 +607,7 @@ bool ShouldSkip( edict_t *pPlayer, int index )
 		}
 
 		// if the dod_control_point nearest this waypoint already belongs to the same team as the player
-		if( !((DODBot *)pBot)->ShouldCapturePoint( pNearestControlPoint ) )
+		if( !pBot->ShouldCapturePoint( pNearestControlPoint ) )
 		{
 			return true;
 		}

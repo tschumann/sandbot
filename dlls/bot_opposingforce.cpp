@@ -166,7 +166,7 @@ bool OpposingForceBot::FindFlag()
 					// kill the man with the flag/card!
 					this->pBotEnemy = pent->v.owner;
 
-					this->waypoint_goal = -1;  // forget the goal (if there is one)
+					this->waypoint_goal = WAYPOINT_NOT_FOUND;  // forget the goal (if there is one)
 
 					return TRUE;
 				}
@@ -181,7 +181,7 @@ bool OpposingForceBot::FindFlag()
 					// find the nearest waypoint to the flag/card...
 					index = WaypointFindNearest(pEdict, 500, team, pent->v.origin, W_FL_FLAG);
 
-					if (index == -1)
+					if (index == WAYPOINT_NOT_FOUND)
 					{
 						// no waypoint is close enough, just head straight towards the flag/card
 						Vector v_flag = pent->v.origin - pEdict->v.origin;
@@ -230,3 +230,10 @@ bool OpposingForceBot::FindFlag()
 
 	return false;
 }
+
+bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
+{
+	// TODO: probably the texture name? there's a team_no property but that's probably the initial team name?
+	return false;
+}
+
