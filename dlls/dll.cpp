@@ -51,7 +51,7 @@ int min_bots = -1;
 int num_bots = 0;
 int prev_num_bots = 0;
 bool g_GameRules = FALSE;
-edict_t *clients[32];
+edict_t *clients[MAX_PLAYERS];
 edict_t *listenserver_edict = NULL;
 int g_menu_waypoint;
 int g_menu_state = 0;

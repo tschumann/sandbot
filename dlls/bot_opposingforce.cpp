@@ -233,7 +233,9 @@ bool OpposingForceBot::FindFlag()
 
 bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
-	// TODO: probably the texture name? there's a team_no property but that's probably the initial team name?
+	// TODO: probably the texture frame? there's a team_no property which looks like who can use? also a triggerstate if it's on or off?
+	ALERT( at_console, "trigger_ctfgeneric skin %d frame %d\n", pControlPoint->v.skin, pControlPoint->v.frame );
+
 	return false;
 }
 
