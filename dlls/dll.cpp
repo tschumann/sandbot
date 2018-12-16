@@ -7,15 +7,12 @@
 //
 
 #include "extdll.h"
-#include "dllapi.h"
 #include "h_export.h"
 #include "meta_api.h"
-#include "entity_state.h"
 
 #include "bot.h"
 #include "bot_func.h"
 #include "waypoint.h"
-#include "h_export.h"
 
 #define MENU_NONE  0
 #define MENU_1     1

@@ -1,12 +1,11 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "studio.h"
 
 #include "bot.h"
 #include "bot_func.h"
-#include "waypoint.h"
 #include "bot_weapons.h"
+#include "waypoint.h"
 
 // http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html
 // http://www.unknownworlds.com/oldwebsite/manuals/comm_manual/basic/index.htm

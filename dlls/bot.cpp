@@ -9,7 +9,6 @@
 #include "extdll.h"
 #include "meta_api.h"
 #include "cbase.h"
-#include "studio.h"
 
 #include "bot.h"
 #include "bot_func.h"

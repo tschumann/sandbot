@@ -24,12 +24,9 @@
 #include "extdll.h"
 #include "util.h"
 #include "dll.h"
-#include "studio.h"
 
 #include "bot.h"
 #include "bot_func.h"
-
-#include <cctype>
 
 
 extern int mod_id;

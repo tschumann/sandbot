@@ -7,11 +7,9 @@
 //
 
 #include "extdll.h"
-#include "dllapi.h"
 #include "h_export.h"
 #include "meta_api.h"
 #include "cbase.h"
-#include "studio.h"
 
 #include "bot.h"
 #include "engine.h"

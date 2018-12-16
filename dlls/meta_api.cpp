@@ -8,8 +8,6 @@
 
 #include <extdll.h>
 #include <meta_api.h>
-#include "sdk_util.h"
-#include "studio.h"
 
 #include "bot.h"
 

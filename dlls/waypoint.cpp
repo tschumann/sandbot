@@ -17,7 +17,6 @@
 #include "enginecallback.h"
 #include "util.h"
 #include "cbase.h"
-#include "studio.h"
 
 #include "bot.h"
 #include "waypoint.h"
