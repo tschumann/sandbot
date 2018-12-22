@@ -16,10 +16,6 @@
 #include "bot_weapons.h"
 #include "h_export.h"
 
-#include <cctype>
-#include <sys/types.h>
-#include <sys/stat.h>
-
 extern int mod_id;
 extern edict_t *clients[32];
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
