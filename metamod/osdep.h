@@ -46,7 +46,6 @@
 #include "comp_dep.h"
 #include "types_meta.h"		// mBOOL
 #include "mreg.h"			// REG_CMD_FN, etc
-#include "log_meta.h"		// LOG_ERROR, etc
 
 // String describing platform/DLL-type, for matching lines in plugins.ini.
 #ifdef linux

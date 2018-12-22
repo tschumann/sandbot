@@ -47,7 +47,6 @@
 #undef DEBUG
 #endif /* DEBUG */
 
-#include "enginecallbacks.h"
 #include "comp_dep.h"
 #include <util.h>
 
