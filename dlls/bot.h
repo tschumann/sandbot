@@ -91,9 +91,6 @@ int GetBotCount();
 void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... );
 const char *GetArg( const char *command, int arg_number );
 
-#define HW_WAIT_SPAWN 1
-
-
 #define LADDER_UNKNOWN  0
 #define LADDER_UP       1
 #define LADDER_DOWN     2
@@ -394,7 +391,6 @@ public:
 	int bot_money;        // for Counter-Strike
 	float idle_angle;
 	float idle_angle_time;
-	int round_end;        // round has ended (in round based games)
 	float blinded_time;
 
 	float prev_speed;
@@ -481,11 +477,6 @@ public:
 	bool  b_use_capture;
 	float f_use_capture_time;
 	edict_t *pCaptureEdict;
-
-   	// Gunman Chronicles
-	bool bFists;
-	int iShotgunMode;
-	bool bMinigunSpin;
 
 	// Natural Selection
 	bool bUseArmory;

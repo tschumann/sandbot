@@ -52,21 +52,20 @@ unsigned int route_num_waypoints;
 unsigned short *shortest_path[4] = {NULL, NULL, NULL, NULL};
 unsigned short *from_to[4] = {NULL, NULL, NULL, NULL};
 
-static FILE *fp;
-
-
 void WaypointDebug(void)
 {
-   int y = 1, x = 1;
+	int x = 1;
+	int y = 1;
 
-   fp=fopen("HPB_bot.txt","a");
-   fprintf(fp,"WaypointDebug: LINKED LIST ERROR!!!\n");
-   fclose(fp);
+	FILE *fp = fopen( "HPB_bot.txt", "a" );
+	fprintf( fp,"WaypointDebug: LINKED LIST ERROR!!!\n" );
+	fclose( fp );
 
-   x = x - 1;  // x is zero
-   y = y / x;  // cause an divide by zero exception
+	// cause a divide by zero exception
+	x = x - 1;
+	y = y / x;
 
-   return;
+	return;
 }
 
 

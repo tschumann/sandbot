@@ -40,6 +40,26 @@ plugin_info_t Plugin_info = {
 	PT_NEVER,	// (when) unloadable
 };
 
+int DispatchSpawn_Post( edict_t * pent )
+{
+	// solves the bots unable to see through certain types of glass bug.
+	// MAPPERS: NEVER EVER ALLOW A TRANSPARENT ENTITY TO WEAR THE FL_WORLDBRUSH FLAG !!!
+
+	if( pent->v.rendermode == kRenderTransTexture )
+		pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
+
+	RETURN_META_VALUE( MRES_IGNORED, 0 );
+}
+
+extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
+{
+	memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
+
+	pFunctionTable->pfnSpawn = DispatchSpawn_Post;
+
+	return 1;
+}
+
 extern DLL_FUNCTIONS other_gFunctionTable;
 
 // Global vars from metamod:

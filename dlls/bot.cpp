@@ -339,7 +339,8 @@ void NewActiveClient( edict_t *pEntity )
 
 void KickBot( int iIndex )
 {
-	if( pBots && pBots[iIndex]->is_used )	// is this slot used?
+	// if the slot is in use
+	if( pBots && pBots[iIndex]->is_used )
 	{
 		char szCmd[64];
 
@@ -353,26 +354,15 @@ void KickBot( int iIndex )
 	}
 	else
 	{
-		ALERT( at_warning, "Bot at index %d is not in use\n", iIndex );
+		ALERT( at_warning, "Bot at index %d is not in use; not kicking\n", iIndex );
 	}
 }
 
 void KickAllBots()
 {
-	for( int index = 0; index < MAX_PLAYERS; index++ )
+	for( unsigned int index = 0; index < MAX_PLAYERS; index++ )
 	{
-		if( pBots && pBots[index]->is_used )	// is this slot used?
-		{
-			char szCmd[64];
-
-			sprintf( szCmd, "kick \"%s\"\n", pBots[index]->name );
-
-			pBots[index]->is_used = false;
-			pBotData[pBots[index]->iBotDataIndex].bIsUsed = false;
-
-			// kick the bot using (kick "name")
-			SERVER_COMMAND(szCmd);
-		}
+		KickBot( index );
 	}
 }
 
@@ -383,7 +373,7 @@ void CleanupGameAndBots()
 	if( pGame )
 	{
 		delete pGame;
-		pGame = NULL;
+		pGame = nullptr;
 	}
 	if( pBotData )
 	{
@@ -397,28 +387,26 @@ void CleanupGameAndBots()
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
 			delete pBots[i];
-			pBots[i] = NULL;
+			pBots[i] = nullptr;
 		}
-		pBots = NULL;
+		pBots = nullptr;
 	}
 }
-
 
 // this is the LINK_ENTITY_TO_CLASS function that creates a player (bot)
 void player( entvars_t *pev )
 {
-	static LINK_ENTITY_FUNC otherClassName = NULL;
+	static LINK_ENTITY_FUNC pClassName = nullptr;
 
-	if( h_Library != NULL && otherClassName == NULL )
+	if( h_Library != nullptr && pClassName == nullptr )
 	{
-		otherClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, "player");
+		pClassName = (LINK_ENTITY_FUNC)GetProcAddress(h_Library, "player");
 	}
-	if( otherClassName != NULL )
+	if( pClassName != nullptr )
 	{
-		(*otherClassName)(pev);
+		(*pClassName)(pev);
 	}
 }
-
 
 void BotSpawnInit( bot_t *pBot )
 {
@@ -508,11 +496,6 @@ void BotSpawnInit( bot_t *pBot )
 	pBot->b_use_capture = FALSE;
 	pBot->f_use_capture_time = 0.0;
 	pBot->pCaptureEdict = NULL;
-
-	// Gunman Chronicles
-	pBot->bFists = false;
-	// pBot->iShotgunMode = SHOTGUN_SHOTGUN;
-	pBot->bMinigunSpin = false;
 
 	// The Ship
 	pBot->bUseDoor = false;

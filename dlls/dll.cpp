@@ -47,9 +47,9 @@ float bot_check_time = 30.0;
 int min_bots = -1;
 int num_bots = 0;
 int prev_num_bots = 0;
-bool g_GameRules = FALSE;
+bool g_GameRules = false;
 edict_t *clients[MAX_PLAYERS];
-edict_t *listenserver_edict = NULL;
+edict_t *listenserver_edict = nullptr;
 int g_menu_waypoint;
 int g_menu_state = 0;
 
@@ -72,13 +72,13 @@ BACKPACK_S backpacks[MAX_BACKPACKS];
 char arg[256];
 
 float respawn_time = 0.0;
-bool spawn_time_reset = FALSE;
+bool spawn_time_reset = false;
 
 bool bBaseLinesCreated = false;
 bool bServerActivated = false;
 bool bCanAddBots = false;
 
-Game *pGame = NULL;
+Game *pGame = nullptr;
 
 // TheFatal's method for calculating the msecval
 int msecnum;
@@ -174,7 +174,7 @@ void GameDLLInit( void )
 
 	for( int i = 0; i < MAX_PLAYERS; i++ )
 	{
-		clients[i] = NULL;
+		clients[i] = nullptr;
 	}
 
 	if( g_bIsMMPlugin )
@@ -272,17 +272,6 @@ int DispatchSpawn( edict_t *pent )
 		pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
 
 	return result;
-}
-
-int DispatchSpawn_Post( edict_t * pent )
-{
-	// solves the bots unable to see through certain types of glass bug.
-	// MAPPERS: NEVER EVER ALLOW A TRANSPARENT ENTITY TO WEAR THE FL_WORLDBRUSH FLAG !!!
-
-	if( pent->v.rendermode == kRenderTransTexture )
-		pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
-
-	RETURN_META_VALUE( MRES_IGNORED, 0 );
 }
 
 void DispatchThink( edict_t *pent )

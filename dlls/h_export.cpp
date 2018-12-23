@@ -29,7 +29,6 @@ HINSTANCE h_Library = NULL;
 void* h_Library = NULL;
 #endif
 
-int DispatchSpawn_Post( edict_t * pent );
 const char *Cmd_Args( void );
 const char *Cmd_Argv( int argc );
 int Cmd_Argc( void );
@@ -250,13 +249,13 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	// get the globals from the engine
 	gpGlobals = pGlobals;
 
-	// find the directory name of the currently running mod
-	// this returns just the mod directory's name: http://metamod.org/engine_notes.html#GetGameDir
-	char game_dir[256];
+	// get the directory name of the currently running game or mod
+	// this now returns just the mod directory's name: http://metamod.org/engine_notes.html#GetGameDir
+	char szGameDir[256];
 	char *szLibraryPath = "";
-	GET_GAME_DIR(game_dir);
+	GET_GAME_DIR(szGameDir);
 
-	if (strcmpi(game_dir, "valve") == 0)
+	if( !strcmpi( szGameDir, "valve" ) )
 	{
 		mod_id = VALVE_DLL;
 
@@ -275,7 +274,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "bshift") == 0)
+	else if( !strcmpi( szGameDir, "bshift" ) )
 	{
 		mod_id = BSHIFT_DLL;
 
@@ -294,7 +293,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "gearbox") == 0)
+	else if( !strcmpi( szGameDir, "gearbox" ) )
 	{
 		mod_id = GEARBOX_DLL;
 
@@ -313,7 +312,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "decay") == 0)
+	else if( !strcmpi( szGameDir, "decay" ) )
 	{
 		mod_id = DECAY_DLL;
 
@@ -332,7 +331,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "cstrike") == 0)
+	else if( !strcmpi( szGameDir, "cstrike" ) )
 	{
 		mod_id = CSTRIKE_DLL;
 
@@ -351,7 +350,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "czero") == 0)
+	else if( !strcmpi( szGameDir, "czero" ) )
 	{
 		mod_id = CZERO_DLL;
 
@@ -370,7 +369,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "czeror") == 0)
+	else if( !strcmpi( szGameDir, "czeror" ) )
 	{
 		mod_id = CZEROR_DLL;
 
@@ -389,7 +388,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "dod") == 0)
+	else if( !strcmpi( szGameDir, "dod" ) )
 	{
 		mod_id = DOD_DLL;
 
@@ -408,7 +407,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "tfc") == 0)
+	else if( !strcmpi( szGameDir, "tfc" ) )
 	{
 		mod_id = TFC_DLL;
 
@@ -427,7 +426,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "rewolf") == 0)
+	else if( !strcmpi( szGameDir, "rewolf" ) )
 	{
 		mod_id = REWOLF_DLL;
 
@@ -446,7 +445,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "hunger") == 0)
+	else if( !strcmpi( szGameDir, "hunger" ) )
 	{
 		mod_id = HUNGER_DLL;
 
@@ -465,7 +464,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "ns") == 0)
+	else if( !strcmpi( szGameDir , "ns") )
 	{
 		mod_id = NS_DLL;
 
@@ -484,7 +483,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if (strcmpi(game_dir, "ship") == 0)
+	else if( strcmpi( szGameDir, "ship" ) )
 	{
 		mod_id = SHIP_DLL;
 
@@ -506,7 +505,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	strncpy( g_szLibraryPath, szLibraryPath, strlen( szLibraryPath ) );
 
-	if( !g_bIsMMPlugin && h_Library == NULL )
+	if( !g_bIsMMPlugin && h_Library == nullptr )
 	{
 		ALERT( at_error, "Library not found or not supported!\n" );
 	}
@@ -555,10 +554,10 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		return;
 	}
 
-	GetEngineFunctions( pengfuncsFromEngine, NULL );
+	GetEngineFunctions( pengfuncsFromEngine, nullptr );
 
 	// give the engine functions to the other DLL...
-	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))( pengfuncsFromEngine, pGlobals );
+	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))(pengfuncsFromEngine, pGlobals);
 
 	// finished, interfacing from gamedll to engine complete
 	return;
@@ -569,7 +568,7 @@ gamedll_funcs_t gGameDLLFunc;
 extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
 {
    // check if engine's pointer is valid and version is correct...
-   if ((pFunctionTable == NULL) || (interfaceVersion != INTERFACE_VERSION))
+   if ((pFunctionTable == nullptr) || (interfaceVersion != INTERFACE_VERSION))
       return FALSE;
 
    memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
@@ -643,44 +642,37 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
    return TRUE; // finished, interfacing from engine to gamedll complete
 }
 
-extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
-{
-	memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
-
-	pFunctionTable->pfnSpawn = DispatchSpawn_Post;
-
-	return (TRUE);
-}
-
 extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
 {
    if( !g_bIsMMPlugin )
    {
-	   static GETNEWDLLFUNCTIONS other_GetNewDLLFunctions = NULL;
-	   static bool missing = FALSE;
+	   static GETNEWDLLFUNCTIONS pGetNewDLLFunctions = nullptr;
+	   static bool bIsMissing = false;
 
-	   // if the new DLL functions interface has been formerly reported as missing, give up
-	   if( missing )
-		   return FALSE;
+	   // if the game .dll has no GetNewDLLFunctions exported
+	   if( bIsMissing )
+	   {
+		   return 0;
+	   }
 
 	   // do we NOT know if the new DLL functions interface is provided ? if so, look for its address
-	   if( other_GetNewDLLFunctions == NULL )
-		   other_GetNewDLLFunctions = (GETNEWDLLFUNCTIONS)GetProcAddress( h_Library, "GetNewDLLFunctions" );
+	   if( pGetNewDLLFunctions == nullptr )
+		   pGetNewDLLFunctions = (GETNEWDLLFUNCTIONS)GetProcAddress( h_Library, "GetNewDLLFunctions" );
 
-	   // have we NOT found it ?
-	   if( other_GetNewDLLFunctions == NULL )
+	   // if it wasn't found
+	   if( pGetNewDLLFunctions == nullptr )
 	   {
-		   missing = TRUE; // then mark it as missing, no use to look for it again in the future
-		   return FALSE; // and give up
+		   bIsMissing = true; // then mark it as missing, no use to look for it again in the future
+		   return 0; // and give up
 	   }
 
 	   gGameDLLFunc.newapi_table = pFunctionTable;
 
 	   // else call the function that provides the new DLL functions interface on request
-	   return (!(*other_GetNewDLLFunctions) (pFunctionTable, interfaceVersion));
+	   return (!(*pGetNewDLLFunctions)(pFunctionTable, interfaceVersion));
    }
 
-   return TRUE;
+   return 0;
 }
 
 extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blending_interface_s **ppinterface, struct engine_studio_api_s *pstudio, float (*rotationmatrix)[3][4], float (*bonetransform)[MAXSTUDIOBONES][3][4] )
