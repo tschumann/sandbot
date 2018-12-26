@@ -28,6 +28,11 @@
 #include "bot.h"
 #include "bot_func.h"
 
+// isprint and isspace live in different places on Windows and Linux apparently
+#ifdef __linux__
+#include <cctype>
+#endif // __linux__
+
 
 extern int mod_id;
 extern bot_t **pBots;
