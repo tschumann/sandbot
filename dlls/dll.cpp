@@ -59,8 +59,9 @@ char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 int num_teams = 0;
 edict_t *pent_info_tfdetect = nullptr;
 edict_t *pent_item_tfgoal = nullptr;
-edict_t *pent_info_ctfdetect = nullptr;
 edict_t *pent_trigger_ctfgeneric = nullptr;
+edict_t *pent_info_ctfdetect = nullptr;
+bool bIsCapturePoint = false;
 int max_team_players[4];  // for TFC
 int team_class_limits[4];  // for TFC
 int team_allies[4];  // TFC bit mapped allies BLUE, RED, YELLOW, and GREEN
@@ -70,7 +71,6 @@ CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
 int num_flags = 0;  // for TFC
 int num_backpacks = 0;
 int iCapturePointCount = 0;
-int iCapturePointIndex = 0;
 BACKPACK_S backpacks[MAX_BACKPACKS];
 char arg[256];
 
@@ -210,6 +210,8 @@ int DispatchSpawn( edict_t *pent )
 
 		pent_info_tfdetect = nullptr;
 		pent_info_ctfdetect = nullptr;
+		pent_trigger_ctfgeneric = nullptr;
+		bIsCapturePoint = false;
 		pent_item_tfgoal = nullptr;
 
 		for (int index=0; index < 4; index++)
@@ -321,7 +323,6 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 {
    static edict_t *temp_pent;
    static int flag_index;
-   static int iCapturePointIndex;
 
    if (mod_id == TFC_DLL)
    {
@@ -421,20 +422,28 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 				pent_info_ctfdetect = pentKeyvalue;
 			}
 		}
-		if( pent_trigger_ctfgeneric == nullptr )
+		// if it's a trigger_ctfgeneric
+		if( !strcmp(pkvd->szKeyName, "classname") && !strcmp(pkvd->szValue, "trigger_ctfgeneric") )
 		{
-			if( !strcmp(pkvd->szKeyName, "classname") && !strcmp(pkvd->szValue, "trigger_ctfgeneric") )
-			{
-				ALERT( at_console, "found a trigger_ctfgeneric\n");
-				pent_trigger_ctfgeneric = pentKeyvalue;
-			}
+			ALERT( at_console, "Found a trigger_ctfgeneric\n");
+			bIsCapturePoint = true;
+			// keep track of it
+			pent_trigger_ctfgeneric = pentKeyvalue;
 		}
-		if( pentKeyvalue == pent_trigger_ctfgeneric )
+		// if it's a trigger_ctfgeneric that is being tracked and it's the team_no key
+		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "team_no" ) )
 		{
-			if( !strcmp( pkvd->szKeyName, "team_no" ) )
+			if( iCapturePointCount == OpposingForceBot::MAX_CAPTURE_POINTS)
 			{
-				capturePoints[iCapturePointIndex].iTeam = atoi( pkvd->szValue );
-				capturePoints[iCapturePointIndex].szTarget = STRING(pentKeyvalue->v.target);
+				ALERT( at_error, "Too many trigger_ctfgeneric entities to handle - ask for the limit to be increased\n");
+			}
+			else
+			{
+				ALERT( at_console, "Getting a trigger_ctfgeneric's team_no\n");
+				// get the team_no value
+				capturePoints[iCapturePointCount].iTeam = atoi( pkvd->szValue );
+				// get the target
+				capturePoints[iCapturePointCount].szTarget = STRING(pentKeyvalue->v.target);
 				iCapturePointCount++;
 			}
 		}

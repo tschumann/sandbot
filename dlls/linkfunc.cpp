@@ -204,9 +204,9 @@ uint32 NameToAddress( const char *pName )
 	return iAddress;
 }
 
-const char *AddressToName(uint32 function)
+const char *AddressToName( uint32 function )
 {
-	const char *szName = NULL;
+	const char *szName = nullptr;
 
 	for( int i = 0; i < g_iOrdinalCount; i++ )
 	{
@@ -226,7 +226,7 @@ void LoadExtraExports()
 	//
 }
 
-uint32 NameToAddress(const char *pName)
+uint32 NameToAddress( const char *pName )
 {
 	uint32 iAddress = 0;
 
@@ -246,6 +246,7 @@ const char *AddressToName( uint32 function )
 // LINK_ENTITY_TO_FUNC(CountTeams);
 // LINK_ENTITY_TO_FUNC(DelayedUse);
 // LINK_ENTITY_TO_FUNC(DmlHandGrenade);
+// LINK_ENTITY_TO_FUNC(g_flTimeLimit);
 LINK_ENTITY_TO_FUNC(aiscripted_sequence);
 LINK_ENTITY_TO_FUNC(alienresourcetower);
 LINK_ENTITY_TO_FUNC(ambient_generic);
@@ -546,7 +547,6 @@ LINK_ENTITY_TO_FUNC(func_water);
 LINK_ENTITY_TO_FUNC(func_weaponcheck);
 LINK_ENTITY_TO_FUNC(func_weldable);
 LINK_ENTITY_TO_FUNC(func_wind);
-LINK_ENTITY_TO_FUNC(g_flTimeLimit);
 LINK_ENTITY_TO_FUNC(game_counter);
 LINK_ENTITY_TO_FUNC(game_counter_set);
 LINK_ENTITY_TO_FUNC(game_end);
@@ -1157,4 +1157,3 @@ LINK_ENTITY_TO_FUNC(xen_spore_small);
 LINK_ENTITY_TO_FUNC(xen_tree);
 LINK_ENTITY_TO_FUNC(xen_ttrigger);
 LINK_ENTITY_TO_FUNC(xenomeshot);
-

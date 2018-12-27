@@ -1192,7 +1192,17 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 
 		if( !strcmp("trigger_ctfgeneric", nearest_name) )
 		{
-			ALERT( at_console, "trigger_ctfgeneric skin %d body %d\n", nearest_pent->v.skin, nearest_pent->v.body);
+			for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
+			{
+				if( !strcmp(STRING(nearest_pent->v.target), capturePoints[i].szTarget) )
+				{
+					ALERT( at_console, "Found a matching trigger_ctfgeneric!\n");
+				}
+				else
+				{
+					ALERT( at_console, "Mismatched trigger_ctfgeneric %s\n", STRING(nearest_pent->v.target) );
+				}
+			}
 			if( pEntity )
 			{
 				ClientPrint( pEntity, HUD_PRINTCONSOLE, "Found a trigger_ctfgeneric\n" );
