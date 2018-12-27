@@ -66,8 +66,11 @@ int team_class_limits[4];  // for TFC
 int team_allies[4];  // TFC bit mapped allies BLUE, RED, YELLOW, and GREEN
 int max_teams = 0;  // for TFC
 FLAG_S flags[MAX_FLAGS];  // for TFC
+CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
 int num_flags = 0;  // for TFC
 int num_backpacks = 0;
+int iCapturePointCount = 0;
+int iCapturePointIndex = 0;
 BACKPACK_S backpacks[MAX_BACKPACKS];
 char arg[256];
 
@@ -221,15 +224,23 @@ int DispatchSpawn( edict_t *pent )
 
 		for (int index=0; index < MAX_FLAGS; index++)
 		{
-			flags[index].edict = NULL;
+			flags[index].edict = nullptr;
 			flags[index].team_no = 0;  // any team unless specified
 		}
+
+		for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++)
+		{
+			capturePoints[i].iTeam = 0;
+			capturePoints[i].szTarget = "";
+		}
+
+		iCapturePointCount = 0;
 
 		num_backpacks = 0;
 
 		for (int index=0; index < MAX_BACKPACKS; index++)
 		{
-			backpacks[index].edict = NULL;
+			backpacks[index].edict = nullptr;
 			backpacks[index].armor = 0;
 			backpacks[index].health = 0;
 			backpacks[index].ammo = 0;
@@ -310,6 +321,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 {
    static edict_t *temp_pent;
    static int flag_index;
+   static int iCapturePointIndex;
 
    if (mod_id == TFC_DLL)
    {
@@ -411,9 +423,19 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 		}
 		if( pent_trigger_ctfgeneric == nullptr )
 		{
-			if( !strcmp(pkvd->szKeyName, "classname") && !strcmp(pkvd->szValue, "pent_trigger_ctfgeneric") )
+			if( !strcmp(pkvd->szKeyName, "classname") && !strcmp(pkvd->szValue, "trigger_ctfgeneric") )
 			{
+				ALERT( at_console, "found a trigger_ctfgeneric\n");
 				pent_trigger_ctfgeneric = pentKeyvalue;
+			}
+		}
+		if( pentKeyvalue == pent_trigger_ctfgeneric )
+		{
+			if( !strcmp( pkvd->szKeyName, "team_no" ) )
+			{
+				capturePoints[iCapturePointIndex].iTeam = atoi( pkvd->szValue );
+				capturePoints[iCapturePointIndex].szTarget = STRING(pentKeyvalue->v.target);
+				iCapturePointCount++;
 			}
 		}
 	}
@@ -939,8 +961,7 @@ void ClientCommand( edict_t *pEntity )
 
          while ((pent = UTIL_FindEntityInSphere( pent, pEntity->v.origin, radius )) != NULL)
          {
-            sprintf(str, "Found %s at %5.2f %5.2f %5.2f\n", STRING(pent->v.classname),
-                       pent->v.origin.x, pent->v.origin.y, pent->v.origin.z);
+            sprintf(str, "Found %s at %5.2f %5.2f %5.2f\n", STRING(pent->v.classname), pent->v.origin.x, pent->v.origin.y, pent->v.origin.z);
             ClientPrint(pEntity, HUD_PRINTCONSOLE, str);
          }
 

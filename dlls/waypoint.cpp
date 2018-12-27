@@ -28,6 +28,9 @@ extern int m_spriteTexture;
 extern int num_backpacks;
 extern BACKPACK_S backpacks[MAX_BACKPACKS];
 
+extern CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
+extern int iCapturePointCount;
+
 // waypoints with information bits (flags)
 WAYPOINT waypoints[MAX_WAYPOINTS];
 
@@ -1072,7 +1075,7 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
    // look for the nearest health, armor, ammo, weapon, etc.
    //********************************************************
 
-   while ((pent = UTIL_FindEntityInSphere( pent, origin, radius )) != NULL)
+   while((pent = UTIL_FindEntityInSphere( pent, origin, radius )) != nullptr)
    {
       if (pEntity)
 	  {
@@ -1080,11 +1083,13 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 	  }
       else
 	  {
-         UTIL_TraceLine( origin, pent->v.origin, ignore_monsters, NULL, &tr );
+         UTIL_TraceLine( origin, pent->v.origin, ignore_monsters, nullptr, &tr );
 	  }
 
-      // make sure entity is visible...
-      if (tr.flFraction >= 1.0)
+	  strcpy(item_name, STRING(pent->v.classname));
+
+      // check that the entity is visible
+      if( tr.flFraction >= 1.0 || !strcmp("trigger_ctfgeneric", item_name) )
       {
          strcpy(item_name, STRING(pent->v.classname));
 
@@ -1092,19 +1097,19 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 			!strncmp("ammo_", item_name, 5) || !strcmp("item_cells", item_name) || !strcmp("item_shells", item_name) ||
 			!strcmp("item_spikes", item_name) || !strcmp("item_rockets", item_name) ||
 			!strcmp("team_hive", item_name) || !strcmp("team_command", item_name) || !strcmp("dod_control_point", item_name) ||
-			!strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name)) &&
-			 (pent->v.owner == NULL)
-			 )
+			!strncmp("weapon_", item_name, 7) || !strcmp("item_ctfbase", item_name) || !strcmp("item_ctfflag", item_name) ||
+			 !strcmp("trigger_ctfgeneric", item_name)) &&
+			 (pent->v.owner == nullptr))
          {
             distance = (pent->v.origin - origin).Length();
 
-			UTIL_LogPrintf("%f dist", distance);
+			UTIL_LogPrintf("%f dist\n", distance);
 
             if (distance < min_distance)
             {
                strcpy(nearest_name, item_name);
 
-			   UTIL_LogPrintf("%s is closer", item_name);
+			   UTIL_LogPrintf("%s is closer\n", item_name);
 
                tfc_backpack_index = -1;  // "null" out backpack index
 
@@ -1137,7 +1142,7 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
       }
    }
 
-   UTIL_LogPrintf( "%s is the closest entity", nearest_name );
+   UTIL_LogPrintf( "%s is the closest entity\n", nearest_name );
 
    if (nearest_name[0])  // found an entity name
    {
@@ -1185,8 +1190,9 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 			waypoints[wpt_index].flags |= W_FL_FLAG;
 		}
 
-		if ( !strcmp("trigger_ctfgeneric", nearest_name) )
+		if( !strcmp("trigger_ctfgeneric", nearest_name) )
 		{
+			ALERT( at_console, "trigger_ctfgeneric skin %d body %d\n", nearest_pent->v.skin, nearest_pent->v.body);
 			if( pEntity )
 			{
 				ClientPrint( pEntity, HUD_PRINTCONSOLE, "Found a trigger_ctfgeneric\n" );
@@ -1197,7 +1203,7 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 		if ((strcmp("dod_object", nearest_name) == 0))
 		{
 			if (pEntity)
-			ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a dod_object\n");
+				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found a dod_object\n");
 			waypoints[wpt_index].flags |= W_FL_DOD_OBJ;
 		}
 
@@ -1251,14 +1257,12 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 
 void WaypointAdd(edict_t *pEntity, int flags = 0)
 {
-   int index;
+   int index = 0;
 
    if (num_waypoints >= MAX_WAYPOINTS)
    {
       return;
    }
-
-   index = 0;
 
    // find the next available slot for the new waypoint...
    while (index < num_waypoints)
@@ -2059,7 +2063,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 		if( pCapturePoint )
 		{
 			// TODO: skin is the thing that determines its owner?
-			ALERT( at_console, "trigger_ctfgeneric with skin  %s\n", pCapturePoint->v.skin );
+			ALERT( at_console, "trigger_ctfgeneric with skin %d\n", pCapturePoint->v.frame );
 		}
 	}
 

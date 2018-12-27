@@ -552,6 +552,8 @@ public:
 
 	const static int BLACK_MESA_FLAG_SKIN = 1;
 	const static int OPPOSING_FORCE_FLAG_SKIN = 2;
+
+	const static int MAX_CAPTURE_POINTS = 4;
 };
 
 class CStrikeBot : public bot_t
@@ -1081,11 +1083,18 @@ extern Game *pGame;
 
 #define MAX_FLAGS  5
 
+
 typedef struct {
    bool mdl_match;
    int  team_no;
    edict_t *edict;
 } FLAG_S;
+
+struct CapturePoint
+{
+	int iTeam;
+	const char *szTarget;
+};
 
 
 // new UTIL.CPP functions...

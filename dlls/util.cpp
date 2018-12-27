@@ -557,7 +557,7 @@ void UTIL_LogPrintf( char *fmt, ... )
 	va_end   ( argptr );
 
 	// Print to server console
-	ALERT( at_logged, "%s", string );
+	ALERT( at_console, "%s", string );
 }
 
 //=========================================================
