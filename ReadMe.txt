@@ -3,13 +3,12 @@ Sandbot
 == About ==
 
 Name: Sandbot
-Description: A multiplayer bot for Half-Life, Half-Life Opposing Force (Deathmatch and Capture the Flag), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (there is work in progress support for Team Fortress Classic, Natural Selection (Classic) and The Ship).
+Description: A multiplayer bot for Half-Life, Half-Life Opposing Force (Deathmatch and Capture the Flag), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (there is work in progress support for Team Fortress Classic, Natural Selection (Classic) and The Ship). It is based off HPB_Bot by botman (see HPB_Bot_ReadMe.txt).
 Requirements: Steam versions of the supported games or mods.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
-Sandbot comes packaged with MetaMod-P for Windows and MetaMod for Linux.
-MetaMod will work across the board except for with Gunman Chronicles due to a bug in MetaMod itself.
-MetaMod-P should work across the board but has been found to freeze even without Sandbot on Ubuntu.
+Sandbot will work with MetaMod across the board (except for with Gunman Chronicles due to a bug in MetaMod itself).
+Sandbot should work with MetaMod-P across the board but has been found to freeze even without Sandbot on Ubuntu.
 
 == Usage ==
 
