@@ -33,8 +33,6 @@ extern bot_player_t *pBotData;
 
 char g_argv[1024];
 
-static FILE *fp;
-
 DLL_FUNCTIONS gFunctionTable;
 DLL_FUNCTIONS other_gFunctionTable;
 DLL_GLOBAL const Vector g_vecZero = Vector(0,0,0);
@@ -533,10 +531,9 @@ void ResetGlobalState( void )
 
 BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128] )
 {
-	int i;
 	int count = 0;
 
-	if( debug_engine ) { fp = fopen( "bot.txt", "a" ); fprintf( fp, "ClientConnect: pent=%p name=%s\n", pEntity, pszName ); fclose( fp ); }
+	UTIL_LogDPrintf( "ClientConnect: pent=%p name=%s\n", pEntity, pszName );
 
 	// check if this client is the listen server client
 	if( strcmp( pszAddress, "loopback" ) == 0 )
@@ -551,7 +548,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 		// don't try to add bots for 60 seconds, give client time to get added
 		bot_check_time = gpGlobals->time + 60.0;
 
-		for( i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
 			if( pBots[i]->is_used )  // count the number of bots in use
 				count++;
@@ -561,7 +558,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 		// then kick one of the bots off the server...
 		if( (count > min_bots) && (min_bots != -1) )
 		{
-			for( i = 0; i < MAX_PLAYERS; i++ )
+			for( int i = 0; i < MAX_PLAYERS; i++ )
 			{
 				if( pBots[i]->is_used )  // is this slot used?
 				{

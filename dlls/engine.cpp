@@ -225,12 +225,12 @@ int pfnGetEntityIllum(edict_t* pEnt)
 }
 edict_t* pfnFindEntityInSphere(edict_t *pEdictStartSearchAfter, const float *org, float rad)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnFindEntityInSphere:\n"); fclose(fp); }
+	UTIL_LogTPrintf( "pfnFindEntityInSphere: pEdictStartSearchAfter=%x, org=(%f,%f,%f), rad=%f\n", pEdictStartSearchAfter, org[0], org[1], org[2], rad );
 
-   if( g_bIsMMPlugin )
-	   RETURN_META_VALUE( MRES_IGNORED, 0 );
+	if( g_bIsMMPlugin )
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
 
-   return (*g_engfuncs.pfnFindEntityInSphere)(pEdictStartSearchAfter, org, rad);
+	return (*g_engfuncs.pfnFindEntityInSphere)(pEdictStartSearchAfter, org, rad);
 }
 edict_t* pfnFindClientInPVS(edict_t *pEdict)
 {
@@ -271,14 +271,7 @@ edict_t* pfnCreateEntity(void)
 }
 void pfnRemoveEntity(edict_t* e)
 {
-   if (debug_engine)
-   {
-      fp=fopen("bot.txt","a");
-      fprintf(fp,"pfnRemoveEntity: %p\n",e);
-      if (e->v.model != 0)
-         fprintf(fp," model=%s\n", STRING(e->v.model));
-      fclose(fp);
-   }
+   UTIL_LogDPrintf("pfnRemoveEntity: classname=%s\n", STRING(e->v.classname));
 
    if( g_bIsMMPlugin )
 	   RETURN_META( MRES_IGNORED );
@@ -331,21 +324,21 @@ void pfnSetOrigin(edict_t *e, const float *rgflOrigin)
 }
 void pfnEmitSound(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEmitSound:\n"); fclose(fp); }
+	UTIL_LogTPrintf("pfnEmitSound: entity=%x, channel=%d, sample=%s, volume=%f, attenuation=%f, fFlags=%d, pitch=%d\n", entity, channel, sample, volume, attenuation, fFlags, pitch);
 
-   if( g_bIsMMPlugin )
-	   RETURN_META( MRES_IGNORED );
+	if( g_bIsMMPlugin )
+		RETURN_META( MRES_IGNORED );
 
-   (*g_engfuncs.pfnEmitSound)(entity, channel, sample, volume, attenuation, fFlags, pitch);
+	(*g_engfuncs.pfnEmitSound)(entity, channel, sample, volume, attenuation, fFlags, pitch);
 }
 void pfnEmitAmbientSound(edict_t *entity, float *pos, const char *samp, float vol, float attenuation, int fFlags, int pitch)
 {
-   if (debug_engine) { fp=fopen("bot.txt","a"); fprintf(fp,"pfnEmitAmbientSound:\n"); fclose(fp); }
+	UTIL_LogTPrintf("pfnEmitAmbientSound: entity=%x, pos=(%f,%f,%f), samp=%s, vol=%f, attenuation=%f, fFlags=%d, pitch=%d\n", entity, pos[0], pos[1], pos[2], samp, vol, attenuation, fFlags, pitch);
 
-   if( g_bIsMMPlugin )
-	   RETURN_META( MRES_IGNORED );
+	if( g_bIsMMPlugin )
+	RETURN_META( MRES_IGNORED );
 
-   (*g_engfuncs.pfnEmitAmbientSound)(entity, pos, samp, vol, attenuation, fFlags, pitch);
+	(*g_engfuncs.pfnEmitAmbientSound)(entity, pos, samp, vol, attenuation, fFlags, pitch);
 }
 void pfnTraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *pentToSkip, TraceResult *ptr)
 {

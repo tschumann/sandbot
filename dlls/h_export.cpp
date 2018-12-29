@@ -652,7 +652,7 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
 	   // if the game .dll has no GetNewDLLFunctions exported
 	   if( bIsMissing )
 	   {
-		   return 0;
+		   return FALSE;
 	   }
 
 	   // do we NOT know if the new DLL functions interface is provided ? if so, look for its address
@@ -663,7 +663,7 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
 	   if( pGetNewDLLFunctions == nullptr )
 	   {
 		   bIsMissing = true; // then mark it as missing, no use to look for it again in the future
-		   return 0; // and give up
+		   return FALSE; // and give up
 	   }
 
 	   gGameDLLFunc.newapi_table = pFunctionTable;
@@ -672,7 +672,7 @@ extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int
 	   return (!(*pGetNewDLLFunctions)(pFunctionTable, interfaceVersion));
    }
 
-   return 0;
+   return FALSE;
 }
 
 extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blending_interface_s **ppinterface, struct engine_studio_api_s *pstudio, float (*rotationmatrix)[3][4], float (*bonetransform)[MAXSTUDIOBONES][3][4] )
@@ -683,7 +683,7 @@ extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blendi
 	// if the game .dll has no Server_GetBlendingInterface exported
 	if( bIsMissing )
 	{
-		return 0;
+		return FALSE;
 	}
 
 	// if the server blending function is unknown
@@ -696,7 +696,7 @@ extern "C" EXPORT int Server_GetBlendingInterface( int version, struct sv_blendi
 	if( !pServer_GetBlendingInterface )
 	{
 		bIsMissing = true;
-		return 0;
+		return FALSE;
 	}
 
 	return (pServer_GetBlendingInterface)(version, ppinterface, pstudio, rotationmatrix, bonetransform);

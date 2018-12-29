@@ -31,7 +31,7 @@ static META_FUNCTIONS gMetaFunctionTable = {
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
 	"Sandbot",		// name
-	"0.4.2",		// version
+	"0.4.3",		// version
 	"2018/04/21",	// date
 	"Team Sandpit",	// author
 	"http://www.teamsandpit.com/",	// url
@@ -83,10 +83,7 @@ extern "C" EXPORT int Meta_Query( char *ifvers, plugin_info_t **pPlugInfo, mutil
 	{
 		int mmajor = 0, mminor = 0, pmajor = 0, pminor = 0;
 
-		LOG_CONSOLE( PLID, "%s: meta-interface version mismatch (metamod: %s, %s: %s)",
-			Plugin_info.name, ifvers, Plugin_info.name, Plugin_info.ifvers );
-		LOG_MESSAGE( PLID, "%s: meta-interface version mismatch (metamod: %s, %s: %s)",
-			Plugin_info.name, ifvers, Plugin_info.name, Plugin_info.ifvers );
+		ALERT( at_error, "%s: meta-interface version mismatch (metamod: %s, %s: %s)", Plugin_info.name, ifvers, Plugin_info.name, Plugin_info.ifvers );
 
 		// if plugin has later interface version, it's incompatible (update metamod)
 		sscanf( ifvers, "%d:%d", &mmajor, &mminor );
@@ -94,16 +91,14 @@ extern "C" EXPORT int Meta_Query( char *ifvers, plugin_info_t **pPlugInfo, mutil
 
 		if( pmajor > mmajor || (pmajor == mmajor && pminor > mminor) )
 		{
-			LOG_CONSOLE( PLID, "metamod version is too old for this plugin; update metamod" );
-			LOG_ERROR( PLID, "metamod version is too old for this plugin; update metamod" );
+			ALERT( at_error, "metamod version is too old for this plugin; update metamod\n" );
 
 			return FALSE;
 		}
 		// if plugin has older major interface version, it's incompatible (update plugin)
 		else if( pmajor < mmajor )
 		{
-			LOG_CONSOLE( PLID, "metamod version is incompatible with this plugin; please find a newer version of this plugin" );
-			LOG_ERROR( PLID, "metamod version is incompatible with this plugin; please find a newer version of this plugin" );
+			ALERT( at_error, "metamod version is incompatible with this plugin; please find a newer version of this plugin\n" );
 
 			return FALSE;
 		}
@@ -122,25 +117,22 @@ extern "C" EXPORT int Meta_Attach( PLUG_LOADTIME now, META_FUNCTIONS *pFunctionT
 	// Are we allowed to load this plugin now?
 	if( now > Plugin_info.loadable )
 	{
-		LOG_CONSOLE( PLID, "%s: plugin NOT attaching (can't load plugin right now)",
-			Plugin_info.name );
-		LOG_ERROR( PLID, "%s: plugin NOT attaching (can't load plugin right now)",
-			Plugin_info.name );
+		ALERT( at_error, "%s: plugin NOT attaching (can't load plugin right now)\n", Plugin_info.name );
 
 		return FALSE; // returning FALSE prevents metamod from attaching this plugin
 	}
 
 	if( !pMGlobals )
 	{
-		LOG_ERROR( PLID, "Meta_Attach called with null pMGlobals" );
-		return(FALSE);
+		ALERT( at_error, "Meta_Attach called with null pMGlobals\n" );
+		return FALSE;
 	}
 	gpMetaGlobals = pMGlobals;
 
 	if( !pFunctionTable )
 	{
-		LOG_ERROR( PLID, "Meta_Attach called with null pFunctionTable" );
-		return(FALSE);
+		ALERT( at_error, "Meta_Attach called with null pFunctionTable\n" );
+		return FALSE;
 	}
 	memcpy( pFunctionTable, &gMetaFunctionTable, sizeof( META_FUNCTIONS ) );
 	gpGamedllFuncs = pGamedllFuncs;
@@ -162,10 +154,7 @@ extern "C" EXPORT int Meta_Detach( PLUG_LOADTIME now, PL_UNLOAD_REASON reason )
 	// Is metamod allowed to unload the plugin?
 	if( now > Plugin_info.unloadable && reason != PNL_CMD_FORCED )
 	{
-		LOG_CONSOLE( PLID, "%s: plugin NOT detaching (can't unload plugin right now)",
-			Plugin_info.name );
-		LOG_ERROR( PLID, "%s: plugin NOT detaching (can't unload plugin right now)",
-			Plugin_info.name );
+		ALERT( at_error, "%s: plugin NOT detaching (can't unload plugin right now)\n", Plugin_info.name );
 
 		return FALSE; // returning FALSE prevents metamod from unloading this plugin
 	}
