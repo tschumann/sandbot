@@ -183,6 +183,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="h_export.h" />
     <ClInclude Include="linkfunc.h" />
+    <ClInclude Include="metamod.h" />
     <ClInclude Include="stub_engine.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />

@@ -11,6 +11,12 @@
 
 #include "bot.h"
 #include "cbase.h"
+#include "metamod.h"
+
+void METAMOD_RETURN( META_RES result )
+{
+	RETURN_META(result);
+}
 
 // Loaded as metamod plugin?
 bool g_bIsMMPlugin = false;
@@ -48,7 +54,7 @@ int DispatchSpawn_Post( edict_t * pent )
 	if( pent->v.rendermode == kRenderTransTexture )
 		pent->v.flags &= ~FL_WORLDBRUSH;  // clear the FL_WORLDBRUSH flag out of transparent ents
 
-	RETURN_META_VALUE( MRES_IGNORED, 0 );
+	return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 }
 
 extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )

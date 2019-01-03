@@ -9,6 +9,7 @@
 #include "extdll.h"
 #include "h_export.h"
 #include "meta_api.h"
+#include "metamod.h"
 
 #include "bot.h"
 #include "bot_func.h"
@@ -179,7 +180,7 @@ void GameDLLInit( void )
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnGameInit)();
 }
@@ -272,7 +273,7 @@ int DispatchSpawn( edict_t *pent )
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	int result = (*other_gFunctionTable.pfnSpawn)(pent);
 
@@ -288,7 +289,7 @@ int DispatchSpawn( edict_t *pent )
 void DispatchThink( edict_t *pent )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnThink)(pent);
 }
@@ -296,7 +297,7 @@ void DispatchThink( edict_t *pent )
 void DispatchUse( edict_t *pentUsed, edict_t *pentOther )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnUse)(pentUsed, pentOther);
 }
@@ -304,7 +305,7 @@ void DispatchUse( edict_t *pentUsed, edict_t *pentOther )
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnTouch)(pentTouched, pentOther);
 }
@@ -312,7 +313,7 @@ void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 void DispatchBlocked( edict_t *pentBlocked, edict_t *pentOther )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnBlocked)(pentBlocked, pentOther);
 }
@@ -459,7 +460,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 
 	if( g_bIsMMPlugin )
 	{
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 	}
 
 	(*other_gFunctionTable.pfnKeyValue)(pentKeyvalue, pkvd);
@@ -468,7 +469,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSave)(pent, pSaveData);
 }
@@ -476,7 +477,7 @@ void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnRestore)(pent, pSaveData, globalEntity);
 }
@@ -484,7 +485,7 @@ int DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity
 void DispatchObjectCollisionBox( edict_t *pent )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSetAbsBox)(pent);
 }
@@ -492,7 +493,7 @@ void DispatchObjectCollisionBox( edict_t *pent )
 void SaveWriteFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSaveWriteFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
 }
@@ -500,7 +501,7 @@ void SaveWriteFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBase
 void SaveReadFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSaveReadFields)(pSaveData, pname, pBaseData, pFields, fieldCount);
 }
@@ -508,7 +509,7 @@ void SaveReadFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseD
 void SaveGlobalState( SAVERESTOREDATA *pSaveData )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSaveGlobalState)(pSaveData);
 }
@@ -516,7 +517,7 @@ void SaveGlobalState( SAVERESTOREDATA *pSaveData )
 void RestoreGlobalState( SAVERESTOREDATA *pSaveData )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnRestoreGlobalState)(pSaveData);
 }
@@ -524,7 +525,7 @@ void RestoreGlobalState( SAVERESTOREDATA *pSaveData )
 void ResetGlobalState( void )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnResetGlobalState)();
 }
@@ -575,7 +576,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnClientConnect)(pEntity, pszName, pszAddress, szRejectReason);
 }
@@ -612,7 +613,7 @@ void ClientDisconnect( edict_t *pEntity )
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnClientDisconnect)(pEntity);
 }
@@ -622,7 +623,7 @@ void ClientKill( edict_t *pEntity )
 	UTIL_LogDPrintf("ClientKill: pEntity=%x\n", pEntity);
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnClientKill)(pEntity);
 }
@@ -634,7 +635,7 @@ void ClientPutInServer( edict_t *pEntity )
 	NewActiveClient( pEntity );
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnClientPutInServer)(pEntity);
 }
@@ -672,7 +673,7 @@ void ClientCommand( edict_t *pEntity )
          bot_check_time = gpGlobals->time + 5.0;
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -694,7 +695,7 @@ void ClientCommand( edict_t *pEntity )
             ClientPrint(pEntity, HUD_PRINTNOTIFY, "observer mode DISABLED\n");
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -705,7 +706,7 @@ void ClientCommand( edict_t *pEntity )
          ClientPrint(pEntity, HUD_PRINTNOTIFY, "debug_engine enabled!\n");
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -762,7 +763,7 @@ void ClientCommand( edict_t *pEntity )
 			if( num_waypoints < 1 )
 			{
 				if( g_bIsMMPlugin )
-					RETURN_META( MRES_SUPERCEDE );
+					METAMOD_RETURN( MRES_SUPERCEDE );
 
 				return;
 			}
@@ -772,7 +773,7 @@ void ClientCommand( edict_t *pEntity )
 			if( index == -1 )
 			{
 				if( g_bIsMMPlugin )
-					RETURN_META( MRES_SUPERCEDE );
+					METAMOD_RETURN( MRES_SUPERCEDE );
 
 				return;
 			}
@@ -795,7 +796,7 @@ void ClientCommand( edict_t *pEntity )
          }
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -819,7 +820,7 @@ void ClientCommand( edict_t *pEntity )
          ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -856,7 +857,7 @@ void ClientCommand( edict_t *pEntity )
          }
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -871,7 +872,7 @@ void ClientCommand( edict_t *pEntity )
                UTIL_ShowMenu(pEntity, 0x1F, -1, FALSE, show_menu_2);
 
 			   if( g_bIsMMPlugin )
-				   RETURN_META( MRES_SUPERCEDE );
+				   METAMOD_RETURN( MRES_SUPERCEDE );
 
                return;
             }
@@ -909,7 +910,7 @@ void ClientCommand( edict_t *pEntity )
                UTIL_ShowMenu(pEntity, 0x13, -1, FALSE, show_menu_3);
 
 			   if( g_bIsMMPlugin )
-				   RETURN_META( MRES_SUPERCEDE );
+				   METAMOD_RETURN( MRES_SUPERCEDE );
 
                return;
             }
@@ -953,7 +954,7 @@ void ClientCommand( edict_t *pEntity )
          g_menu_state = MENU_NONE;
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -972,7 +973,7 @@ void ClientCommand( edict_t *pEntity )
          }
 
 		 if( g_bIsMMPlugin )
-			 RETURN_META( MRES_SUPERCEDE );
+			 METAMOD_RETURN( MRES_SUPERCEDE );
 
          return;
       }
@@ -987,7 +988,7 @@ void ClientCommand( edict_t *pEntity )
 				ALERT( at_console, "Player not found\n" );
 
 				if( g_bIsMMPlugin )
-					RETURN_META( MRES_SUPERCEDE );
+					METAMOD_RETURN( MRES_SUPERCEDE );
 
 				return;
 			}
@@ -1106,14 +1107,14 @@ void ClientCommand( edict_t *pEntity )
 			}
 
 			if( g_bIsMMPlugin )
-				RETURN_META( MRES_SUPERCEDE );
+				METAMOD_RETURN( MRES_SUPERCEDE );
 
 			return;
 		}
    }
 
    if( g_bIsMMPlugin )
-	   RETURN_META( MRES_IGNORED );
+	   METAMOD_RETURN( MRES_IGNORED );
 
    (*other_gFunctionTable.pfnClientCommand)(pEntity);
 }
@@ -1124,7 +1125,7 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 
 	if( g_bIsMMPlugin )
 	{
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 	}
 
 	(*other_gFunctionTable.pfnClientUserInfoChanged)(pEntity, infobuffer);
@@ -1136,7 +1137,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	if( pGame )
 	{
 		delete pGame;
-		pGame = NULL;
+		pGame = nullptr;
 	}
 	if( pBotData )
 	{
@@ -1150,9 +1151,9 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
 			delete pBots[i];
-			pBots[i] = NULL;
+			pBots[i] = nullptr;
 		}
-		pBots = NULL;
+		pBots = nullptr;
 	}
 
 	pBots = new bot_t*[MAX_PLAYERS];
@@ -1252,7 +1253,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	bCanAddBots = false;
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnServerActivate)(pEdictList, edictCount, clientMax);
 }
@@ -1262,7 +1263,7 @@ void ServerDeactivate( void )
 	CleanupGameAndBots();
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnServerDeactivate)();
 }
@@ -1270,7 +1271,7 @@ void ServerDeactivate( void )
 void PlayerPreThink( edict_t *pEntity )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnPlayerPreThink)(pEntity);
 }
@@ -1278,7 +1279,7 @@ void PlayerPreThink( edict_t *pEntity )
 void PlayerPostThink( edict_t *pEntity )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnPlayerPostThink)(pEntity);
 }
@@ -1466,7 +1467,7 @@ void StartFrame( void )
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnStartFrame)();
 }
@@ -1474,7 +1475,7 @@ void StartFrame( void )
 void ParmsNewLevel( void )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnParmsNewLevel)();
 }
@@ -1482,7 +1483,7 @@ void ParmsNewLevel( void )
 void ParmsChangeLevel( void )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnParmsChangeLevel)();
 }
@@ -1490,7 +1491,7 @@ void ParmsChangeLevel( void )
 const char *GetGameDescription( void )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, "" );
 
 	return (*other_gFunctionTable.pfnGetGameDescription)();
 }
@@ -1501,7 +1502,7 @@ void PlayerCustomization( edict_t *pEntity, customization_t *pCust )
 
 	if( g_bIsMMPlugin )
 	{
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 	}
 
 	(*other_gFunctionTable.pfnPlayerCustomization)(pEntity, pCust);
@@ -1510,7 +1511,7 @@ void PlayerCustomization( edict_t *pEntity, customization_t *pCust )
 void SpectatorConnect( edict_t *pEntity )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSpectatorConnect)(pEntity);
 }
@@ -1518,7 +1519,7 @@ void SpectatorConnect( edict_t *pEntity )
 void SpectatorDisconnect( edict_t *pEntity )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSpectatorDisconnect)(pEntity);
 }
@@ -1526,7 +1527,7 @@ void SpectatorDisconnect( edict_t *pEntity )
 void SpectatorThink( edict_t *pEntity )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSpectatorThink)(pEntity);
 }
@@ -1534,7 +1535,7 @@ void SpectatorThink( edict_t *pEntity )
 void Sys_Error( const char *error_string )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSys_Error)(error_string);
 }
@@ -1542,7 +1543,7 @@ void Sys_Error( const char *error_string )
 void PM_Move( struct playermove_s *ppmove, int server )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnPM_Move)(ppmove, server);
 }
@@ -1550,7 +1551,7 @@ void PM_Move( struct playermove_s *ppmove, int server )
 void PM_Init( struct playermove_s *ppmove )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnPM_Init)(ppmove);
 }
@@ -1558,7 +1559,7 @@ void PM_Init( struct playermove_s *ppmove )
 char PM_FindTextureType( char *name )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnPM_FindTextureType)(name);
 }
@@ -1566,7 +1567,7 @@ char PM_FindTextureType( char *name )
 void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pvs, unsigned char **pas )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnSetupVisibility)(pViewEntity, pClient, pvs, pas);
 }
@@ -1574,7 +1575,7 @@ void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pv
 void UpdateClientData( const struct edict_s *ent, int sendweapons, struct clientdata_s *cd )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnUpdateClientData)(ent, sendweapons, cd);
 }
@@ -1582,7 +1583,7 @@ void UpdateClientData( const struct edict_s *ent, int sendweapons, struct client
 int AddToFullPack( struct entity_state_s *state, int e, edict_t *ent, edict_t *host, int hostflags, int player, unsigned char *pSet )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnAddToFullPack)(state, e, ent, host, hostflags, player, pSet);
 }
@@ -1590,7 +1591,7 @@ int AddToFullPack( struct entity_state_s *state, int e, edict_t *ent, edict_t *h
 void CreateBaseline( int player, int eindex, struct entity_state_s *baseline, struct edict_s *entity, int playermodelindex, vec3_t player_mins, vec3_t player_maxs )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnCreateBaseline)(player, eindex, baseline, entity, playermodelindex, player_mins, player_maxs);
 }
@@ -1598,7 +1599,7 @@ void CreateBaseline( int player, int eindex, struct entity_state_s *baseline, st
 void RegisterEncoders( void )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnRegisterEncoders)();
 }
@@ -1606,7 +1607,7 @@ void RegisterEncoders( void )
 int GetWeaponData( struct edict_s *player, struct weapon_data_s *info )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnGetWeaponData)(player, info);
 }
@@ -1614,7 +1615,7 @@ int GetWeaponData( struct edict_s *player, struct weapon_data_s *info )
 void CmdStart( const edict_t *player, const struct usercmd_s *cmd, unsigned int random_seed )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnCmdStart)(player, cmd, random_seed);
 }
@@ -1622,7 +1623,7 @@ void CmdStart( const edict_t *player, const struct usercmd_s *cmd, unsigned int 
 void CmdEnd ( const edict_t *player )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnCmdEnd)(player);
 }
@@ -1630,7 +1631,7 @@ void CmdEnd ( const edict_t *player )
 int ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnConnectionlessPacket)(net_from, args, response_buffer, response_buffer_size);
 }
@@ -1638,7 +1639,7 @@ int ConnectionlessPacket( const struct netadr_s *net_from, const char *args, cha
 int GetHullBounds( int hullnumber, float *mins, float *maxs )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnGetHullBounds)(hullnumber, mins, maxs);
 }
@@ -1652,7 +1653,7 @@ void CreateInstancedBaselines( void )
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META( MRES_IGNORED );
+		METAMOD_RETURN( MRES_IGNORED );
 
 	(*other_gFunctionTable.pfnCreateInstancedBaselines)();
 }
@@ -1663,7 +1664,7 @@ int InconsistentFile( const edict_t *player, const char *filename, char *disconn
 
 	if( g_bIsMMPlugin )
 	{
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 	}
 
 	return (*other_gFunctionTable.pfnInconsistentFile)(player, filename, disconnect_message);
@@ -1672,7 +1673,7 @@ int InconsistentFile( const edict_t *player, const char *filename, char *disconn
 int AllowLagCompensation( void )
 {
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 
 	return (*other_gFunctionTable.pfnAllowLagCompensation)();
 }
@@ -1812,23 +1813,23 @@ const char *Cmd_Args( void )
 		if( strncmp( "say ", g_argv, 4 ) == 0 )
 		{
 			if( g_bIsMMPlugin )
-				RETURN_META_VALUE( MRES_SUPERCEDE, g_argv + 4 );
+				return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, g_argv + 4 );
 			return g_argv + 4;     // skip the "say" bot client command
 		}
 		else if( strncmp( "say_team ", g_argv, 9 ) == 0 )
 		{
 			if( g_bIsMMPlugin )
-				RETURN_META_VALUE( MRES_SUPERCEDE, g_argv + 9 );
+				return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, g_argv + 9 );
 			return g_argv + 9;     // skip the "say_team" bot client command
 		}
 
 		if( g_bIsMMPlugin )
-			RETURN_META_VALUE( MRES_SUPERCEDE, g_argv );
+			return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, g_argv );
 		return g_argv;            // else return the whole bot client command string we know
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, "" );
 
 	return CMD_ARGS();	// ask the client command string to the engine
 }
@@ -1839,13 +1840,13 @@ const char *Cmd_Argv( int argc )
 	if( isFakeClientCommand )
 	{
 		if( g_bIsMMPlugin )
-			RETURN_META_VALUE( MRES_SUPERCEDE, GetArg( g_argv, argc ) );
+			return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, GetArg( g_argv, argc ) );
 
 		return GetArg( g_argv, argc );      // if so, then return the wanted argument we know
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, "" );
 	
 	return CMD_ARGV(argc);
 }
@@ -1856,12 +1857,12 @@ int Cmd_Argc( void )
 	if( isFakeClientCommand )
 	{
 		if( g_bIsMMPlugin )
-			RETURN_META_VALUE( MRES_SUPERCEDE, fake_arg_count );
+			return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, fake_arg_count );
 		return fake_arg_count;    // if so, then return the argument count we know
 	}
 
 	if( g_bIsMMPlugin )
-		RETURN_META_VALUE( MRES_IGNORED, 0 );
+		return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
 	
 	return CMD_ARGC();
 }
