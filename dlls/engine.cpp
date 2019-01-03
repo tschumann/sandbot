@@ -1341,7 +1341,14 @@ uint32 pfnFunctionFromName( const char *pName )
 
 	if( g_bIsMMPlugin )
 	{
-		return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, iAddress );
+		if( iAddress )
+		{
+			return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, iAddress );
+		}
+		else
+		{
+			return METAMOD_RETURN_VALUE( MRES_IGNORED, 0 );
+		}
 	}
 
 	if( iAddress )
@@ -1360,7 +1367,14 @@ const char *pfnNameForFunction( uint32 function )
 
 	if( g_bIsMMPlugin )
 	{
-		return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, szName );
+		if( szName )
+		{
+			return METAMOD_RETURN_VALUE( MRES_SUPERCEDE, szName );
+		}
+		else
+		{
+			return METAMOD_RETURN_VALUE( MRES_IGNORED, "" );
+		}
 	}
 
 	if( szName )
