@@ -36,9 +36,9 @@ Q. Can I make some waypoints?
 A. Yes, please do!
 
 Q. How do I build Sandbot?
-A. On Windows open dlls/Sandbot-2017.sln with Visual Studio and compile it.
+A. If you want to build yourself, use a tagged release as the head of master can be unstable.
+   On Windows open dlls/Sandbot-2017.sln with Visual Studio and compile it.
    On Linux install gcc-multilib and g++-multilib or your distro's equivalent packages and run make inside of dlls/
-   Note that you should build a tagged release as the head of master can be unstable.
 
 Q. Can you fix Sandbot not working on my distro?
 A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.

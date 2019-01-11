@@ -1,3 +1,13 @@
+botman's HPB bot template source code
+
+The template source code (hpb_bot_template_4.zip) has been extensively
+modified and augmented (drawing inspiration from hpb_bot_plugin.zip and
+singlep-1.0.zip and probably other things too).
+
+tschumann
+
+
+
 botman's HPB bot template source code - March 25, 2004
 
 The template source code has been updated to support the Steam engine.
