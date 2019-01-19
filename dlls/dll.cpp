@@ -34,7 +34,8 @@ extern bot_player_t *pBotData;
 
 char g_argv[1024];
 
-DLL_FUNCTIONS gFunctionTable;
+// TODO: not used?
+// DLL_FUNCTIONS gFunctionTable;
 DLL_FUNCTIONS other_gFunctionTable;
 DLL_GLOBAL const Vector g_vecZero = Vector(0,0,0);
 
@@ -256,7 +257,7 @@ int DispatchSpawn( edict_t *pent )
 		PRECACHE_SOUND("common/wpn_denyselect.wav");  // path add/delete error
 		PRECACHE_MODEL("models/mechgibs.mdl");
 
-		m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr");
+		m_spriteTexture = PRECACHE_MODEL("sprites/lgtning.spr");
 
 		g_GameRules = TRUE;
 

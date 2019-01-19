@@ -24,9 +24,9 @@
 #endif
 
 #ifndef __linux__
-HINSTANCE h_Library = NULL;
+HINSTANCE h_Library = nullptr;
 #else
-void* h_Library = NULL;
+void* h_Library = nullptr;
 #endif
 
 const char *Cmd_Args( void );
