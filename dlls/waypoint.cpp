@@ -581,7 +581,7 @@ bool ShouldSkip( edict_t *pPlayer, int index )
 			}
 		}
 	}
-	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && waypoints[index].flags == W_FL_OP4_CAPTURE_POINT)
+	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && waypoints[index].flags == W_FL_OP4_CAPTURE_POINT )
 	{
 		edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
 
@@ -1075,9 +1075,9 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
    // look for the nearest health, armor, ammo, weapon, etc.
    //********************************************************
 
-   while((pent = UTIL_FindEntityInSphere( pent, origin, radius )) != nullptr)
+   while( (pent = UTIL_FindEntityInSphere( pent, origin, radius )) != nullptr )
    {
-      if (pEntity)
+      if ( pEntity )
 	  {
          UTIL_TraceLine( origin, pent->v.origin, ignore_monsters, pEntity->v.pContainingEntity, &tr );
 	  }
@@ -1499,16 +1499,16 @@ void WaypointDelete(edict_t *pEntity)
 }
 
 
-void WaypointUpdate(edict_t *pEntity)
+void WaypointUpdate( edict_t *pEntity )
 {
-   int mask = W_FL_HEALTH | W_FL_ARMOR | W_FL_AMMO | W_FL_WEAPON;
+	int mask = W_FL_HEALTH | W_FL_ARMOR | W_FL_AMMO | W_FL_WEAPON;
 
-   for (int index=0; index < num_waypoints; index++)
-   {
-      waypoints[index].flags &= ~mask;  // clear the mask bits
+	for( int i = 0; i < num_waypoints; i++ )
+	{
+		waypoints[i].flags &= ~mask;  // clear the mask bits
 
-      WaypointSearchItems(NULL, waypoints[index].origin, index);
-   }
+		WaypointSearchItems( nullptr, waypoints[i].origin, i );
+	}
 }
 
 

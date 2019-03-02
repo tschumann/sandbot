@@ -224,6 +224,9 @@ bool OpposingForceBot::FindFlag()
 
 bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
+	// TODO: work this out - there are 16 trigger_ctfgeneric entities in op4cp_park
+	// 8 to do with scoring, 8 to with displaying who owns the capture point
+	// pev->skin or pev->body should have the team name but doesn't
 	return false;
 }
 
