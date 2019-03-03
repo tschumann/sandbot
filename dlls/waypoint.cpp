@@ -581,7 +581,7 @@ bool ShouldSkip( edict_t *pPlayer, int index )
 			}
 		}
 	}
-	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && waypoints[index].flags == W_FL_OP4_CAPTURE_POINT )
+	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && (waypoints[index].flags == W_FL_OP4_CAPTURE_POINT_BM || waypoints[index].flags == W_FL_OP4_CAPTURE_POINT_OF) )
 	{
 		edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
 
@@ -1061,20 +1061,18 @@ void WaypointDrawBeam( edict_t *pEntity, Vector start, Vector end, int width, in
 void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 {
 	edict_t *pent = nullptr;
-	float radius = 300;	// increased from 40 as team_hive hangs from the ceiling and isn't close enough by default
+	float radius = 300.0f; // needs to be big as team_hive hangs from the ceiling so won't be that close to the player
 	TraceResult tr;
 	float distance;
 	float min_distance = 9999.0f;
 	char item_name[64];
 	char nearest_name[64] = "";
 	edict_t *nearest_pent = nullptr;
-	int bck_index;
 	int tfc_backpack_index = -1;  // "null" out backpack index
 
    //********************************************************
    // look for the nearest health, armor, ammo, weapon, etc.
    //********************************************************
-
    while( (pent = UTIL_FindEntityInSphere( pent, origin, radius )) != nullptr )
    {
       if ( pEntity )
@@ -1121,7 +1119,7 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 
          if (mod_id == TFC_DLL)
          {
-            for (bck_index=0; bck_index < num_backpacks; bck_index++)
+            for (int bck_index=0; bck_index < num_backpacks; bck_index++)
             {
                distance = (pent->v.origin - origin).Length();
 
@@ -1183,7 +1181,7 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 			waypoints[wpt_index].flags |= W_FL_FLAG_GOAL;
 		}
 
-		if ((strcmp("item_ctfflag", nearest_name) == 0))
+		if( !strcmp("item_ctfflag", nearest_name) )
 		{
 			if (pEntity)
 				ClientPrint(pEntity, HUD_PRINTCONSOLE, "found an item_ctfflag\n");
@@ -1202,12 +1200,20 @@ void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
 				{
 					ALERT( at_console, "Mismatched trigger_ctfgeneric %s\n", STRING(nearest_pent->v.target) );
 				}
+
+				if( !strcmp(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 1 )
+				{
+					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_BM;
+				}
+				else if( !strcmp(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 2 )
+				{
+					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_OF;
+				}
 			}
 			if( pEntity )
 			{
 				ClientPrint( pEntity, HUD_PRINTCONSOLE, "Found a trigger_ctfgeneric\n" );
 			}
-			waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT;
 		}
 
 		if ((strcmp("dod_object", nearest_name) == 0))
@@ -2064,17 +2070,13 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ALERT( at_console, "item_ctfbase with model %s\n", STRING(pBase->v.model) );
 	}
 
-	if( flags & W_FL_OP4_CAPTURE_POINT )
+	if( flags & W_FL_OP4_CAPTURE_POINT_BM )
 	{
-		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
-
-		edict_t *pCapturePoint = FindNearest( waypoints[index].origin, "trigger_ctfgeneric" );
-
-		if( pCapturePoint )
-		{
-			// TODO: skin is the thing that determines its owner?
-			ALERT( at_console, "trigger_ctfgeneric with skin %d\n", pCapturePoint->v.frame );
-		}
+		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a Black Mesa capture point near this waypoint\n");
+	}
+	if( flags & W_FL_OP4_CAPTURE_POINT_OF )
+	{
+		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is an Opposing Force capture point near this waypoint\n");
 	}
 
 	if (flags & W_FL_PRONE)

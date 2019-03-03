@@ -95,7 +95,20 @@ int OpposingForceBot::GetGoalType()
 	}
 	else if( pGame->IsCapturePoint() )
 	{
-		return W_FL_OP4_CAPTURE_POINT;
+		if( UTIL_GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA )
+		{
+			return W_FL_OP4_CAPTURE_POINT_BM;
+		}
+		else if( UTIL_GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE )
+		{
+			return W_FL_OP4_CAPTURE_POINT_OF;
+		}
+		else
+		{
+			ALERT( at_error, "Bot with unknown team %d\n", UTIL_GetTeam(this->pEdict) );
+
+			return W_FL_DELETED;
+		}
 	}
 	else
 	{
@@ -225,7 +238,9 @@ bool OpposingForceBot::FindFlag()
 bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	// TODO: work this out - there are 16 trigger_ctfgeneric entities in op4cp_park
-	// 8 to do with scoring, 8 to with displaying who owns the capture point
+	// there are 8 pairs - each pair is one per team
+	// 8 to do with scoring (?), 8 to with displaying who owns the capture point (?) which have a triggerstate attribute too
+	// those with a triggerstate attribute have a target that is an env_render which displays if that team has the point?
 	// pev->skin or pev->body should have the team name but doesn't
 	return false;
 }

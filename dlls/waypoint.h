@@ -51,13 +51,14 @@ const int W_FL_TFC_DISPENSER = (1<<16); // dispenser waypoint for TFC
 const int W_FL_WEAPON = (1<<17); // weapon_ entity location
 const int W_FL_JUMP = (1<<18); // jump waypoint
 
-const int W_FL_OP4_CAPTURE_POINT = (1<<19); // Opposing Force CTF capture point
-
 const int W_FL_NS_HIVE = (1<<20);
 const int W_FL_NS_COMMAND_CHAIR = (1<<21);
 const int W_FL_NS_RESNODE = (1<<22);
 
 const int W_FL_TFC_BUILD_ZONE = (1<<25); // Team Fortress Classic engineer build zone
+
+const int W_FL_OP4_CAPTURE_POINT_BM = (1<<27); // Opposing Force CTF Black Mesa capture point
+const int W_FL_OP4_CAPTURE_POINT_OF = (1<<28); // Opposing Force CTF Opposing Force capture point
 
 const int W_FL_DOD_OBJ = (1<<29); // Day of Defeat objective
 const int W_FL_DOD_CAP = (1<<30); // Day of Defeat capture point
