@@ -90,9 +90,9 @@ float msecval;
 
 cvar_t bot_log_level = {"bot_log_level", "1"};
 
-cvar_t bot_skill = {"bot_skill", "3"};
+cvar_t bot_skill = {"bot_skill", "3", FCVAR_ARCHIVE};
 
-cvar_t bot_count = {"bot_count", "11"};
+cvar_t bot_count = {"bot_count", "11", FCVAR_ARCHIVE};
 cvar_t bot_shoot = {"bot_shoot", "1"};
 
 cvar_t bot_use_melee = {"bot_use_melee", "1", 0, 1.0f};

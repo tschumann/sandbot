@@ -51,6 +51,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 v0.4.3 (??/??/??)
 - [All] Fixed bot_skill 5 not working.
 - [All] Fixed cvars not being read correctly in MetaMod.
+- [All] bot_skill and bot_count now get written to config.cfg
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
 - [Natural Selection] Increased range at which marines will use weapon_machinegun and weapon_heavymachinegun.
 
