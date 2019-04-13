@@ -140,5 +140,8 @@
     <ClInclude Include="metamod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wpt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

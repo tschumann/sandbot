@@ -14,6 +14,7 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "waypoint.h"
+#include "wpt.h"
 
 #define MENU_NONE  0
 #define MENU_1     1

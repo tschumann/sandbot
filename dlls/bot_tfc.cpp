@@ -6,6 +6,7 @@
 #include "bot_func.h"
 #include "bot_weapons.h"
 #include "waypoint.h"
+#include "wpt.h"
 
 TFCBot::TFCBot()
 {

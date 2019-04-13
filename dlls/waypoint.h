@@ -9,13 +9,6 @@
 #ifndef WAYPOINT_H
 #define WAYPOINT_H
 
-#ifdef _MSC_VER
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-#else
-#include <stdint.h>
-#endif
-
 #include <limits.h>
 
 const int WAYPOINT_NOT_FOUND = -1;
@@ -64,29 +57,6 @@ const int W_FL_DOD_OBJ = (1<<29); // Day of Defeat objective
 const int W_FL_DOD_CAP = (1<<30); // Day of Defeat capture point
 
 const int W_FL_DELETED = (1<<31); // used by waypoint allocation code
-
-
-#define WAYPOINT_HEADER "Sandbot"
-const int WAYPOINT_VERSION = 1;
-
-// define the waypoint file header structure...
-typedef struct {
-   char filetype[8];
-   int  waypoint_file_version;
-   int  waypoint_file_flags;
-   int  number_of_waypoints;
-   char mapname[32];	// name of map for these waypoints
-} WAYPOINT_HDR;
-
-// define the structure for waypoints...
-typedef struct {
-   uint64_t flags;	// button, lift, flag, health, ammo, etc.
-   // int unused;
-   Vector origin;	// location
-#if __GNUC__
-   uint32_t iPack;
-#endif
-} WAYPOINT;
 
 
 #define WAYPOINT_UNREACHABLE   USHRT_MAX

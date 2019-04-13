@@ -13,6 +13,7 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "waypoint.h"
+#include "wpt.h"
 
 extern int mod_id;
 extern WAYPOINT waypoints[MAX_WAYPOINTS];

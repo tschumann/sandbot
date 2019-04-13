@@ -20,6 +20,7 @@
 
 #include "bot.h"
 #include "waypoint.h"
+#include "wpt.h"
 
 
 extern int mod_id;

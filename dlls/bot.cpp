@@ -13,6 +13,7 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "waypoint.h"
+#include "wpt.h"
 #include "bot_weapons.h"
 #include "h_export.h"
 
@@ -21,17 +22,12 @@ extern edict_t *clients[32];
 extern WAYPOINT waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 
-static FILE *fp;
-
 bot_player_t *pBotData = nullptr;
 
 bot_t **pBots = nullptr; // [MAX_PLAYERS];
-bool b_observer_mode = FALSE;
+bool b_observer_mode = false;
 
 #define MAX_BOT_NAMES 100
-
-#define VALVE_MAX_SKINS    10
-#define GEARBOX_MAX_SKINS  20
 
 bot_player_t g_valveBots[MAX_PLAYERS] =
 {

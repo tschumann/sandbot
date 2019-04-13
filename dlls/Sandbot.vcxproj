@@ -188,6 +188,7 @@
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="waypoint.h" />
+    <ClInclude Include="wpt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
