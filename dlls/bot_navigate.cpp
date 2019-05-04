@@ -12,11 +12,11 @@
 
 #include "bot.h"
 #include "bot_func.h"
-#include "waypoint.h"
 #include "wpt.h"
+#include "waypoint.h"
 
 extern int mod_id;
-extern WAYPOINT waypoints[MAX_WAYPOINTS];
+extern waypoint_t waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 
 float BotChangePitch( bot_t *pBot, float speed )
@@ -228,7 +228,7 @@ bool BotFindWaypoint( bot_t *pBot )
 {
    int index, select_index;
    int team;
-   PATH *pPath = NULL;
+   path_t *pPath = NULL;
    int path_index;
    float distance, min_distance[3];
    int min_index[3];

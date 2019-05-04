@@ -19,9 +19,8 @@
 #include "cbase.h"
 
 #include "bot.h"
-#include "waypoint.h"
 #include "wpt.h"
-
+#include "waypoint.h"
 
 extern int mod_id;
 extern int m_spriteTexture;
@@ -33,13 +32,13 @@ extern CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
 extern int iCapturePointCount;
 
 // waypoints with information bits (flags)
-WAYPOINT waypoints[MAX_WAYPOINTS];
+waypoint_t waypoints[MAX_WAYPOINTS];
 
 // number of waypoints currently in use
 int num_waypoints;
 
 // declare the array of head pointers to the path structures...
-PATH *paths[MAX_WAYPOINTS];
+path_t *paths[MAX_WAYPOINTS];
 
 // time that this waypoint was displayed (while editing)
 float wp_display_time[MAX_WAYPOINTS];
@@ -82,8 +81,8 @@ void WaypointFree(void)
 
       if (paths[i])
       {
-         PATH *p = paths[i];
-         PATH *p_next;
+         path_t *p = paths[i];
+         path_t *p_next;
 
          while (p)  // free the linked list
          {
@@ -147,7 +146,7 @@ void WaypointInit(void)
 
 void WaypointAddPath(short int add_index, short int path_index)
 {
-   PATH *p, *prev;
+   path_t *p, *prev;
    int i;
    int count = 0;
 
@@ -180,7 +179,7 @@ void WaypointAddPath(short int add_index, short int path_index)
 #endif
    }
 
-   p = (PATH *)malloc(sizeof(PATH));
+   p = (path_t *)malloc(sizeof(path_t));
 
    if (p == NULL)
    {
@@ -203,7 +202,7 @@ void WaypointAddPath(short int add_index, short int path_index)
 
 void WaypointDeletePath(short int del_index)
 {
-   PATH *p;
+   path_t *p;
    int index, i;
 
    // search all paths for this index...
@@ -241,7 +240,7 @@ void WaypointDeletePath(short int del_index)
 
 void WaypointDeletePath(short int path_index, short int del_index)
 {
-   PATH *p;
+   path_t *p;
    int i;
    int count = 0;
 
@@ -274,7 +273,7 @@ void WaypointDeletePath(short int path_index, short int del_index)
 
 // find a path from the current waypoint. (pPath MUST be NULL on the
 // initial call. subsequent calls will return other paths if they exist.)
-int WaypointFindPath(PATH **pPath, int *path_index, int waypoint_index, int team)
+int WaypointFindPath(path_t **pPath, int *path_index, int waypoint_index, int team)
 {
    int index;
    int count = 0;
@@ -1479,8 +1478,8 @@ void WaypointDelete(edict_t *pEntity)
 
    if (paths[index] != NULL)
    {
-      PATH *p = paths[index];
-      PATH *p_next;
+      path_t *p = paths[index];
+      path_t *p_next;
 
       while (p)  // free the linked list
       {
@@ -1627,14 +1626,14 @@ bool WaypointLoad(edict_t *pEntity)
 // Visual Studio 2010 onwards: https://msdn.microsoft.com/en-us/library/dd293588.aspx)
 #if (_MSC_VER >= 1600) || (__cplusplus >= 201103L)
    // compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
-   static_assert(sizeof(WAYPOINT) == 24, "WAYPOINT should be 24 bytes");
+   static_assert(sizeof(waypoint_t) == 24, "waypoint_t should be 24 bytes");
    static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
-   static_assert(offsetof(WAYPOINT, origin) == 8, "origin should be 8 bytes into WAYPOINT");
+   static_assert(offsetof(waypoint_t, origin) == 8, "origin should be 8 bytes into waypoint_t");
 
-   static_assert(sizeof(PATH) == 12, "PATH should be 12 bytes");
-   static_assert(offsetof(PATH, next) == 8, "next should be 8 bytes into PATH");
+   static_assert(sizeof(path_t) == 12, "path_t should be 12 bytes");
+   static_assert(offsetof(path_t, next) == 8, "next should be 8 bytes into PATH");
 #else
-#warning No checking of waypoint structure layouts - there may be problems
+	#warning No checking of waypoint structure layouts - there may be problems
 #endif
 
    strcpy(mapname, STRING(gpGlobals->mapname));
@@ -1778,7 +1777,7 @@ void WaypointSave(void)
    WAYPOINT_HDR header;
    int index, i;
    short int num;
-   PATH *p;
+   path_t *p;
 
    strcpy(header.filetype, WAYPOINT_HEADER);
 
@@ -2204,7 +2203,7 @@ void WaypointThink(edict_t *pEntity)
          // check if player is close enough to a waypoint and time to draw path...
          if ((min_distance <= 50) && (f_path_time <= gpGlobals->time))
          {
-            PATH *p;
+            path_t *p;
 
             f_path_time = gpGlobals->time + 1.0;
 
@@ -2462,7 +2461,7 @@ void WaypointRouteInit(void)
             {
                if (paths[row] != NULL)
                {
-                  PATH *p = paths[row];
+                  path_t *p = paths[row];
 
                   while (p)
                   {

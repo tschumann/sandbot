@@ -13,8 +13,8 @@
 
 #include "bot.h"
 #include "bot_func.h"
-#include "waypoint.h"
 #include "wpt.h"
+#include "waypoint.h"
 
 #define MENU_NONE  0
 #define MENU_1     1
@@ -28,7 +28,7 @@ extern bool g_waypoint_on;
 extern bool g_auto_waypoint;
 extern bool g_path_waypoint;
 extern int num_waypoints;  // number of waypoints currently in use
-extern WAYPOINT waypoints[MAX_WAYPOINTS];
+extern waypoint_t waypoints[MAX_WAYPOINTS];
 extern bot_t **pBots;
 extern bool b_observer_mode;
 extern bot_player_t *pBotData;

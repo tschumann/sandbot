@@ -12,6 +12,7 @@
 
 #include "bot.h"
 #include "bot_func.h"
+#include "wpt.h"
 #include "waypoint.h"
 #include "wpt.h"
 #include "bot_weapons.h"
@@ -19,7 +20,7 @@
 
 extern int mod_id;
 extern edict_t *clients[32];
-extern WAYPOINT waypoints[MAX_WAYPOINTS];
+extern waypoint_t waypoints[MAX_WAYPOINTS];
 extern int num_waypoints;  // number of waypoints currently in use
 
 bot_player_t *pBotData = nullptr;

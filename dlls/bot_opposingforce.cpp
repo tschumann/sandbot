@@ -5,8 +5,8 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
-#include "waypoint.h"
 #include "wpt.h"
+#include "waypoint.h"
 
 OpposingForceBot::OpposingForceBot()
 {
@@ -137,7 +137,7 @@ bool OpposingForceBot::HasFlag()
 
 bool OpposingForceBot::FindFlag()
 {
-	extern WAYPOINT waypoints[MAX_WAYPOINTS];
+	extern waypoint_t waypoints[MAX_WAYPOINTS];
 
 	int skin = 0;
 	int team = pGame->GetTeam( this->pEdict );

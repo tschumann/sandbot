@@ -5,6 +5,7 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
+#include "wpt.h"
 #include "waypoint.h"
 
 // http://www.unknownworlds.com/oldwebsite/manuals/Natural_Selection_Manual.html

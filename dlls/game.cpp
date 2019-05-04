@@ -3,6 +3,7 @@
 #include "cbase.h"
 
 #include "bot.h"
+#include "wpt.h"
 #include "waypoint.h"
 
 Game::~Game()

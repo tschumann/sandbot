@@ -5,8 +5,8 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
-#include "waypoint.h"
 #include "wpt.h"
+#include "waypoint.h"
 
 TFCBot::TFCBot()
 {
@@ -237,7 +237,7 @@ bool TFCBot::HasFlag()
 
 bool TFCBot::FindFlag()
 {
-	extern WAYPOINT waypoints[MAX_WAYPOINTS];
+	extern waypoint_t waypoints[MAX_WAYPOINTS];
 	extern FLAG_S flags[MAX_FLAGS];
 	extern int num_flags;
 	extern int team_allies[4];
