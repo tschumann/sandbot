@@ -7,8 +7,8 @@ Description: A multiplayer bot for Half-Life, Half-Life Opposing Force (Deathmat
 Requirements: Steam versions of the supported games or mods.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
-Sandbot will work with MetaMod across the board (except for with Gunman Chronicles due to a bug in MetaMod itself).
-Sandbot should work with MetaMod-P across the board but has been found to freeze even without Sandbot on Ubuntu.
+Sandbot will work with Metamod for all games and mods (except for with Gunman Chronicles due to a bug in Metamod itself).
+Sandbot should work with Metamod-P for all games and mods but has been found to freeze even without Sandbot on Ubuntu.
 
 == Usage ==
 
@@ -26,7 +26,7 @@ waypoint info	Print what type of waypoint a waypoint is
 Q. Can you add support for mod x?
 A. I'm not planning to at the moment - I'm planning support for Half-Life, Opposing Force, Day of Defeat, Team Fortress Classic, Gunman Chronicles, Natural Selection, The Ship and They Hunger which is likely going to take a while.
 
-Q. Is the WON version supported.
+Q. Is the WON version supported?
 A. No, Sandbot will only work with the Steam version.
 
 Q. Can it be used for dedicated servers?
@@ -36,7 +36,7 @@ Q. Can I make some waypoints?
 A. Yes, please do!
 
 Q. How do I build Sandbot?
-A. If you want to build yourself, use a tagged release as the head of master can be unstable.
+A. If you want to build it yourself, use a tagged release as the head of master can be unstable.
    On Windows open dlls/Sandbot-2017.sln with Visual Studio and compile it.
    On Linux install gcc-multilib and g++-multilib or your distro's equivalent packages and run make inside of dlls/
 
@@ -44,13 +44,13 @@ Q. Can you fix Sandbot not working on my distro?
 A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.
 
 Q. I get an error on Linux: "LoadLibrary failed on sandbot.so: ./libstdc++.so.6: version `CXXABI_1.3.9' not found"
-A. Steam and SteamCMD both come packaged with older version of libstdc++ - move this version out of the way so sandbot can load the version you've installed with your distro's package manager.
+A. Steam and SteamCMD both come packaged with older version of libstdc++ - move this version out of the way so Sandbot can load the version you've installed with your distro's package manager.
 
 == Changelog ==
 
 v0.4.3 (??/??/??)
 - [All] Fixed bot_skill 5 not working.
-- [All] Fixed cvars not being read correctly in MetaMod.
+- [All] Fixed cvars not being read correctly in Metamod.
 - [All] bot_skill and bot_count now get written to config.cfg
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
 - [Natural Selection] Increased range at which marines will use weapon_machinegun and weapon_heavymachinegun.
@@ -84,12 +84,12 @@ v0.4.1 (10/09/17)
 
 v0.4.0.1 (18/06/17)
 - [All] Fixed single player not loading (thanks shardthefox200@ModDB)
-- [Linux] Replaced included MetaMod-P for Linux with MetaMod for Linux as MetaMod-P almost always freezes on Ubuntu.
+- [Linux] Replaced included Metamod-P for Linux with Metamod for Linux as Metamod-P almost always freezes on Ubuntu.
 
 v0.4 (05/03/17)
 - [All] Increased number of allowed waypoints to 2048 (thanks 256 colors).
 - [All] Added bot_count cvar to control how many bots spawn by default (mapname_bot.cfg has been removed).
-- [All] Added MetaMod support.
+- [All] Added Metamod support (thanks The Storm@Bots United).
 
 v0.3.1 (26/01/17)
 - [All] Bots no longer rejoin when the map changes.
@@ -160,5 +160,5 @@ Bots United for their support.
 == Credits ==
 
 Framework: botman
-MetaMod support: The Storm
+Metamod support: The Storm
 Programming: tschumann
