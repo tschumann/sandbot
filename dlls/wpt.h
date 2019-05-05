@@ -65,7 +65,7 @@ const int W_FL_DELETED = (1<<31); // used by waypoint allocation code
 // define the waypoint file header structure
 typedef struct {
    char filetype[8];
-   int  waypoint_file_version;
+   int  waypoint_file_version; // not used
    int  waypoint_file_flags;
    int  number_of_waypoints;
    char mapname[32]; // name of map for these waypoints

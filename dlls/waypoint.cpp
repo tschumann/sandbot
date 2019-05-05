@@ -1608,45 +1608,45 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
 
 bool WaypointLoad(edict_t *pEntity)
 {
-   FILE *bfp;
-   char mapname[64];
-   char filename[256];
-   char new_filename[256];
-#ifdef __linux__
-   char cmd[512];
-#endif
-   WAYPOINT_HDR header;
-   char msg[80];
-   int index, i;
-   short int num;
-   short int path_index;
-   bool need_rename;
+	FILE *bfp;
+	char mapname[64];
+	char filename[256];
+	char new_filename[256];
+	#ifdef __linux__
+	char cmd[512];
+	#endif
+	WAYPOINT_HDR header;
+	char msg[80];
+	int index, i;
+	short int num;
+	short int path_index;
+	bool need_rename;
 
 // only supported in newer versions of C++ (which Visual Studio doesn't say it supports, but is only supported by
 // Visual Studio 2010 onwards: https://msdn.microsoft.com/en-us/library/dd293588.aspx)
 #if (_MSC_VER >= 1600) || (__cplusplus >= 201103L)
-   // compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
-   static_assert(sizeof(waypoint_t) == 24, "waypoint_t should be 24 bytes");
-   static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
-   static_assert(offsetof(waypoint_t, origin) == 8, "origin should be 8 bytes into waypoint_t");
+	// compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
+	static_assert(sizeof(waypoint_t) == 24, "waypoint_t should be 24 bytes");
+	static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
+	static_assert(offsetof(waypoint_t, origin) == 8, "origin should be 8 bytes into waypoint_t");
 
-   static_assert(sizeof(path_t) == 12, "path_t should be 12 bytes");
-   static_assert(offsetof(path_t, next) == 8, "next should be 8 bytes into PATH");
+	static_assert(sizeof(path_t) == 12, "path_t should be 12 bytes");
+	static_assert(offsetof(path_t, next) == 8, "next should be 8 bytes into PATH");
 #else
 	#warning No checking of waypoint structure layouts - there may be problems
 #endif
 
-   strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".wpt");
+	strcpy(mapname, STRING(gpGlobals->mapname));
+	strcat(mapname, ".wpt");
 
-   UTIL_BuildFileName(filename, "maps", mapname);
+	UTIL_BuildFileName(filename, "maps", mapname);
 
-   if (IS_DEDICATED_SERVER())
-      printf("loading waypoint file: %s\n", filename);
+	if (IS_DEDICATED_SERVER())
+		printf("loading waypoint file: %s\n", filename);
 
-   bfp = fopen(filename, "rb");
+	bfp = fopen(filename, "rb");
 
-   need_rename = FALSE;
+	need_rename = FALSE;
 
    // if .HBP_wpt files doesn't exist, check .wpt file...
    if (bfp == NULL)
@@ -1772,87 +1772,85 @@ bool WaypointLoad(edict_t *pEntity)
 
 void WaypointSave(void)
 {
-   char filename[256];
-   char mapname[64];
-   WAYPOINT_HDR header;
-   int index, i;
-   short int num;
-   path_t *p;
+	char filename[256];
+	char mapname[64];
+	WAYPOINT_HDR header;
+	int index, i;
+	short int num;
+	path_t *p;
 
-   strcpy(header.filetype, WAYPOINT_HEADER);
+	strcpy(header.filetype, WAYPOINT_HEADER);
 
-   header.waypoint_file_version = WAYPOINT_VERSION;
+	header.waypoint_file_version = WAYPOINT_VERSION;
+	header.waypoint_file_flags = mod_id;
+	header.number_of_waypoints = num_waypoints;
 
-   header.waypoint_file_flags = mod_id;
+	memset(header.mapname, 0, sizeof(header.mapname));
+	strncpy(header.mapname, STRING(gpGlobals->mapname), 31);
+	header.mapname[31] = 0;
 
-   header.number_of_waypoints = num_waypoints;
+	strcpy(mapname, STRING(gpGlobals->mapname));
+	strcat(mapname, ".wpt");
 
-   memset(header.mapname, 0, sizeof(header.mapname));
-   strncpy(header.mapname, STRING(gpGlobals->mapname), 31);
-   header.mapname[31] = 0;
+	UTIL_BuildFileName(filename, "maps", mapname);
 
-   strcpy(mapname, STRING(gpGlobals->mapname));
-   strcat(mapname, ".wpt");
+	FILE *pFile = fopen(filename, "wb");
 
-   UTIL_BuildFileName(filename, "maps", mapname);
+	// write the waypoint header to the file
+	fwrite( &header, sizeof(header), 1, pFile );
 
-   FILE *bfp = fopen(filename, "wb");
+	// write the waypoint data to the file
+	for( int i = 0; i < num_waypoints; i++)
+	{
+		fwrite( &waypoints[i], sizeof(waypoints[0]), 1, pFile );
+	}
 
-   // write the waypoint header to the file...
-   fwrite(&header, sizeof(header), 1, bfp);
+	// save the waypoint paths...
+	for (index=0; index < num_waypoints; index++)
+	{
+		// count the number of paths from this node...
+		p = paths[index];
+		num = 0;
 
-   // write the waypoint data to the file...
-   for (index=0; index < num_waypoints; index++)
-   {
-      fwrite(&waypoints[index], sizeof(waypoints[0]), 1, bfp);
-   }
+		while (p != nullptr)
+		{
+			i = 0;
 
-   // save the waypoint paths...
-   for (index=0; index < num_waypoints; index++)
-   {
-      // count the number of paths from this node...
+			while (i < MAX_PATH_INDEX)
+			{
+				if (p->index[i] != -1)
+					num++;  // count path node if it's used
 
-      p = paths[index];
-      num = 0;
+				i++;
+			}
 
-      while (p != NULL)
-      {
-         i = 0;
+			p = p->next;  // go to next node in linked list
+		}
 
-         while (i < MAX_PATH_INDEX)
-         {
-            if (p->index[i] != -1)
-               num++;  // count path node if it's used
+		// write the count
+		fwrite( &num, sizeof(num), 1, pFile );
 
-            i++;
-         }
+		// now write out each path index
+		p = paths[index];
 
-         p = p->next;  // go to next node in linked list
-      }
+		while (p != nullptr)
+		{
+			i = 0;
 
-      fwrite(&num, sizeof(num), 1, bfp);  // write the count
+			while (i < MAX_PATH_INDEX)
+			{
+				if (p->index[i] != -1)  // save path node if it's used
+					fwrite(&p->index[i], sizeof(p->index[0]), 1, pFile);
 
-      // now write out each path index...
+				i++;
+			}
 
-      p = paths[index];
+			// go to next node in linked list
+			p = p->next;
+		}
+	}
 
-      while (p != NULL)
-      {
-         i = 0;
-
-         while (i < MAX_PATH_INDEX)
-         {
-            if (p->index[i] != -1)  // save path node if it's used
-               fwrite(&p->index[i], sizeof(p->index[0]), 1, bfp);
-
-            i++;
-         }
-
-         p = p->next;  // go to next node in linked list
-      }
-   }
-
-   fclose(bfp);
+	fclose(pFile);
 }
 
 
