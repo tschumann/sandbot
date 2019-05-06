@@ -49,7 +49,7 @@ int g_iOrdinalCount = 0;
 
 char szFunctionNames[4096][MAX_FUNCTION_NAME_LENGTH];
 
-WORD *pOrdinals = nullptr;
+std::unique_ptr<WORD[]> pOrdinals;
 DWORD *pFunctionAddresses = nullptr;
 DWORD *pNameAddresses = nullptr;
 
@@ -125,9 +125,12 @@ void LoadExtraExports()
 	LONG iOrdinalOffset = sExportDirectory.AddressOfNameOrdinals - iedataDelta;
 	fseek( pFile, iOrdinalOffset, SEEK_SET );
 	// allocate space for ordinals
-	pOrdinals = new WORD[g_iOrdinalCount];
+	pOrdinals = std::make_unique<WORD[]>(g_iOrdinalCount);
 	// get the list of ordinals
-	fread( pOrdinals, g_iOrdinalCount * sizeof(WORD), 1, pFile );
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		fread( &pOrdinals[i], sizeof(WORD), 1, pFile );
+	}
 
 	// remember the offset to the function addresses
 	LONG iFunctionOffset = sExportDirectory.AddressOfFunctions - iedataDelta;

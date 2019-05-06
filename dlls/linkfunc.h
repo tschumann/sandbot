@@ -9,10 +9,12 @@
 #ifndef LINKFUNC_H
 #define LINKFUNC_H
 
+#include <memory>
+
 #include "archtypes.h"
 
 #ifdef WIN32
-extern WORD *pOrdinals;
+extern std::unique_ptr<WORD[]> pOrdinals;
 extern DWORD *pFunctionAddresses;
 extern DWORD *pNameAddresses;
 #endif // WIN32
