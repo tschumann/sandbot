@@ -50,8 +50,8 @@ int g_iOrdinalCount = 0;
 char szFunctionNames[4096][MAX_FUNCTION_NAME_LENGTH];
 
 std::unique_ptr<WORD[]> pOrdinals;
-DWORD *pFunctionAddresses = nullptr;
-DWORD *pNameAddresses = nullptr;
+std::unique_ptr<DWORD[]> pFunctionAddresses;
+std::unique_ptr<DWORD[]> pNameAddresses;
 
 // https://blog.kowalczyk.info/articles/pefileformat.html has a lot of useful information
 void LoadExtraExports()
@@ -135,17 +135,23 @@ void LoadExtraExports()
 	// remember the offset to the function addresses
 	LONG iFunctionOffset = sExportDirectory.AddressOfFunctions - iedataDelta;
 	fseek( pFile, iFunctionOffset, SEEK_SET );
-	pFunctionAddresses = new DWORD[g_iOrdinalCount];
+	pFunctionAddresses = std::make_unique<DWORD[]>(g_iOrdinalCount);
 	// get the list of functions
-	fread( pFunctionAddresses, g_iOrdinalCount * sizeof(DWORD), 1, pFile );
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		fread( &pFunctionAddresses[i], sizeof(DWORD), 1, pFile );
+	}
 
 	// remember the offset to the name addresses
 	LONG iNameOffset = sExportDirectory.AddressOfNames - iedataDelta;
 	fseek( pFile, iNameOffset, SEEK_SET );
 	// allocate space for names
-	pNameAddresses = new DWORD[g_iOrdinalCount];
+	pNameAddresses = std::make_unique<DWORD[]>(g_iOrdinalCount);
 	// get the list of names
-	fread( pNameAddresses, g_iOrdinalCount * sizeof(DWORD), 1, pFile );
+	for( int i = 0; i < g_iOrdinalCount; i++ )
+	{
+		fread( &pNameAddresses[i], sizeof(DWORD), 1, pFile );
+	}
 
 	// populate the exports array
 	for( int i = 0; i < g_iOrdinalCount; i++ )

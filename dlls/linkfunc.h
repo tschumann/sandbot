@@ -15,8 +15,8 @@
 
 #ifdef WIN32
 extern std::unique_ptr<WORD[]> pOrdinals;
-extern DWORD *pFunctionAddresses;
-extern DWORD *pNameAddresses;
+extern std::unique_ptr<DWORD[]> pFunctionAddresses;
+extern std::unique_ptr<DWORD[]> pNameAddresses;
 #endif // WIN32
 
 void LoadExtraExports();

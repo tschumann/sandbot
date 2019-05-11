@@ -55,14 +55,6 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 		{
 			FreeLibrary( h_Library );
 		}
-		if( pFunctionAddresses )
-		{
-			delete[] pFunctionAddresses;
-		}
-		if( pNameAddresses )
-		{
-			delete[] pNameAddresses;
-		}
 	}
 
 	return TRUE;
