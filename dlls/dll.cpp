@@ -82,7 +82,7 @@ bool bBaseLinesCreated = false;
 bool bServerActivated = false;
 bool bCanAddBots = false;
 
-Game *pGame = nullptr;
+std::unique_ptr<Game> pGame;
 
 // TheFatal's method for calculating the msecval
 int msecnum;
@@ -1137,12 +1137,6 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
-	// make sure it's cleaned up (just in case)
-	if( pGame )
-	{
-		delete pGame;
-		pGame = nullptr;
-	}
 	if( pBotData )
 	{
 		for( int i = 0; i < MAX_PLAYERS; i++ )
@@ -1164,7 +1158,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 	if( mod_id == VALVE_DLL )
 	{
-		pGame = new ValveGame();
+		pGame = std::make_unique<ValveGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1173,7 +1167,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == GEARBOX_DLL )
 	{
-		pGame = new GearboxGame();
+		pGame = std::make_unique<GearboxGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1182,7 +1176,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == DECAY_DLL )
 	{
-		pGame = new DecayGame();
+		pGame = std::make_unique<DecayGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1191,7 +1185,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == CSTRIKE_DLL || mod_id == CZERO_DLL )
 	{
-		pGame = new CStrikeGame();
+		pGame = std::make_unique<CStrikeGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1200,7 +1194,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == DOD_DLL )
 	{
-		pGame = new DODGame();
+		pGame = std::make_unique<DODGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1209,7 +1203,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == TFC_DLL )
 	{
-		pGame = new TFCGame();
+		pGame = std::make_unique<TFCGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1218,7 +1212,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == REWOLF_DLL )
 	{
-		pGame = new Game();
+		pGame = std::make_unique<Game>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1227,7 +1221,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == NS_DLL )
 	{
-		pGame = new NSGame();
+		pGame = std::make_unique<NSGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1236,7 +1230,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == SHIP_DLL )
 	{
-		pGame = new ShipGame();
+		pGame = std::make_unique<ShipGame>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -1245,7 +1239,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else
 	{
-		pGame = new Game();
+		pGame = std::make_unique<Game>();
 
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{

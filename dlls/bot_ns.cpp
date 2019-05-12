@@ -62,11 +62,11 @@ void NSBot::Think()
 
 	extern bool g_bInGame;
 
-	if( g_bInGame && ((NSGame *)pGame)->IsClassic() )
+	if( g_bInGame && ((NSGame *)pGame.get())->IsClassic() )
 	{
 		this->ClassicUpgrade();
 	}
-	else if( g_bInGame && ((NSGame *)pGame)->IsCombat() && this->ShouldCombatUpgrade() )
+	else if( g_bInGame && ((NSGame *)pGame.get())->IsCombat() && this->ShouldCombatUpgrade() )
 	{
 		this->CombatUpgrade();
 	}
@@ -276,7 +276,7 @@ bool NSBot::ShouldReload()
 
 int NSBot::GetGoalType()
 {
-	if( ((NSGame *)pGame)->IsClassic() && this->ShouldBuildResourceTower() )
+	if( ((NSGame *)pGame.get())->IsClassic() && this->ShouldBuildResourceTower() )
 	{
 		// TODO: need to work out a way to not return this is there are no resource towers to build/repair
 		return W_FL_NS_RESNODE;
@@ -329,7 +329,7 @@ void NSBot::ChooseDesiredClass()
 {
 	int iClass = RANDOM_LONG( 0, 10 );
 
-	if( ((NSGame *)pGame)->IsClassic() )
+	if( ((NSGame *)pGame.get())->IsClassic() )
 	{
 		switch( iClass )
 		{
@@ -545,7 +545,7 @@ bool NSBot::HasWelder()
 
 bool NSBot::ShouldAttackHive( edict_t *pHive )
 {
-	if( ((NSGame *)pGame)->IsClassic() )
+	if( ((NSGame *)pGame.get())->IsClassic() )
 	{
 		// TODO: check if pev->effects & EF_NODRAW and return false too?
 		if( pHive->v.solid == SOLID_NOT )

@@ -10,6 +10,7 @@
 #define BOT_H
 
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 #include "studio.h"
@@ -1075,7 +1076,7 @@ public:
 	}
 };
 
-extern Game *pGame;
+extern std::unique_ptr<Game> pGame;
 
 #define MAX_TEAMS 32
 #define MAX_TEAMNAME_LENGTH 16

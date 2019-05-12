@@ -365,13 +365,6 @@ void KickAllBots()
 
 void CleanupGameAndBots()
 {
-	// called from ServerDeactivate which can apparently be called
-	// more than once, so check everything before deleting
-	if( pGame )
-	{
-		delete pGame;
-		pGame = nullptr;
-	}
 	if( pBotData )
 	{
 		for( int i = 0; i < MAX_PLAYERS; i++ )

@@ -622,7 +622,7 @@ bool ShouldSkip( edict_t *pPlayer, int index )
 			return true;
 		}
 	}
-	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_RESNODE && ((NSGame *)pGame)->IsClassic() )
+	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_RESNODE && ((NSGame *)pGame.get())->IsClassic() )
 	{
 		if( ((NSBot *)pBot)->IsMarine() )
 		{
