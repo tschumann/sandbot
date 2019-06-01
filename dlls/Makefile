@@ -9,10 +9,9 @@ BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
 
 # gcc compiler flags - thanks RoboCop
 OPTFLAGS = \
-		-march=i686 -mtune=pentium4 -mmmx -msse -msse2 -mfpmath=sse \
-		-funroll-loops -ffunction-sections -fomit-frame-pointer \
-		-fexpensive-optimizations -finline-functions -ffast-math \
-		-falign-loops=2 -falign-jumps=2 -falign-functions=2 -O2 -m32 \
+		-march=i686 -mtune=generic -mmmx -msse -msse2 -mfpmath=sse \
+		-fomit-frame-pointer -finline-functions \
+		-falign-loops=2 -falign-jumps=2 -falign-functions=2 -O2 -pipe -m32 \
 
 CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -w -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
