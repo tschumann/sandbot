@@ -12,8 +12,9 @@ OPTFLAGS = \
 		-march=i686 -mtune=pentium4 -mmmx -msse -msse2 -mfpmath=sse \
 		-fomit-frame-pointer -finline-functions \
 		-falign-loops=2 -falign-jumps=2 -falign-functions=2 -O2 -m32 \
+		-Wall -Wextra \
 
-CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -w -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
+CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
 OBJ = \
 	bot.o \
