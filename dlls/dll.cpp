@@ -985,7 +985,7 @@ void ClientCommand( edict_t *pEntity )
 		{
 			int playerIndex = atoi( arg1 );
 
-			edict_t *player = g_engfuncs.pfnPEntityOfEntIndex( playerIndex );
+			edict_t *player = INDEXENT( playerIndex );
 
 			if( !player )
 			{
