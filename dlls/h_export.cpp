@@ -223,6 +223,8 @@ extern "C" EXPORT int GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, i
 	pengfuncsFromEngine->ConstructTutorMessageDecayBuffer = pfnConstructTutorMessageDecayBuffer;
 	pengfuncsFromEngine->ResetTutorMessageDecayData = pfnResetTutorMessageDecayData;
 
+	// no overrides for the last few because there's no need
+
 	return TRUE;
 }
 
