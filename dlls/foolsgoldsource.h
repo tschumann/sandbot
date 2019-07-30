@@ -11,7 +11,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-namespace stub_engine
+namespace foolsgoldsource
 {
 	class Engine
 	{
@@ -31,8 +31,7 @@ namespace stub_engine
 
 	extern Engine gEngine;
 
-	void assertTrue( bool bCondition, string strMessage );
-
+	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
 	void pfnGetGameDir( char *szGetGameDir );
 

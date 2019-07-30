@@ -117,6 +117,11 @@ char *show_menu_1 = {"Waypoint Tags\n\n1. Team Specific\n2. Wait for Lift\n3. Do
 char *show_menu_2 = {"Waypoint Tags\n\n1. Team 1\n2. Team 2\n3. Team 3\n4. Team 4\n5. CANCEL"};
 char *show_menu_3 = {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n\n5. CANCEL"};
 
+int GetModId()
+{
+	return mod_id;
+}
+
 void GameDLLInit( void )
 {
 	// do this before CVAR_REGISTER because changing string after registration causes Z_Free: freed a pointer without ZONEID

@@ -498,6 +498,8 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	if( !g_bIsMMPlugin && h_Library == nullptr )
 	{
 		ALERT( at_error, "Library not found or not supported!\n" );
+
+		return;
 	}
 
 	extern bot_player_t g_valveBots[];

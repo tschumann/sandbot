@@ -164,11 +164,10 @@
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="h_export.cpp" />
-    <ClCompile Include="h_export_test.cpp" />
     <ClCompile Include="linkfunc.cpp" />
     <ClCompile Include="meta_api.cpp" />
-    <ClCompile Include="stub_engine.cpp" />
-    <ClCompile Include="test_run.cpp" />
+    <ClCompile Include="foolsgoldsource.cpp" />
+    <ClCompile Include="h_export_test.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="waypoint.cpp" />
   </ItemGroup>
@@ -184,7 +183,7 @@
     <ClInclude Include="h_export.h" />
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="metamod.h" />
-    <ClInclude Include="stub_engine.h" />
+    <ClInclude Include="foolsgoldsource.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="waypoint.h" />

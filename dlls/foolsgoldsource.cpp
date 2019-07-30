@@ -1,7 +1,6 @@
+#include "foolsgoldsource.h"
 
-#include "stub_engine.h"
-
-namespace stub_engine
+namespace foolsgoldsource
 {
 	Engine gEngine;
 
@@ -9,6 +8,7 @@ namespace stub_engine
 	{
 		enginefuncs_t engineFunctions;
 
+		engineFunctions.pfnAlertMessage = pfnAlertMessage;
 		engineFunctions.pfnGetGameDir = pfnGetGameDir;
 		engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
 
@@ -22,19 +22,14 @@ namespace stub_engine
 		return globalVariables;
 	}
 
-
-	void assertTrue( bool bCondition, string strMessage )
-	{
-		if( !bCondition )
-		{
-			cout << strMessage << endl;
-		}
-	}
-
-
 	string Engine::GetGameDirectory()
 	{
 		return this->strGameDir;
+	}
+
+	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
+	{
+		printf( "%s", szFmt );
 	}
 
 	void pfnGetGameDir( char *szGetGameDir )

@@ -1,23 +1,24 @@
-#include "stub_engine.h"
+#include "CppUnitTest.h"
 
-extern int mod_id;
-extern bool g_bIsMMPlugin;
+#include "h_export.h"
+#include "foolsgoldsource.h"
 
-void reset()
-{
-	mod_id = 0;
-	g_bIsMMPlugin = false;
-}
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-// now it's happy without the "C": sense - this makes none
-extern void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals );
+namespace tests
+{		
+	TEST_CLASS(h_export_test)
+	{
+	public:
+		
+		TEST_METHOD(TestGiveFnptrsToDll)
+		{
+			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
+			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();
 
-void testGiveFnptrsToDll()
-{
-	enginefuncs_t engineFunctions = stub_engine::gEngine.GetServerEngineFunctions();
-	globalvars_t globalVariables = stub_engine::gEngine.GetServerGlobalVariables();
+			GiveFnptrsToDll( &engineFunctions, &globalVariables );
 
-	GiveFnptrsToDll( &engineFunctions, &globalVariables );
-
-	stub_engine::assertTrue( mod_id == VALVE_DLL, "mod_id is set correctly" );
+			Assert::AreEqual( GetModId(), VALVE_DLL );
+		}
+	};
 }

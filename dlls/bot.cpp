@@ -2418,4 +2418,3 @@ bool bot_t::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	return false;
 }
-
