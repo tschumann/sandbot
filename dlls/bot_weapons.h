@@ -97,6 +97,7 @@ typedef struct
 #define GEARBOX_WEAPON_SPORELAUNCHER	23
 #define GEARBOX_WEAPON_SNIPERRIFLE	24
 #define GEARBOX_WEAPON_KNIFE		25
+#define GEARBOX_WEAPON_PENGUIN		26
 
 // weapon ID values for Counter-Strike
 #define CS_WEAPON_P228				1

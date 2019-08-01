@@ -55,6 +55,7 @@ v0.4.3 (??/??/??)
 - [Windows] Fixed possible memory leaks.
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
+- [Opposing Force] Bots can now use weapon_penguin.
 - [Natural Selection] Increased range at which marines will use weapon_machinegun and weapon_heavymachinegun.
 
 v0.4.2 (21/04/18)
