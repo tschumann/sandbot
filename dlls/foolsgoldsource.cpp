@@ -27,6 +27,25 @@ namespace foolsgoldsource
 		return this->strGameDir;
 	}
 
+	void Engine::SetGameDirectory( string strGameDir )
+	{
+		this->strGameDir = strGameDir;
+	}
+
+	bool Engine::GetIsDedicatedServer()
+	{
+		return this->bIsDedicatedServer;
+	}
+
+	void Engine::SetIsDedicatedServer( bool bIsDedicatedServer )
+	{
+		this->bIsDedicatedServer = bIsDedicatedServer;
+	}
+
+	/////////////////////////////////
+	// Stubbed enginefuncs_t below //
+	/////////////////////////////////
+
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 	{
 		printf( "%s", szFmt );
@@ -39,6 +58,6 @@ namespace foolsgoldsource
 
 	int pfnIsDedicatedServer( void )
 	{
-		return 0;
+		return gEngine.GetIsDedicatedServer();
 	}
 }

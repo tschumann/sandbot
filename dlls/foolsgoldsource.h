@@ -19,14 +19,20 @@ namespace foolsgoldsource
 		Engine()
 		{
 			this->strGameDir = "valve";
+			this->bIsDedicatedServer = false;
 		}
 
 		enginefuncs_t GetServerEngineFunctions();
 		globalvars_t GetServerGlobalVariables();
 
 		string GetGameDirectory();
+		void SetGameDirectory( string strGameDir );
+		bool GetIsDedicatedServer();
+		void SetIsDedicatedServer( bool bIsDedicatedServer );
 	private:
 		string strGameDir;
+
+		bool bIsDedicatedServer;
 	};
 
 	extern Engine gEngine;
