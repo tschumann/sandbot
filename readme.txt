@@ -37,7 +37,7 @@ A. Yes, please do!
 
 Q. How do I build Sandbot?
 A. If you want to build it yourself, use a tagged release as the head of master can be unstable.
-   On Windows open dlls/Sandbot-2017.sln with Visual Studio and compile it.
+   On Windows open dlls/sandbot-2019.sln with Visual Studio and compile it.
    On Linux apt-get install gcc gcc-multilib g++-multilib (or equivalent) and run make inside of dlls/
 
 Q. Can you fix Sandbot not working on my distro?
@@ -53,6 +53,7 @@ v0.4.3 (??/??/??)
 - [All] Fixed cvars not being read correctly in Metamod.
 - [All] bot_skill and bot_count now get written to config.cfg
 - [Windows] Fixed possible memory leaks.
+- [Windows] Updated compiler to Visual Studio 2019 (from Visual Studio 2017).
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
 - [Opposing Force] Bots can now use weapon_penguin.
