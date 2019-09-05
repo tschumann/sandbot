@@ -11,7 +11,11 @@ extern void *h_Library;
 
 extern int GetModId();
 
-extern void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals );
+#ifndef __linux__
+extern void WINAPI GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )
+#else
+extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals );
+#endif
 
 #endif // _H_EXPORT_H_
 
