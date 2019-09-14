@@ -28,8 +28,6 @@ bot_player_t *pBotData = nullptr;
 bot_t **pBots = nullptr; // [MAX_PLAYERS];
 bool b_observer_mode = false;
 
-#define MAX_BOT_NAMES 100
-
 bot_player_t g_valveBots[MAX_PLAYERS] =
 {
 	{"Kelly", "barney", false},

@@ -118,14 +118,10 @@ int Game::GetTeam( edict_t *pEdict )
 	return 0;
 }
 
-void Game::SetGame( eGame game )
-{
-	this->m_iModId = game;
-}
-
 bool Game::IsGunmanChronicles()
 {
-	return this->m_iModId == eGame::REWOLF;
+	extern int mod_id;
+	return mod_id == REWOLF_DLL;
 }
 
 void Game::GetSaveGameComment( char *pBuffer, int iMaxLength )

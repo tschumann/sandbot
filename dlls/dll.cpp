@@ -35,8 +35,6 @@ extern bot_player_t *pBotData;
 
 char g_argv[1024];
 
-// TODO: not used?
-// DLL_FUNCTIONS gFunctionTable;
 DLL_FUNCTIONS other_gFunctionTable;
 DLL_GLOBAL const Vector g_vecZero = Vector(0,0,0);
 

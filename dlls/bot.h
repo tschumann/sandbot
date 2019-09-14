@@ -65,13 +65,6 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 extern bool g_bIsMMPlugin;
 
 // define constants used to identify the MOD we are playing...
-
-enum eGame
-{
-	VALVE,
-	REWOLF
-};
-
 #define VALVE_DLL		1
 #define BSHIFT_DLL		2
 #define GEARBOX_DLL		3
@@ -866,10 +859,7 @@ public:
 	virtual bool UseToOpenDoor();
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength );
 
-	virtual void SetGame( eGame game );
 	virtual bool IsGunmanChronicles();
-protected:
-	eGame m_iModId;
 };
 
 class ValveGame : public Game
