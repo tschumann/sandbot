@@ -3,6 +3,8 @@
 
 #include "extdll.h"
 
+extern globalvars_t* gpGlobals;
+
 #ifndef __linux__
 extern HINSTANCE h_Library;
 #else

@@ -40,6 +40,9 @@ A. If you want to build it yourself, use a tagged release as the head of master 
    On Windows open dlls/sandbot-2019.sln with Visual Studio and compile it.
    On Linux apt-get install gcc gcc-multilib g++-multilib (or equivalent) and run make inside of dlls/
 
+Q. How do I run the tests?
+A. In Visual Studio go to Tests -> Windows -> Test Explorer and in the run icon menu choose Run All.
+
 Q. Can you fix Sandbot not working on my distro?
 A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.
 

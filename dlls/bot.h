@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "studio.h"
+#include "util.h"
 
 using std::vector;
 using std::min;
@@ -65,7 +66,7 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 extern bool g_bIsMMPlugin;
 
 // define constants used to identify the MOD we are playing...
-#define VALVE_DLL		1
+#define VALVE_DLL		1 // NOTE: also defined in Visual Studio project
 #define BSHIFT_DLL		2
 #define GEARBOX_DLL		3
 #define DECAY_DLL		4
