@@ -5,7 +5,7 @@
 CPP = g++
 
 # gcc preprocessor flags
-BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
+BASEFLAGS = 
 
 # gcc compiler flags - thanks RoboCop
 OPTFLAGS = \
@@ -66,7 +66,7 @@ sandbot.so: ${OBJ}
 	# -cp $@ ../sandbot/half-life/ns/dlls/
 	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
-# clean up non-source files
+# clean up build files
 clean:
 	-rm -f *.o
 	-rm -f *.so
@@ -77,4 +77,3 @@ clean:
 
 %.o: %.c
 	${CPP} ${CPPFLAGS} -c $< -o $@
-

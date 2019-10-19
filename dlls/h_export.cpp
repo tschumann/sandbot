@@ -245,7 +245,12 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	char *szLibraryPath = "";
 	GET_GAME_DIR(szGameDir);
 
-	if( !strcmpi( szGameDir, "valve" ) )
+	// be great if libc gave this out of the box
+	for( unsigned int i = 0; szGameDir[i]; i++ ) {
+		szGameDir[i] = tolower(szGameDir[i]);
+	}
+
+	if( !strcmp( szGameDir, "valve" ) )
 	{
 		mod_id = VALVE_DLL;
 
@@ -264,7 +269,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "bshift" ) )
+	else if( !strcmp( szGameDir, "bshift" ) )
 	{
 		mod_id = BSHIFT_DLL;
 
@@ -283,7 +288,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "gearbox" ) )
+	else if( !strcmp( szGameDir, "gearbox" ) )
 	{
 		mod_id = GEARBOX_DLL;
 
@@ -302,7 +307,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "decay" ) )
+	else if( !strcmp( szGameDir, "decay" ) )
 	{
 		mod_id = DECAY_DLL;
 
@@ -321,7 +326,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "cstrike" ) )
+	else if( !strcmp( szGameDir, "cstrike" ) )
 	{
 		mod_id = CSTRIKE_DLL;
 
@@ -340,7 +345,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "czero" ) )
+	else if( !strcmp( szGameDir, "czero" ) )
 	{
 		mod_id = CZERO_DLL;
 
@@ -359,7 +364,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "czeror" ) )
+	else if( !strcmp( szGameDir, "czeror" ) )
 	{
 		mod_id = CZEROR_DLL;
 
@@ -378,7 +383,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "dod" ) )
+	else if( !strcmp( szGameDir, "dod" ) )
 	{
 		mod_id = DOD_DLL;
 
@@ -397,7 +402,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "tfc" ) )
+	else if( !strcmp( szGameDir, "tfc" ) )
 	{
 		mod_id = TFC_DLL;
 
@@ -416,7 +421,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "rewolf" ) )
+	else if( !strcmp( szGameDir, "rewolf" ) )
 	{
 		mod_id = REWOLF_DLL;
 
@@ -435,7 +440,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir, "hunger" ) )
+	else if( !strcmp( szGameDir, "hunger" ) )
 	{
 		mod_id = HUNGER_DLL;
 
@@ -454,7 +459,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmpi( szGameDir , "ns") )
+	else if( !strcmp( szGameDir , "ns") )
 	{
 		mod_id = NS_DLL;
 
@@ -473,7 +478,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( strcmpi( szGameDir, "ship" ) )
+	else if( strcmp( szGameDir, "ship" ) )
 	{
 		mod_id = SHIP_DLL;
 
