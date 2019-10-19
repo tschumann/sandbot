@@ -478,7 +478,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( strcmp( szGameDir, "ship" ) )
+	else if( !strcmp( szGameDir, "ship" ) )
 	{
 		mod_id = SHIP_DLL;
 
