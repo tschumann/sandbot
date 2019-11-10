@@ -159,6 +159,7 @@
     <ClCompile Include="bot_ns.cpp" />
     <ClCompile Include="bot_opposingforce.cpp" />
     <ClCompile Include="bot_ship.cpp" />
+    <ClCompile Include="bot_test.cpp" />
     <ClCompile Include="bot_tfc.cpp" />
     <ClCompile Include="dll.cpp" />
     <ClCompile Include="engine.cpp" />

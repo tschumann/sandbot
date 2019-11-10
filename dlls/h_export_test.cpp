@@ -12,7 +12,7 @@ namespace tests
 	{
 	public:
 		
-		TEST_METHOD(TestValveGiveFnptrsToDll)
+		TEST_METHOD(TestGiveFnptrsToDllValve)
 		{
 			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
 			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();
@@ -24,7 +24,7 @@ namespace tests
 			Assert::AreEqual( GetModId(), VALVE_DLL );
 		}
 
-		TEST_METHOD(TestOpforGiveFnptrsToDll)
+		TEST_METHOD(TestGiveFnptrsToDllOpfor)
 		{
 			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
 			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();

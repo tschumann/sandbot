@@ -20,6 +20,10 @@ namespace foolsgoldsource
 		{
 			this->strGameDir = "valve";
 			this->bIsDedicatedServer = false;
+
+			this->globalVariables.maxClients = 32;
+
+			iMaxEdicts = 1024;
 		}
 
 		enginefuncs_t GetServerEngineFunctions();
@@ -29,7 +33,14 @@ namespace foolsgoldsource
 		void SetGameDirectory( string strGameDir );
 		bool GetIsDedicatedServer();
 		void SetIsDedicatedServer( bool bIsDedicatedServer );
+
+		void SetMaxClients( int iMaxClients );
+
+		// TODO: should be in some server struct
+		int iMaxEdicts;
 	private:
+		globalvars_t globalVariables;
+
 		string strGameDir;
 
 		bool bIsDedicatedServer;
@@ -39,9 +50,15 @@ namespace foolsgoldsource
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
+	edict_t* pfnPEntityOfEntOffset( int iEntOffset );
+
+	edict_t* pfnPEntityOfEntIndex( int iEntIndex );
+
 	void pfnGetGameDir( char *szGetGameDir );
 
 	int pfnIsDedicatedServer( void );
+
+	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex );
 }
 
 #endif // _STUB_ENGINE_H_

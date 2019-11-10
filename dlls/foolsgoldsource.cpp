@@ -9,17 +9,18 @@ namespace foolsgoldsource
 		enginefuncs_t engineFunctions;
 
 		engineFunctions.pfnAlertMessage = pfnAlertMessage;
+		engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
+		engineFunctions.pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
 		engineFunctions.pfnGetGameDir = pfnGetGameDir;
 		engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
+		engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
 
 		return engineFunctions;
 	}
 
 	globalvars_t Engine::GetServerGlobalVariables()
 	{
-		globalvars_t globalVariables;
-
-		return globalVariables;
+		return this->globalVariables;
 	}
 
 	string Engine::GetGameDirectory()
@@ -42,6 +43,11 @@ namespace foolsgoldsource
 		this->bIsDedicatedServer = bIsDedicatedServer;
 	}
 
+	void Engine::SetMaxClients( int iMaxClients )
+	{
+		this->globalVariables.maxClients = iMaxClients;
+	}
+
 	/////////////////////////////////
 	// Stubbed enginefuncs_t below //
 	/////////////////////////////////
@@ -49,6 +55,27 @@ namespace foolsgoldsource
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 	{
 		printf( "%s", szFmt );
+	}
+
+	edict_t* pfnPEntityOfEntOffset( int iEntOffset )
+	{
+		return nullptr;
+	}
+
+	edict_t* pfnPEntityOfEntIndex( int iEntIndex )
+	{
+		edict_t* result;
+
+		// TODO: is pfnPEntityOfEntOffset the same as EDICT_NUM?
+		if (iEntIndex < 0 ||
+			iEntIndex >= gEngine.iMaxEdicts ||
+			((result = pfnPEntityOfEntOffset(iEntIndex)) == nullptr || result->free || !result->pvPrivateData) &&
+			(iEntIndex >= gEngine.GetServerGlobalVariables().maxClients || result->free))
+		{
+			result = nullptr;
+		}
+
+		return result;
 	}
 
 	void pfnGetGameDir( char *szGetGameDir )
@@ -59,5 +86,21 @@ namespace foolsgoldsource
 	int pfnIsDedicatedServer( void )
 	{
 		return gEngine.GetIsDedicatedServer();
+	}
+
+	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex )
+	{
+		edict_t* result;
+
+		// TODO: is pfnPEntityOfEntOffset the same as EDICT_NUM?
+		if( iEntIndex < 0 ||
+			iEntIndex >= gEngine.iMaxEdicts ||
+			( (result = pfnPEntityOfEntOffset( iEntIndex )) == nullptr || result->free || !result->pvPrivateData ) &&
+			( iEntIndex > gEngine.GetServerGlobalVariables().maxClients || result->free ) )
+		{
+			result = nullptr;
+		}
+
+		return result;
 	}
 }
