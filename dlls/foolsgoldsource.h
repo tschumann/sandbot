@@ -3,13 +3,17 @@
 
 #include <cstring>
 #include <iostream>
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "extdll.h"
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::unique_ptr;
+using std::vector;
 
 namespace foolsgoldsource
 {
@@ -18,10 +22,17 @@ namespace foolsgoldsource
 	public:
 		Engine()
 		{
+			this->globalVariables.maxClients = 32;
+
+			// TODO: edict_t * 0 is worldspawn?
+			for( int i = 0; i <= this->globalVariables.maxClients; i++ )
+			{
+				unique_ptr<edict_t> edict = std::make_unique<edict_t>();
+				this->edicts.push_back(edict.get());
+			}
+
 			this->strGameDir = "valve";
 			this->bIsDedicatedServer = false;
-
-			this->globalVariables.maxClients = 32;
 
 			iMaxEdicts = 1024;
 		}
@@ -36,6 +47,8 @@ namespace foolsgoldsource
 
 		void SetMaxClients( int iMaxClients );
 
+		// TODO: should be in some server struct?
+		vector<edict_t*> edicts;
 		// TODO: should be in some server struct
 		int iMaxEdicts;
 	private:

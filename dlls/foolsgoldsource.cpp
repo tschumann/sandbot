@@ -59,7 +59,16 @@ namespace foolsgoldsource
 
 	edict_t* pfnPEntityOfEntOffset( int iEntOffset )
 	{
-		return nullptr;
+		vector<edict_t*> edicts = gEngine.edicts;
+
+		if( iEntOffset >= edicts.size() )
+		{
+			return nullptr;
+		}
+		else
+		{
+			return edicts[iEntOffset];
+		}
 	}
 
 	edict_t* pfnPEntityOfEntIndex( int iEntIndex )
@@ -67,10 +76,10 @@ namespace foolsgoldsource
 		edict_t* result;
 
 		// TODO: is pfnPEntityOfEntOffset the same as EDICT_NUM?
-		if (iEntIndex < 0 ||
+		if( iEntIndex < 0 ||
 			iEntIndex >= gEngine.iMaxEdicts ||
-			((result = pfnPEntityOfEntOffset(iEntIndex)) == nullptr || result->free || !result->pvPrivateData) &&
-			(iEntIndex >= gEngine.GetServerGlobalVariables().maxClients || result->free))
+			( (result = pfnPEntityOfEntOffset( iEntIndex )) == nullptr || result->free || !result->pvPrivateData ) &&
+			( iEntIndex >= gEngine.GetServerGlobalVariables().maxClients || result->free ) ) // this check on result fails if there are no edicts - never happens in GoldSource?
 		{
 			result = nullptr;
 		}
@@ -96,7 +105,7 @@ namespace foolsgoldsource
 		if( iEntIndex < 0 ||
 			iEntIndex >= gEngine.iMaxEdicts ||
 			( (result = pfnPEntityOfEntOffset( iEntIndex )) == nullptr || result->free || !result->pvPrivateData ) &&
-			( iEntIndex > gEngine.GetServerGlobalVariables().maxClients || result->free ) )
+			( iEntIndex > gEngine.GetServerGlobalVariables().maxClients || result->free ) ) // this check on result fails if there are no edicts - never happens in GoldSource?
 		{
 			result = nullptr;
 		}
