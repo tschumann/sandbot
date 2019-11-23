@@ -20,22 +20,7 @@ namespace foolsgoldsource
 	class Engine
 	{
 	public:
-		Engine()
-		{
-			this->globalVariables.maxClients = 32;
-
-			// TODO: edict_t * 0 is worldspawn?
-			for( int i = 0; i <= this->globalVariables.maxClients; i++ )
-			{
-				unique_ptr<edict_t> edict = std::make_unique<edict_t>();
-				this->edicts.push_back(edict.get());
-			}
-
-			this->strGameDir = "valve";
-			this->bIsDedicatedServer = false;
-
-			iMaxEdicts = 1024;
-		}
+		Engine();
 
 		enginefuncs_t GetServerEngineFunctions();
 		globalvars_t GetServerGlobalVariables();
@@ -46,6 +31,8 @@ namespace foolsgoldsource
 		void SetIsDedicatedServer( bool bIsDedicatedServer );
 
 		void SetMaxClients( int iMaxClients );
+
+		// below shouldn't be public because the game doesn't have access to them
 
 		// TODO: should be in some server struct?
 		vector<edict_t*> edicts;

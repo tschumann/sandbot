@@ -4,6 +4,23 @@ namespace foolsgoldsource
 {
 	Engine gEngine;
 
+	Engine::Engine()
+	{
+		this->globalVariables.maxClients = 32;
+
+		// TODO: edict_t * 0 is worldspawn?
+		for( int i = 0; i <= this->globalVariables.maxClients; i++ )
+		{
+			unique_ptr<edict_t> edict = std::make_unique<edict_t>();
+			this->edicts.push_back(edict.get());
+		}
+
+		this->strGameDir = "valve";
+		this->bIsDedicatedServer = false;
+
+		iMaxEdicts = 1024;
+	}
+
 	enginefuncs_t Engine::GetServerEngineFunctions()
 	{
 		enginefuncs_t engineFunctions;
