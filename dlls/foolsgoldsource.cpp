@@ -25,6 +25,8 @@ namespace foolsgoldsource
 	{
 		enginefuncs_t engineFunctions;
 
+		engineFunctions.pfnPrecacheModel = pfnPrecacheModel;
+		engineFunctions.pfnPrecacheSound = pfnPrecacheSound;
 		engineFunctions.pfnAlertMessage = pfnAlertMessage;
 		engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
 		engineFunctions.pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
@@ -68,6 +70,24 @@ namespace foolsgoldsource
 	/////////////////////////////////
 	// Stubbed enginefuncs_t below //
 	/////////////////////////////////
+
+	int pfnPrecacheModel( char* s )
+	{
+		printf( "Precache %s\n", s );
+
+		gEngine.models.push_back( string( s ) );
+
+		return gEngine.models.size() - 1;
+	}
+
+	int pfnPrecacheSound( char* s )
+	{
+		printf( "Precache %s\n", s );
+
+		gEngine.sounds.push_back( string( s ) );
+
+		return gEngine.sounds.size() - 1;
+	}
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 	{

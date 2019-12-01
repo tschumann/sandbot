@@ -34,9 +34,10 @@ namespace foolsgoldsource
 
 		// below shouldn't be public because the game doesn't have access to them
 
-		// TODO: should be in some server struct?
+		// TODO: below be in some server struct?
 		vector<edict_t*> edicts;
-		// TODO: should be in some server struct
+		vector<string> models;
+		vector<string> sounds;
 		int iMaxEdicts;
 	private:
 		globalvars_t globalVariables;
@@ -47,6 +48,9 @@ namespace foolsgoldsource
 	};
 
 	extern Engine gEngine;
+
+	int pfnPrecacheModel( char* s );
+	int pfnPrecacheSound( char* s );
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
