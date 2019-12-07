@@ -6,38 +6,58 @@ namespace foolsgoldsource
 
 	Engine::Engine()
 	{
+		// set up all the engine functions so they can be used
+		this->engineFunctions.pfnPrecacheModel = pfnPrecacheModel;
+		this->engineFunctions.pfnPrecacheSound = pfnPrecacheSound;
+		this->engineFunctions.pfnAlertMessage = pfnAlertMessage;
+		this->engineFunctions.pfnAllocString = pfnAllocString;
+		this->engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
+		this->engineFunctions.pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
+		this->engineFunctions.pfnGetGameDir = pfnGetGameDir;
+		this->engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
+		this->engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
+
+		// install the engine functions and global variables
+		g_engfuncs = this->engineFunctions;
+		extern globalvars_t* gpGlobals;
+		gpGlobals = &this->globalVariables;
+
 		this->globalVariables.maxClients = 32;
+		// TODO: possible to use a smart pointer under the hood for this?
+		this->globalVariables.pStringBase = new char[2048];
+		memset( (char *)this->globalVariables.pStringBase, 0, 2048 );
+		this->iStringTableOffset = 1;
 
 		// TODO: edict_t * 0 is worldspawn?
 		for( int i = 0; i <= this->globalVariables.maxClients; i++ )
 		{
-			unique_ptr<edict_t> edict = std::make_unique<edict_t>();
-			this->edicts.push_back(edict.get());
+			// TODO: player spawning should happen later - and call one of the server-side callbacks?
+			shared_ptr<edict_t> edict = std::make_shared<edict_t>();
+			edict->free = 0;
+			edict->pvPrivateData = std::make_unique<char[]>(1).get(); // TODO: should be CBasePlayer's data
+			edict->v.classname = ALLOC_STRING("player");
+			edict->v.netname = 0;
+			edict->v.flags = FL_CLIENT;
+			this->edicts.push_back(edict);
 		}
 
 		this->strGameDir = "valve";
 		this->bIsDedicatedServer = false;
 
-		iMaxEdicts = 1024;
+		this->iMaxEdicts = 1024;
 	}
 
-	enginefuncs_t Engine::GetServerEngineFunctions()
+	Engine::~Engine()
 	{
-		enginefuncs_t engineFunctions;
-
-		engineFunctions.pfnPrecacheModel = pfnPrecacheModel;
-		engineFunctions.pfnPrecacheSound = pfnPrecacheSound;
-		engineFunctions.pfnAlertMessage = pfnAlertMessage;
-		engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
-		engineFunctions.pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
-		engineFunctions.pfnGetGameDir = pfnGetGameDir;
-		engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
-		engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
-
-		return engineFunctions;
+		delete[] this->globalVariables.pStringBase;
 	}
 
-	globalvars_t Engine::GetServerGlobalVariables()
+	const enginefuncs_t Engine::GetServerEngineFunctions()
+	{
+		return this->engineFunctions;
+	}
+
+	const globalvars_t Engine::GetServerGlobalVariables()
 	{
 		return this->globalVariables;
 	}
@@ -96,16 +116,30 @@ namespace foolsgoldsource
 
 	edict_t* pfnPEntityOfEntOffset( int iEntOffset )
 	{
-		vector<edict_t*> edicts = gEngine.edicts;
-
-		if( iEntOffset >= edicts.size() )
+		if( iEntOffset >= gEngine.edicts.size() )
 		{
 			return nullptr;
 		}
 		else
 		{
-			return edicts[iEntOffset];
+			return gEngine.edicts[iEntOffset].get();
 		}
+	}
+
+	int pfnAllocString( const char* szValue )
+	{
+		globalvars_t globalVars = gEngine.GetServerGlobalVariables();
+		// get the next unassigned part of the string table
+		const char* pCurrentOffset = globalVars.pStringBase + gEngine.iStringTableOffset;
+		// copy the new string to the next unassigned part of the string table
+		strcpy( (char *)pCurrentOffset, szValue );
+
+		// get the newly assigned string's location
+		int iCurrentOffset = gEngine.iStringTableOffset;
+		// update the location of the next unassigned part of the string table
+		gEngine.iStringTableOffset += strlen( szValue );
+		// return the newly assigned string's location
+		return iCurrentOffset;
 	}
 
 	edict_t* pfnPEntityOfEntIndex( int iEntIndex )

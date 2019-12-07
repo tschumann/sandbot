@@ -14,13 +14,16 @@ namespace tests
 
 		TEST_METHOD(TestGetBotCountNoBots)
 		{
-			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
-			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();
-
-			g_engfuncs = engineFunctions;
-			gpGlobals = &globalVariables;
-
 			Assert::AreEqual(GetBotCount(), 0);
+		}
+
+		TEST_METHOD(TestGetBotCountOneBot)
+		{
+			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
+
+			pPlayer->v.netname = ALLOC_STRING("test");
+
+			Assert::AreEqual(GetBotCount(), 1);
 		}
 	};
 }

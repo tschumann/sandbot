@@ -8,9 +8,11 @@
 #include <vector>
 
 #include "extdll.h"
+#include "enginecallback.h"
 
 using std::cout;
 using std::endl;
+using std::shared_ptr;
 using std::string;
 using std::unique_ptr;
 using std::vector;
@@ -21,9 +23,10 @@ namespace foolsgoldsource
 	{
 	public:
 		Engine();
+		~Engine();
 
-		enginefuncs_t GetServerEngineFunctions();
-		globalvars_t GetServerGlobalVariables();
+		const enginefuncs_t GetServerEngineFunctions();
+		const globalvars_t GetServerGlobalVariables();
 
 		string GetGameDirectory();
 		void SetGameDirectory( string strGameDir );
@@ -35,11 +38,15 @@ namespace foolsgoldsource
 		// below shouldn't be public because the game doesn't have access to them
 
 		// TODO: below be in some server struct?
-		vector<edict_t*> edicts;
+		vector<shared_ptr<edict_t>> edicts;
 		vector<string> models;
 		vector<string> sounds;
 		int iMaxEdicts;
+
+		// TODO: how does the engine track this?
+		unsigned int iStringTableOffset;
 	private:
+		enginefuncs_t engineFunctions;
 		globalvars_t globalVariables;
 
 		string strGameDir;
@@ -53,6 +60,8 @@ namespace foolsgoldsource
 	int pfnPrecacheSound( char* s );
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
+
+	int pfnAllocString( const char* szValue );
 
 	edict_t* pfnPEntityOfEntOffset( int iEntOffset );
 
