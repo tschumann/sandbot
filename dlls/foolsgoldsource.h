@@ -14,7 +14,6 @@ using std::cout;
 using std::endl;
 using std::shared_ptr;
 using std::string;
-using std::unique_ptr;
 using std::vector;
 
 namespace foolsgoldsource
@@ -28,12 +27,12 @@ namespace foolsgoldsource
 		const enginefuncs_t GetServerEngineFunctions();
 		const globalvars_t GetServerGlobalVariables();
 
-		string GetGameDirectory();
-		void SetGameDirectory( string strGameDir );
-		bool GetIsDedicatedServer();
-		void SetIsDedicatedServer( bool bIsDedicatedServer );
+		const string GetGameDirectory();
+		void SetGameDirectory(const string strGameDir );
+		const bool GetIsDedicatedServer();
+		void SetIsDedicatedServer( const bool bIsDedicatedServer );
 
-		void SetMaxClients( int iMaxClients );
+		void SetMaxClients( const int iMaxClients );
 
 		// below shouldn't be public because the game doesn't have access to them
 
@@ -45,6 +44,8 @@ namespace foolsgoldsource
 
 		// TODO: how does the engine track this?
 		unsigned int iStringTableOffset;
+
+		const static unsigned int iStringTableSize = 2048;
 	private:
 		enginefuncs_t engineFunctions;
 		globalvars_t globalVariables;

@@ -23,9 +23,10 @@ namespace foolsgoldsource
 		gpGlobals = &this->globalVariables;
 
 		this->globalVariables.maxClients = 32;
-		// TODO: possible to use a smart pointer under the hood for this?
-		this->globalVariables.pStringBase = new char[2048];
-		memset( (char *)this->globalVariables.pStringBase, 0, 2048 );
+		this->globalVariables.pStringBase = new char[Engine::iStringTableSize];
+		memset( (char *)this->globalVariables.pStringBase, 0, Engine::iStringTableSize);
+		// start allocating at offset 1 so that checks against string_t with value 0 work
+		// TODO: is this how the engine works?
 		this->iStringTableOffset = 1;
 
 		// TODO: edict_t * 0 is worldspawn?
@@ -34,7 +35,7 @@ namespace foolsgoldsource
 			// TODO: player spawning should happen later - and call one of the server-side callbacks?
 			shared_ptr<edict_t> edict = std::make_shared<edict_t>();
 			edict->free = 0;
-			edict->pvPrivateData = std::make_unique<char[]>(1).get(); // TODO: should be CBasePlayer's data
+			edict->pvPrivateData = new char[1]; // TODO: should be CBasePlayer's data
 			edict->v.classname = ALLOC_STRING("player");
 			edict->v.netname = 0;
 			edict->v.flags = FL_CLIENT;
@@ -49,7 +50,21 @@ namespace foolsgoldsource
 
 	Engine::~Engine()
 	{
-		delete[] this->globalVariables.pStringBase;
+		for( unsigned int i = 0; i < this->edicts.size(); i++ )
+		{
+			shared_ptr<edict_t> edict = this->edicts[i];
+
+			if( edict->pvPrivateData )
+			{
+				delete[] edict->pvPrivateData;
+				edict->pvPrivateData = nullptr;
+			}
+		}
+		if( this->globalVariables.pStringBase )
+		{
+			delete[] this->globalVariables.pStringBase;
+			this->globalVariables.pStringBase = nullptr;
+		}
 	}
 
 	const enginefuncs_t Engine::GetServerEngineFunctions()
@@ -62,27 +77,27 @@ namespace foolsgoldsource
 		return this->globalVariables;
 	}
 
-	string Engine::GetGameDirectory()
+	const string Engine::GetGameDirectory()
 	{
 		return this->strGameDir;
 	}
 
-	void Engine::SetGameDirectory( string strGameDir )
+	void Engine::SetGameDirectory( const string strGameDir )
 	{
 		this->strGameDir = strGameDir;
 	}
 
-	bool Engine::GetIsDedicatedServer()
+	const bool Engine::GetIsDedicatedServer()
 	{
 		return this->bIsDedicatedServer;
 	}
 
-	void Engine::SetIsDedicatedServer( bool bIsDedicatedServer )
+	void Engine::SetIsDedicatedServer( const bool bIsDedicatedServer )
 	{
 		this->bIsDedicatedServer = bIsDedicatedServer;
 	}
 
-	void Engine::SetMaxClients( int iMaxClients )
+	void Engine::SetMaxClients( const int iMaxClients )
 	{
 		this->globalVariables.maxClients = iMaxClients;
 	}
