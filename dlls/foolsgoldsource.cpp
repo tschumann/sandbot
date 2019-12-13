@@ -9,6 +9,8 @@ namespace foolsgoldsource
 		// set up all the engine functions so they can be used
 		this->engineFunctions.pfnPrecacheModel = pfnPrecacheModel;
 		this->engineFunctions.pfnPrecacheSound = pfnPrecacheSound;
+		this->engineFunctions.pfnSetModel = pfnSetModel;
+		this->engineFunctions.pfnModelIndex = pfnModelIndex;
 		this->engineFunctions.pfnAlertMessage = pfnAlertMessage;
 		this->engineFunctions.pfnAllocString = pfnAllocString;
 		this->engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
@@ -102,6 +104,19 @@ namespace foolsgoldsource
 		this->globalVariables.maxClients = iMaxClients;
 	}
 
+	string Util::tolowercase( string str )
+	{
+		string lowerCased = str;
+
+		for( unsigned int i = 0; i < str.length(); i++ )
+		{
+			// not ideal but this is how the engine would be doing it
+			lowerCased[i] = tolower( str[i] );
+		}
+
+		return lowerCased;
+	}
+
 	/////////////////////////////////
 	// Stubbed enginefuncs_t below //
 	/////////////////////////////////
@@ -122,6 +137,26 @@ namespace foolsgoldsource
 		gEngine.sounds.push_back( string( s ) );
 
 		return gEngine.sounds.size() - 1;
+	}
+
+	void pfnSetModel( edict_t* e, const char* m )
+	{
+		// TODO: excessive calls will overflow the string table - is this what the engine does?
+		e->v.model = ALLOC_STRING(m);
+	}
+
+	int pfnModelIndex( const char* m )
+	{
+		for( unsigned int i = 0; i < gEngine.models.size(); i++ )
+		{
+			if( gEngine.models[i] == Util::tolowercase( string(m) ) )
+			{
+				return i;
+			}
+		}
+
+		// TODO: not right - crash instead?
+		return -1;
 	}
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )

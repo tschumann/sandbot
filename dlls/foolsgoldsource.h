@@ -2,6 +2,7 @@
 #define _STUB_ENGINE_H_
 
 #include <cstring>
+#include <cctype>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -55,10 +56,18 @@ namespace foolsgoldsource
 		bool bIsDedicatedServer;
 	};
 
+	class Util
+	{
+	public:
+		static string tolowercase( string str );
+	};
+
 	extern Engine gEngine;
 
 	int pfnPrecacheModel( char* s );
 	int pfnPrecacheSound( char* s );
+	void pfnSetModel( edict_t* e, const char* m );
+	int pfnModelIndex( const char* m );
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
