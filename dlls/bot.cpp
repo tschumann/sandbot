@@ -332,7 +332,7 @@ void NewActiveClient( edict_t *pEntity )
 	}
 }
 
-void KickBot( int iIndex )
+void KickBot( const int iIndex )
 {
 	// if the slot is in use
 	if( pBots && pBots[iIndex]->is_used )
@@ -2052,7 +2052,7 @@ float bot_t::GetSpeedToEnemy()
 	return fSpeed;
 }
 
-int bot_t::GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance )
+int bot_t::GetEnemiesInLineOfSight( const float fMinDistance, const float fMaxDistance )
 {
 	int iEnemiesInLineOfSight = 0;
 
@@ -2181,7 +2181,7 @@ bool bot_t::IsSniping()
 	return false;
 }
 
-bool bot_t::CanSeePoint(Vector point)
+bool bot_t::CanSeePoint( const Vector point )
 {
 	TraceResult tr;
 
@@ -2192,7 +2192,7 @@ bool bot_t::CanSeePoint(Vector point)
 	return tr.flFraction >= 1.0;
 }
 
-int bot_t::GetAngleToPoint( Vector point )
+int bot_t::GetAngleToPoint( const Vector point )
 {
 	// find angles from source to destination...
 	Vector entity_angles = UTIL_VecToAngles( point );
@@ -2227,7 +2227,7 @@ int bot_t::GetAngleToPoint( Vector point )
 	return iAngle;
 }
 
-bool bot_t::CanUseItem( edict_t *pItem )
+bool bot_t::CanUseItem( const edict_t *pItem )
 {
 	// TODO: make this handle stuff - okay as it's only used by NSBot right now
 	return false;

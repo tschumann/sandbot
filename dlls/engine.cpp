@@ -16,6 +16,7 @@
 #include "engine.h"
 #include "dll.h"
 #include "linkfunc.h"
+#include "util.h"
 
 extern enginefuncs_t g_engfuncs;
 extern bot_t **pBots;

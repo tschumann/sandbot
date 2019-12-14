@@ -547,7 +547,7 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 // UTIL_LogPrintf - Prints a logged message to console.
 // Preceded by LOG: ( timestamp ) < message >
 //=========================================================
-void UTIL_LogPrintf( char *fmt, ... )
+void UTIL_LogPrintf( const char *fmt, ... )
 {
 	va_list        argptr;
 	static char    string[1024];
@@ -564,7 +564,7 @@ void UTIL_LogPrintf( char *fmt, ... )
 // UTIL_LogDPrintf - Prints a logged message to console.
 // Preceded by LOG: ( timestamp ) < message >
 //=========================================================
-void UTIL_LogDPrintf( char *fmt, ... )
+void UTIL_LogDPrintf( const char *fmt, ... )
 {
 	if( CvarGetValue( &bot_log_level ) >= iBotLogLevelDebug )
 	{
@@ -583,7 +583,7 @@ void UTIL_LogDPrintf( char *fmt, ... )
 // UTIL_LogTPrintf - Prints a logged message to console.
 // Preceded by LOG: ( timestamp ) < message >
 //=========================================================
-void UTIL_LogTPrintf( char *fmt, ... )
+void UTIL_LogTPrintf( const char *fmt, ... )
 {
 	if( CvarGetValue( &bot_log_level ) >= iBotLogLevelTrace )
 	{
@@ -610,7 +610,7 @@ Vector UTIL_GetOrigin( edict_t *pEdict )
 
 // Natural Selection
 
-bool UTIL_IsBuilt( edict_t *pent )
+bool UTIL_IsBuilt( const edict_t *pent )
 {
 	if( pent->v.iuser4 & MASK_BUILDABLE )
     {
@@ -637,7 +637,7 @@ int UTIL_GetPoints( bot_t *player )
 }
 
 // TODO: MetaMod seems to get confused about cvar values - just talk to the engine under MetaMod?
-float CvarGetValue( cvar_t *pCvar )
+float CvarGetValue( const cvar_t *pCvar )
 {
 	extern bool g_bIsMMPlugin;
 
@@ -651,7 +651,7 @@ float CvarGetValue( cvar_t *pCvar )
 	}
 }
 
-const char *CvarGetString( cvar_t *pCvar )
+const char *CvarGetString( const cvar_t *pCvar )
 {
 	extern bool g_bIsMMPlugin;
 

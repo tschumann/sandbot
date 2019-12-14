@@ -286,7 +286,7 @@ struct bot_player_t
 };
 
 void NewActiveClient( edict_t *pEntity );
-void KickBot( int iIndex );
+void KickBot( const int iIndex );
 void KickAllBots();
 void CleanupGameAndBots();
 
@@ -325,7 +325,7 @@ public:
 	virtual bool IsValidEnemy( edict_t *pEnemy );
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();
-	virtual int GetEnemiesInLineOfSight( float fMinDistance, float fMaxDistance );
+	virtual int GetEnemiesInLineOfSight( const float fMinDistance, const float fMaxDistance );
 	virtual float GetAimSpread();
 	virtual Vector GetPointToShootAt();
 	virtual void Reload();
@@ -336,10 +336,10 @@ public:
 	virtual int GetHealingWeapon();
 	virtual bool IsSniping();
 
-	virtual bool CanSeePoint( Vector point );
-	virtual int GetAngleToPoint( Vector point );
+	virtual bool CanSeePoint( const Vector point );
+	virtual int GetAngleToPoint( const Vector point );
 
-	virtual bool CanUseItem( edict_t *pItem );
+	virtual bool CanUseItem( const edict_t *pItem );
 	virtual void PickUpItem();
 
 	virtual void SetMaxSpeed( float fMaxSpeed );
@@ -694,7 +694,7 @@ public:
 
 	virtual bool CanHeal();
 
-	virtual bool CanUseItem( edict_t *pItem );
+	virtual bool CanUseItem( const edict_t *pItem );
 
 	virtual float GetSpeedToEnemy();
 

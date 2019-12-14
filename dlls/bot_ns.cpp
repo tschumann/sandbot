@@ -79,7 +79,7 @@ bool NSBot::CanHeal()
 	return this->IsGorge();
 }
 
-bool NSBot::CanUseItem( edict_t *pItem )
+bool NSBot::CanUseItem( const edict_t *pItem )
 {
 	Vector vecStart = pEdict->v.origin + pEdict->v.view_ofs;
 	Vector vecEnd = pItem->v.origin;

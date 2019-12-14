@@ -298,16 +298,8 @@ inline void			UTIL_CenterPrintAll( const char *msg_name, const char *param1 = NU
 	UTIL_ClientPrintAll( HUD_PRINTCENTER, msg_name, param1, param2, param3, param4 );
 }
 
-class CBasePlayerItem;
-class CBasePlayer;
-extern BOOL UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon );
-
 // prints messages through the HUD
 extern void ClientPrint( entvars_t *client, int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL );
-
-// prints a message to the HUD say (chat)
-extern void			UTIL_SayText( const char *pText, CBaseEntity *pEntity );
-extern void			UTIL_SayTextAll( const char *pText, CBaseEntity *pEntity );
 
 
 typedef struct hudtextparms_s
@@ -324,18 +316,8 @@ typedef struct hudtextparms_s
 	int			channel;
 } hudtextparms_t;
 
-// prints as transparent 'title' to the HUD
-extern void			UTIL_HudMessageAll( const hudtextparms_t &textparms, const char *pMessage );
-extern void			UTIL_HudMessage( CBaseEntity *pEntity, const hudtextparms_t &textparms, const char *pMessage );
-
-// for handy use with ClientPrint params
-extern char *UTIL_dtos1( int d );
-extern char *UTIL_dtos2( int d );
-extern char *UTIL_dtos3( int d );
-extern char *UTIL_dtos4( int d );
-
 // Writes message to console with timestamp and FragLog header.
-extern void			UTIL_LogPrintf( char *fmt, ... );
+extern void			UTIL_LogPrintf( const char *fmt, ... );
 
 // Sorta like FInViewCone, but for nonmonsters. 
 extern float UTIL_DotPoints ( const Vector &vecSrc, const Vector &vecCheck, const Vector &vecDir );
@@ -343,9 +325,7 @@ extern float UTIL_DotPoints ( const Vector &vecSrc, const Vector &vecCheck, cons
 extern void UTIL_StripToken( const char *pKey, char *pDest );// for redundant keynames
 
 // Misc functions
-extern void SetMovedir(entvars_t* pev);
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
-extern int BuildChangeList( LEVELLIST *pLevelList, int maxList );
 
 //
 // How did I ever live without ASSERT?
@@ -503,15 +483,12 @@ inline void STOP_SOUND(edict_t *entity, int channel, const char *sample)
 #define GROUP_OP_AND	0
 #define GROUP_OP_NAND	1
 
-extern int g_groupmask;
-extern int g_groupop;
+void UTIL_LogDPrintf( const char *fmt, ... );
+void UTIL_LogTPrintf( const char *fmt, ... );
 
-void UTIL_LogDPrintf( char *fmt, ... );
-void UTIL_LogTPrintf( char *fmt, ... );
+bool UTIL_IsBuilt( const edict_t *pent );
 
-bool UTIL_IsBuilt( edict_t *pent );
-
-float CvarGetValue( cvar_t *pCvar );
-const char *CvarGetString( cvar_t *pCvar );
+float CvarGetValue( const cvar_t *pCvar );
+const char *CvarGetString( const cvar_t *pCvar );
 
 #endif // UTIL_H
