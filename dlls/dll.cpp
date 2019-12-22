@@ -1292,7 +1292,6 @@ float g_fCountDownTime = 0.0;
 void StartFrame( void )
 {
 	edict_t *pPlayer;
-	static float check_server_cmd = 0.0;
 	static int i, index, player_index;
 	static float previous_time = -1.0;
 	int count;
@@ -1318,8 +1317,6 @@ void StartFrame( void )
 	// if a new map has started then (MUST BE FIRST IN StartFrame)...
 	if ((gpGlobals->time + 0.1) < previous_time)
 	{
-		check_server_cmd = 0.0;  // reset at start of map
-
 		msecnum = 0;
 		msecdel = 0;
 		msecval = 0;
