@@ -399,7 +399,7 @@ Vector GetGunPosition(edict_t *pEdict)
 }
 
 
-void UTIL_SelectItem(edict_t *pEdict, char *item_name)
+void UTIL_SelectItem(edict_t *pEdict, const char *item_name)
 {
 	FakeClientCommand(pEdict, item_name);
 }

@@ -89,7 +89,7 @@ namespace foolsgoldsource
 		this->strGameDir = strGameDir;
 	}
 
-	const bool Engine::GetIsDedicatedServer()
+	bool Engine::GetIsDedicatedServer()
 	{
 		return this->bIsDedicatedServer;
 	}
@@ -166,7 +166,7 @@ namespace foolsgoldsource
 
 	edict_t* pfnPEntityOfEntOffset( int iEntOffset )
 	{
-		if( iEntOffset >= gEngine.edicts.size() )
+		if( (unsigned int)iEntOffset >= gEngine.edicts.size() )
 		{
 			return nullptr;
 		}

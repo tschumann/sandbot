@@ -30,7 +30,7 @@ namespace foolsgoldsource
 
 		const string GetGameDirectory();
 		void SetGameDirectory(const string strGameDir );
-		const bool GetIsDedicatedServer();
+		bool GetIsDedicatedServer();
 		void SetIsDedicatedServer( const bool bIsDedicatedServer );
 
 		void SetMaxClients( const int iMaxClients );

@@ -9,7 +9,6 @@
 #ifndef BOT_FUNC_H
 #define BOT_FUNC_H
 
-
 //prototypes of bot functions...
 
 void BotSpawnInit( bot_t *pBot );
@@ -40,10 +39,9 @@ bool BotCheckWallOnRight( bot_t *pBot );
 void BotUseDoor( bot_t *pBot );
 
 edict_t *BotFindEnemy( bot_t *pBot );
-bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice);
+bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice);
 void BotShootAtEnemy( bot_t *pBot );
 bool BotShootTripmine( bot_t *pBot );
-
 
 #endif // BOT_FUNC_H
 

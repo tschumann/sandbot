@@ -2181,7 +2181,7 @@ bool bot_t::IsSniping()
 	return false;
 }
 
-bool bot_t::CanSeePoint( const Vector point )
+bool bot_t::CanSeePoint( const Vector& point )
 {
 	TraceResult tr;
 
@@ -2192,7 +2192,7 @@ bool bot_t::CanSeePoint( const Vector point )
 	return tr.flFraction >= 1.0;
 }
 
-int bot_t::GetAngleToPoint( const Vector point )
+int bot_t::GetAngleToPoint( const Vector& point )
 {
 	// find angles from source to destination...
 	Vector entity_angles = UTIL_VecToAngles( point );

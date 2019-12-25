@@ -103,7 +103,7 @@ void WaypointFree(void)
 
 
 // initialize the waypoint structures...
-void WaypointInit(void)
+void WaypointInit()
 {
    int i;
 
@@ -380,7 +380,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team)
 
 
 // find the nearest waypoint to the source postition and return the index
-int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
+int WaypointFindNearest(edict_t *pEntity, float range, int team, const Vector& v_src)
 {
    int index, min_index;
    float distance;
@@ -427,7 +427,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src)
 
 
 // find the nearest waypoint to the source postition and return the index
-int WaypointFindNearest(edict_t *pEntity, float range, int team, Vector v_src, uint64_t flags)
+int WaypointFindNearest(edict_t *pEntity, float range, int team, const Vector& v_src, uint64_t flags)
 {
 	int index, min_index;
 	float distance;
@@ -498,7 +498,7 @@ edict_t *FindNearest( Vector point, const char *szClassname, float fMinimumDista
 	return pNearest;
 }
 
-float DistanceToNearest(Vector point, const char *szClassname)
+float DistanceToNearest(const Vector& point, const char *szClassname)
 {
 	edict_t *pent = NULL;
 	float fMinimumDistance = 9999.99;
@@ -768,7 +768,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags,
    return min_index;
 }
 
-int WaypointFindNearestGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags)
+int WaypointFindNearestGoal(const Vector& v_src, edict_t *pEntity, float range, int team, uint64_t flags)
 {
    int index, min_index;
    int distance, min_distance;
@@ -915,7 +915,7 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags, int exclu
 }
 
 
-int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team, uint64_t flags)
+int WaypointFindRandomGoal(const Vector& v_src, edict_t *pEntity, float range, int team, uint64_t flags)
 {
    int index;
    int indexes[200];
@@ -962,7 +962,7 @@ int WaypointFindRandomGoal(Vector v_src, edict_t *pEntity, float range, int team
 }
 
 
-int WaypointFindNearestAiming(Vector v_origin)
+int WaypointFindNearestAiming(const Vector& v_origin)
 {
    int index;
    int min_index = -1;
@@ -1027,7 +1027,7 @@ int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
 }
 
 
-void WaypointDrawBeam( edict_t *pEntity, Vector start, Vector end, int width, int noise, int red, int green, int blue, int brightness, int speed )
+void WaypointDrawBeam( edict_t *pEntity, const Vector& start, const Vector& end, int width, int noise, int red, int green, int blue, int brightness, int speed )
 {
 	// don't send waypoint render messages to bots
 	if( !(pEntity->v.flags & FL_FAKECLIENT) )
@@ -1058,7 +1058,7 @@ void WaypointDrawBeam( edict_t *pEntity, Vector start, Vector end, int width, in
 }
 
 // pEntity is the player
-void WaypointSearchItems( edict_t *pEntity, Vector origin, int wpt_index )
+void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index )
 {
 	edict_t *pent = nullptr;
 	float radius = 300.0f; // needs to be big as team_hive hangs from the ceiling so won't be that close to the player
@@ -1770,7 +1770,7 @@ bool WaypointLoad(edict_t *pEntity)
 }
 
 
-void WaypointSave(void)
+void WaypointSave()
 {
 	char filename[256];
 	char mapname[64];
@@ -1854,7 +1854,7 @@ void WaypointSave(void)
 }
 
 
-bool WaypointReachable(Vector v_src, Vector v_dest, edict_t *pEntity)
+bool WaypointReachable(const Vector& v_src, const Vector& v_dest, edict_t *pEntity)
 {
    TraceResult tr;
    float curr_height, last_height;
@@ -2281,7 +2281,7 @@ void WaypointFloyds(unsigned short *shortest_path, unsigned short *from_to)
 }
 
 
-void WaypointRouteInit(void)
+void WaypointRouteInit()
 {
    unsigned int index;
    bool build_matrix[4];

@@ -336,8 +336,8 @@ public:
 	virtual int GetHealingWeapon();
 	virtual bool IsSniping();
 
-	virtual bool CanSeePoint( const Vector point );
-	virtual int GetAngleToPoint( const Vector point );
+	virtual bool CanSeePoint( const Vector& point );
+	virtual int GetAngleToPoint( const Vector& point );
 
 	virtual bool CanUseItem( const edict_t *pItem );
 	virtual void PickUpItem();
@@ -1107,7 +1107,7 @@ bool IsValidEntity( edict_t *pEdict );
 bool FInViewCone(Vector *pOrigin, edict_t *pEdict);
 bool FVisible( const Vector &vecOrigin, edict_t *pEdict );
 Vector GetGunPosition(edict_t *pEdict);
-void UTIL_SelectItem(edict_t *pEdict, char *item_name);
+void UTIL_SelectItem(edict_t *pEdict, const char *item_name);
 Vector VecBModelOrigin(edict_t *pEdict);
 bool UpdateSounds(edict_t *pEdict, edict_t *pPlayer);
 void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, char *pText );

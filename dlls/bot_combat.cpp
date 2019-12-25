@@ -34,7 +34,7 @@ extern cvar_t bot_use_chemical;
 // the start of the array and least desired should be at the end
 // presumably the no ammo ones are at the top so they can always be selected
 
-bot_weapon_select_t valve_weapon_select[] = {
+const bot_weapon_select_t valve_weapon_select[] = {
     {VALVE_WEAPON_CROWBAR, "weapon_crowbar", 0.3f, 0.0f,
 	0.0f, 32.0f, 0.0f, 0.0f,
     100, TRUE, 100, 0, 0,
@@ -87,7 +87,7 @@ bot_weapon_select_t valve_weapon_select[] = {
     {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
-bot_weapon_select_t gearbox_weapon_select[] = {
+const bot_weapon_select_t gearbox_weapon_select[] = {
 	{GEARBOX_WEAPON_PIPEWRENCH, "weapon_pipewrench", 0.5f, 0.0f,
 	 0.0f, 50.0f, 0.0f, 0.0f,
 	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MELEE},
@@ -155,7 +155,7 @@ bot_weapon_select_t gearbox_weapon_select[] = {
 	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
-bot_weapon_select_t cs_weapon_select[] = {
+const bot_weapon_select_t cs_weapon_select[] = {
 	{CS_WEAPON_KNIFE, "weapon_knife", 0.3f, 0.0f,
 	 0.0f, 50.0f, 0.0f, 0.0f,
 	 100, TRUE, 100, 0, 0,
@@ -172,7 +172,7 @@ bot_weapon_select_t cs_weapon_select[] = {
 	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
-bot_weapon_select_t dod_weapon_select[] = {
+const bot_weapon_select_t dod_weapon_select[] = {
 	{DOD_WEAPON_GARAND, "weapon_garand", 0.3f, 0.0f,
 	 0.0f, 2000.0f, 0.0f, 0.0f,
 	 100, false, 100, 1, 0,
@@ -242,7 +242,7 @@ bot_weapon_select_t dod_weapon_select[] = {
 	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
-bot_weapon_select_t tfc_weapon_select[] = {
+const bot_weapon_select_t tfc_weapon_select[] = {
 	{TF_WEAPON_AXE, "tf_weapon_axe", 0.3f, 0.0f,
 	 0.0f, 50.0f, 0.0f, 0.0f,
 	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f},
@@ -298,7 +298,7 @@ bot_weapon_select_t tfc_weapon_select[] = {
 	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
-bot_weapon_select_t gunman_weapon_select[] = {
+const bot_weapon_select_t gunman_weapon_select[] = {
 	{GUNMAN_WEAPON_DMLGRENADE, "weapon_dmlgrenade", 1.0f, 0.0f,
 	250.0f, 750.0f, 0.0f, 0.0f,
 	30, true, 100, 1, 0,
@@ -340,7 +340,7 @@ bot_weapon_select_t gunman_weapon_select[] = {
 };
 
 // see AvHBasePlayerWeapon::mRange
-bot_weapon_select_t ns_weapon_select[] = {
+const bot_weapon_select_t ns_weapon_select[] = {
     {NS_WEAPON_GRENADE, "weapon_grenade", 1.0f, 0.0f,
 	250.0f, 750.0f, 0.0f, 0.0f,
     40, TRUE, 100, 1, 0,
@@ -428,7 +428,7 @@ bot_weapon_select_t ns_weapon_select[] = {
     {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
-bot_weapon_select_t hunger_weapon_select[] = {
+const bot_weapon_select_t hunger_weapon_select[] = {
     {VALVE_WEAPON_CROWBAR, "weapon_crowbar", 0.3f, 0.0f,
 	0.0f, 32.0, 0.0f, 0.0f,
     100, TRUE, 100, 0, 0,
@@ -500,7 +500,7 @@ bot_weapon_select_t hunger_weapon_select[] = {
     {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
-bot_weapon_select_t ship_weapon_select[] = {
+const bot_weapon_select_t ship_weapon_select[] = {
 	/* terminator */
 	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
@@ -642,9 +642,9 @@ edict_t *BotFindEnemy( bot_t *pBot )
 // use (assuming enough ammo exists for that weapon)
 // BotFireWeapon will return TRUE if weapon was fired, FALSE otherwise
 
-bool BotFireWeapon( Vector v_enemy, bot_t *pBot, int weapon_choice)
+bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 {
-	bot_weapon_select_t *pSelect = NULL;
+	const bot_weapon_select_t *pSelect = nullptr;
 	int select_index;
 	int iId;
 	bool use_primary;
