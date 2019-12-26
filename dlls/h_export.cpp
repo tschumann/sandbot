@@ -61,10 +61,12 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 }
 #endif
 
-extern "C" EXPORT int GetEngineFunctions( enginefuncs_t * pengfuncsFromEngine, int *interfaceVersion )
+extern "C" EXPORT int GetEngineFunctions( enginefuncs_t *pengfuncsFromEngine, int *interfaceVersion )
 {
 	if( g_bIsMMPlugin )
 		memset( pengfuncsFromEngine, 0, sizeof( enginefuncs_t ) );
+
+	pengfuncsFromEngine->pfnAlertMessage( at_console, "Hooked GetEngineFunctions\n" );
 
 	// and now we need to pass engine functions table to the game DLL (in fact it's our own
 	// functions we are passing here, but the game DLL won't notice)...
@@ -244,6 +246,8 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	char szGameDir[256];
 	char *szLibraryPath = "";
 	GET_GAME_DIR(szGameDir);
+
+	pengfuncsFromEngine->pfnAlertMessage( at_console, "Hooked GiveFnptrsToDll\n" );
 
 	// be great if libc gave this out of the box
 	for( unsigned int i = 0; szGameDir[i]; i++ ) {
@@ -498,6 +502,8 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		}
 	}
 
+	pengfuncsFromEngine->pfnAlertMessage( at_console, "Determined mod_id %d and szLibraryPath %s\n", mod_id, szLibraryPath );
+
 	strncpy( g_szLibraryPath, szLibraryPath, strlen( szLibraryPath ) );
 
 	if( !g_bIsMMPlugin && h_Library == nullptr )
@@ -564,6 +570,7 @@ gamedll_funcs_t gGameDLLFunc;
 
 extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
 {
+	ALERT( at_console, "Hooked GetEntityAPI with interfaceVersion %d\n", interfaceVersion );
    // check if engine's pointer is valid and version is correct...
    if ((pFunctionTable == nullptr) || (interfaceVersion != INTERFACE_VERSION))
       return FALSE;

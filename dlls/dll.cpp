@@ -434,9 +434,10 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			// keep track of it
 			pent_trigger_ctfgeneric = pentKeyvalue;
 		}
-		// if it's a trigger_ctfgeneric that is being tracked and it's the team_no key
+		// if it's a trigger_ctfgeneric and it's the team_no key
 		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "team_no" ) )
 		{
+			// TODO: there is only one official capture point map - op4cp_park and it has 16 capture points
 			if( iCapturePointCount == OpposingForceBot::MAX_CAPTURE_POINTS )
 			{
 				ALERT( at_error, "Too many trigger_ctfgeneric entities to handle - ask for the limit to be increased\n");
@@ -446,9 +447,9 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 				ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.targetname), STRING(pentKeyvalue->v.target) );
 				// get the team_no value
 				capturePoints[iCapturePointCount].iTeam = atoi( pkvd->szValue );
-				// get the name - TODO where is the name?
+				// get the name of the capture point
 				capturePoints[iCapturePointCount].szName = STRING(pentKeyvalue->v.globalname);
-				// get the target
+				// get the target (just points to a trigger_relay?)
 				capturePoints[iCapturePointCount].szTarget = STRING(pentKeyvalue->v.target);
 				iCapturePointCount++;
 			}

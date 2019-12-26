@@ -1192,20 +1192,22 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 		{
 			for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
 			{
-				if( !strcmp(STRING(nearest_pent->v.target), capturePoints[i].szTarget) )
+				// find the matching trigger_ctfgeneric that was saved on map load
+				if( !strcmp(STRING(nearest_pent->v.globalname), capturePoints[i].szName) )
 				{
 					ALERT( at_console, "Found a matching trigger_ctfgeneric!\n");
 				}
 				else
 				{
-					ALERT( at_console, "Mismatched trigger_ctfgeneric %s\n", STRING(nearest_pent->v.target) );
+					ALERT( at_console, "Mismatched trigger_ctfgeneric %s\n", STRING(nearest_pent->v.globalname) );
+					continue;
 				}
 
-				if( !strcmp(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 1 )
+				if( !strcmp(STRING(nearest_pent->v.globalname), capturePoints[i].szName) && capturePoints[i].iTeam == 1 )
 				{
 					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_BM;
 				}
-				else if( !strcmp(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 2 )
+				else if( !strcmp(STRING(nearest_pent->v.globalname), capturePoints[i].szName) && capturePoints[i].iTeam == 2 )
 				{
 					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_OF;
 				}
