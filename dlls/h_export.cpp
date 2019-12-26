@@ -573,7 +573,9 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
 	ALERT( at_console, "Hooked GetEntityAPI with interfaceVersion %d\n", interfaceVersion );
    // check if engine's pointer is valid and version is correct...
    if ((pFunctionTable == nullptr) || (interfaceVersion != INTERFACE_VERSION))
-      return FALSE;
+   {
+	   return 0;
+   }
 
    memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
 
@@ -643,7 +645,87 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
    pFunctionTable->pfnInconsistentFile = InconsistentFile;
    pFunctionTable->pfnAllowLagCompensation = AllowLagCompensation;
 
-   return TRUE; // finished, interfacing from engine to gamedll complete
+   return 1; // finished, interfacing from engine to gamedll complete
+}
+
+extern "C" EXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int *interfaceVersion)
+{
+	ALERT(at_console, "Hooked GetEntityAPI2 with interfaceVersion %d\n", interfaceVersion);
+	// check if engine's pointer is valid and version is correct...
+	if ((pFunctionTable == nullptr) || (*interfaceVersion != INTERFACE_VERSION))
+	{
+		return 0;
+	}
+
+	memset(pFunctionTable, 0, sizeof(DLL_FUNCTIONS));
+
+	if (!g_bIsMMPlugin)
+	{
+		// pass other DLLs engine callbacks to function table...
+		if (!(*(GETENTITYAPI2)GetProcAddress(h_Library, "GetEntityAPI2")) (&other_gFunctionTable, interfaceVersion))
+			return FALSE;  // error initializing function table!!!
+
+		gGameDLLFunc.dllapi_table = &other_gFunctionTable;
+		gpGamedllFuncs = &gGameDLLFunc;
+
+		memcpy(pFunctionTable, &other_gFunctionTable, sizeof(DLL_FUNCTIONS));
+	}
+
+	// pass gamedll functions table to engine (in fact it's our own functions we are passing
+	// here, but the engine won't notice)...
+
+	pFunctionTable->pfnGameInit = GameDLLInit;
+	pFunctionTable->pfnSpawn = DispatchSpawn;
+	pFunctionTable->pfnThink = DispatchThink;
+	pFunctionTable->pfnUse = DispatchUse;
+	pFunctionTable->pfnTouch = DispatchTouch;
+	pFunctionTable->pfnBlocked = DispatchBlocked;
+	pFunctionTable->pfnKeyValue = DispatchKeyValue;
+	pFunctionTable->pfnSave = DispatchSave;
+	pFunctionTable->pfnRestore = DispatchRestore;
+	pFunctionTable->pfnSetAbsBox = DispatchObjectCollisionBox;
+	pFunctionTable->pfnSaveWriteFields = SaveWriteFields;
+	pFunctionTable->pfnSaveReadFields = SaveReadFields;
+	pFunctionTable->pfnSaveGlobalState = SaveGlobalState;
+	pFunctionTable->pfnRestoreGlobalState = RestoreGlobalState;
+	pFunctionTable->pfnResetGlobalState = ResetGlobalState;
+	pFunctionTable->pfnClientConnect = ClientConnect;
+	pFunctionTable->pfnClientDisconnect = ClientDisconnect;
+	pFunctionTable->pfnClientKill = ClientKill;
+	pFunctionTable->pfnClientPutInServer = ClientPutInServer;
+	pFunctionTable->pfnClientCommand = ClientCommand;
+	pFunctionTable->pfnClientUserInfoChanged = ClientUserInfoChanged;
+	pFunctionTable->pfnServerActivate = ServerActivate;
+	pFunctionTable->pfnServerDeactivate = ServerDeactivate;
+	pFunctionTable->pfnPlayerPreThink = PlayerPreThink;
+	pFunctionTable->pfnPlayerPostThink = PlayerPostThink;
+	pFunctionTable->pfnStartFrame = StartFrame;
+	pFunctionTable->pfnParmsNewLevel = ParmsNewLevel;
+	pFunctionTable->pfnParmsChangeLevel = ParmsChangeLevel;
+	pFunctionTable->pfnGetGameDescription = GetGameDescription;
+	pFunctionTable->pfnPlayerCustomization = PlayerCustomization;
+	pFunctionTable->pfnSpectatorConnect = SpectatorConnect;
+	pFunctionTable->pfnSpectatorDisconnect = SpectatorDisconnect;
+	pFunctionTable->pfnSpectatorThink = SpectatorThink;
+	pFunctionTable->pfnSys_Error = Sys_Error;
+	pFunctionTable->pfnPM_Move = PM_Move;
+	pFunctionTable->pfnPM_Init = PM_Init;
+	pFunctionTable->pfnPM_FindTextureType = PM_FindTextureType;
+	pFunctionTable->pfnSetupVisibility = SetupVisibility;
+	pFunctionTable->pfnUpdateClientData = UpdateClientData;
+	pFunctionTable->pfnAddToFullPack = AddToFullPack;
+	pFunctionTable->pfnCreateBaseline = CreateBaseline;
+	pFunctionTable->pfnRegisterEncoders = RegisterEncoders;
+	pFunctionTable->pfnGetWeaponData = GetWeaponData;
+	pFunctionTable->pfnCmdStart = CmdStart;
+	pFunctionTable->pfnCmdEnd = CmdEnd;
+	pFunctionTable->pfnConnectionlessPacket = ConnectionlessPacket;
+	pFunctionTable->pfnGetHullBounds = GetHullBounds;
+	pFunctionTable->pfnCreateInstancedBaselines = CreateInstancedBaselines;
+	pFunctionTable->pfnInconsistentFile = InconsistentFile;
+	pFunctionTable->pfnAllowLagCompensation = AllowLagCompensation;
+
+	return 1; // finished, interfacing from engine to gamedll complete
 }
 
 extern "C" EXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )

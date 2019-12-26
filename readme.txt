@@ -55,6 +55,7 @@ v0.4.3 (??/??/??)
 - [All] Fixed bot_skill 5 not working.
 - [All] Fixed cvars not being read correctly in Metamod.
 - [All] bot_skill and bot_count now get written to config.cfg
+- [All] Added GetEntityAPI2 support.
 - [Windows] Fixed possible memory leaks.
 - [Windows] Updated compiler to Visual Studio 2019 (from Visual Studio 2017).
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.

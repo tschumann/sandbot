@@ -25,8 +25,8 @@ bool g_bIsMMPlugin = false;
 static META_FUNCTIONS gMetaFunctionTable = {
 	GetEntityAPI,		// pfnGetEntityAPI				HL SDK; called before game DLL
 	GetEntityAPI_Post,	// pfnGetEntityAPI_Post			META; called after game DLL
-	NULL,				// pfnGetEntityAPI2				HL SDK2; called before game DLL
-	NULL,				// pfnGetEntityAPI2_Post		META; called after game DLL
+	GetEntityAPI2,	    // pfnGetEntityAPI2				HL SDK2; called before game DLL
+	GetEntityAPI2_Post, // pfnGetEntityAPI2_Post		META; called after game DLL
 	GetNewDLLFunctions,	// pfnGetNewDLLFunctions		HL SDK2; called before game DLL
 	NULL,				// pfnGetNewDLLFunctions_Post	META; called after game DLL
 	GetEngineFunctions,	// pfnGetEngineFunctions	META; called before HL engine
@@ -59,7 +59,16 @@ int DispatchSpawn_Post( edict_t * pent )
 
 extern "C" EXPORT int GetEntityAPI_Post( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
 {
-	memset( pFunctionTable, 0, sizeof( DLL_FUNCTIONS ) );
+	memset( pFunctionTable, 0, sizeof(DLL_FUNCTIONS) );
+
+	pFunctionTable->pfnSpawn = DispatchSpawn_Post;
+
+	return 1;
+}
+
+extern "C" EXPORT int GetEntityAPI2_Post( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
+{
+	memset( pFunctionTable, 0, sizeof(DLL_FUNCTIONS) );
 
 	pFunctionTable->pfnSpawn = DispatchSpawn_Post;
 
