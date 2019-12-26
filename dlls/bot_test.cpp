@@ -14,7 +14,7 @@ namespace tests
 
 		TEST_METHOD(TestGetBotCountNoBots)
 		{
-			Assert::AreEqual(GetBotCount(), 0);
+			Assert::AreEqual( GetBotCount(), 0 );
 		}
 
 		TEST_METHOD(TestGetBotCountOneBot)
@@ -23,7 +23,7 @@ namespace tests
 
 			pPlayer->v.netname = ALLOC_STRING("test");
 
-			Assert::AreEqual(GetBotCount(), 1);
+			Assert::AreEqual( GetBotCount(), 1 );
 		}
 	};
 }

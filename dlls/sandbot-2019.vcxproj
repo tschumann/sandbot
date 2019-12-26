@@ -170,6 +170,7 @@
     <ClCompile Include="foolsgoldsource.cpp" />
     <ClCompile Include="h_export_test.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="util_test.cpp" />
     <ClCompile Include="waypoint.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -87,6 +87,9 @@
     <ClCompile Include="bot_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="util_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">

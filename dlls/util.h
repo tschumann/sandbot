@@ -252,6 +252,8 @@ typedef struct hudtextparms_s
 	int			channel;
 } hudtextparms_t;
 
+extern char* UTIL_ToLower( char* str );
+
 // Writes message to console with timestamp and FragLog header.
 extern void			UTIL_LogPrintf( const char *fmt, ... );
 

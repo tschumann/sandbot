@@ -543,6 +543,15 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 	}
 }
 
+char *UTIL_ToLower( char *str )
+{
+	for( unsigned int i = 0; i < strlen(str); i++ ) {
+		str[i] = tolower(str[i]);
+	}
+
+	return str;
+}
+
 //=========================================================
 // UTIL_LogPrintf - Prints a logged message to console.
 // Preceded by LOG: ( timestamp ) < message >
