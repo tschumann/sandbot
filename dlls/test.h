@@ -14,7 +14,7 @@
 // CppUnitTestFramework does something strange and breaks the engine's ability to load the .dll so stub it out when building for real
 // #define TEST
 
-#ifdef TEST
+#ifndef TEST
 
 #undef TEST_METHOD
 #define TEST_METHOD(methodName) static const void* test##methodName() { return nullptr; } void methodName()
