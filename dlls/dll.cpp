@@ -444,7 +444,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			}
 			else
 			{
-				ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.targetname), STRING(pentKeyvalue->v.target) );
+				ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
 				// get the team_no value
 				capturePoints[iCapturePointCount].iTeam = atoi( pkvd->szValue );
 				// get the name of the capture point

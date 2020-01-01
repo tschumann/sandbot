@@ -1192,23 +1192,25 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 		{
 			for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
 			{
-				// find the matching trigger_ctfgeneric that was saved on map load
-				if( !strcmp(STRING(nearest_pent->v.globalname), capturePoints[i].szName) )
+				// find the matching trigger_ctfgeneric that was saved on map load - they all have a target but not a globalname
+				if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && FStrEq(STRING(nearest_pent->v.globalname), "") )
 				{
-					ALERT( at_console, "Found a matching trigger_ctfgeneric!\n");
+					ALERT( at_console, "Found a matching trigger_ctfgeneric with target %s!\n", STRING(nearest_pent->v.target) );
 				}
 				else
 				{
-					ALERT( at_console, "Mismatched trigger_ctfgeneric %s\n", STRING(nearest_pent->v.globalname) );
+					ALERT( at_console, "Mismatched trigger_ctfgeneric with target %s\n", STRING(nearest_pent->v.target) );
 					continue;
 				}
 
-				if( !strcmp(STRING(nearest_pent->v.globalname), capturePoints[i].szName) && capturePoints[i].iTeam == 1 )
+				if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 1 )
 				{
+					ALERT( at_console, "Making trigger_ctfgeneric with target %s a Black Mesa capture point\n", STRING(nearest_pent->v.target) );
 					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_BM;
 				}
-				else if( !strcmp(STRING(nearest_pent->v.globalname), capturePoints[i].szName) && capturePoints[i].iTeam == 2 )
+				else if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 2 )
 				{
+					ALERT( at_console, "Making trigger_ctfgeneric with target %s an Opposing Force capture point\n", STRING(nearest_pent->v.target) );
 					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_OF;
 				}
 			}
