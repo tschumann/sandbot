@@ -186,6 +186,7 @@
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="metamod.h" />
     <ClInclude Include="foolsgoldsource.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="waypoint.h" />

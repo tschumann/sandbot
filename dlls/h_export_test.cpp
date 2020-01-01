@@ -1,8 +1,19 @@
+//=============================================================================
+//
+// Sandbot - GoldSource engine multiplayer bot
+//
+// http://www.teamsandpit.com/
+//
+// Notes:
+//
+//=============================================================================
+
 #include "CppUnitTest.h"
 
 #include "h_export.h"
 #include "bot.h"
 #include "foolsgoldsource.h"
+#include "test.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
