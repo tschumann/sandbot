@@ -2484,8 +2484,8 @@ void WaypointRouteInit()
 
                               if (distance > REACHABLE_RANGE)
                               {
-                                 sprintf(msg, "Waypoint path distance > %4.1f at from %d to %d\n", REACHABLE_RANGE, row, index);
-                                 ALERT(at_console, msg);
+                                 sprintf(msg, "Waypoint path distance of %f > %4.1f at from %d to %d\n", distance, REACHABLE_RANGE, row, index);
+                                 ALERT(at_aiconsole, msg);
                               }
                               else
                               {

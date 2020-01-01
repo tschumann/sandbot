@@ -164,7 +164,7 @@ void LoadExtraExports()
 
 			int iFunctionNameLength = fread( szFunctionName, sizeof(char), sizeof(szFunctionName) - 1, pFile );
 			szFunctionName[iFunctionNameLength - 1] = '\0';
-			ALERT( at_console, "Found %s\n", szFunctionName );
+			UTIL_LogTPrintf( "Found %s\n", szFunctionName );
 
 			pFunctionName = szFunctionName;
 			// possibly skip the leading ? in a Visual Studio mangled name
@@ -179,7 +179,7 @@ void LoadExtraExports()
 			}
 
 			strncpy( szFunctionNames[i], pFunctionName, strlen( pFunctionName ) );
-			ALERT( at_console, "Stored %s\n", szFunctionNames[i] );
+			UTIL_LogTPrintf( "Stored %s\n", szFunctionNames[i] );
 		}
 	}
 

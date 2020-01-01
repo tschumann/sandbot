@@ -113,9 +113,8 @@ int OpposingForceBot::GetGoalType()
 	}
 	else
 	{
-		ALERT( at_error, "Unknown game mode for Opposing Force\n" );
-
-		return W_FL_DELETED;
+		// fall back to regular deathmatch rules for deathmatch
+		return bot_t::GetGoalType();
 	}
 }
 

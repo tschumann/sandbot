@@ -648,7 +648,7 @@ extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interface
 
 extern "C" EXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int *interfaceVersion)
 {
-	ALERT(at_console, "Hooked GetEntityAPI2 with interfaceVersion %d\n", interfaceVersion);
+	ALERT(at_console, "Hooked GetEntityAPI2 with interfaceVersion %d\n", *interfaceVersion);
 	// check if engine's pointer is valid and version is correct...
 	if ((pFunctionTable == nullptr) || (*interfaceVersion != INTERFACE_VERSION))
 	{

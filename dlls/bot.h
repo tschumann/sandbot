@@ -19,7 +19,7 @@
 using std::vector;
 using std::min;
 
-// use this to block stuff that shouldn't be allowed in release builds (like dumping information about arbitray players)
+// use this to block stuff that shouldn't be allowed in release builds (like dumping information about arbitrary players)
 #if _DEBUG
 #define DEBUG_CODE 1
 #else
