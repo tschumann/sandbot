@@ -141,6 +141,7 @@ void pfnSetSize(edict_t *e, const float *rgflMin, const float *rgflMax)
 void pfnChangeLevel(char* s1, char* s2)
 {
 	KickAllBots();
+	pGame->Cleanup();
 
 	if( g_bIsMMPlugin )
 		METAMOD_RETURN( MRES_IGNORED );

@@ -10,6 +10,10 @@ Game::~Game()
 {
 }
 
+void Game::Cleanup()
+{
+}
+
 int Game::GetMaxPlayers()
 {
 	return gpGlobals->maxClients;

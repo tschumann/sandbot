@@ -844,11 +844,27 @@ public:
 
 extern bot_t **pBots;
 
+typedef struct
+{
+	bool mdl_match;
+	int  team_no;
+	edict_t* edict;
+} FLAG_S;
+
+struct CapturePoint
+{
+	int iTeam;
+	const char* szName;
+	const char* szTarget;
+	edict_t* pEdict;
+};
+
 class Game
 {
 public:
 	virtual ~Game();
 
+	virtual void Cleanup();
 	virtual int GetMaxPlayers();
 	virtual bool CanAddBots();
 	virtual bool IsTeamPlay();
@@ -874,6 +890,18 @@ public:
 class GearboxGame : public Game
 {
 public:
+	virtual void Cleanup()
+	{
+		for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
+		{
+			extern CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
+			capturePoints[i].iTeam = 0;
+			capturePoints[i].szName = nullptr;
+			capturePoints[i].szTarget = nullptr;
+			capturePoints[i].pEdict = nullptr;
+		}
+	}
+
 	virtual bool IsTeamPlay()
 	{
 		return this->IsCTF() || this->IsCapturePoint() || Game::IsTeamPlay();
@@ -1076,22 +1104,6 @@ extern std::unique_ptr<Game> pGame;
 
 
 #define MAX_FLAGS  5
-
-
-typedef struct {
-   bool mdl_match;
-   int  team_no;
-   edict_t *edict;
-} FLAG_S;
-
-struct CapturePoint
-{
-	int iTeam;
-	const char *szName;
-	const char *szTarget;
-	edict_t* pEdict;
-};
-
 
 // new UTIL.CPP functions...
 edict_t *UTIL_FindEntityInSphere( edict_t *pentStart, const Vector &vecCenter, float flRadius );
