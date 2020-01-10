@@ -1192,6 +1192,7 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 		{
 			for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
 			{
+				ALERT(at_console, "trigger_ctfgeneric target: %s targetname: %s globalname: %s\n", capturePoints[i].pEdict->v.target, capturePoints[i].pEdict->v.targetname, capturePoints[i].pEdict->v.globalname );
 				// find the matching trigger_ctfgeneric that was saved on map load - they all have a target but not a globalname
 				if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && FStrEq(STRING(nearest_pent->v.globalname), "") )
 				{

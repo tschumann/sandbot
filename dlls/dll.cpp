@@ -440,6 +440,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			// TODO: there is only one official capture point map - op4cp_park and it has 16 capture points
 			if( iCapturePointCount == OpposingForceBot::MAX_CAPTURE_POINTS )
 			{
+				// TODO: just add them to a vector?
 				ALERT( at_error, "Too many trigger_ctfgeneric entities to handle - ask for the limit to be increased\n");
 			}
 			else
@@ -451,6 +452,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 				capturePoints[iCapturePointCount].szName = STRING(pentKeyvalue->v.globalname);
 				// get the target (just points to a trigger_relay?)
 				capturePoints[iCapturePointCount].szTarget = STRING(pentKeyvalue->v.target);
+				capturePoints[iCapturePointCount].pEdict = pentKeyvalue;
 				iCapturePointCount++;
 			}
 		}

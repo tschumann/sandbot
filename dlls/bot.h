@@ -1089,6 +1089,7 @@ struct CapturePoint
 	int iTeam;
 	const char *szName;
 	const char *szTarget;
+	edict_t* pEdict;
 };
 
 
