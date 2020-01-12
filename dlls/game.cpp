@@ -125,7 +125,6 @@ int Game::GetTeam( edict_t *pEdict )
 
 bool Game::IsGunmanChronicles()
 {
-	extern int mod_id;
 	return mod_id == REWOLF_DLL;
 }
 

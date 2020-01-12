@@ -23,8 +23,6 @@
                        DMG_DROWNRECOVER | DMG_ACID | DMG_SLOWBURN | \
                        DMG_SLOWFREEZE | 0xFF000000)
 
-extern int mod_id;
-
 bot_weapon_t weapon_defs[MAX_WEAPONS]; // array of weapon definitions
 
 

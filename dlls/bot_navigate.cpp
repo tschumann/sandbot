@@ -16,10 +16,6 @@
 #include "wpt.h"
 #include "waypoint.h"
 
-extern int mod_id;
-extern waypoint_t waypoints[MAX_WAYPOINTS];
-extern int num_waypoints;  // number of waypoints currently in use
-
 float BotChangePitch( bot_t *pBot, float speed )
 {
    edict_t *pEdict = pBot->pEdict;

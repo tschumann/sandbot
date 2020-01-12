@@ -20,8 +20,6 @@
 #include "util.h"
 
 extern enginefuncs_t g_engfuncs;
-extern bot_t **pBots;
-extern int mod_id;
 
 int debug_engine = 0;
 

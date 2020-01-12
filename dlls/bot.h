@@ -843,6 +843,7 @@ public:
 };
 
 extern bot_t **pBots;
+extern bot_player_t* pBotData;
 
 typedef struct
 {
@@ -861,7 +862,6 @@ struct CapturePoint
 
 #define MAX_TEAMS 32
 #define MAX_TEAMNAME_LENGTH 16
-
 
 #define MAX_FLAGS  5
 

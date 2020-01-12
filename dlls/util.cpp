@@ -34,9 +34,6 @@
 #include <cctype>
 #endif // __linux__
 
-
-extern int mod_id;
-extern bot_t **pBots;
 extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 extern int num_teams;
 

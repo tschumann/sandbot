@@ -19,10 +19,7 @@
 #include "bot_weapons.h"
 #include "h_export.h"
 
-extern int mod_id;
 extern edict_t *clients[32];
-extern waypoint_t waypoints[MAX_WAYPOINTS];
-extern int num_waypoints;  // number of waypoints currently in use
 
 bot_player_t *pBotData = nullptr;
 

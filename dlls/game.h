@@ -249,6 +249,8 @@ public:
 	}
 };
 
+extern int mod_id;
+
 extern std::unique_ptr<Game> pGame;
 
 #endif // _GAME_H_

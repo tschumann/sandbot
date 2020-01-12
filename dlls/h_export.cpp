@@ -41,11 +41,6 @@ char g_szLibraryPath[64];
 
 extern DLL_FUNCTIONS other_gFunctionTable;
 
-extern int mod_id;
-
-extern bot_player_t *pBotData;
-
-
 #ifndef __linux__
 // required DLL entry point
 BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )

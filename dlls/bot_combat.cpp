@@ -15,7 +15,6 @@
 #include "bot_weapons.h"
 #include "game.h"
 
-extern int mod_id;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 

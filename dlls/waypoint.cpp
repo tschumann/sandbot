@@ -23,7 +23,6 @@
 #include "wpt.h"
 #include "waypoint.h"
 
-extern int mod_id;
 extern int m_spriteTexture;
 
 extern int num_backpacks;

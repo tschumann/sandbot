@@ -15,6 +15,9 @@ const int WAYPOINT_NOT_FOUND = -1;
 
 const float REACHABLE_RANGE = 400.0;
 
+extern int num_waypoints; // number of waypoints currently in use
+extern waypoint_t waypoints[MAX_WAYPOINTS];
+
 #define WAYPOINT_UNREACHABLE   USHRT_MAX
 #define WAYPOINT_MAX_DISTANCE (USHRT_MAX-1)
 
