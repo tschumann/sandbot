@@ -5,6 +5,7 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
+#include "game.h"
 #include "wpt.h"
 #include "waypoint.h"
 

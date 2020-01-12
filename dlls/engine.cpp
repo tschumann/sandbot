@@ -14,6 +14,7 @@
 #include "bot_func.h"
 #include "bot_client.h"
 #include "engine.h"
+#include "game.h"
 #include "dll.h"
 #include "linkfunc.h"
 #include "util.h"

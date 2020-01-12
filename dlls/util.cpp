@@ -27,6 +27,7 @@
 
 #include "bot.h"
 #include "bot_func.h"
+#include "game.h"
 
 // isprint and isspace live in different places on Windows and Linux apparently
 #ifdef __linux__

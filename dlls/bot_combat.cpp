@@ -13,6 +13,7 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
+#include "game.h"
 
 extern int mod_id;
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];

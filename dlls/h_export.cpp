@@ -12,6 +12,7 @@
 #include "cbase.h"
 
 #include "bot.h"
+#include "game.h"
 #include "engine.h"
 #include "dll.h"
 #include "linkfunc.h"
