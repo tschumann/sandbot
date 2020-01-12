@@ -19,11 +19,9 @@
 #include "bot_weapons.h"
 #include "h_export.h"
 
-extern edict_t *clients[32];
-
 bot_player_t *pBotData = nullptr;
-
 bot_t **pBots = nullptr; // [MAX_PLAYERS];
+
 bool b_observer_mode = false;
 
 bot_player_t g_valveBots[MAX_PLAYERS] =
@@ -314,22 +312,6 @@ int GetBotCount()
 	return count;
 }
 
-void NewActiveClient( edict_t *pEntity )
-{
-	int i = 0;
-
-	while( (i < MAX_PLAYERS) && clients[i] )
-	{
-		i++;
-	}
-
-	if( i < MAX_PLAYERS )
-	{
-		// store this clients edict in the clients array
-		clients[i] = pEntity;
-	}
-}
-
 void KickBot( const int iIndex )
 {
 	// if the slot is in use
@@ -618,8 +600,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       }
 
       MDLL_ClientConnect( pBotEdict, pBotData[iIndex].szName, "127.0.0.1", ptr );
-
-	  NewActiveClient( pBotEdict );
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
 	  MDLL_ClientPutInServer( pBotEdict );

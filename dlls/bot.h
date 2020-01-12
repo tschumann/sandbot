@@ -287,7 +287,6 @@ struct bot_player_t
 	bool bIsUsed;
 };
 
-void NewActiveClient( edict_t *pEntity );
 void KickBot( const int iIndex );
 void KickAllBots();
 void CleanupGameAndBots();

@@ -44,7 +44,6 @@ int min_bots = -1;
 int num_bots = 0;
 int prev_num_bots = 0;
 bool g_GameRules = false;
-edict_t *clients[MAX_PLAYERS];
 edict_t *listenserver_edict = nullptr;
 int g_menu_waypoint;
 int g_menu_state = 0;
@@ -175,11 +174,6 @@ void GameDLLInit( void )
 	CVAR_REGISTER(&bot_use_chemical);
 
 	developer = CVAR_GET_POINTER("developer");
-
-	for( int i = 0; i < MAX_PLAYERS; i++ )
-	{
-		clients[i] = nullptr;
-	}
 
 	if( g_bIsMMPlugin )
 		METAMOD_RETURN( MRES_IGNORED );
@@ -592,18 +586,7 @@ void ClientDisconnect( edict_t *pEntity )
 {
 	UTIL_LogDPrintf( "ClientDisconnect: pEntity=%x\n", pEntity );
 
-	int i = 0;
-	while( (i < MAX_PLAYERS) && (clients[i] != pEntity) )
-	{
-		i++;
-	}
-
-	if( i < MAX_PLAYERS )
-	{
-		clients[i] = NULL;
-	}
-
-	for( i = 0; i < MAX_PLAYERS; i++ )
+	for( int i = 0; i < MAX_PLAYERS; i++ )
 	{
 		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
 		{
@@ -638,8 +621,6 @@ void ClientKill( edict_t *pEntity )
 void ClientPutInServer( edict_t *pEntity )
 {
 	UTIL_LogDPrintf("ClientPutInServer: pEntity=%x\n", pEntity);
-
-	NewActiveClient( pEntity );
 
 	if( g_bIsMMPlugin )
 		METAMOD_RETURN( MRES_IGNORED );
