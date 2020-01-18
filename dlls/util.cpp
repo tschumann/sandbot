@@ -280,7 +280,7 @@ int UTIL_GetBotIndex(edict_t *pEdict)
 }
 
 
-bot_t *UTIL_GetBotPointer(edict_t *pEdict)
+bot_t *UTIL_GetBotPointer( const edict_t *pEdict )
 {
    int index;
 

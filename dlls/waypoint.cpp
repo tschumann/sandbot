@@ -331,7 +331,7 @@ int WaypointFindPath(path_t **pPath, int *path_index, int waypoint_index, int te
 }
 
 // find the nearest waypoint to the player and return the index (-1 if not found)
-int WaypointFindNearest(edict_t *pEntity, float range, int team)
+int WaypointFindNearest(const edict_t *pEntity, float range, int team )
 {
    int i, min_index;
    float distance;
@@ -380,7 +380,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team)
 
 
 // find the nearest waypoint to the source postition and return the index
-int WaypointFindNearest(edict_t *pEntity, float range, int team, const Vector& v_src)
+int WaypointFindNearest(const edict_t *pEntity, float range, int team, const Vector& v_src )
 {
    int index, min_index;
    float distance;
@@ -427,7 +427,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, const Vector& v
 
 
 // find the nearest waypoint to the source postition and return the index
-int WaypointFindNearest(edict_t *pEntity, float range, int team, const Vector& v_src, uint64_t flags)
+int WaypointFindNearest( const edict_t *pEntity, float range, int team, const Vector& v_src, uint64_t flags )
 {
 	int index, min_index;
 	float distance;
@@ -478,7 +478,7 @@ int WaypointFindNearest(edict_t *pEntity, float range, int team, const Vector& v
 	return min_index;
 }
 
-edict_t *FindNearest( Vector point, const char *szClassname, float fMinimumDistance = 9999.99 )
+edict_t *FindNearest( const Vector point, const char *szClassname, float fMinimumDistance = 9999.99 )
 {
 	edict_t *pent = NULL;
 	edict_t *pNearest = NULL;
@@ -521,7 +521,7 @@ float DistanceToNearest(const Vector& point, const char *szClassname)
  * index - the waypoint index
  * this should really be in bot classes
  */
-bool ShouldSkip( edict_t *pPlayer, int index )
+bool ShouldSkip( const edict_t *pPlayer, int index )
 {
 	bot_t *pBot = UTIL_GetBotPointer( pPlayer );
 
@@ -658,7 +658,7 @@ bool ShouldSkip( edict_t *pPlayer, int index )
 }
 
 
-int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
+int WaypointFindNearestGoal(const edict_t *pEntity, int src, int team, uint64_t flags)
 {
    int index, min_index;
    int distance, min_distance;
@@ -707,7 +707,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags)
 }
 
 
-int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags, int exclude[])
+int WaypointFindNearestGoal(const edict_t *pEntity, int src, int team, uint64_t flags, int exclude[])
 {
    int index, min_index;
    int distance, min_distance;
@@ -768,7 +768,7 @@ int WaypointFindNearestGoal(edict_t *pEntity, int src, int team, uint64_t flags,
    return min_index;
 }
 
-int WaypointFindNearestGoal(const Vector& v_src, edict_t *pEntity, float range, int team, uint64_t flags)
+int WaypointFindNearestGoal(const Vector& v_src, const edict_t *pEntity, float range, int team, uint64_t flags)
 {
    int index, min_index;
    int distance, min_distance;
@@ -814,7 +814,7 @@ int WaypointFindNearestGoal(const Vector& v_src, edict_t *pEntity, float range, 
    return min_index;
 }
 
-int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags)
+int WaypointFindRandomGoal(const edict_t *pEntity, int team, uint64_t flags)
 {
    int index;
    int indexes[200];
@@ -858,7 +858,7 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags)
 }
 
 
-int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags, int exclude[])
+int WaypointFindRandomGoal(const edict_t *pEntity, int team, uint64_t flags, int exclude[])
 {
    int index;
    int indexes[200];
@@ -915,7 +915,7 @@ int WaypointFindRandomGoal(edict_t *pEntity, int team, uint64_t flags, int exclu
 }
 
 
-int WaypointFindRandomGoal(const Vector& v_src, edict_t *pEntity, float range, int team, uint64_t flags)
+int WaypointFindRandomGoal(const Vector& v_src, const edict_t *pEntity, float range, int team, uint64_t flags)
 {
    int index;
    int indexes[200];
@@ -993,7 +993,7 @@ int WaypointFindNearestAiming(const Vector& v_origin)
    return min_index;
 }
 
-int WaypointFindNearestWaypoint(edict_t *pEntity, uint64_t type)
+int WaypointFindNearestWaypoint(const edict_t *pEntity, uint64_t type)
 {
    int index;
    int min_index = -1;
@@ -1510,7 +1510,7 @@ void WaypointDelete(edict_t *pEntity)
 }
 
 
-void WaypointUpdate( edict_t *pEntity )
+void WaypointUpdate( const edict_t *pEntity )
 {
 	int mask = W_FL_HEALTH | W_FL_ARMOR | W_FL_AMMO | W_FL_WEAPON;
 
@@ -1859,7 +1859,7 @@ void WaypointSave()
 }
 
 
-bool WaypointReachable(const Vector& v_src, const Vector& v_dest, edict_t *pEntity)
+bool WaypointReachable(const Vector& v_src, const Vector& v_dest, const edict_t *pEntity)
 {
    TraceResult tr;
    float curr_height, last_height;
