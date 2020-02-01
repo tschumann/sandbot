@@ -310,7 +310,7 @@ bool IsAlive( edict_t *pEdict )
 // to make sure the given edict doesn't belong to a bot that has
 // been kicked
 // see http://forums.bots-united.com/printthread.php?t=3517&pp=10
-bool IsValidEntity( edict_t *pEdict )
+bool IsValidEntity( const edict_t *pEdict )
 {
 	if( pEdict == NULL )
 	{

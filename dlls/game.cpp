@@ -15,37 +15,37 @@ void Game::Cleanup()
 {
 }
 
-int Game::GetMaxPlayers()
+int Game::GetMaxPlayers() const
 {
 	return gpGlobals->maxClients;
 }
 
-bool Game::CanAddBots()
+bool Game::CanAddBots() const
 {
 	return gpGlobals->deathmatch > 0.0f;
 }
 
-bool Game::IsTeamPlay()
+bool Game::IsTeamPlay() const
 {
 	return CVAR_GET_FLOAT("mp_teamplay") > 0.0f;
 }
 
-bool Game::IsDeathmatch()
+bool Game::IsDeathmatch() const
 {
 	return true;
 }
 
-bool Game::IsCTF()
+bool Game::IsCTF() const
 {
 	return false;
 }
 
-bool Game::IsCapturePoint()
+bool Game::IsCapturePoint() const
 {
 	return false;
 }
 
-unsigned int Game::BotsOnTeam( int team )
+unsigned int Game::BotsOnTeam( const int team ) const
 {
 	int iOnTeam = 0;
 
@@ -62,17 +62,17 @@ unsigned int Game::BotsOnTeam( int team )
 
 // TODO: in Opposing Force CTF at least, bots will also target
 // spectators - check iuser2 or something to see if spectator?
-bool Game::IsValidEdict( edict_t *pEdict )
+bool Game::IsValidEdict( const edict_t *pEdict ) const
 {
 	return IsValidEntity( pEdict );
 }
 
-bool Game::CanChoosePlayerModel()
+bool Game::CanChoosePlayerModel() const
 {
 	return true;
 }
 
-int Game::GetTeam( edict_t *pEdict )
+int Game::GetTeam( const edict_t *pEdict ) const
 {
 	extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 	extern int num_teams;
@@ -111,7 +111,7 @@ int Game::GetTeam( edict_t *pEdict )
 		}
 	}
 
-	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEdict );
+	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t*>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
 	strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
 
 	for (int index=0; index < num_teams; index++)
@@ -123,22 +123,22 @@ int Game::GetTeam( edict_t *pEdict )
 	return 0;
 }
 
-bool Game::IsGunmanChronicles()
+bool Game::IsGunmanChronicles() const
 {
 	return mod_id == REWOLF_DLL;
 }
 
-void Game::GetSaveGameComment( char *pBuffer, int iMaxLength )
+void Game::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 {
 	strncpy( pBuffer, STRING(gpGlobals->mapname), iMaxLength );
 }
 
-bool Game::UseToOpenDoor()
+bool Game::UseToOpenDoor() const
 {
 	return false;
 }
 
-void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength )
+void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 {
 	// TODO: does GameUI.dll localise these names?
 	if( !strncmp( STRING( gpGlobals->mapname ), "t0a0", strlen( "t0a0" ) ) ) // a, b, b1, b2, c, d
@@ -363,11 +363,11 @@ void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength )
 	}
 }
 
-int GearboxGame::GetTeam( edict_t *pEdict )
+int GearboxGame::GetTeam( const edict_t *pEdict ) const
 {
 	if( this->IsCTF() || !this->IsCapturePoint() )
 	{
-		char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEdict );
+		char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t *>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
 		char szModelName[32];
 
 		strcpy( szModelName, g_engfuncs.pfnInfoKeyValue(infobuffer, "model") );
@@ -391,9 +391,9 @@ int GearboxGame::GetTeam( edict_t *pEdict )
 	return Game::GetTeam( pEdict );
 }
 
-int CStrikeGame::GetTeam( edict_t *pEdict )
+int CStrikeGame::GetTeam( const edict_t *pEdict ) const
 {
-	char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEdict );
+	char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t*>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
 	char szModelName[32];
 
 	strcpy(szModelName, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
@@ -413,17 +413,17 @@ int CStrikeGame::GetTeam( edict_t *pEdict )
 	return 0;
 }
 
-int DODGame::GetTeam( edict_t *pEdict )
+int DODGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;
 }
 
-int TFCGame::GetTeam( edict_t *pEdict )
+int TFCGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team - 1;
 }
 
-int NSGame::GetTeam( edict_t *pEdict )
+int NSGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;
 }

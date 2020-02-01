@@ -17,26 +17,26 @@ public:
 	virtual ~Game();
 
 	virtual void Cleanup();
-	virtual int GetMaxPlayers();
-	virtual bool CanAddBots();
-	virtual bool IsTeamPlay();
-	virtual bool IsDeathmatch();
-	virtual bool IsCTF();
-	virtual bool IsCapturePoint();
-	virtual unsigned int BotsOnTeam( int team );
-	virtual bool IsValidEdict( edict_t *pEdict );
-	virtual bool CanChoosePlayerModel();
-	virtual int GetTeam( edict_t *pEdict );
-	virtual bool UseToOpenDoor();
-	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength );
+	virtual int GetMaxPlayers() const;
+	virtual bool CanAddBots() const;
+	virtual bool IsTeamPlay() const;
+	virtual bool IsDeathmatch() const;
+	virtual bool IsCTF() const;
+	virtual bool IsCapturePoint() const;
+	virtual unsigned int BotsOnTeam( const int team ) const;
+	virtual bool IsValidEdict( const edict_t *pEdict ) const;
+	virtual bool CanChoosePlayerModel() const;
+	virtual int GetTeam( const edict_t *pEdict ) const;
+	virtual bool UseToOpenDoor() const;
+	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
-	virtual bool IsGunmanChronicles();
+	virtual bool IsGunmanChronicles() const;
 };
 
 class ValveGame : public Game
 {
 public:
-	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength );
+	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 };
 
 class GearboxGame : public Game
@@ -54,17 +54,17 @@ public:
 		}
 	}
 
-	virtual bool IsTeamPlay()
+	virtual bool IsTeamPlay() const
 	{
 		return this->IsCTF() || this->IsCapturePoint() || Game::IsTeamPlay();
 	}
 
-	virtual bool IsDeathmatch()
+	virtual bool IsDeathmatch() const
 	{
 		return !this->IsCTF() && !this->IsCapturePoint();
 	}
 
-	virtual bool IsCTF()
+	virtual bool IsCTF() const
 	{
 		extern edict_t *pent_info_ctfdetect;
 		extern bool bIsCapturePoint;
@@ -73,35 +73,35 @@ public:
 		return pent_info_ctfdetect != nullptr && !bIsCapturePoint;
 	}
 
-	virtual bool IsCapturePoint()
+	virtual bool IsCapturePoint() const
 	{
 		extern bool bIsCapturePoint;
 
 		return bIsCapturePoint;
 	}
 
-	virtual bool CanChoosePlayerModel()
+	virtual bool CanChoosePlayerModel() const
 	{
 		return !this->IsCTF() && !this->IsCapturePoint();
 	}
 
-	virtual int GetTeam( edict_t *pEdict );
+	virtual int GetTeam( const edict_t *pEdict ) const;
 };
 
 class DecayGame : public Game
 {
 public:
-	virtual bool IsTeamPlay()
+	virtual bool IsTeamPlay() const
 	{
 		return true;
 	}
 
-	virtual bool IsDeathmatch()
+	virtual bool IsDeathmatch() const
 	{
 		return false;
 	}
 
-	virtual bool CanChoosePlayerModel()
+	virtual bool CanChoosePlayerModel() const
 	{
 		return false;
 	}
@@ -110,50 +110,50 @@ public:
 class CStrikeGame : public Game
 {
 public:
-	virtual bool IsTeamPlay()
+	virtual bool IsTeamPlay() const
 	{
 		return true;
 	}
 
-	virtual bool IsDeathmatch()
+	virtual bool IsDeathmatch() const
 	{
 		return false;
 	}
 
-	virtual bool CanChoosePlayerModel()
+	virtual bool CanChoosePlayerModel() const
 	{
 		return false;
 	}
 
-	virtual int GetTeam( edict_t *pEdict );
+	virtual int GetTeam( const edict_t *pEdict ) const;
 };
 
 class DODGame : public Game
 {
 public:
-	virtual bool IsTeamPlay()
+	virtual bool IsTeamPlay() const
 	{
 		return true;
 	}
 
-	virtual bool IsDeathmatch()
+	virtual bool IsDeathmatch() const
 	{
 		return false;
 	}
 
-	virtual bool CanChoosePlayerModel()
+	virtual bool CanChoosePlayerModel() const
 	{
 		return false;
 	}
 
-	virtual bool AreAlliesBritish()
+	virtual bool AreAlliesBritish() const
 	{
 		extern int g_iAlliesCountry;
 
 		return g_iAlliesCountry == DODGame::ALLIES_COUNTRY_BRITISH;
 	}
 
-	virtual int GetTeam( edict_t *pEdict );
+	virtual int GetTeam( const edict_t *pEdict ) const;
 
 	// in info_doddetect entity's detect_allies_country property
 	const static int ALLIES_COUNTRY_UNITED_STATES = 0;
@@ -163,62 +163,62 @@ public:
 class TFCGame : public Game
 {
 public:
-	virtual bool IsTeamPlay()
+	virtual bool IsTeamPlay() const
 	{
 		return true;
 	}
 
-	virtual bool IsDeathmatch()
+	virtual bool IsDeathmatch() const
 	{
 		return false;
 	}
 
-	virtual bool CanChoosePlayerModel()
+	virtual bool CanChoosePlayerModel() const
 	{
 		return false;
 	}
 
-	virtual int GetTeam( edict_t *pEdict );
+	virtual int GetTeam( const edict_t *pEdict ) const;
 };
 
 class NSGame : public Game
 {
 public:
-	virtual bool IsTeamPlay()
+	virtual bool IsTeamPlay() const
 	{
 		return true;
 	}
 
-	virtual bool IsDeathmatch()
+	virtual bool IsDeathmatch() const
 	{
 		return false;
 	}
 
-	virtual bool CanChoosePlayerModel()
+	virtual bool CanChoosePlayerModel() const
 	{
 		return false;
 	}
 
-	virtual int GetTeam( edict_t *pEdict );
+	virtual int GetTeam( const edict_t *pEdict ) const;
 
-	bool IsClassic()
+	bool IsClassic() const
 	{
 		return !this->IsCombat();
 	}
 
-	bool IsCombat()
+	bool IsCombat() const
 	{
 		const char *szMap = STRING(gpGlobals->mapname);
 
 		return (szMap[0] == 'c') && (szMap[1] == 'o');
 	}
 
-	edict_t **GetHives()
+	edict_t **GetHives() const
 	{
 		return this->pHives;
 	}
 
-	void StartRound()
+	void StartRound() const
 	{
 		for( int i = 0; i < MAX_PLAYERS; i++ )
 		{
@@ -243,7 +243,7 @@ private:
 class ShipGame : public Game
 {
 public:
-	virtual bool UseToOpenDoor()
+	virtual bool UseToOpenDoor() const
 	{
 		return true;
 	}
