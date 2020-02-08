@@ -548,8 +548,6 @@ public:
 
 	const static int BLACK_MESA_FLAG_SKIN = 1;
 	const static int OPPOSING_FORCE_FLAG_SKIN = 2;
-
-	const static int MAX_CAPTURE_POINTS = 16;
 };
 
 class CStrikeBot : public bot_t

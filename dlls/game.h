@@ -44,14 +44,8 @@ class GearboxGame : public Game
 public:
 	virtual void Cleanup()
 	{
-		for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
-		{
-			extern CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
-			capturePoints[i].iTeam = 0;
-			capturePoints[i].szName = nullptr;
-			capturePoints[i].szTarget = nullptr;
-			capturePoints[i].pEdict = nullptr;
-		}
+		extern vector<CapturePoint> capturePoints;
+		capturePoints.clear();
 	}
 
 	virtual bool IsTeamPlay() const

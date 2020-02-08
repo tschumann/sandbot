@@ -62,7 +62,7 @@ int team_class_limits[4];  // for TFC
 int team_allies[4];  // TFC bit mapped allies BLUE, RED, YELLOW, and GREEN
 int max_teams = 0;  // for TFC
 FLAG_S flags[MAX_FLAGS];  // for TFC
-CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
+vector<CapturePoint> capturePoints;
 int num_flags = 0;  // for TFC
 int num_backpacks = 0;
 int iCapturePointCount = 0;
@@ -225,13 +225,7 @@ int DispatchSpawn( edict_t *pent )
 			flags[index].team_no = 0;  // any team unless specified
 		}
 
-		for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++)
-		{
-			capturePoints[i].iTeam = 0;
-			capturePoints[i].szTarget = "";
-		}
-
-		iCapturePointCount = 0;
+		capturePoints.clear();
 
 		num_backpacks = 0;
 
@@ -428,24 +422,16 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 		// if it's a trigger_ctfgeneric and it's the team_no key
 		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "team_no" ) )
 		{
-			// TODO: there is only one official capture point map - op4cp_park and it has 16 capture points
-			if( iCapturePointCount == OpposingForceBot::MAX_CAPTURE_POINTS )
-			{
-				// TODO: just add them to a vector?
-				ALERT( at_error, "Too many trigger_ctfgeneric entities to handle - ask for the limit to be increased\n");
-			}
-			else
-			{
-				ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
-				// get the team_no value
-				capturePoints[iCapturePointCount].iTeam = atoi( pkvd->szValue );
-				// get the name of the capture point
-				capturePoints[iCapturePointCount].szName = STRING(pentKeyvalue->v.globalname);
-				// get the target (just points to a trigger_relay?)
-				capturePoints[iCapturePointCount].szTarget = STRING(pentKeyvalue->v.target);
-				capturePoints[iCapturePointCount].pEdict = pentKeyvalue;
-				iCapturePointCount++;
-			}
+			CapturePoint capturePoint;
+			ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
+			// get the team_no value
+			capturePoint.iTeam = atoi( pkvd->szValue );
+			// get the name of the capture point
+			capturePoint.szName = STRING(pentKeyvalue->v.globalname);
+			// get the target (just points to a trigger_relay?)
+			capturePoint.szTarget = STRING(pentKeyvalue->v.target);
+			capturePoint.pEdict = pentKeyvalue;
+			capturePoints.push_back( capturePoint );
 		}
 	}
 	else if( mod_id == DOD_DLL )

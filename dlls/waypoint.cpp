@@ -28,8 +28,7 @@ extern int m_spriteTexture;
 extern int num_backpacks;
 extern BACKPACK_S backpacks[MAX_BACKPACKS];
 
-extern CapturePoint capturePoints[OpposingForceBot::MAX_CAPTURE_POINTS];
-extern int iCapturePointCount;
+extern vector<CapturePoint> capturePoints;
 
 // waypoints with information bits (flags)
 waypoint_t waypoints[MAX_WAYPOINTS];
@@ -1190,7 +1189,7 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 
 		if( !strcmp("trigger_ctfgeneric", nearest_name) )
 		{
-			for( int i = 0; i < OpposingForceBot::MAX_CAPTURE_POINTS; i++ )
+			for( unsigned int i = 0; i < capturePoints.size(); i++ )
 			{
 				ALERT(at_console, "trigger_ctfgeneric target: %s targetname: %s globalname: %s\n", capturePoints[i].pEdict->v.target, capturePoints[i].pEdict->v.targetname, capturePoints[i].pEdict->v.globalname );
 				// find the matching trigger_ctfgeneric that was saved on map load - they all have a target but not a globalname
