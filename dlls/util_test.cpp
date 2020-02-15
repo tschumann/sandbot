@@ -32,5 +32,27 @@ namespace tests
 
 			Assert::AreEqual( pTest, "test" );
 		}
+
+		TEST_METHOD(TestIsValidEntity_NULL)
+		{
+			Assert::IsFalse( IsValidEntity( nullptr ) );
+			Assert::IsFalse( IsValidEntity( NULL ) );
+		}
+
+		TEST_METHOD(TestIsValidEntity_Free)
+		{
+			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
+			pPlayer->free = true;
+
+			Assert::IsFalse( IsValidEntity( pPlayer ));
+		}
+
+		TEST_METHOD(TestIsValidEntity_Kill)
+		{
+			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
+			pPlayer->v.flags &= FL_KILLME;
+
+			Assert::IsFalse( IsValidEntity( pPlayer ) );
+		}
 	};
 }
