@@ -160,7 +160,7 @@ int TFCBot::GetHealingWeapon()
 	return TF_WEAPON_MEDIKIT;
 }
 
-bool TFCBot::IsValidEnemy( edict_t *pEnemy )
+bool TFCBot::IsValidEnemy( const edict_t *pEnemy )
 {
 	bool bBaseIsValid = bot_t::IsValidEnemy( pEdict );
 	bool bTFCIsValid = bBaseIsValid;

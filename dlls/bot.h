@@ -323,7 +323,7 @@ public:
 	virtual bool ShouldSeekEnemy();
 	virtual bool CanHeal();
 	virtual edict_t *FindEnemyToHeal();
-	virtual bool IsValidEnemy( edict_t *pEnemy );
+	virtual bool IsValidEnemy( const edict_t *pEnemy );
 	virtual float GetDistanceToEnemy();
 	virtual float GetSpeedToEnemy();
 	virtual int GetEnemiesInLineOfSight( const float fMinDistance, const float fMaxDistance );
@@ -607,7 +607,7 @@ public:
 
 	virtual int GetHealingWeapon();
 
-	virtual bool IsValidEnemy( edict_t *pEnemy );
+	virtual bool IsValidEnemy( const edict_t *pEnemy );
 
 	virtual bool IsSniping();
 
@@ -819,7 +819,7 @@ class ShipBot : public bot_t
 public:
 	ShipBot();
 
-	virtual bool IsValidEnemy( edict_t *pEnemy );
+	virtual bool IsValidEnemy( const edict_t *pEnemy );
 	virtual void PickUpItem();
 
 	virtual bool ShouldJumpAfterDeath();
@@ -870,11 +870,11 @@ edict_t *UTIL_FindEntityByTargetname( edict_t *pentStart, const char *szName );
 void ClientPrint( edict_t *pEdict, int msg_dest, const char *msg_name);
 void UTIL_SayText( const char *pText, edict_t *pEdict );
 void UTIL_HostSay( edict_t *pEntity, int teamonly, char *message );
-int UTIL_GetTeam(edict_t *pEntity);
+int UTIL_GetTeam( const edict_t *pEntity );
 int UTIL_GetClass(edict_t *pEntity);
 int UTIL_GetBotIndex(edict_t *pEdict);
 bot_t *UTIL_GetBotPointer( const edict_t *pEdict );
-bool IsAlive( edict_t *pEdict );
+bool IsAlive( const edict_t *pEdict );
 bool IsValidEntity( const edict_t *pEdict );
 bool FInViewCone(Vector *pOrigin, edict_t *pEdict);
 bool FVisible( const Vector &vecOrigin, edict_t *pEdict );

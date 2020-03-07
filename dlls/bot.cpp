@@ -1967,7 +1967,7 @@ edict_t *bot_t::FindEnemyToHeal()
 	return pNewEnemy;
 }
 
-bool bot_t::IsValidEnemy( edict_t *pEnemy )
+bool bot_t::IsValidEnemy( const edict_t *pEnemy )
 {
 	// a bot can't be its own enemy
 	if( pEnemy == this->pEdict )
@@ -1996,6 +1996,8 @@ float bot_t::GetDistanceToEnemy()
 	if( !this->pBotEnemy )
 	{
 		ALERT( at_error, "Call to __FUNCTION__ when pBotEnemy is NULL!\n" );
+
+		return -1.0f;
 	}
 
 	return (this->pBotEnemy->v.origin - GetGunPosition( this->pEdict )).Length();

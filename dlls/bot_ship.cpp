@@ -12,7 +12,7 @@ ShipBot::ShipBot()
 {
 }
 
-bool ShipBot::IsValidEnemy( edict_t *pEnemy )
+bool ShipBot::IsValidEnemy( const edict_t *pEnemy )
 {
 	bool bBaseIsValid = bot_t::IsValidEnemy( pEnemy );
 	bool bShipIsValid = bBaseIsValid;

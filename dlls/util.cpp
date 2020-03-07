@@ -241,7 +241,7 @@ edict_t *DBG_EntOfVars( const entvars_t *pev )
 #endif //DEBUG
 
 
-int UTIL_GetTeam( edict_t *pEntity )
+int UTIL_GetTeam( const edict_t *pEntity )
 {
 	return pGame->GetTeam( pEntity );
 }
@@ -299,7 +299,7 @@ bot_t *UTIL_GetBotPointer( const edict_t *pEdict )
 }
 
 
-bool IsAlive( edict_t *pEdict )
+bool IsAlive( const edict_t *pEdict )
 {
 	return ( (pEdict->v.deadflag == DEAD_NO) && (pEdict->v.health > 0) && !(pEdict->v.flags & FL_NOTARGET) );
 }
