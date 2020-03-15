@@ -315,11 +315,11 @@ public:
 	virtual void Think();
 	virtual void PostThink();
 
-	virtual int GetSkill();
+	virtual int GetSkill() const;
 
-	virtual int GetHealth();
+	virtual int GetHealth() const;
 
-	virtual bool HasEnemy();
+	virtual bool HasEnemy() const;
 	virtual bool ShouldSeekEnemy();
 	virtual bool CanHeal();
 	virtual edict_t *FindEnemyToHeal();

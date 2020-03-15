@@ -1881,7 +1881,7 @@ void bot_t::PostThink()
 	BotFixViewAngles( this->pEdict );
 }
 
-int bot_t::GetSkill()
+int bot_t::GetSkill() const
 {
 	extern cvar_t bot_skill;
 
@@ -1899,12 +1899,12 @@ int bot_t::GetSkill()
 	return iSkill;
 }
 
-int bot_t::GetHealth()
+int bot_t::GetHealth() const
 {
 	return this->pEdict->v.health;
 }
 
-bool bot_t::HasEnemy()
+bool bot_t::HasEnemy() const
 {
 	if( this->pBotEnemy && this->pBotEnemy->v.solid != SOLID_NOT )
 	{
