@@ -150,12 +150,12 @@ void TFCBot::Join()
 	}
 }
 
-bool TFCBot::CanHeal()
+bool TFCBot::CanHeal() const
 {
 	return pEdict->v.playerclass == TFCBot::CLASS_MEDIC;
 }
 
-int TFCBot::GetHealingWeapon()
+int TFCBot::GetHealingWeapon() const
 {
 	return TF_WEAPON_MEDIKIT;
 }
@@ -175,7 +175,7 @@ bool TFCBot::IsValidEnemy( const edict_t *pEnemy )
 	return bBaseIsValid && bTFCIsValid;
 }
 
-bool TFCBot::IsSniping()
+bool TFCBot::IsSniping() const
 {
 	return this->charging_weapon_id == TF_WEAPON_SNIPERRIFLE && this->f_primary_charging > 0.0f;
 }
@@ -220,7 +220,7 @@ bool TFCBot::IsSniper()
 	return this->pEdict->v.playerclass == TFCBot::CLASS_SNIPER;
 }
 
-bool TFCBot::HasFlag()
+bool TFCBot::HasFlag() const
 {
 	edict_t *pent = NULL;
 

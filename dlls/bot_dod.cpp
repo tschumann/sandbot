@@ -160,7 +160,7 @@ void DODBot::Think()
 	bot_t::PostThink();
 }
 
-float DODBot::GetSpeedToEnemy()
+float DODBot::GetSpeedToEnemy() const
 {
 	if( !this->pBotEnemy )
 	{
@@ -190,13 +190,13 @@ void DODBot::Reload()
 	UTIL_HostSay( this->pEdict, TRUE, "reloading" );
 }
 
-bool DODBot::IsSniping()
+bool DODBot::IsSniping() const
 {
 	// TODO: work out the weapon ids for the sniper rifles
 	return false;
 }
 
-float DODBot::GetMaxSpeed()
+float DODBot::GetMaxSpeed() const
 {
 	return pEdict->v.maxspeed;
 }

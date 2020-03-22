@@ -70,7 +70,7 @@ void CStrikeBot::Join()
 	}
 }
 
-float CStrikeBot::GetMaxSpeed()
+float CStrikeBot::GetMaxSpeed() const
 {
 	return pEdict->v.maxspeed;
 }

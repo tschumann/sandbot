@@ -64,7 +64,7 @@ void OpposingForceBot::PreThink()
 	}
 }
 
-bool OpposingForceBot::ShouldSeekEnemy()
+bool OpposingForceBot::ShouldSeekEnemy() const
 {
 	if( this->HasFlag() )
 	{
@@ -118,7 +118,7 @@ int OpposingForceBot::GetGoalType()
 	}
 }
 
-bool OpposingForceBot::HasFlag()
+bool OpposingForceBot::HasFlag() const
 {
 	edict_t *pent = NULL;
 

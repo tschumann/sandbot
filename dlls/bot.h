@@ -320,22 +320,22 @@ public:
 	virtual int GetHealth() const;
 
 	virtual bool HasEnemy() const;
-	virtual bool ShouldSeekEnemy();
-	virtual bool CanHeal();
+	virtual bool ShouldSeekEnemy() const;
+	virtual bool CanHeal() const;
 	virtual edict_t *FindEnemyToHeal();
 	virtual bool IsValidEnemy( const edict_t *pEnemy );
-	virtual float GetDistanceToEnemy();
-	virtual float GetSpeedToEnemy();
+	virtual float GetDistanceToEnemy() const;
+	virtual float GetSpeedToEnemy() const;
 	virtual int GetEnemiesInLineOfSight( const float fMinDistance, const float fMaxDistance );
-	virtual float GetAimSpread();
-	virtual Vector GetPointToShootAt();
+	virtual float GetAimSpread() const;
+	virtual Vector GetPointToShootAt() const;
 	virtual void Reload();
-	virtual bool ShouldReload();
+	virtual bool ShouldReload() const;
 
-	virtual bool CanShoot();
-	virtual int GetPistol();
-	virtual int GetHealingWeapon();
-	virtual bool IsSniping();
+	virtual bool CanShoot() const;
+	virtual int GetPistol() const;
+	virtual int GetHealingWeapon() const;
+	virtual bool IsSniping() const;
 
 	virtual bool CanSeePoint( const Vector& point );
 	virtual int GetAngleToPoint( const Vector& point );
@@ -344,9 +344,9 @@ public:
 	virtual void PickUpItem();
 
 	virtual void SetMaxSpeed( float fMaxSpeed );
-	virtual float GetMaxSpeed();
+	virtual float GetMaxSpeed() const;
 	virtual void SetSpeed( float fSpeed );
-	virtual float GetSpeed();
+	virtual float GetSpeed() const;
 
 	virtual int GetLightLevel();
 
@@ -365,7 +365,7 @@ public:
 
 	virtual bool ShouldJumpAfterDeath();
 
-	virtual bool HasFlag();
+	virtual bool HasFlag() const;
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
 
 	bool is_used;
@@ -502,7 +502,7 @@ public:
 
 	const static int TEAM_UNKNOWN = -1;
 protected:
-	virtual Vector GetOrigin();
+	virtual Vector GetOrigin() const;
 
 	edict_t *pLightEnt;
 	float fMaxSpeed;
@@ -532,13 +532,13 @@ public:
 	virtual void Join();
 	virtual void PreThink();
 
-	virtual bool ShouldSeekEnemy();
+	virtual bool ShouldSeekEnemy() const;
 
 	virtual int GetPistol();
 
 	virtual int GetGoalType();
 
-	virtual bool HasFlag();
+	virtual bool HasFlag() const;
 	virtual bool FindFlag();
 
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
@@ -557,7 +557,7 @@ public:
 
 	virtual void Join();
 
-	virtual float GetMaxSpeed();
+	virtual float GetMaxSpeed() const;
 };
 
 class DODBot : public bot_t
@@ -569,12 +569,12 @@ public:
 	virtual void Join();
 	virtual void Think();
 
-	virtual float GetSpeedToEnemy();
+	virtual float GetSpeedToEnemy() const;
 	virtual void Reload();
 
-	virtual bool IsSniping();
+	virtual bool IsSniping() const;
 
-	virtual float GetMaxSpeed();
+	virtual float GetMaxSpeed() const;
 	virtual float GetSpeed();
 
 	virtual bool IsSniper();
@@ -603,20 +603,20 @@ public:
 
 	virtual void Join();
 
-	virtual bool CanHeal();
+	virtual bool CanHeal() const;
 
-	virtual int GetHealingWeapon();
+	virtual int GetHealingWeapon() const;
 
 	virtual bool IsValidEnemy( const edict_t *pEnemy );
 
-	virtual bool IsSniping();
+	virtual bool IsSniping() const;
 
 	virtual int GetGoalType();
 
 	virtual bool IsEngineer();
 	virtual bool IsSniper();
 
-	virtual bool HasFlag();
+	virtual bool HasFlag() const;
 	virtual bool FindFlag();
 
 	virtual bool ShouldBuild();
@@ -651,9 +651,9 @@ public:
 	virtual void OnSpawn();
 	virtual void Think();
 
-	virtual bool ShouldReload();
+	virtual bool ShouldReload() const;
 
-	virtual bool IsSniping();
+	virtual bool IsSniping() const;
 
 	virtual int GetPistolMode();
 
@@ -691,22 +691,22 @@ public:
 	virtual void Join();
 	virtual void Think();
 
-	virtual bool CanHeal();
+	virtual bool CanHeal() const;
 
 	virtual bool CanUseItem( const edict_t *pItem );
 
-	virtual float GetSpeedToEnemy();
+	virtual float GetSpeedToEnemy() const;
 
 	virtual void Reset();
-	virtual float GetAimSpread();
+	virtual float GetAimSpread() const;
 	virtual void Reload();
-	virtual bool ShouldReload();
+	virtual bool ShouldReload() const;
 
 	virtual int GetGoalType();
 
 	virtual bool IsNearHive();
-	virtual bool IsInReadyRoom();
-	virtual int GetDesiredClass();
+	virtual bool IsInReadyRoom() const;
+	virtual int GetDesiredClass() const;
 	virtual void SetDesiredClass( int iDesiredClass );
 	virtual void ChooseDesiredClass();
 	virtual void ClassicUpgrade();
@@ -714,7 +714,7 @@ public:
 	virtual void CombatUpgrade();
 	virtual float GetResources();
 
-	virtual bool IsMarine();
+	virtual bool IsMarine() const;
 	virtual bool HasWeaponDamage1();
 	virtual void UpgradeToWeaponDamage1();
 	virtual bool HasArmor1();
@@ -727,7 +727,7 @@ public:
 
 	virtual bool ShouldAttackHive( edict_t *pHive );
 
-	virtual bool IsAlien();
+	virtual bool IsAlien() const;
 	virtual bool HasCarapace();
 	virtual void UpgradeToCarapace();
 	virtual bool HasRegeneration();
@@ -743,19 +743,19 @@ public:
 	virtual void EvolveToFade();
 	virtual void EvolveToOnos();
 
-	virtual bool ShouldBecomeCommander();
-	virtual bool IsCommander();
+	virtual bool ShouldBecomeCommander() const;
+	virtual bool IsCommander() const;
 
-	virtual bool ShouldBecomeGorge();
-	virtual bool IsGorge();
-	virtual bool ShouldBecomeLerk();
-	virtual bool IsLerk();
-	virtual bool ShouldBecomeFade();
-	virtual bool IsFade();
-	virtual bool ShouldBecomeOnos();
-	virtual bool IsOnos();
+	virtual bool ShouldBecomeGorge() const;
+	virtual bool IsGorge() const;
+	virtual bool ShouldBecomeLerk() const;
+	virtual bool IsLerk() const;
+	virtual bool ShouldBecomeFade() const;
+	virtual bool IsFade() const;
+	virtual bool ShouldBecomeOnos() const;
+	virtual bool IsOnos() const;
 
-	virtual bool ShouldBuildResourceTower();
+	virtual bool ShouldBuildResourceTower() const;
 
 	virtual edict_t* FindEnemy();
 

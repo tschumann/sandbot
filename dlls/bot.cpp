@@ -1914,12 +1914,12 @@ bool bot_t::HasEnemy() const
 	return this->pBotEnemy != NULL;
 }
 
-bool bot_t::ShouldSeekEnemy()
+bool bot_t::ShouldSeekEnemy() const
 {
 	return true;
 }
 
-bool bot_t::CanHeal()
+bool bot_t::CanHeal() const
 {
 	return false;
 }
@@ -1991,7 +1991,7 @@ bool bot_t::IsValidEnemy( const edict_t *pEnemy )
 	return true;
 }
 
-float bot_t::GetDistanceToEnemy()
+float bot_t::GetDistanceToEnemy() const
 {
 	if( !this->pBotEnemy )
 	{
@@ -2003,7 +2003,7 @@ float bot_t::GetDistanceToEnemy()
 	return (this->pBotEnemy->v.origin - GetGunPosition( this->pEdict )).Length();
 }
 
-float bot_t::GetSpeedToEnemy()
+float bot_t::GetSpeedToEnemy() const
 {
 	if( !this->pBotEnemy )
 	{
@@ -2049,7 +2049,7 @@ int bot_t::GetEnemiesInLineOfSight( const float fMinDistance, const float fMaxDi
 	return iEnemiesInLineOfSight;
 }
 
-float bot_t::GetAimSpread()
+float bot_t::GetAimSpread() const
 {
 	Vector enemyOrigin = this->pBotEnemy->v.origin;
 	float fDistanceToEnemy = (enemyOrigin - this->GetOrigin()).Length();
@@ -2074,7 +2074,7 @@ float bot_t::GetAimSpread()
 	return fSpread;
 }
 
-Vector bot_t::GetPointToShootAt()
+Vector bot_t::GetPointToShootAt() const
 {
 	Vector target;
 	Vector enemyOrigin = this->pBotEnemy->v.origin;
@@ -2133,29 +2133,29 @@ void bot_t::Reload()
 	pEdict->v.button |= IN_RELOAD;
 }
 
-bool bot_t::ShouldReload()
+bool bot_t::ShouldReload() const
 {
 	return true;
 }
 
-bool bot_t::CanShoot()
+bool bot_t::CanShoot() const
 {
 	extern cvar_t bot_shoot;
 	// TODO: in Natural Selection at least, bot_shoot.value is 0 but bot_shoot.string is 1
 	return CvarGetValue( &bot_shoot ) > 0.0 || atof( CvarGetString( &bot_shoot ) ) > 0.0;
 }
 
-int bot_t::GetPistol()
+int bot_t::GetPistol() const
 {
 	return VALVE_WEAPON_GLOCK;
 }
 
-int bot_t::GetHealingWeapon()
+int bot_t::GetHealingWeapon() const
 {
 	return NO_SUCH_WEAPON;
 }
 
-bool bot_t::IsSniping()
+bool bot_t::IsSniping() const
 {
 	// TODO: crossbow/357?
 	return false;
@@ -2222,7 +2222,7 @@ void bot_t::SetMaxSpeed( float fMaxSpeed )
 	this->fMaxSpeed = fMaxSpeed;
 }
 
-float bot_t::GetMaxSpeed()
+float bot_t::GetMaxSpeed() const
 {
 	return CVAR_GET_FLOAT("sv_maxspeed");
 }
@@ -2232,7 +2232,7 @@ void bot_t::SetSpeed( float fSpeed )
 	this->fSpeed = fSpeed;
 }
 
-float bot_t::GetSpeed()
+float bot_t::GetSpeed() const
 {
 	return this->fSpeed;
 }
@@ -2363,7 +2363,7 @@ std::vector<weapon_t> bot_t::GetUsableWeapons( bool strict )
 	return usableWeapons;
 }
 
-Vector bot_t::GetOrigin()
+Vector bot_t::GetOrigin() const
 {
 	return this->pEdict->v.origin;
 }
@@ -2387,7 +2387,7 @@ bool bot_t::ShouldJumpAfterDeath()
 	return RANDOM_LONG(1, 100) <= 10;
 }
 
-bool bot_t::HasFlag()
+bool bot_t::HasFlag() const
 {
 	return false;
 }

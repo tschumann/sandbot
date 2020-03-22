@@ -75,7 +75,7 @@ void NSBot::Think()
 	bot_t::PostThink();
 }
 
-bool NSBot::CanHeal()
+bool NSBot::CanHeal() const
 {
 	return this->IsGorge();
 }
@@ -194,7 +194,7 @@ bool NSBot::CanUseItem( const edict_t *pItem )
 	return false;
 }
 
-float NSBot::GetSpeedToEnemy()
+float NSBot::GetSpeedToEnemy() const
 {
 	if( !this->pBotEnemy )
 	{
@@ -238,7 +238,7 @@ void NSBot::Reset()
 	this->bIsEvolving = false;
 }
 
-float NSBot::GetAimSpread()
+float NSBot::GetAimSpread() const
 {
 	float fSpread = bot_t::GetAimSpread();
 
@@ -262,7 +262,7 @@ void NSBot::Reload()
 	}
 }
 
-bool NSBot::ShouldReload()
+bool NSBot::ShouldReload() const
 {
 	if( this->IsAlien() )
 	{
@@ -311,12 +311,12 @@ bool NSBot::IsNearHive()
 	return false;
 }
 
-bool NSBot::IsInReadyRoom()
+bool NSBot::IsInReadyRoom() const
 {
 	return this->pEdict->v.playerclass == PLAYMODE_READYROOM;
 }
 
-int NSBot::GetDesiredClass()
+int NSBot::GetDesiredClass() const
 {
 	return this->iDesiredClass;
 }
@@ -494,7 +494,7 @@ float NSBot::GetResources()
 }
 
 
-bool NSBot::IsMarine()
+bool NSBot::IsMarine() const
 {
 	return this->pEdict->v.team == NSBot::TEAM_MARINE;
 }
@@ -564,7 +564,7 @@ bool NSBot::ShouldAttackHive( edict_t *pHive )
 }
 
 
-bool NSBot::IsAlien()
+bool NSBot::IsAlien() const
 {
 	return this->pEdict->v.team == NSBot::TEAM_ALIEN;
 }
@@ -642,22 +642,22 @@ void NSBot::EvolveToGorge()
 	this->pEdict->v.impulse = NSBot::EVOLVE_TO_GORGE;
 }
 
-bool NSBot::ShouldBecomeCommander()
+bool NSBot::ShouldBecomeCommander() const
 {
 	return false;
 }
 
-bool NSBot::IsCommander()
+bool NSBot::IsCommander() const
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_COMMANDER_PLAYER;
 }
 
-bool NSBot::ShouldBecomeGorge()
+bool NSBot::ShouldBecomeGorge() const
 {
 	return this->GetDesiredClass() == NSBot::CLASS_GORGE;
 }
 
-bool NSBot::IsGorge()
+bool NSBot::IsGorge() const
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER2;
 }
@@ -668,12 +668,12 @@ void NSBot::EvolveToLerk()
 	this->pEdict->v.impulse = NSBot::EVOLVE_TO_LERK;
 }
 
-bool NSBot::ShouldBecomeLerk()
+bool NSBot::ShouldBecomeLerk() const
 {
 	return this->GetDesiredClass() == NSBot::CLASS_LERK;
 }
 
-bool NSBot::IsLerk()
+bool NSBot::IsLerk() const
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER3;
 }
@@ -684,12 +684,12 @@ void NSBot::EvolveToFade()
 	this->pEdict->v.impulse = NSBot::EVOLVE_TO_FADE;
 }
 
-bool NSBot::ShouldBecomeFade()
+bool NSBot::ShouldBecomeFade() const
 {
 	return this->GetDesiredClass() == NSBot::CLASS_FADE;
 }
 
-bool NSBot::IsFade()
+bool NSBot::IsFade() const
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER4;
 }
@@ -700,17 +700,17 @@ void NSBot::EvolveToOnos()
 	this->pEdict->v.impulse = NSBot::EVOLVE_TO_ONOS;
 }
 
-bool NSBot::ShouldBecomeOnos()
+bool NSBot::ShouldBecomeOnos() const
 {
 	return this->GetDesiredClass() == NSBot::CLASS_ONOS;
 }
 
-bool NSBot::IsOnos()
+bool NSBot::IsOnos() const
 {
 	return this->pEdict->v.iuser3 == AVH_USER3_ALIEN_PLAYER5;
 }
 
-bool NSBot::ShouldBuildResourceTower()
+bool NSBot::ShouldBuildResourceTower() const
 {
 	if( this->IsMarine() && !this->IsCommander() && this->bShouldBuildResourceNode )
 	{

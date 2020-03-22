@@ -72,12 +72,12 @@ void GunmanBot::Think()
 	bot_t::PostThink();
 }
 
-bool GunmanBot::ShouldReload()
+bool GunmanBot::ShouldReload() const
 {
 	return false;
 }
 
-bool GunmanBot::IsSniping()
+bool GunmanBot::IsSniping() const
 {
 	// TODO: this->charging_weapon_id == GUNMAN_WEAPON_GAUSSPISTOL && this->GetPistolMode() == GunmanBot::PISTOL_SNIPER etc
 	return false;
