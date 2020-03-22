@@ -315,16 +315,16 @@ public:
 	virtual void Think();
 	virtual void PostThink();
 
-	virtual int GetSkill() const;
+	virtual int GetSkill() const final;
 
-	virtual int GetHealth() const;
+	virtual int GetHealth() const final;
 
 	virtual bool HasEnemy() const;
 	virtual bool ShouldSeekEnemy() const;
 	virtual bool CanHeal() const;
 	virtual edict_t *FindEnemyToHeal();
 	virtual bool IsValidEnemy( const edict_t *pEnemy );
-	virtual float GetDistanceToEnemy() const;
+	virtual float GetDistanceToEnemy() const final;
 	virtual float GetSpeedToEnemy() const;
 	virtual int GetEnemiesInLineOfSight( const float fMinDistance, const float fMaxDistance );
 	virtual float GetAimSpread() const;
@@ -337,8 +337,8 @@ public:
 	virtual int GetHealingWeapon() const;
 	virtual bool IsSniping() const;
 
-	virtual bool CanSeePoint( const Vector& point );
-	virtual int GetAngleToPoint( const Vector& point );
+	virtual bool CanSeePoint( const Vector& point ) final;
+	virtual int GetAngleToPoint( const Vector& point ) final;
 
 	virtual bool CanUseItem( const edict_t *pItem );
 	virtual void PickUpItem();
@@ -348,10 +348,10 @@ public:
 	virtual void SetSpeed( float fSpeed );
 	virtual float GetSpeed() const;
 
-	virtual int GetLightLevel();
+	virtual int GetLightLevel() final;
 
-	virtual bool IsDead();
-	virtual bool IsUnderWater();
+	virtual bool IsDead() final;
+	virtual bool IsUnderWater() final;
 	virtual bool IsSniper();
 
 	virtual void UpdateSounds();
