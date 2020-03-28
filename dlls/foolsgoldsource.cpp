@@ -11,12 +11,14 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnPrecacheSound = pfnPrecacheSound;
 		this->engineFunctions.pfnSetModel = pfnSetModel;
 		this->engineFunctions.pfnModelIndex = pfnModelIndex;
+		this->engineFunctions.pfnSetSize = pfnSetSize;
 		this->engineFunctions.pfnAlertMessage = pfnAlertMessage;
 		this->engineFunctions.pfnAllocString = pfnAllocString;
 		this->engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
 		this->engineFunctions.pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
 		this->engineFunctions.pfnGetGameDir = pfnGetGameDir;
 		this->engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
+		this->engineFunctions.pfnIsCareerMatch = pfnIsCareerMatch;
 		this->engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
 
 		// install the engine functions and global variables
@@ -84,7 +86,7 @@ namespace foolsgoldsource
 		return this->strGameDir;
 	}
 
-	void Engine::SetGameDirectory( const string strGameDir )
+	void Engine::SetGameDirectory( const string& strGameDir )
 	{
 		this->strGameDir = strGameDir;
 	}
@@ -99,12 +101,22 @@ namespace foolsgoldsource
 		this->bIsDedicatedServer = bIsDedicatedServer;
 	}
 
+	bool Engine::GetIsCareerMatch()
+	{
+		return this->bIsCareerMatch;
+	}
+
+	void Engine::SetIsCareerMatch( const bool bIsCareerMatch )
+	{
+		this->bIsCareerMatch = bIsCareerMatch;
+	}
+
 	void Engine::SetMaxClients( const int iMaxClients )
 	{
 		this->globalVariables.maxClients = iMaxClients;
 	}
 
-	string Util::tolowercase( string str )
+	string Util::tolowercase( const string& str )
 	{
 		string lowerCased = str;
 
@@ -157,6 +169,17 @@ namespace foolsgoldsource
 
 		// TODO: not right - crash instead?
 		return -1;
+	}
+
+	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax )
+	{
+		// TODO: check this
+		e->v.mins.x = rgflMin[0];
+		e->v.mins.y = rgflMin[1];
+		e->v.mins.z = rgflMin[2];
+		e->v.maxs.x = rgflMax[0];
+		e->v.maxs.y = rgflMax[1];
+		e->v.maxs.z = rgflMax[2];
 	}
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
@@ -216,6 +239,11 @@ namespace foolsgoldsource
 	int pfnIsDedicatedServer( void )
 	{
 		return gEngine.GetIsDedicatedServer();
+	}
+
+	int pfnIsCareerMatch( void )
+	{
+		return gEngine.GetIsCareerMatch();
 	}
 
 	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex )

@@ -29,9 +29,11 @@ namespace foolsgoldsource
 		const globalvars_t GetServerGlobalVariables();
 
 		const string GetGameDirectory();
-		void SetGameDirectory(const string strGameDir );
+		void SetGameDirectory( const string& strGameDir );
 		bool GetIsDedicatedServer();
 		void SetIsDedicatedServer( const bool bIsDedicatedServer );
+		bool GetIsCareerMatch();
+		void SetIsCareerMatch( const bool bIsCareerMatch);
 
 		void SetMaxClients( const int iMaxClients );
 
@@ -54,12 +56,13 @@ namespace foolsgoldsource
 		string strGameDir;
 
 		bool bIsDedicatedServer;
+		bool bIsCareerMatch;
 	};
 
 	class Util
 	{
 	public:
-		static string tolowercase( string str );
+		static string tolowercase( const string& str );
 	};
 
 	extern Engine gEngine;
@@ -68,6 +71,8 @@ namespace foolsgoldsource
 	int pfnPrecacheSound( char* s );
 	void pfnSetModel( edict_t* e, const char* m );
 	int pfnModelIndex( const char* m );
+
+	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax );
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
@@ -80,6 +85,8 @@ namespace foolsgoldsource
 	void pfnGetGameDir( char *szGetGameDir );
 
 	int pfnIsDedicatedServer( void );
+
+	int pfnIsCareerMatch( void );
 
 	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex );
 }
