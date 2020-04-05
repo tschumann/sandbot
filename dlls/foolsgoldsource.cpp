@@ -1,5 +1,7 @@
 #include "foolsgoldsource.h"
 
+extern globalvars_t* gpGlobals;
+
 namespace foolsgoldsource
 {
 	Engine gEngine;
@@ -22,9 +24,8 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
 
 		// install the engine functions and global variables
-		g_engfuncs = this->engineFunctions;
-		extern globalvars_t* gpGlobals;
-		gpGlobals = &this->globalVariables;
+		::g_engfuncs = this->engineFunctions;
+		::gpGlobals = &this->globalVariables;
 
 		this->globalVariables.maxClients = 32;
 		this->globalVariables.pStringBase = new char[Engine::iStringTableSize];
