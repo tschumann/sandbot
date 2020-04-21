@@ -338,7 +338,7 @@ int WaypointFindNearest(const edict_t *pEntity, float range, int team )
    TraceResult tr;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find the nearest waypoint...
 
@@ -354,8 +354,7 @@ int WaypointFindNearest(const edict_t *pEntity, float range, int team )
          continue;  // skip any aiming waypoints
 
       // skip this waypoint if it's team specific and teams don't match...
-      if ((team != -1) && (waypoints[i].flags & W_FL_TEAM_SPECIFIC) &&
-          ((waypoints[i].flags & W_FL_TEAM) != team))
+      if ((team != -1) && (waypoints[i].flags & W_FL_TEAM_SPECIFIC) && ((waypoints[i].flags & W_FL_TEAM) != team))
          continue;
 
       distance = (waypoints[i].origin - pEntity->v.origin).Length();
@@ -387,7 +386,7 @@ int WaypointFindNearest(const edict_t *pEntity, float range, int team, const Vec
    TraceResult tr;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find the nearest waypoint...
 
@@ -434,7 +433,7 @@ int WaypointFindNearest( const edict_t *pEntity, float range, int team, const Ve
 	TraceResult tr;
 
 	if (num_waypoints < 1)
-		return -1;
+		return WAYPOINT_NOT_FOUND;
 
 	// find the nearest waypoint...
 
@@ -1532,7 +1531,7 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
    {
       waypoint1 = WaypointFindNearest(pEntity, 50.0, -1);
 
-      if (waypoint1 == -1)
+      if (waypoint1 == WAYPOINT_NOT_FOUND)
       {
          // play "cancelled" sound...
          EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
@@ -1550,7 +1549,7 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
    {
       waypoint2 = WaypointFindNearest(pEntity, 50.0, -1);
 
-      if ((waypoint1 == -1) || (waypoint2 == -1))
+      if ((waypoint1 == WAYPOINT_NOT_FOUND) || (waypoint2 == WAYPOINT_NOT_FOUND))
       {
          // play "error" sound...
          EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
