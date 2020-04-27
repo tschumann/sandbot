@@ -42,17 +42,19 @@ path_t *paths[MAX_WAYPOINTS];
 // time that this waypoint was displayed (while editing)
 float wp_display_time[MAX_WAYPOINTS];
 
-bool g_waypoint_paths = FALSE;  // have any paths been allocated?
-bool g_waypoint_on = FALSE;
-bool g_auto_waypoint = FALSE;
-bool g_path_waypoint = FALSE;
-bool g_path_waypoint_enable = TRUE;
+bool g_waypoint_paths = false;  // have any paths been allocated?
+bool g_waypoint_on = false;
+bool g_auto_waypoint = false;
+bool g_path_waypoint = false;
+bool g_path_waypoint_enable = true;
 Vector last_waypoint;
 float f_path_time = 0.0;
 
+const unsigned int SHORTEST_PATH_ARRAY_LENGTH = 4;
+
 unsigned int route_num_waypoints;
-unsigned short *shortest_path[4] = {NULL, NULL, NULL, NULL};
-unsigned short *from_to[4] = {NULL, NULL, NULL, NULL};
+unsigned short *shortest_path[SHORTEST_PATH_ARRAY_LENGTH] = {NULL, NULL, NULL, NULL};
+unsigned short *from_to[SHORTEST_PATH_ARRAY_LENGTH] = {NULL, NULL, NULL, NULL};
 
 void WaypointDebug(void)
 {
@@ -110,7 +112,7 @@ void WaypointInit()
    if (g_waypoint_paths)
       WaypointFree();  // must free previously allocated path memory
 
-   for (i=0; i < 4; i++)
+   for (i=0; i < SHORTEST_PATH_ARRAY_LENGTH; i++)
    {
       if (shortest_path[i] != NULL)
          free(shortest_path[i]);
@@ -135,7 +137,7 @@ void WaypointInit()
 
    last_waypoint = Vector(0,0,0);
 
-   for (i=0; i < 4; i++)
+   for (i=0; i < SHORTEST_PATH_ARRAY_LENGTH; i++)
    {
       shortest_path[i] = NULL;
       from_to[i] = NULL;
@@ -159,7 +161,7 @@ void WaypointAddPath(short int add_index, short int path_index)
 
       while (i < MAX_PATH_INDEX)
       {
-         if (p->index[i] == -1)
+         if (p->index[i] == WAYPOINT_NOT_FOUND)
          {
             p->index[i] = path_index;
 
@@ -186,9 +188,9 @@ void WaypointAddPath(short int add_index, short int path_index)
    }
 
    p->index[0] = path_index;
-   p->index[1] = -1;
-   p->index[2] = -1;
-   p->index[3] = -1;
+   p->index[1] = WAYPOINT_NOT_FOUND;
+   p->index[2] = WAYPOINT_NOT_FOUND;
+   p->index[3] = WAYPOINT_NOT_FOUND;
    p->next = NULL;
 
    if (prev != NULL)
@@ -220,7 +222,7 @@ void WaypointDeletePath(short int del_index)
          {
             if (p->index[i] == del_index)
             {
-               p->index[i] = -1;  // unassign this path
+               p->index[i] = WAYPOINT_NOT_FOUND;  // unassign this path
             }
 
             i++;
@@ -254,7 +256,7 @@ void WaypointDeletePath(short int path_index, short int del_index)
       {
          if (p->index[i] == del_index)
          {
-            p->index[i] = -1;  // unassign this path
+            p->index[i] = WAYPOINT_NOT_FOUND;  // unassign this path
          }
 
          i++;
@@ -294,7 +296,7 @@ int WaypointFindPath(path_t **pPath, int *path_index, int waypoint_index, int te
    {
       while (*path_index < MAX_PATH_INDEX)
       {
-         if ((*pPath)->index[*path_index] != -1)  // found a path?
+         if ((*pPath)->index[*path_index] != WAYPOINT_NOT_FOUND)  // found a path?
          {
             // save the return value
             index = (*pPath)->index[*path_index];
@@ -326,7 +328,7 @@ int WaypointFindPath(path_t **pPath, int *path_index, int waypoint_index, int te
 #endif
    }
 
-   return -1;
+   return WAYPOINT_NOT_FOUND;
 }
 
 // find the nearest waypoint to the player and return the index (-1 if not found)
@@ -342,7 +344,7 @@ int WaypointFindNearest(const edict_t *pEntity, float range, int team )
 
    // find the nearest waypoint...
 
-   min_index = -1;
+   min_index = WAYPOINT_NOT_FOUND;
    min_distance = 9999.0;
 
    for (i=0; i < num_waypoints; i++)
@@ -390,7 +392,7 @@ int WaypointFindNearest(const edict_t *pEntity, float range, int team, const Vec
 
    // find the nearest waypoint...
 
-   min_index = -1;
+   min_index = WAYPOINT_NOT_FOUND;
    min_distance = 9999.0;
 
    for (index=0; index < num_waypoints; index++)
@@ -437,7 +439,7 @@ int WaypointFindNearest( const edict_t *pEntity, float range, int team, const Ve
 
 	// find the nearest waypoint...
 
-	min_index = -1;
+	min_index = WAYPOINT_NOT_FOUND;
 	min_distance = 9999.0;
 
 	for (index = 0; index < num_waypoints; index++)
@@ -666,7 +668,7 @@ int WaypointFindNearestGoal(const edict_t *pEntity, int src, int team, uint64_t 
 
    // find the nearest waypoint with the matching flags...
 
-   min_index = -1;
+   min_index = WAYPOINT_NOT_FOUND;
    min_distance = 99999;
 
    for (index=0; index < num_waypoints; index++)
@@ -712,11 +714,11 @@ int WaypointFindNearestGoal(const edict_t *pEntity, int src, int team, uint64_t 
    int exclude_index;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find the nearest waypoint with the matching flags...
 
-   min_index = -1;
+   min_index = WAYPOINT_NOT_FOUND;
    min_distance = 99999;
 
    for (index=0; index < num_waypoints; index++)
@@ -772,11 +774,11 @@ int WaypointFindNearestGoal(const Vector& v_src, const edict_t *pEntity, float r
    int distance, min_distance;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find the nearest waypoint with the matching flags...
 
-   min_index = -1;
+   min_index = WAYPOINT_NOT_FOUND;
    min_distance = 99999;
 
    for (index=0; index < num_waypoints; index++)
@@ -819,7 +821,7 @@ int WaypointFindRandomGoal(const edict_t *pEntity, int team, uint64_t flags)
    int count = 0;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find all the waypoints with the matching flags...
 
@@ -848,7 +850,7 @@ int WaypointFindRandomGoal(const edict_t *pEntity, int team, uint64_t flags)
    }
 
    if (count == 0)  // no matching waypoints found
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    index = RANDOM_LONG(1, count) - 1;
 
@@ -864,7 +866,7 @@ int WaypointFindRandomGoal(const edict_t *pEntity, int team, uint64_t flags, int
    int exclude_index;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find all the waypoints with the matching flags...
 
@@ -905,7 +907,7 @@ int WaypointFindRandomGoal(const edict_t *pEntity, int team, uint64_t flags, int
    }
 
    if (count == 0)  // no matching waypoints found
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    index = RANDOM_LONG(1, count) - 1;
 
@@ -921,7 +923,7 @@ int WaypointFindRandomGoal(const Vector& v_src, const edict_t *pEntity, float ra
    float distance;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // find all the waypoints with the matching flags...
 
@@ -952,7 +954,7 @@ int WaypointFindRandomGoal(const Vector& v_src, const edict_t *pEntity, float ra
    }
 
    if (count == 0)  // no matching waypoints found
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    index = RANDOM_LONG(1, count) - 1;
 
@@ -963,12 +965,12 @@ int WaypointFindRandomGoal(const Vector& v_src, const edict_t *pEntity, float ra
 int WaypointFindNearestAiming(const Vector& v_origin)
 {
    int index;
-   int min_index = -1;
+   int min_index = WAYPOINT_NOT_FOUND;
    int min_distance = 9999.0;
    float distance;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // search for nearby aiming waypoint...
    for (index=0; index < num_waypoints; index++)
@@ -994,12 +996,12 @@ int WaypointFindNearestAiming(const Vector& v_origin)
 int WaypointFindNearestWaypoint(const edict_t *pEntity, uint64_t type)
 {
    int index;
-   int min_index = -1;
+   int min_index = WAYPOINT_NOT_FOUND;
    int min_distance = 9999.0;
    float distance;
 
    if (num_waypoints < 1)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    // search for nearby waypoint...
    for (index=0; index < num_waypoints; index++)
@@ -1436,14 +1438,14 @@ void WaypointDelete(edict_t *pEntity)
 
    index = WaypointFindNearest(pEntity, 50.0, -1);
 
-   if (index == -1)
+   if (index == WAYPOINT_NOT_FOUND)
       return;
 
    if ((waypoints[index].flags & W_FL_SNIPER) || (waypoints[index].flags & W_FL_TFC_SENTRYGUN) ||
        (waypoints[index].flags & W_FL_TFC_DISPENSER) || (waypoints[index].flags & W_FL_JUMP))
    {
       int i;
-      int min_index = -1;
+      int min_index = WAYPOINT_NOT_FOUND;
       int min_distance = 9999.0;
       float distance;
 
@@ -1465,7 +1467,7 @@ void WaypointDelete(edict_t *pEntity)
          }
       }
 
-      if (min_index != -1)
+      if (min_index != WAYPOINT_NOT_FOUND)
       {
          waypoints[min_index].flags = W_FL_DELETED;  // not being used
          waypoints[min_index].origin = Vector(0,0,0);
@@ -1524,8 +1526,8 @@ void WaypointUpdate( const edict_t *pEntity )
 // allow player to manually create a path from one waypoint to another
 void WaypointCreatePath(edict_t *pEntity, int cmd)
 {
-   static int waypoint1 = -1;  // initialized to unassigned
-   static int waypoint2 = -1;  // initialized to unassigned
+   static int waypoint1 = WAYPOINT_NOT_FOUND;  // initialized to unassigned
+   static int waypoint2 = WAYPOINT_NOT_FOUND;  // initialized to unassigned
 
    if (cmd == 1)  // assign source of path
    {
@@ -1568,14 +1570,14 @@ void WaypointCreatePath(edict_t *pEntity, int cmd)
 // allow player to manually remove a path from one waypoint to another
 void WaypointRemovePath(edict_t *pEntity, int cmd)
 {
-   static int waypoint1 = -1;  // initialized to unassigned
-   static int waypoint2 = -1;  // initialized to unassigned
+   static int waypoint1 = WAYPOINT_NOT_FOUND;  // initialized to unassigned
+   static int waypoint2 = WAYPOINT_NOT_FOUND;  // initialized to unassigned
 
    if (cmd == 1)  // assign source of path
    {
       waypoint1 = WaypointFindNearest(pEntity, 50.0, -1);
 
-      if (waypoint1 == -1)
+      if (waypoint1 == WAYPOINT_NOT_FOUND)
       {
          // play "cancelled" sound...
          EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_moveselect.wav", 1.0, ATTN_NORM, 0, 100);
@@ -1593,7 +1595,7 @@ void WaypointRemovePath(edict_t *pEntity, int cmd)
    {
       waypoint2 = WaypointFindNearest(pEntity, 50.0, -1);
 
-      if ((waypoint1 == -1) || (waypoint2 == -1))
+      if ((waypoint1 == WAYPOINT_NOT_FOUND) || (waypoint2 == WAYPOINT_NOT_FOUND))
       {
          // play "error" sound...
          EMIT_SOUND_DYN2(pEntity, CHAN_WEAPON, "common/wpn_denyselect.wav", 1.0, ATTN_NORM, 0, 100);
@@ -1821,7 +1823,7 @@ void WaypointSave()
 
 			while (i < MAX_PATH_INDEX)
 			{
-				if (p->index[i] != -1)
+				if (p->index[i] != WAYPOINT_NOT_FOUND)
 					num++;  // count path node if it's used
 
 				i++;
@@ -1842,7 +1844,7 @@ void WaypointSave()
 
 			while (i < MAX_PATH_INDEX)
 			{
-				if (p->index[i] != -1)  // save path node if it's used
+				if (p->index[i] != WAYPOINT_NOT_FOUND)  // save path node if it's used
 					fwrite(&p->index[i], sizeof(p->index[0]), 1, pFile);
 
 				i++;
@@ -1991,7 +1993,7 @@ int WaypointFindReachable(edict_t *pEntity, float range, int team)
 
    // if not close enough to a waypoint then just return
    if (min_distance > range)
-      return -1;
+      return WAYPOINT_NOT_FOUND;
 
    return min_index;
 }
@@ -2006,7 +2008,7 @@ void WaypointPrintInfo(edict_t *pEntity)
 	// find the nearest waypoint...
 	index = WaypointFindNearest(pEntity, 300.0, -1);
 
-	if (index == -1)
+	if (index == WAYPOINT_NOT_FOUND)
 		return;
 
 	sprintf(msg,"Waypoint %d of %d total\n", index, num_waypoints);
@@ -2216,7 +2218,7 @@ void WaypointThink(edict_t *pEntity)
 
                while (i < MAX_PATH_INDEX)
                {
-                  if (p->index[i] != -1)
+                  if (p->index[i] != WAYPOINT_NOT_FOUND)
                   {
                      Vector v_src = waypoints[index].origin;
                      Vector v_dest = waypoints[p->index[i]].origin;
@@ -2470,7 +2472,7 @@ void WaypointRouteInit()
 
                      while (i < MAX_PATH_INDEX)
                      {
-                        if (p->index[i] != -1)
+                        if (p->index[i] != WAYPOINT_NOT_FOUND)
                         {
                            index = p->index[i];
 
@@ -2597,4 +2599,3 @@ int WaypointDistanceFromTo(int src, int dest, int team)
 
    return (int)(pShortestPath[src * route_num_waypoints + dest]);
 }
-
