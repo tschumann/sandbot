@@ -1022,7 +1022,7 @@ void ClientCommand( edict_t *pEntity )
 
 				if( pBot )
 				{
-					ALERT( at_console, "Capturing: %d\n", ((DODBot *)pBot)->bCapturing );
+					ALERT( at_console, "Capturing: %d\n", pBot->IsCapturing() );
 				}
 
 #if 0

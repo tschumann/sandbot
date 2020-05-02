@@ -13,14 +13,6 @@ DODBot::DODBot()
 {
 }
 
-void DODBot::OnSpawn()
-{
-	bot_t::OnSpawn();
-
-	this->bCapturing = false;
-	this->iGoalIndex = 0;
-}
-
 void DODBot::Join()
 {
 	if( this->start_action == MSG_DOD_TEAM_SELECT )
@@ -134,7 +126,7 @@ void DODBot::Think()
 	// TODO: possibly this will trigger before the bot is touching the capture point? shouldn't
 	// though because bCapturing is only true when the bot is close enough to the waypoint
 	// if the bot is capturing, and is at a capture point, and it's a point that should be captured
-	if( this->bCapturing )
+	if( this->IsCapturing() )
 	{
 		this->SetSpeed( 0.0 );
 
@@ -143,17 +135,17 @@ void DODBot::Think()
 		if( DistanceToNearest(this->pEdict->v.origin, "dod_control_point") > 200 )
 		{
 			UTIL_LogDPrintf( "too far from capture point while capturing; resetting\n" );
-			this->bCapturing = false;
+			this->SetIsCapturing( false );
 			this->SetSpeed( this->GetMaxSpeed() );
 		}
 	}
 
 	// TODO: waypoint goal changes once it's capturing?
 	// if the current waypoint is a capture point and it is now captured
-	if( this->bCapturing && ShouldSkip(this->pEdict, this->iGoalIndex) )
+	if( this->IsCapturing() && ShouldSkip(this->pEdict, this->iGoalIndex) )
 	{
 		UTIL_LogDPrintf( "leaving waypoint\n" );
-		this->bCapturing = false;
+		this->SetIsCapturing( false );
 		this->SetSpeed( this->GetMaxSpeed() );
 	}
 
@@ -214,7 +206,7 @@ bool DODBot::IsSniper()
 
 bool DODBot::ShouldLookForNewGoal()
 {
-	return !this->bCapturing;
+	return !this->IsCapturing();
 }
 
 int DODBot::GetGoalType()

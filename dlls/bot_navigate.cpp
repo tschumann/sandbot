@@ -558,7 +558,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	  {
 		  UTIL_LogDPrintf( "stopping near waypoint\n" );
 		  pBot->SetSpeed( 0.0 );
-		  ((DODBot *)pBot)->bCapturing = true;
+		  pBot->SetIsCapturing( true );
 		  pBot->iGoalIndex = pBot->waypoint_goal;
 	  }
 	  else if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
@@ -566,7 +566,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	  {
 		  UTIL_LogDPrintf( "moving away from waypoint\n" );
 		  pBot->SetSpeed( pEdict->v.maxspeed );
-		  ((DODBot *)pBot)->bCapturing = false;
+		  pBot->SetIsCapturing( false );
 	  }
 
       // check if the waypoint is a door waypoint

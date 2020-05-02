@@ -353,6 +353,7 @@ public:
 	virtual bool IsDead() final;
 	virtual bool IsUnderWater() final;
 	virtual bool IsSniper();
+	virtual bool IsCapturing() const;
 
 	virtual void UpdateSounds();
 
@@ -367,6 +368,7 @@ public:
 
 	virtual bool HasFlag() const;
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
+	virtual void SetIsCapturing( const bool bIsCapturing );
 
 	bool is_used;
 	int iBotDataIndex;
@@ -489,6 +491,7 @@ public:
 	float fUseDoorTime;
 
 	int iGoalIndex;
+	bool bCapturing;
 
 	bot_current_weapon_t current_weapon;  // one current weapon for each bot
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
@@ -565,7 +568,6 @@ class DODBot : public bot_t
 public:
 	DODBot();
 
-	virtual void OnSpawn();
 	virtual void Join();
 	virtual void Think();
 
@@ -583,8 +585,6 @@ public:
 	virtual int GetGoalType();
 
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
-
-	bool bCapturing;
 
 	const static int TEAM_ALLIES = 1;
 	const static int TEAM_AXIS = 2;

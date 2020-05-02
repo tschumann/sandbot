@@ -1812,6 +1812,9 @@ bot_t::bot_t()
 	// TODO: needed? already set in BotThink - not BotCreate?
 	this->name[0] = '\0';
 	this->pEdict = nullptr;
+
+	this->iGoalIndex = 0;
+	this->bCapturing = false;
 }
 
 bot_t::~bot_t()
@@ -1820,6 +1823,8 @@ bot_t::~bot_t()
 
 void bot_t::OnSpawn()
 {
+	this->iGoalIndex = 0;
+	this->bCapturing = false;
 }
 
 void bot_t::Join()
@@ -2278,6 +2283,11 @@ bool bot_t::IsSniper()
 	return false;
 }
 
+bool bot_t::IsCapturing() const
+{
+	return this->bCapturing;
+}
+
 void bot_t::UpdateSounds()
 {
 	edict_t *pPlayer;
@@ -2395,4 +2405,9 @@ bool bot_t::HasFlag() const
 bool bot_t::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	return false;
+}
+
+void bot_t::SetIsCapturing( const bool bIsCapturing )
+{
+	this->bCapturing = bIsCapturing;
 }
