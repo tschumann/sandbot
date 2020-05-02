@@ -96,20 +96,7 @@ int OpposingForceBot::GetGoalType()
 	}
 	else if( pGame->IsCapturePoint() )
 	{
-		if( UTIL_GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA )
-		{
-			return W_FL_OP4_CAPTURE_POINT_BM;
-		}
-		else if( UTIL_GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE )
-		{
-			return W_FL_OP4_CAPTURE_POINT_OF;
-		}
-		else
-		{
-			ALERT( at_error, "Bot with unknown team %d\n", UTIL_GetTeam(this->pEdict) );
-
-			return W_FL_DELETED;
-		}
+		return W_FL_OP4_CAPTURE_POINT;
 	}
 	else
 	{
@@ -246,7 +233,29 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 	// what really happens - the trigger_ctfgeneric with a triggerstate attribute control the rendering of who owns the capture point
 	// the target will point to (among other things) two env_render - their targets will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
 	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
-	ALERT( at_console, "%d %d\n", pControlPoint->v.skin, pControlPoint->v.body );
+
+	extern vector<CapturePoint> capturePoints;
+
+	for( unsigned int i = 0; i < capturePoints.size(); i++ )
+	{
+		CapturePoint capturePoint = capturePoints.at( i );
+
+		ALERT(at_console, "looking at capture point %s %d\n", capturePoint.szName, i);
+
+		if( !strcmp( STRING(pControlPoint->v.globalname), capturePoint.szName ) )
+		{
+			edict_t* pEnt = nullptr;
+			
+			while( ( pEnt = UTIL_FindEntityByTargetname( pEnt, capturePoint.szTarget ) ) != nullptr )
+			{
+				if( !strcmp( STRING(pEnt->v.classname), "env_render" ) )
+				{
+					ALERT( at_console, "found an env_render with name %s for %s\n", STRING(pEnt->v.globalname), capturePoint.szName );
+				}
+			}
+		}
+	}
+	
 	return false;
 }
 

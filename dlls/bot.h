@@ -850,10 +850,11 @@ typedef struct
 
 struct CapturePoint
 {
-	int iTeam;
+	// int iTeam;
 	const char* szName;
 	const char* szTarget;
 	edict_t* pEdict;
+	bool bHasTriggerState;
 };
 
 #define MAX_TEAMS 32

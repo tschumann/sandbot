@@ -581,15 +581,19 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 			}
 		}
 	}
-	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && (waypoints[index].flags == W_FL_OP4_CAPTURE_POINT_BM || waypoints[index].flags == W_FL_OP4_CAPTURE_POINT_OF) )
+	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && (waypoints[index].flags == W_FL_OP4_CAPTURE_POINT) )
 	{
 		edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
+
+		ALERT(at_console, "near a trigger_ctfgeneric\n");
 
 		// if there's not a nearby trigger_ctfgeneric
 		if( !pNearestCapturePoint )
 		{
 			return false;
 		}
+
+		ALERT(at_console, "really near a trigger_ctfgeneric\n");
 
 		// if the trigger_ctfgeneric nearest this waypoint already belongs to the same team as the player
 		if( !pBot->ShouldCapturePoint( pNearestCapturePoint ) )
@@ -1204,16 +1208,8 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 					continue;
 				}
 
-				if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 1 )
-				{
-					ALERT( at_console, "Making trigger_ctfgeneric with target %s a Black Mesa capture point\n", STRING(nearest_pent->v.target) );
-					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_BM;
-				}
-				else if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && capturePoints[i].iTeam == 2 )
-				{
-					ALERT( at_console, "Making trigger_ctfgeneric with target %s an Opposing Force capture point\n", STRING(nearest_pent->v.target) );
-					waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT_OF;
-				}
+				ALERT( at_console, "Making trigger_ctfgeneric with target %s a capture point\n", STRING(nearest_pent->v.target) );
+				waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT;
 			}
 			if( pEntity )
 			{
@@ -2073,13 +2069,9 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ALERT( at_console, "item_ctfbase with model %s\n", STRING(pBase->v.model) );
 	}
 
-	if( flags & W_FL_OP4_CAPTURE_POINT_BM )
+	if( flags & W_FL_OP4_CAPTURE_POINT )
 	{
-		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a Black Mesa capture point near this waypoint\n");
-	}
-	if( flags & W_FL_OP4_CAPTURE_POINT_OF )
-	{
-		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is an Opposing Force capture point near this waypoint\n");
+		ClientPrint( pEntity, HUD_PRINTNOTIFY, "There is a capture point near this waypoint\n");
 	}
 
 	if (flags & W_FL_PRONE)

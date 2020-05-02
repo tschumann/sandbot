@@ -419,16 +419,16 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			// keep track of it
 			pent_trigger_ctfgeneric = pentKeyvalue;
 		}
-		// if it's a trigger_ctfgeneric and it's the team_no key
-		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "team_no" ) )
+		// if it's a trigger_ctfgeneric and it's the triggerstate key
+		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "triggerstate" ) )
 		{
+			// TODO: this isn't working - key/values are processed sequentially most likely so we're probably getting the triggerstate before the name and targetname
 			CapturePoint capturePoint;
-			ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
-			// get the team_no value
-			capturePoint.iTeam = atoi( pkvd->szValue );
+			ALERT( at_console, "Getting a trigger_ctfgeneric's (targetname %s, target %s)\n", STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
+			capturePoint.bHasTriggerState = true;
 			// get the name of the capture point
 			capturePoint.szName = STRING(pentKeyvalue->v.globalname);
-			// get the target (just points to a trigger_relay?)
+			// get the target
 			capturePoint.szTarget = STRING(pentKeyvalue->v.target);
 			capturePoint.pEdict = pentKeyvalue;
 			capturePoints.push_back( capturePoint );

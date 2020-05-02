@@ -568,7 +568,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	  }
 	  else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() )
 	  {
-		  if( (waypoints[pBot->curr_waypoint_index].flags & W_FL_OP4_CAPTURE_POINT_BM) || (waypoints[pBot->curr_waypoint_index].flags & W_FL_OP4_CAPTURE_POINT_OF) )
+		  if( waypoints[pBot->curr_waypoint_index].flags & W_FL_OP4_CAPTURE_POINT )
 		  {
 			  if( pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip( pBot->pEdict, pBot->waypoint_goal ) )
 			  {
