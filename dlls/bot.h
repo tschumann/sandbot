@@ -569,7 +569,6 @@ public:
 	DODBot();
 
 	virtual void Join();
-	virtual void Think();
 
 	virtual float GetSpeedToEnemy() const;
 	virtual void Reload();

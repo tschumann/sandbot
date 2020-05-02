@@ -119,39 +119,6 @@ void DODBot::Join()
 	}
 }
 
-void DODBot::Think()
-{
-	bot_t::PreThink();
-
-	// TODO: possibly this will trigger before the bot is touching the capture point? shouldn't
-	// though because bCapturing is only true when the bot is close enough to the waypoint
-	// if the bot is capturing, and is at a capture point, and it's a point that should be captured
-	if( this->IsCapturing() )
-	{
-		this->SetSpeed( 0.0 );
-
-		// TODO: this is very rough - probably something is set in pev if the bot is
-		// on or near a dod_control_point - should check if it's a brush entity...
-		if( DistanceToNearest(this->pEdict->v.origin, "dod_control_point") > 200 )
-		{
-			UTIL_LogDPrintf( "too far from capture point while capturing; resetting\n" );
-			this->SetIsCapturing( false );
-			this->SetSpeed( this->GetMaxSpeed() );
-		}
-	}
-
-	// TODO: waypoint goal changes once it's capturing?
-	// if the current waypoint is a capture point and it is now captured
-	if( this->IsCapturing() && ShouldSkip(this->pEdict, this->iGoalIndex) )
-	{
-		UTIL_LogDPrintf( "leaving waypoint\n" );
-		this->SetIsCapturing( false );
-		this->SetSpeed( this->GetMaxSpeed() );
-	}
-
-	bot_t::PostThink();
-}
-
 float DODBot::GetSpeedToEnemy() const
 {
 	if( !this->pBotEnemy )

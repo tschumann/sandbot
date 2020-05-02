@@ -241,7 +241,12 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 	// there are 8 pairs - each pair is one per team
 	// 8 to do with scoring (?), 8 to with displaying who owns the capture point (?) which have a triggerstate attribute too
 	// those with a triggerstate attribute have a target that is an env_render which displays if that team has the point?
-	// pev->skin or pev->body should have the team name but doesn't
+	// pev->skin or pev->body should have the team name but doesn't - only one type might have this?
+
+	// what really happens - the trigger_ctfgeneric with a triggerstate attribute control the rendering of who owns the capture point
+	// the target will point to (among other things) two env_render - their targets will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
+	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
+	ALERT( at_console, "%d %d\n", pControlPoint->v.skin, pControlPoint->v.body );
 	return false;
 }
 
