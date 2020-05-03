@@ -498,6 +498,32 @@ edict_t *FindNearest( const Vector point, const char *szClassname, float fMinimu
 	return pNearest;
 }
 
+edict_t *FindNearestTriggerCtfGeneric( const Vector point, const char *szClassname, float fMinimumDistance = 9999.99 )
+{
+	edict_t *pent = nullptr;
+	edict_t *pNearest = nullptr;
+
+	while( (pent = UTIL_FindEntityByClassname( pent, szClassname )) != nullptr)
+	{
+		// skip trigger_ctfgeneric with a targetname/without a triggerstate
+		if( !strcmp( szClassname, "trigger_ctfgeneric" ) && strlen( STRING(pent->v.targetname) ) > 0 )
+		{
+			continue;
+		}
+
+		float fDistance = (pent->v.origin - point).Length();
+
+		// is this the closest?
+		if (fDistance < fMinimumDistance)
+		{
+			fMinimumDistance = fDistance;
+			pNearest = pent;
+		}
+	}
+
+	return pNearest;
+}
+
 float DistanceToNearest(const Vector& point, const char *szClassname)
 {
 	edict_t *pent = NULL;
@@ -583,7 +609,7 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 	}
 	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && (waypoints[index].flags == W_FL_OP4_CAPTURE_POINT) )
 	{
-		edict_t *pNearestCapturePoint = FindNearest(waypoints[index].origin, "trigger_ctfgeneric");
+		edict_t *pNearestCapturePoint = FindNearestTriggerCtfGeneric(waypoints[index].origin, "trigger_ctfgeneric");
 
 		ALERT(at_console, "near a trigger_ctfgeneric\n");
 

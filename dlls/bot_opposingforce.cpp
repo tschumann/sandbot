@@ -234,28 +234,16 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 	// the target will point to (among other things) two env_render - their targets will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
 	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
 
-	extern vector<CapturePoint> capturePoints;
+	edict_t* pEntity = nullptr;
 
-	for( unsigned int i = 0; i < capturePoints.size(); i++ )
+	while( (pEntity = UTIL_FindEntityByString( pEntity, "target", STRING(pControlPoint->v.target) ) ) != nullptr )
 	{
-		CapturePoint capturePoint = capturePoints.at( i );
-
-		ALERT(at_console, "looking at capture point %s %d\n", capturePoint.szName, i);
-
-		if( !strcmp( STRING(pControlPoint->v.globalname), capturePoint.szName ) )
+		if( !strcmp( STRING(pEntity->v.classname), "env_render" ) )
 		{
-			edict_t* pEnt = nullptr;
-			
-			while( ( pEnt = UTIL_FindEntityByTargetname( pEnt, capturePoint.szTarget ) ) != nullptr )
-			{
-				if( !strcmp( STRING(pEnt->v.classname), "env_render" ) )
-				{
-					ALERT( at_console, "found an env_render with name %s for %s\n", STRING(pEnt->v.globalname), capturePoint.szName );
-				}
-			}
+			ALERT( at_console, "found an env_render with name %s for %s\n", STRING(pEntity->v.globalname), STRING(pControlPoint->v.globalname) );
 		}
 	}
-	
+
 	return false;
 }
 
