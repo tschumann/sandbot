@@ -230,17 +230,25 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 	// those with a triggerstate attribute have a target that is an env_render which displays if that team has the point?
 	// pev->skin or pev->body should have the team name but doesn't - only one type might have this?
 
-	// what really happens - the trigger_ctfgeneric with a triggerstate attribute control the rendering of who owns the capture point
-	// the target will point to (among other things) two env_render - their targets will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
+	// what really happens - the trigger_ctfgeneric with a triggerstate attribute controls the rendering of who owns the capture point
+	// the target will point to (among other things) two env_render entities - their targets will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
 	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
 
 	edict_t* pEntity = nullptr;
 
-	while( (pEntity = UTIL_FindEntityByString( pEntity, "target", STRING(pControlPoint->v.target) ) ) != nullptr )
+	// look at each entity that is targeted by this trigger_ctfgeneric
+	while( (pEntity = UTIL_FindEntityByString( pEntity, "targetname", STRING(pControlPoint->v.target) ) ) != nullptr )
 	{
 		if( !strcmp( STRING(pEntity->v.classname), "env_render" ) )
 		{
-			ALERT( at_console, "found an env_render with name %s for %s\n", STRING(pEntity->v.globalname), STRING(pControlPoint->v.globalname) );
+			ALERT( at_console, "Found an env_render with name %s for %s\n", STRING(pEntity->v.globalname), STRING(pControlPoint->v.globalname) );
+
+			// if the entity is visible and it's Black Mesa
+			if( pEntity->v.renderamt == 255 && strstr( STRING(pEntity->v.target), "_bm_" ) )
+			{
+				// capture it if this is an Opposing Force player
+				return pGame->GetTeam( this->pEdict ) == OpposingForceBot::TEAM_OPPOSING_FORCE;
+			}
 		}
 	}
 
