@@ -249,6 +249,22 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 				// capture it if this is an Opposing Force player
 				return pGame->GetTeam( this->pEdict ) == OpposingForceBot::TEAM_OPPOSING_FORCE;
 			}
+			// if the entity is visible and it's Opposing Force
+			else if( pEntity->v.renderamt == 255 && strstr(STRING(pEntity->v.target), "_op_") )
+			{
+				// capture it if this is a Black Mesa player
+				return pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA;
+			}
+			// if the entity is invisible
+			else if( pEntity->v.renderamt == 0 )
+			{
+				// no one has captured it yet? maybe?
+				return true;
+			}
+			else
+			{
+				ALERT( at_error, "Cannot work out whether to capture a trigger_ctfgeneric or not: renderamt is %d and target is %s\n", pEntity->v.renderamt, STRING(pEntity->v.target) );
+			}
 		}
 	}
 
