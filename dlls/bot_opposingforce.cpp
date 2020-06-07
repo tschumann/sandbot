@@ -224,14 +224,13 @@ bool OpposingForceBot::FindFlag()
 
 bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
-	// TODO: work this out - there are 16 trigger_ctfgeneric entities in op4cp_park
-	// there are 8 pairs - each pair is one per team
-	// 8 to do with scoring (?), 8 to with displaying who owns the capture point (?) which have a triggerstate attribute too
+	// there are 16 trigger_ctfgeneric entities in op4cp_park (8 pairs of entities, 4 pairs per team)
+	// 8 are to do with scoring (?), 8 are to with displaying who owns the capture point (?) - these have a triggerstate attribute
 	// those with a triggerstate attribute have a target that is an env_render which displays if that team has the point?
 	// pev->skin or pev->body should have the team name but doesn't - only one type might have this?
 
-	// what really happens - the trigger_ctfgeneric with a triggerstate attribute controls the rendering of who owns the capture point
-	// the target will point to (among other things) two env_render entities - their targets will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
+	// what happens - the trigger_ctfgeneric with a triggerstate attribute controls the rendering of who owns the capture point
+	// it will target (among other things) two env_render entities - their target names will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
 	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
 
 	edict_t* pEntity = nullptr;
@@ -250,15 +249,15 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 				return pGame->GetTeam( this->pEdict ) == OpposingForceBot::TEAM_OPPOSING_FORCE;
 			}
 			// if the entity is visible and it's Opposing Force
-			else if( pEntity->v.renderamt == 255 && strstr(STRING(pEntity->v.target), "_op_") )
+			else if( pEntity->v.renderamt == 255 && strstr( STRING(pEntity->v.target), "_op_" ) )
 			{
 				// capture it if this is a Black Mesa player
-				return pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA;
+				return pGame->GetTeam( this->pEdict ) == OpposingForceBot::TEAM_BLACK_MESA;
 			}
 			// if the entity is invisible
 			else if( pEntity->v.renderamt == 0 )
 			{
-				// no one has captured it yet? maybe?
+				// TODO: does this mean no one has captured it yet?
 				return true;
 			}
 			else

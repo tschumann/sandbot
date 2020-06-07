@@ -1221,27 +1221,11 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 
 		if( !strcmp("trigger_ctfgeneric", nearest_name) )
 		{
-			for( unsigned int i = 0; i < capturePoints.size(); i++ )
-			{
-				ALERT(at_console, "trigger_ctfgeneric target: %s targetname: %s globalname: %s\n", capturePoints[i].pEdict->v.target, capturePoints[i].pEdict->v.targetname, capturePoints[i].pEdict->v.globalname );
-				// find the matching trigger_ctfgeneric that was saved on map load - they all have a target but not a globalname
-				if( FStrEq(STRING(nearest_pent->v.target), capturePoints[i].szTarget) && FStrEq(STRING(nearest_pent->v.globalname), "") )
-				{
-					ALERT( at_console, "Found a matching trigger_ctfgeneric with target %s!\n", STRING(nearest_pent->v.target) );
-				}
-				else
-				{
-					ALERT( at_console, "Mismatched trigger_ctfgeneric with target %s\n", STRING(nearest_pent->v.target) );
-					continue;
-				}
-
-				ALERT( at_console, "Making trigger_ctfgeneric with target %s a capture point\n", STRING(nearest_pent->v.target) );
-				waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT;
-			}
 			if( pEntity )
 			{
 				ClientPrint( pEntity, HUD_PRINTCONSOLE, "Found a trigger_ctfgeneric\n" );
 			}
+			waypoints[wpt_index].flags |= W_FL_OP4_CAPTURE_POINT;
 		}
 
 		if ((strcmp("dod_object", nearest_name) == 0))
