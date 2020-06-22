@@ -45,7 +45,6 @@ float wp_display_time[MAX_WAYPOINTS];
 bool g_waypoint_paths = false;  // have any paths been allocated?
 bool g_waypoint_on = false;
 bool g_auto_waypoint = false;
-bool g_path_waypoint = false;
 bool g_path_waypoint_enable = true;
 Vector last_waypoint;
 float f_path_time = 0.0;
@@ -2203,8 +2202,8 @@ void WaypointThink(edict_t *pEntity)
          }
       }
 
-      // check if path waypointing is on...
-      if (g_path_waypoint)
+      // check if waypointing is on...
+      if (g_waypoint_on)
       {
          // check if player is close enough to a waypoint and time to draw path...
          if ((min_distance <= 50) && (f_path_time <= gpGlobals->time))
@@ -2215,7 +2214,7 @@ void WaypointThink(edict_t *pEntity)
 
             p = paths[index];
 
-            while (p != NULL)
+            while (p != nullptr)
             {
                i = 0;
 

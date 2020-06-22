@@ -27,7 +27,6 @@ extern int debug_engine;
 extern globalvars_t  *gpGlobals;
 extern bool g_waypoint_on;
 extern bool g_auto_waypoint;
-extern bool g_path_waypoint;
 extern bool b_observer_mode;
 
 char g_argv[1024];
@@ -800,20 +799,7 @@ void ClientCommand( edict_t *pEntity )
       }
       else if (FStrEq(pcmd, "pathwaypoint"))
       {
-         if (FStrEq(arg1, "on"))
-         {
-            g_path_waypoint = TRUE;
-            g_waypoint_on = TRUE;  // turn this on just in case
-
-            ClientPrint(pEntity, HUD_PRINTNOTIFY, "pathwaypoint is ON\n");
-         }
-         else if (FStrEq(arg1, "off"))
-         {
-            g_path_waypoint = FALSE;
-
-            ClientPrint(pEntity, HUD_PRINTNOTIFY, "pathwaypoint is OFF\n");
-         }
-         else if (FStrEq(arg1, "create1"))
+         if (FStrEq(arg1, "create1"))
          {
             WaypointCreatePath(pEntity, 1);
          }

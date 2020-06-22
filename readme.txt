@@ -56,6 +56,7 @@ v0.4.3 (??/??/??)
 - [All] Fixed cvars not being read correctly in Metamod.
 - [All] bot_skill and bot_count now get written to config.cfg
 - [All] Added GetEntityAPI2 support.
+- [All] Got rid of pathwaypoint on/off and replaced it with waypoint on/off.
 - [Windows] Fixed possible memory leaks.
 - [Windows] Updated compiler to Visual Studio 2019 (from Visual Studio 2017).
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.
