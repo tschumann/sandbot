@@ -508,7 +508,6 @@ const bot_weapon_select_t ship_weapon_select[] = {
 edict_t *BotFindEnemy( bot_t *pBot )
 {
 	Vector vecEnd;
-	static bool flag=TRUE;
 	edict_t *pent = nullptr;
 	edict_t *pNewEnemy;
 	int i;

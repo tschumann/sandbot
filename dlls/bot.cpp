@@ -288,8 +288,6 @@ float pause_frequency[5] = {4, 7, 10, 15, 20};
 float pause_time[5][2] = {{0.2f, 0.5f}, {0.5f, 1.0f}, {0.7f, 1.3f}, {1.0f, 1.7f}, {1.2f, 2.0f}};
 
 // TheFatal's method for calculating the msecval
-extern int msecnum;
-extern float msecdel;
 extern float msecval;
 
 int GetBotCount()

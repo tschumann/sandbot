@@ -34,9 +34,6 @@
 #include <cctype>
 #endif // __linux__
 
-extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
-extern int num_teams;
-
 int gmsgTextMsg = 0;
 int gmsgSayText = 0;
 int gmsgShowMenu = 0;
