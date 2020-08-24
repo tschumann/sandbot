@@ -65,7 +65,7 @@ vector<CapturePoint> capturePoints;
 int num_flags = 0;  // for TFC
 int num_backpacks = 0;
 int iCapturePointCount = 0;
-BACKPACK_S backpacks[MAX_BACKPACKS];
+BACKPACK_S backpacks[TFCGame::MAX_BACKPACKS];
 char arg[256];
 
 float respawn_time = 0.0;
@@ -228,7 +228,7 @@ int DispatchSpawn( edict_t *pent )
 
 		num_backpacks = 0;
 
-		for (int index=0; index < MAX_BACKPACKS; index++)
+		for (int index=0; index < TFCGame::MAX_BACKPACKS; index++)
 		{
 			backpacks[index].edict = nullptr;
 			backpacks[index].armor = 0;
@@ -535,7 +535,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 		// don't try to add bots for 60 seconds, give client time to get added
 		bot_check_time = gpGlobals->time + 60.0;
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			if( pBots[i]->is_used )  // count the number of bots in use
 				count++;
@@ -545,7 +545,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 		// then kick one of the bots off the server...
 		if( (count > min_bots) && (min_bots != -1) )
 		{
-			for( int i = 0; i < MAX_PLAYERS; i++ )
+			for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 			{
 				if( pBots[i]->is_used )  // is this slot used?
 				{
@@ -571,7 +571,7 @@ void ClientDisconnect( edict_t *pEntity )
 {
 	UTIL_LogDPrintf( "ClientDisconnect: pEntity=%x\n", pEntity );
 
-	for( int i = 0; i < MAX_PLAYERS; i++ )
+	for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 	{
 		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
 		{
@@ -1095,14 +1095,14 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
 	if( pBotData )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBotData[i].bIsUsed = false;
 		}
 	}
 	if( pBots )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			delete pBots[i];
 			pBots[i] = nullptr;
@@ -1110,13 +1110,13 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		pBots = nullptr;
 	}
 
-	pBots = new bot_t*[MAX_PLAYERS];
+	pBots = new bot_t*[Game::MAX_PLAYERS];
 
 	if( mod_id == VALVE_DLL )
 	{
 		pGame = std::make_unique<ValveGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new HalfLifeBot();
 		}
@@ -1125,7 +1125,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<GearboxGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new OpposingForceBot();
 		}
@@ -1134,7 +1134,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<DecayGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new HalfLifeBot();
 		}
@@ -1143,7 +1143,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<CStrikeGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new CStrikeBot();
 		}
@@ -1152,7 +1152,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<DODGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new DODBot();
 		}
@@ -1161,7 +1161,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<TFCGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new TFCBot();
 		}
@@ -1170,7 +1170,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<Game>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new GunmanBot();
 		}
@@ -1179,7 +1179,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<NSGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new NSBot();
 		}
@@ -1188,7 +1188,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<ShipGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new ShipBot();
 		}
@@ -1197,7 +1197,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<Game>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new bot_t();
 		}
@@ -1279,7 +1279,7 @@ void StartFrame( void )
 		count = 0;
 
 		// mark the bots as needing to be respawned...
-		for (index = 0; index < MAX_PLAYERS; index++)
+		for (index = 0; index < Game::MAX_PLAYERS; index++)
 		{
 			if (count >= prev_num_bots)
 			{
@@ -1408,7 +1408,7 @@ void StartFrame( void )
 	}
 	else if( GetBotCount() > CvarGetValue( &bot_count ) )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			if( pBots[i] && pBots[i]->is_used )
 			{

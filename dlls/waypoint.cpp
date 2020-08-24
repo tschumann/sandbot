@@ -26,7 +26,7 @@
 extern int m_spriteTexture;
 
 extern int num_backpacks;
-extern BACKPACK_S backpacks[MAX_BACKPACKS];
+extern BACKPACK_S backpacks[TFCGame::MAX_BACKPACKS];
 
 // waypoints with information bits (flags)
 waypoint_t waypoints[MAX_WAYPOINTS];

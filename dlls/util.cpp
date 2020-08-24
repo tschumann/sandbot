@@ -265,7 +265,7 @@ int UTIL_GetClass(edict_t *pEntity)
 
 int UTIL_GetBotIndex(edict_t *pEdict)
 {
-   for (int index=0; index < MAX_PLAYERS; index++)
+   for (int index=0; index < Game::MAX_PLAYERS; index++)
    {
       if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {
@@ -281,7 +281,7 @@ bot_t *UTIL_GetBotPointer( const edict_t *pEdict )
 {
    int index;
 
-   for (index=0; index < MAX_PLAYERS; index++)
+   for (index=0; index < Game::MAX_PLAYERS; index++)
    {
       if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {
@@ -289,8 +289,10 @@ bot_t *UTIL_GetBotPointer( const edict_t *pEdict )
       }
    }
 
-   if (index < MAX_PLAYERS)
-      return (pBots[index]);
+   if (index < Game::MAX_PLAYERS)
+   {
+	   return (pBots[index]);
+   }
 
    return nullptr;  // return NULL if edict is not a bot
 }

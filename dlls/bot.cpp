@@ -20,11 +20,11 @@
 #include "h_export.h"
 
 bot_player_t *pBotData = nullptr;
-bot_t **pBots = nullptr; // [MAX_PLAYERS];
+bot_t **pBots = nullptr; // [Game::MAX_PLAYERS];
 
 bool b_observer_mode = false;
 
-bot_player_t g_valveBots[MAX_PLAYERS] =
+bot_player_t g_valveBots[Game::MAX_PLAYERS] =
 {
 	{"Kelly", "barney", false},
 	{"Ted", "gina", false},
@@ -60,7 +60,7 @@ bot_player_t g_valveBots[MAX_PLAYERS] =
 	{"Harry", "gina", false}
 };
 
-bot_player_t g_gearboxBots[MAX_PLAYERS] = 
+bot_player_t g_gearboxBots[Game::MAX_PLAYERS] =
 {
 	{"Randy", "barney", false},
 	{"Brian", "beret", false},
@@ -96,13 +96,13 @@ bot_player_t g_gearboxBots[MAX_PLAYERS] =
 	{"RichardC", "otis", false}
 };
 
-bot_player_t g_cstrikeBots[MAX_PLAYERS] = 
+bot_player_t g_cstrikeBots[Game::MAX_PLAYERS] =
 {
 	{"Minh", NULL, false},
 	{"Jesse", NULL, false}
 };
 
-bot_player_t g_dodBots[MAX_PLAYERS] = 
+bot_player_t g_dodBots[Game::MAX_PLAYERS] =
 {
 	{"Matt", NULL, false},		// mugsy
 	{"John", NULL, false},		// pickitup
@@ -138,7 +138,7 @@ bot_player_t g_dodBots[MAX_PLAYERS] =
 	{"Unknown8", NULL, false},	// Kamikazi
 };
 
-bot_player_t g_gunmanBots[MAX_PLAYERS] = 
+bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
 {
 	{"Herb", "bandit", false},		// BoneWolf
 	{"Steven", "general", false},	// Wipeoot
@@ -174,7 +174,7 @@ bot_player_t g_gunmanBots[MAX_PLAYERS] =
 	{"Robin", "general", false}
 };
 
-bot_player_t g_nsBots[MAX_PLAYERS] = 
+bot_player_t g_nsBots[Game::MAX_PLAYERS] =
 {
 	{"Charlie", NULL, false},
 	{"Jon", NULL, false},
@@ -210,7 +210,7 @@ bot_player_t g_nsBots[MAX_PLAYERS] =
 	{"Nick", NULL, false}
 };
 
-bot_player_t g_hungerBots[MAX_PLAYERS] =
+bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
 {
 	{"Bill", "civie", false},
 	{"Dave", "dave", false},
@@ -246,7 +246,7 @@ bot_player_t g_hungerBots[MAX_PLAYERS] =
 	{"Ben", "zork", false}
 };
 
-bot_player_t g_shipBots[MAX_PLAYERS] = 
+bot_player_t g_shipBots[Game::MAX_PLAYERS] =
 {
 	{"Chris", NULL, false},
 	{"Ailsa", NULL, false},
@@ -333,7 +333,7 @@ void KickBot( const int iIndex )
 
 void KickAllBots()
 {
-	for( unsigned int index = 0; index < MAX_PLAYERS; index++ )
+	for( unsigned int index = 0; index < Game::MAX_PLAYERS; index++ )
 	{
 		KickBot( index );
 	}
@@ -343,14 +343,14 @@ void CleanupGameAndBots()
 {
 	if( pBotData )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBotData[i].bIsUsed = false;
 		}
 	}
 	if( pBots )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			delete pBots[i];
 			pBots[i] = nullptr;
@@ -491,7 +491,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		iIndex++;
 
 		// loop around
-		if( iIndex == MAX_PLAYERS )
+		if( iIndex == Game::MAX_PLAYERS )
 		{
 			iIndex = 0;
 		}
@@ -543,12 +543,12 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  pBotEdict->v.frags = 0;
 
       index = 0;
-	  while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
+	  while ((index < Game::MAX_PLAYERS) && (pBots[index]->is_used))
 	  {
 		  index++;
 	  }
 
-      if (index == MAX_PLAYERS)
+      if (index == Game::MAX_PLAYERS)
       {
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Can't create bot!\n");
          return;

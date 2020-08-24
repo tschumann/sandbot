@@ -31,6 +31,8 @@ public:
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
 	virtual bool IsGunmanChronicles() const;
+
+	const static int MAX_PLAYERS = 32;
 };
 
 class ValveGame : public Game
@@ -173,6 +175,8 @@ public:
 	}
 
 	virtual int GetTeam( const edict_t *pEdict ) const;
+
+	const static int MAX_BACKPACKS = 100;
 };
 
 class NSGame : public Game
@@ -214,7 +218,7 @@ public:
 
 	void StartRound() const
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i]->not_started = true;
 

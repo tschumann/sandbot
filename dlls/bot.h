@@ -143,13 +143,8 @@ const int kGameStatusEnded = 2;
 const int kGameStatusGameTime = 3;
 const int kGameStatusUnspentLevels = 4;
 
-#define MAX_PLAYERS	32
-
-
 #define BOT_SKIN_LEN 32
 #define BOT_NAME_LEN 32
-
-#define MAX_BACKPACKS 100
 
 // Only one of these allowed per entity, stored in pev->iuser3.
 typedef enum

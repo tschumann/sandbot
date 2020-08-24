@@ -49,7 +49,7 @@ unsigned int Game::BotsOnTeam( const int team ) const
 {
 	int iOnTeam = 0;
 
-	for( int i = 0; i < MAX_PLAYERS; i++ )
+	for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 	{
 		if( pGame->GetTeam( pBots[i]->pEdict ) == team )
 		{

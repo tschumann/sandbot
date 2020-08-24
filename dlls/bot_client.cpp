@@ -14,6 +14,7 @@
 #include "bot_func.h"
 #include "bot_client.h"
 #include "bot_weapons.h"
+#include "game.h"
 
 // https://wiki.alliedmods.net/Half-life_1_game_events
 
@@ -904,7 +905,7 @@ void BotClient_CS_HLTV(void *p, int bot_index)
       // new round in CS 1.6
       if ((players == 0) && (*(int *) p == 0))
       {
-         for (index = 0; index < MAX_PLAYERS; index++)
+         for (index = 0; index < Game::MAX_PLAYERS; index++)
          {
             if (pBots[index]->is_used)
                BotSpawnInit (pBots[index]); // reset bots for new round
