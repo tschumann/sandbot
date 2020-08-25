@@ -183,6 +183,21 @@ namespace foolsgoldsource
 		e->v.maxs.z = rgflMax[2];
 	}
 
+	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr )
+	{
+		fprintf( stderr, "Not implemented\n" );
+	}
+
+	void pfnParticleEffect( const float* org, const float* dir, float color, float count )
+	{
+		// TODO: do nothing?
+	}
+
+	void pfnLightStyle( int style, char* val )
+	{
+		// TODO: do nothing?
+	}
+
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 	{
 		printf( "%s", szFmt );

@@ -74,6 +74,11 @@ namespace foolsgoldsource
 
 	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax );
 
+	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr );
+
+	void pfnParticleEffect( const float* org, const float* dir, float color, float count );
+	void pfnLightStyle( int style, char* val );
+
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
 	int pfnAllocString( const char* szValue );
