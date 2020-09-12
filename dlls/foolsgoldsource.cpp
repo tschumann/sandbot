@@ -14,10 +14,15 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnSetModel = pfnSetModel;
 		this->engineFunctions.pfnModelIndex = pfnModelIndex;
 		this->engineFunctions.pfnSetSize = pfnSetSize;
+		this->engineFunctions.pfnSetOrigin = pfnSetOrigin;
+		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
+		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
+		this->engineFunctions.pfnLightStyle = pfnLightStyle;
 		this->engineFunctions.pfnAlertMessage = pfnAlertMessage;
 		this->engineFunctions.pfnAllocString = pfnAllocString;
 		this->engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
 		this->engineFunctions.pfnPEntityOfEntIndex = pfnPEntityOfEntIndex;
+		this->engineFunctions.pfnServerPrint = pfnServerPrint;
 		this->engineFunctions.pfnGetGameDir = pfnGetGameDir;
 		this->engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
 		this->engineFunctions.pfnIsCareerMatch = pfnIsCareerMatch;
@@ -158,6 +163,13 @@ namespace foolsgoldsource
 		e->v.model = ALLOC_STRING(m);
 	}
 
+	void pfnSetOrigin( edict_t* e, const float* rgflOrigin )
+	{
+		e->v.origin[0] = rgflOrigin[0];
+		e->v.origin[1] = rgflOrigin[1];
+		e->v.origin[2] = rgflOrigin[2];
+	}
+
 	int pfnModelIndex( const char* m )
 	{
 		for( unsigned int i = 0; i < gEngine.models.size(); i++ )
@@ -203,6 +215,22 @@ namespace foolsgoldsource
 		printf( "%s", szFmt );
 	}
 
+	int pfnAllocString(const char* szValue)
+	{
+		globalvars_t globalVars = gEngine.GetServerGlobalVariables();
+		// get the next unassigned part of the string table
+		const char* pCurrentOffset = globalVars.pStringBase + gEngine.iStringTableOffset;
+		// copy the new string to the next unassigned part of the string table
+		strcpy((char*)pCurrentOffset, szValue);
+
+		// get the newly assigned string's location
+		int iCurrentOffset = gEngine.iStringTableOffset;
+		// update the location of the next unassigned part of the string table
+		gEngine.iStringTableOffset += strlen(szValue);
+		// return the newly assigned string's location
+		return iCurrentOffset;
+	}
+
 	edict_t* pfnPEntityOfEntOffset( int iEntOffset )
 	{
 		if( (unsigned int)iEntOffset >= gEngine.edicts.size() )
@@ -213,22 +241,6 @@ namespace foolsgoldsource
 		{
 			return gEngine.edicts[iEntOffset].get();
 		}
-	}
-
-	int pfnAllocString( const char* szValue )
-	{
-		globalvars_t globalVars = gEngine.GetServerGlobalVariables();
-		// get the next unassigned part of the string table
-		const char* pCurrentOffset = globalVars.pStringBase + gEngine.iStringTableOffset;
-		// copy the new string to the next unassigned part of the string table
-		strcpy( (char *)pCurrentOffset, szValue );
-
-		// get the newly assigned string's location
-		int iCurrentOffset = gEngine.iStringTableOffset;
-		// update the location of the next unassigned part of the string table
-		gEngine.iStringTableOffset += strlen( szValue );
-		// return the newly assigned string's location
-		return iCurrentOffset;
 	}
 
 	edict_t* pfnPEntityOfEntIndex( int iEntIndex )
@@ -245,6 +257,11 @@ namespace foolsgoldsource
 		}
 
 		return result;
+	}
+
+	void pfnServerPrint(const char* szMsg)
+	{
+		printf( "%s", szMsg );
 	}
 
 	void pfnGetGameDir( char *szGetGameDir )

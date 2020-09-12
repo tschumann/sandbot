@@ -74,6 +74,8 @@ namespace foolsgoldsource
 
 	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax );
 
+	void pfnSetOrigin( edict_t* e, const float* rgflOrigin );
+
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr );
 
 	void pfnParticleEffect( const float* org, const float* dir, float color, float count );
@@ -86,6 +88,8 @@ namespace foolsgoldsource
 	edict_t* pfnPEntityOfEntOffset( int iEntOffset );
 
 	edict_t* pfnPEntityOfEntIndex( int iEntIndex );
+
+	void pfnServerPrint( const char* szMsg );
 
 	void pfnGetGameDir( char *szGetGameDir );
 
