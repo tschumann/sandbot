@@ -103,13 +103,11 @@ void WaypointFree(void)
 // initialize the waypoint structures...
 void WaypointInit()
 {
-   int i;
-
-   // have any waypoint path nodes been allocated yet?
+	// have any waypoint path nodes been allocated yet?
    if (g_waypoint_paths)
       WaypointFree();  // must free previously allocated path memory
 
-   for (i=0; i < SHORTEST_PATH_ARRAY_LENGTH; i++)
+   for (unsigned int i=0; i < SHORTEST_PATH_ARRAY_LENGTH; i++)
    {
       if (shortest_path[i] != NULL)
          free(shortest_path[i]);
@@ -118,7 +116,7 @@ void WaypointInit()
          free(from_to[i]);
    }
 
-   for (i=0; i < MAX_WAYPOINTS; i++)
+   for (unsigned int i=0; i < MAX_WAYPOINTS; i++)
    {
       waypoints[i].flags = 0;
       waypoints[i].origin = Vector(0,0,0);
@@ -134,7 +132,7 @@ void WaypointInit()
 
    last_waypoint = Vector(0,0,0);
 
-   for (i=0; i < SHORTEST_PATH_ARRAY_LENGTH; i++)
+   for (unsigned int i=0; i < SHORTEST_PATH_ARRAY_LENGTH; i++)
    {
       shortest_path[i] = NULL;
       from_to[i] = NULL;
@@ -1383,13 +1381,10 @@ void WaypointAdd(edict_t *pEntity, int flags = 0)
 
 void WaypointAddAiming(edict_t *pEntity)
 {
-   int index;
-   edict_t *pent = NULL;
+	int index = 0;
 
    if (num_waypoints >= MAX_WAYPOINTS)
       return;
-
-   index = 0;
 
    // find the next available slot for the new waypoint...
    while (index < num_waypoints)
