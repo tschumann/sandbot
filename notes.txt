@@ -41,3 +41,7 @@ Load it all up in gdb:
 gdb -s ~/Documents/sandbot/symbols/sandbot.so.debug -e ~/.steam/steam/steamapps/common/Half-Life/hl_linux -c out.core
 
 TODO: figure out loading sandbot symbols into gdb
+
+Bugs
+----
+GetSaveGameComment doesn't work in Opposing Force?
