@@ -143,6 +143,7 @@ namespace foolsgoldsource
 	{
 		printf( "Precache %s\n", s );
 
+		// TODO: store more than just a string
 		gEngine.models.push_back( string( s ) );
 
 		return gEngine.models.size() - 1;
@@ -184,6 +185,14 @@ namespace foolsgoldsource
 		return -1;
 	}
 
+	int pfnModelFrames( int modelIndex )
+	{
+		string model = gEngine.models[modelIndex];
+
+		// TODO: return the correct value
+		return 0;
+	}
+
 	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax )
 	{
 		// TODO: check this
@@ -193,6 +202,23 @@ namespace foolsgoldsource
 		e->v.maxs.x = rgflMax[0];
 		e->v.maxs.y = rgflMax[1];
 		e->v.maxs.z = rgflMax[2];
+	}
+
+	void pfnChangeLevel( char* s1, char* s2 )
+	{
+		// TODO: set this->globalVariables.mapname
+	}
+
+	void pfnGetSpawnParms( edict_t* ent )
+	{
+		// TODO: does nothing?
+		return;
+	}
+
+	void pfnSaveSpawnParms( edict_t* ent )
+	{
+		// TODO: does nothing?
+		return;
 	}
 
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr )

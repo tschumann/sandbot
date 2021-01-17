@@ -71,8 +71,11 @@ namespace foolsgoldsource
 	int pfnPrecacheSound( char* s );
 	void pfnSetModel( edict_t* e, const char* m );
 	int pfnModelIndex( const char* m );
-
+	int pfnModelFrames( int modelIndex );
 	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax );
+	void pfnChangeLevel( char* s1, char* s2 );
+	void pfnGetSpawnParms( edict_t* ent );
+	void pfnSaveSpawnParms( edict_t* ent );
 
 	void pfnSetOrigin( edict_t* e, const float* rgflOrigin );
 
