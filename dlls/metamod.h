@@ -1,3 +1,8 @@
+//
+// Sandbot
+//
+// (http://www.teamsandpit.com/)
+//
 
 void METAMOD_RETURN( META_RES result );
 
