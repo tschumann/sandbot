@@ -4,7 +4,7 @@
 //
 // http://www.teamsandpit.com/
 //
-// Notes:
+// Notes: this file must be included before waypoint.h
 //
 //=============================================================================
 

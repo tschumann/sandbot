@@ -175,6 +175,7 @@
     <ClCompile Include="util.cpp" />
     <ClCompile Include="util_test.cpp" />
     <ClCompile Include="waypoint.cpp" />
+    <ClCompile Include="waypoint_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />

@@ -12,6 +12,7 @@
 #define _TEST_H_
 
 // CppUnitTestFramework does something strange and breaks the engine's ability to load the .dll so stub it out when building for real
+// to run the tests, uncomment the following line
 // #define TEST
 
 #ifndef TEST
