@@ -13,7 +13,11 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnPrecacheSound = pfnPrecacheSound;
 		this->engineFunctions.pfnSetModel = pfnSetModel;
 		this->engineFunctions.pfnModelIndex = pfnModelIndex;
+		this->engineFunctions.pfnModelFrames = pfnModelFrames;
 		this->engineFunctions.pfnSetSize = pfnSetSize;
+		this->engineFunctions.pfnChangeLevel = pfnChangeLevel;
+		this->engineFunctions.pfnGetSpawnParms = pfnGetSpawnParms;
+		this->engineFunctions.pfnSaveSpawnParms = pfnSaveSpawnParms;
 		this->engineFunctions.pfnSetOrigin = pfnSetOrigin;
 		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
 		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
@@ -39,7 +43,7 @@ namespace foolsgoldsource
 		// TODO: is this how the engine works?
 		this->iStringTableOffset = 1;
 
-		// TODO: edict_t * 0 is worldspawn?
+		// TODO: is edict_t* 0 is worldspawn?
 		for( int i = 0; i <= this->globalVariables.maxClients; i++ )
 		{
 			// TODO: player spawning should happen later - and call one of the server-side callbacks?
