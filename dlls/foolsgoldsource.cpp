@@ -18,6 +18,11 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnChangeLevel = pfnChangeLevel;
 		this->engineFunctions.pfnGetSpawnParms = pfnGetSpawnParms;
 		this->engineFunctions.pfnSaveSpawnParms = pfnSaveSpawnParms;
+		this->engineFunctions.pfnVecToYaw = pfnVecToYaw;
+		this->engineFunctions.pfnVecToAngles = pfnVecToAngles;
+		this->engineFunctions.pfnMoveToOrigin = pfnMoveToOrigin;
+		this->engineFunctions.pfnChangeYaw = pfnChangeYaw;
+		this->engineFunctions.pfnChangePitch = pfnChangePitch;
 		this->engineFunctions.pfnSetOrigin = pfnSetOrigin;
 		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
 		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
@@ -38,13 +43,13 @@ namespace foolsgoldsource
 
 		this->globalVariables.maxClients = 32;
 		this->globalVariables.pStringBase = new char[Engine::iStringTableSize];
-		memset( (char *)this->globalVariables.pStringBase, 0, Engine::iStringTableSize);
+		memset((char*)this->globalVariables.pStringBase, 0, Engine::iStringTableSize);
 		// start allocating at offset 1 so that checks against string_t with value 0 work
 		// TODO: is this how the engine works?
 		this->iStringTableOffset = 1;
 
 		// TODO: is edict_t* 0 is worldspawn?
-		for( int i = 0; i <= this->globalVariables.maxClients; i++ )
+		for (int i = 0; i <= this->globalVariables.maxClients; i++)
 		{
 			// TODO: player spawning should happen later - and call one of the server-side callbacks?
 			shared_ptr<edict_t> edict = std::make_shared<edict_t>();
@@ -64,17 +69,17 @@ namespace foolsgoldsource
 
 	Engine::~Engine()
 	{
-		for( unsigned int i = 0; i < this->edicts.size(); i++ )
+		for (unsigned int i = 0; i < this->edicts.size(); i++)
 		{
 			shared_ptr<edict_t> edict = this->edicts[i];
 
-			if( edict->pvPrivateData )
+			if (edict->pvPrivateData)
 			{
 				delete[] edict->pvPrivateData;
 				edict->pvPrivateData = nullptr;
 			}
 		}
-		if( this->globalVariables.pStringBase )
+		if (this->globalVariables.pStringBase)
 		{
 			delete[] this->globalVariables.pStringBase;
 			this->globalVariables.pStringBase = nullptr;
@@ -96,7 +101,7 @@ namespace foolsgoldsource
 		return this->strGameDir;
 	}
 
-	void Engine::SetGameDirectory( const string& strGameDir )
+	void Engine::SetGameDirectory(const string& strGameDir)
 	{
 		this->strGameDir = strGameDir;
 	}
@@ -106,7 +111,7 @@ namespace foolsgoldsource
 		return this->bIsDedicatedServer;
 	}
 
-	void Engine::SetIsDedicatedServer( const bool bIsDedicatedServer )
+	void Engine::SetIsDedicatedServer(const bool bIsDedicatedServer)
 	{
 		this->bIsDedicatedServer = bIsDedicatedServer;
 	}
@@ -116,24 +121,24 @@ namespace foolsgoldsource
 		return this->bIsCareerMatch;
 	}
 
-	void Engine::SetIsCareerMatch( const bool bIsCareerMatch )
+	void Engine::SetIsCareerMatch(const bool bIsCareerMatch)
 	{
 		this->bIsCareerMatch = bIsCareerMatch;
 	}
 
-	void Engine::SetMaxClients( const int iMaxClients )
+	void Engine::SetMaxClients(const int iMaxClients)
 	{
 		this->globalVariables.maxClients = iMaxClients;
 	}
 
-	string Util::tolowercase( const string& str )
+	string Util::tolowercase(const string& str)
 	{
 		string lowerCased = str;
 
-		for( unsigned int i = 0; i < str.length(); i++ )
+		for (unsigned int i = 0; i < str.length(); i++)
 		{
 			// not ideal but this is how the engine would be doing it
-			lowerCased[i] = tolower( str[i] );
+			lowerCased[i] = tolower(str[i]);
 		}
 
 		return lowerCased;
@@ -143,43 +148,43 @@ namespace foolsgoldsource
 	// Stubbed enginefuncs_t below //
 	/////////////////////////////////
 
-	int pfnPrecacheModel( char* s )
+	int pfnPrecacheModel(char* s)
 	{
-		printf( "Precache %s\n", s );
+		printf("Precache %s\n", s);
 
 		// TODO: store more than just a string
-		gEngine.models.push_back( string( s ) );
+		gEngine.models.push_back(string(s));
 
 		return gEngine.models.size() - 1;
 	}
 
-	int pfnPrecacheSound( char* s )
+	int pfnPrecacheSound(char* s)
 	{
-		printf( "Precache %s\n", s );
+		printf("Precache %s\n", s);
 
-		gEngine.sounds.push_back( string( s ) );
+		gEngine.sounds.push_back(string(s));
 
 		return gEngine.sounds.size() - 1;
 	}
 
-	void pfnSetModel( edict_t* e, const char* m )
+	void pfnSetModel(edict_t* e, const char* m)
 	{
 		// TODO: excessive calls will overflow the string table - is this what the engine does?
 		e->v.model = ALLOC_STRING(m);
 	}
 
-	void pfnSetOrigin( edict_t* e, const float* rgflOrigin )
+	void pfnSetOrigin(edict_t* e, const float* rgflOrigin)
 	{
 		e->v.origin[0] = rgflOrigin[0];
 		e->v.origin[1] = rgflOrigin[1];
 		e->v.origin[2] = rgflOrigin[2];
 	}
 
-	int pfnModelIndex( const char* m )
+	int pfnModelIndex(const char* m)
 	{
-		for( unsigned int i = 0; i < gEngine.models.size(); i++ )
+		for (unsigned int i = 0; i < gEngine.models.size(); i++)
 		{
-			if( gEngine.models[i] == Util::tolowercase( string(m) ) )
+			if (gEngine.models[i] == Util::tolowercase(string(m)))
 			{
 				return i;
 			}
@@ -189,7 +194,7 @@ namespace foolsgoldsource
 		return -1;
 	}
 
-	int pfnModelFrames( int modelIndex )
+	int pfnModelFrames(int modelIndex)
 	{
 		string model = gEngine.models[modelIndex];
 
@@ -197,7 +202,7 @@ namespace foolsgoldsource
 		return 0;
 	}
 
-	void pfnSetSize( edict_t* e, const float* rgflMin, const float* rgflMax )
+	void pfnSetSize(edict_t* e, const float* rgflMin, const float* rgflMax)
 	{
 		// TODO: check this
 		e->v.mins.x = rgflMin[0];
@@ -208,21 +213,49 @@ namespace foolsgoldsource
 		e->v.maxs.z = rgflMax[2];
 	}
 
-	void pfnChangeLevel( char* s1, char* s2 )
+	void pfnChangeLevel(char* s1, char* s2)
 	{
 		// TODO: set this->globalVariables.mapname
 	}
 
-	void pfnGetSpawnParms( edict_t* ent )
+	void pfnGetSpawnParms(edict_t* ent)
 	{
 		// TODO: does nothing?
 		return;
 	}
 
-	void pfnSaveSpawnParms( edict_t* ent )
+	void pfnSaveSpawnParms(edict_t* ent)
 	{
 		// TODO: does nothing?
 		return;
+	}
+
+	float pfnVecToYaw(const float* rgflVector)
+	{
+		// TODO:
+		return 0.0f;
+	}
+
+	void pfnVecToAngles(const float* rgflVectorIn, float* rgflVectorOut)
+	{
+		// TODO:
+	}
+
+	void pfnMoveToOrigin( edict_t* ent, const float* pflGoal, float dist, int iMoveType )
+	{
+		ent->v.origin.x = pflGoal[0];
+		ent->v.origin.y = pflGoal[1];
+		ent->v.origin.z = pflGoal[2];
+	}
+
+	void pfnChangeYaw( edict_t* ent )
+	{
+		// TODO:
+	}
+
+	void pfnChangePitch( edict_t* ent )
+	{
+		// TODO:
 	}
 
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr )

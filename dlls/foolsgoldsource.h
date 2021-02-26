@@ -76,6 +76,11 @@ namespace foolsgoldsource
 	void pfnChangeLevel( char* s1, char* s2 );
 	void pfnGetSpawnParms( edict_t* ent );
 	void pfnSaveSpawnParms( edict_t* ent );
+	float pfnVecToYaw( const float* rgflVector );
+	void pfnVecToAngles( const float* rgflVectorIn, float* rgflVectorOut );
+	void pfnMoveToOrigin( edict_t* ent, const float* pflGoal, float dist, int iMoveType );
+	void pfnChangeYaw( edict_t* ent );
+	void pfnChangePitch( edict_t* ent );
 
 	void pfnSetOrigin( edict_t* e, const float* rgflOrigin );
 
