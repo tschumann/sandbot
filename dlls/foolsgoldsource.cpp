@@ -23,6 +23,11 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnMoveToOrigin = pfnMoveToOrigin;
 		this->engineFunctions.pfnChangeYaw = pfnChangeYaw;
 		this->engineFunctions.pfnChangePitch = pfnChangePitch;
+		this->engineFunctions.pfnFindEntityByString = pfnFindEntityByString;
+		this->engineFunctions.pfnGetEntityIllum = pfnGetEntityIllum;
+		this->engineFunctions.pfnFindEntityInSphere = pfnFindEntityInSphere;
+		this->engineFunctions.pfnFindClientInPVS = pfnFindClientInPVS;
+		this->engineFunctions.pfnEntitiesInPVS = pfnEntitiesInPVS;
 		this->engineFunctions.pfnSetOrigin = pfnSetOrigin;
 		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
 		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
@@ -256,6 +261,31 @@ namespace foolsgoldsource
 	void pfnChangePitch( edict_t* ent )
 	{
 		// TODO:
+	}
+
+	edict_t* pfnFindEntityByString( edict_t* pEdictStartSearchAfter, const char* pszField, const char* pszValue )
+	{
+		return nullptr;
+	}
+
+	int pfnGetEntityIllum( edict_t* pEnt )
+	{
+		return 0;
+	}
+
+	edict_t* pfnFindEntityInSphere( edict_t* pEdictStartSearchAfter, const float* org, float rad )
+	{
+		return nullptr;
+	}
+
+	edict_t* pfnFindClientInPVS( edict_t* pEdict )
+	{
+		return nullptr;
+	}
+
+	edict_t* pfnEntitiesInPVS( edict_t* pplayer )
+	{
+		return nullptr;
 	}
 
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr )

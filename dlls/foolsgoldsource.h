@@ -81,6 +81,11 @@ namespace foolsgoldsource
 	void pfnMoveToOrigin( edict_t* ent, const float* pflGoal, float dist, int iMoveType );
 	void pfnChangeYaw( edict_t* ent );
 	void pfnChangePitch( edict_t* ent );
+	edict_t* pfnFindEntityByString( edict_t* pEdictStartSearchAfter, const char* pszField, const char* pszValue );
+	int pfnGetEntityIllum( edict_t* pEnt );
+	edict_t* pfnFindEntityInSphere( edict_t* pEdictStartSearchAfter, const float* org, float rad );
+	edict_t* pfnFindClientInPVS( edict_t* pEdict );
+	edict_t* pfnEntitiesInPVS( edict_t* pplayer );
 
 	void pfnSetOrigin( edict_t* e, const float* rgflOrigin );
 
