@@ -35,7 +35,7 @@ namespace foolsgoldsource
 		bool GetIsCareerMatch();
 		void SetIsCareerMatch( const bool bIsCareerMatch);
 
-		void SetMaxClients( const int iMaxClients );
+		void SetMaxClients( const unsigned int iMaxClients );
 
 		// below shouldn't be public because the game doesn't have access to them
 
@@ -110,6 +110,9 @@ namespace foolsgoldsource
 
 	int pfnIsCareerMatch( void );
 
+	void pfnQueryClientCvarValue( const edict_t* player, const char* cvarName );
+	void pfnQueryClientCvarValue2( const edict_t* player, const char* cvarName, int requestID );
+	int pfnCheckParm( const char* pchCmdLineToken, char** ppnext );
 	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex );
 }
 

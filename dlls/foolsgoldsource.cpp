@@ -40,6 +40,9 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnGetGameDir = pfnGetGameDir;
 		this->engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
 		this->engineFunctions.pfnIsCareerMatch = pfnIsCareerMatch;
+		this->engineFunctions.pfnQueryClientCvarValue = pfnQueryClientCvarValue;
+		this->engineFunctions.pfnQueryClientCvarValue2 = pfnQueryClientCvarValue2;
+		this->engineFunctions.pfnCheckParm = pfnCheckParm;
 		this->engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
 
 		// install the engine functions and global variables
@@ -74,17 +77,17 @@ namespace foolsgoldsource
 
 	Engine::~Engine()
 	{
-		for (unsigned int i = 0; i < this->edicts.size(); i++)
+		for( unsigned int i = 0; i < this->edicts.size(); i++ )
 		{
 			shared_ptr<edict_t> edict = this->edicts[i];
 
-			if (edict->pvPrivateData)
+			if( edict->pvPrivateData )
 			{
 				delete[] edict->pvPrivateData;
 				edict->pvPrivateData = nullptr;
 			}
 		}
-		if (this->globalVariables.pStringBase)
+		if( this->globalVariables.pStringBase )
 		{
 			delete[] this->globalVariables.pStringBase;
 			this->globalVariables.pStringBase = nullptr;
@@ -106,7 +109,7 @@ namespace foolsgoldsource
 		return this->strGameDir;
 	}
 
-	void Engine::SetGameDirectory(const string& strGameDir)
+	void Engine::SetGameDirectory( const string& strGameDir )
 	{
 		this->strGameDir = strGameDir;
 	}
@@ -116,7 +119,7 @@ namespace foolsgoldsource
 		return this->bIsDedicatedServer;
 	}
 
-	void Engine::SetIsDedicatedServer(const bool bIsDedicatedServer)
+	void Engine::SetIsDedicatedServer( const bool bIsDedicatedServer )
 	{
 		this->bIsDedicatedServer = bIsDedicatedServer;
 	}
@@ -126,17 +129,17 @@ namespace foolsgoldsource
 		return this->bIsCareerMatch;
 	}
 
-	void Engine::SetIsCareerMatch(const bool bIsCareerMatch)
+	void Engine::SetIsCareerMatch( const bool bIsCareerMatch )
 	{
 		this->bIsCareerMatch = bIsCareerMatch;
 	}
 
-	void Engine::SetMaxClients(const int iMaxClients)
+	void Engine::SetMaxClients( const unsigned int iMaxClients )
 	{
-		this->globalVariables.maxClients = iMaxClients;
+		this->globalVariables.maxClients = (signed int)iMaxClients;
 	}
 
-	string Util::tolowercase(const string& str)
+	string Util::tolowercase( const string& str )
 	{
 		string lowerCased = str;
 
@@ -370,6 +373,19 @@ namespace foolsgoldsource
 	int pfnIsCareerMatch( void )
 	{
 		return gEngine.GetIsCareerMatch();
+	}
+
+	void pfnQueryClientCvarValue( const edict_t* player, const char* cvarName )
+	{
+	}
+
+	void pfnQueryClientCvarValue2( const edict_t* player, const char* cvarName, int requestID )
+	{
+	}
+
+	int pfnCheckParm( const char* pchCmdLineToken, char** ppnext )
+	{
+		return 0;
 	}
 
 	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex )
