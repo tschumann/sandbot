@@ -308,7 +308,14 @@ namespace foolsgoldsource
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )
 	{
-		printf( "%s", szFmt );
+		va_list argptr;
+		char buffer[1024];
+
+		va_start( argptr, szFmt );
+		vsprintf( buffer, szFmt, argptr );
+		va_end( argptr );
+
+		printf( "%s", buffer);
 	}
 
 	int pfnAllocString(const char* szValue)
@@ -355,7 +362,7 @@ namespace foolsgoldsource
 		return result;
 	}
 
-	void pfnServerPrint(const char* szMsg)
+	void pfnServerPrint( const char* szMsg )
 	{
 		printf( "%s", szMsg );
 	}
