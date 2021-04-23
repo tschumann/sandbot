@@ -21,6 +21,16 @@ waypoint delete	Delete a waypoint
 waypoint save	Write waypoints to file
 waypoint info	Print what type of waypoint a waypoint is
 
+== Build instructions ==
+
+Windows
+	dlls/sandbot-2019.sln
+
+Linux
+	sudo apt-get install gcc gcc-multilib g++-multilib
+	cd dlls
+	make
+
 == Frequently Asked Questions ==
 
 Q. Can you add support for mod x?
@@ -34,11 +44,6 @@ A. It should work but I don't test it.
 
 Q. Can I make some waypoints?
 A. Yes, please do!
-
-Q. How do I build Sandbot?
-A. If you want to build it yourself, use a tagged release as the head of master can be unstable.
-   On Windows open dlls/sandbot-2019.sln with Visual Studio and compile it.
-   On Linux apt-get install gcc gcc-multilib g++-multilib (or equivalent) and run make inside of dlls/
 
 Q. How do I run the tests?
 A. In Visual Studio go to Tests -> Windows -> Test Explorer and in the run icon menu choose Run All.
