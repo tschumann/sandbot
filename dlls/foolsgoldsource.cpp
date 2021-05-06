@@ -32,6 +32,7 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
 		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
 		this->engineFunctions.pfnLightStyle = pfnLightStyle;
+		this->engineFunctions.pfnRandomLong = pfnRandomLong;
 		this->engineFunctions.pfnAlertMessage = pfnAlertMessage;
 		this->engineFunctions.pfnAllocString = pfnAllocString;
 		this->engineFunctions.pfnPEntityOfEntOffset = pfnPEntityOfEntOffset;
@@ -304,6 +305,11 @@ namespace foolsgoldsource
 	void pfnLightStyle( int style, char* val )
 	{
 		// TODO: do nothing?
+	}
+
+	int32 pfnRandomLong( int32 lLow, int32 lHigh )
+	{
+		return rand() % lHigh + lLow;
 	}
 
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... )

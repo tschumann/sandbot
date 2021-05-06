@@ -608,7 +608,7 @@ Vector UTIL_GetOrigin( edict_t *pEdict )
 {
 	if( !strncmp( STRING(pEdict->v.classname), "func_", 5 ) )
 	{
-		return VecBModelOrigin(pEdict);
+		return VecBModelOrigin( pEdict );
 	}
 
 	return pEdict->v.origin;

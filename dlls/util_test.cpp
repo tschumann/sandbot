@@ -54,5 +54,17 @@ namespace tests
 
 			Assert::IsFalse( IsValidEntity( pPlayer ) );
 		}
+
+		TEST_METHOD(Test_IsBuilt)
+		{
+			edict_t* pEdict = foolsgoldsource::gEngine.edicts[1].get();
+			pEdict->v.iuser4 |= MASK_BUILDABLE;
+
+			Assert::IsFalse( UTIL_IsBuilt( pEdict ) );
+
+			pEdict->v.iuser4 &= ~MASK_BUILDABLE;
+
+			Assert::IsTrue( UTIL_IsBuilt( pEdict ) );
+		}
 	};
 }

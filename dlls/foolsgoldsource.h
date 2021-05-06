@@ -94,6 +94,8 @@ namespace foolsgoldsource
 	void pfnParticleEffect( const float* org, const float* dir, float color, float count );
 	void pfnLightStyle( int style, char* val );
 
+	int32 pfnRandomLong( int32 lLow, int32 lHigh );
+
 	void pfnAlertMessage( ALERT_TYPE atype, char *szFmt, ... );
 
 	int pfnAllocString( const char* szValue );
