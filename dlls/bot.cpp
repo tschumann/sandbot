@@ -2298,7 +2298,7 @@ bool bot_t::IsDead()
 	return this->pEdict->v.health < 1 || this->pEdict->v.deadflag != DEAD_NO;
 }
 
-bool bot_t::IsUnderWater()
+bool bot_t::IsUnderWater() const
 {
 	return this->pEdict->v.waterlevel == 3;
 }
@@ -2367,7 +2367,7 @@ float bot_t::GetWaypointRadius()
 	return fRadius;
 }
 
-bool bot_t::BaseCanUseWeapon()
+bool bot_t::BaseCanUseWeapon() const
 {
 	return this->HasEnemy();
 }

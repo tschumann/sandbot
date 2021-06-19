@@ -288,7 +288,7 @@ void CleanupGameAndBots();
 
 class bot_t;
 
-typedef bool (bot_t::*CanUseWeapon)(bool);
+typedef bool (bot_t::*CanUseWeapon)(bool) const;
 
 struct weapon_t
 {
@@ -346,7 +346,7 @@ public:
 	virtual int GetLightLevel() final;
 
 	virtual bool IsDead() final;
-	virtual bool IsUnderWater() final;
+	virtual bool IsUnderWater() const final;
 	virtual bool IsSniper();
 	virtual bool IsCapturing() const;
 
@@ -356,7 +356,7 @@ public:
 	virtual int GetGoalType();
 	virtual float GetWaypointRadius();
 
-	virtual bool BaseCanUseWeapon();
+	virtual bool BaseCanUseWeapon() const;
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
 
 	virtual bool ShouldJumpAfterDeath();
@@ -513,13 +513,13 @@ class HalfLifeBot : public bot_t
 public:
 	HalfLifeBot();
 
-	virtual int GetPistol();
+	virtual int GetPistol() const;
 
-	virtual bool CanUseCrowbar( bool really );
-	virtual bool CanUseGlock( bool really );
-	virtual bool CanUseMP5Primary( bool really );
+	virtual bool CanUseCrowbar( bool really ) const;
+	virtual bool CanUseGlock( bool really ) const;
+	virtual bool CanUseMP5Primary( bool really ) const;
 
-	virtual bool CanUseEgon( bool really );
+	virtual bool CanUseEgon( bool really ) const;
 };
 
 class OpposingForceBot : public HalfLifeBot
@@ -651,22 +651,22 @@ public:
 
 	virtual int GetPistolMode();
 
-	virtual void UseGaussPistolPulse();
-	virtual void UseGaussPistolCharge();
-	virtual void UseGaussPistolRapid();
-	virtual void UseGaussPistolSniper();
+	virtual void UseGaussPistolPulse() const;
+	virtual void UseGaussPistolCharge() const;
+	virtual void UseGaussPistolRapid() const;
+	virtual void UseGaussPistolSniper() const;
 
-	virtual bool CanUseFists( bool really );
-	virtual bool CanUseGaussPistolPulse( bool really );
-	virtual bool CanUseGaussPistolCharge( bool really );
-	virtual bool CanUseGaussPistolRapid( bool really );
-	virtual bool CanUseShotgun( bool really );
-	virtual bool CanUseMinigun( bool really );
-	virtual bool CanUseBeamgun( bool really );
-	virtual bool CanUseChemgun( bool really );
-	virtual bool CanUseDML( bool really );
-	virtual bool CanUseDMLGrenade( bool really );
-	virtual bool CanUseAICore( bool really );
+	virtual bool CanUseFists( bool really ) const;
+	virtual bool CanUseGaussPistolPulse( bool really ) const;
+	virtual bool CanUseGaussPistolCharge( bool really ) const;
+	virtual bool CanUseGaussPistolRapid( bool really ) const;
+	virtual bool CanUseShotgun( bool really ) const;
+	virtual bool CanUseMinigun( bool really ) const;
+	virtual bool CanUseBeamgun( bool really ) const;
+	virtual bool CanUseChemgun( bool really ) const;
+	virtual bool CanUseDML( bool really ) const;
+	virtual bool CanUseDMLGrenade( bool really ) const;
+	virtual bool CanUseAICore( bool really ) const;
 
 	const static int PISTOL_PULSE = 1;
 	const static int PISTOL_CHARGE = 2;

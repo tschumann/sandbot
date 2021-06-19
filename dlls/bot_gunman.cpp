@@ -88,29 +88,29 @@ int GunmanBot::GetPistolMode()
 	return this->iPistolMode;
 }
 
-void GunmanBot::UseGaussPistolPulse()
+void GunmanBot::UseGaussPistolPulse() const
 {
 	FakeClientCommand( this->pEdict, "cust_11" );
 }
 
-void GunmanBot::UseGaussPistolCharge()
+void GunmanBot::UseGaussPistolCharge() const
 {
 	// gauss_bolt in logs
 	FakeClientCommand( this->pEdict, "cust_12" );
 }
 
-void GunmanBot::UseGaussPistolRapid()
+void GunmanBot::UseGaussPistolRapid() const
 {
 	// gauss_charged in logs
 	FakeClientCommand( this->pEdict, "cust_13" );
 }
 
-void GunmanBot::UseGaussPistolSniper()
+void GunmanBot::UseGaussPistolSniper() const
 {
 	FakeClientCommand( this->pEdict, "cust_14" );
 }
 
-bool GunmanBot::CanUseFists( bool really )
+bool GunmanBot::CanUseFists( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -120,7 +120,7 @@ bool GunmanBot::CanUseFists( bool really )
 	return this->GetDistanceToEnemy() < 32.0 || really;
 }
 
-bool GunmanBot::CanUseGaussPistolPulse( bool really )
+bool GunmanBot::CanUseGaussPistolPulse( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -135,7 +135,7 @@ bool GunmanBot::CanUseGaussPistolPulse( bool really )
 	return this->GetDistanceToEnemy() < 1024.0 || really;
 }
 
-bool GunmanBot::CanUseGaussPistolCharge( bool really )
+bool GunmanBot::CanUseGaussPistolCharge( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -150,7 +150,7 @@ bool GunmanBot::CanUseGaussPistolCharge( bool really )
 	return this->GetDistanceToEnemy() < 256.0 || really;
 }
 
-bool GunmanBot::CanUseGaussPistolRapid( bool really )
+bool GunmanBot::CanUseGaussPistolRapid( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -165,7 +165,7 @@ bool GunmanBot::CanUseGaussPistolRapid( bool really )
 	return this->GetDistanceToEnemy() < 512.0 || really;
 }
 
-bool GunmanBot::CanUseShotgun( bool really )
+bool GunmanBot::CanUseShotgun( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -180,7 +180,7 @@ bool GunmanBot::CanUseShotgun( bool really )
 	return this->GetDistanceToEnemy() < 150.0 || really;
 }
 
-bool GunmanBot::CanUseMinigun( bool really )
+bool GunmanBot::CanUseMinigun( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -195,7 +195,7 @@ bool GunmanBot::CanUseMinigun( bool really )
 	return this->GetDistanceToEnemy() < 1024.0 || really;
 }
 
-bool GunmanBot::CanUseBeamgun( bool really )
+bool GunmanBot::CanUseBeamgun( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -210,7 +210,7 @@ bool GunmanBot::CanUseBeamgun( bool really )
 	return this->GetDistanceToEnemy() < 512.0 || really;
 }
 
-bool GunmanBot::CanUseChemgun( bool really )
+bool GunmanBot::CanUseChemgun( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -225,7 +225,7 @@ bool GunmanBot::CanUseChemgun( bool really )
 	return( this->GetDistanceToEnemy() > 128.0 && this->GetDistanceToEnemy() < 512.0 ) || really;
 }
 
-bool GunmanBot::CanUseDML( bool really )
+bool GunmanBot::CanUseDML( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -240,7 +240,7 @@ bool GunmanBot::CanUseDML( bool really )
 	return ( this->GetDistanceToEnemy() > 256.0 && this->GetDistanceToEnemy() < 9999.0 ) || really;
 }
 
-bool GunmanBot::CanUseDMLGrenade( bool really )
+bool GunmanBot::CanUseDMLGrenade( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -255,7 +255,7 @@ bool GunmanBot::CanUseDMLGrenade( bool really )
 	return ( this->GetDistanceToEnemy() > 128.0 && this->GetDistanceToEnemy() < 512.0 ) || really;
 }
 
-bool GunmanBot::CanUseAICore( bool really )
+bool GunmanBot::CanUseAICore( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{

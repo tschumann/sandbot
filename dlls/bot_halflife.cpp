@@ -21,12 +21,12 @@ HalfLifeBot::HalfLifeBot()
 	this->weapons.push_back(mp5);
 }
 
-int HalfLifeBot::GetPistol()
+int HalfLifeBot::GetPistol() const
 {
 	return VALVE_WEAPON_GLOCK;
 }
 
-bool HalfLifeBot::CanUseCrowbar( bool really )
+bool HalfLifeBot::CanUseCrowbar( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -36,7 +36,7 @@ bool HalfLifeBot::CanUseCrowbar( bool really )
 	return this->GetDistanceToEnemy() < 32.0 || really;
 }
 
-bool HalfLifeBot::CanUseGlock( bool really )
+bool HalfLifeBot::CanUseGlock( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -51,7 +51,7 @@ bool HalfLifeBot::CanUseGlock( bool really )
 	return this->GetDistanceToEnemy() < 8192.0 || really;
 }
 
-bool HalfLifeBot::CanUseMP5Primary( bool really )
+bool HalfLifeBot::CanUseMP5Primary( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -71,7 +71,7 @@ bool HalfLifeBot::CanUseMP5Primary( bool really )
 	return this->GetDistanceToEnemy() < 8192.0 || really;
 }
 
-bool HalfLifeBot::CanUseEgon( bool really )
+bool HalfLifeBot::CanUseEgon( bool really ) const
 {
 	if( !bot_t::BaseCanUseWeapon() )
 	{
@@ -88,5 +88,5 @@ bool HalfLifeBot::CanUseEgon( bool really )
 		return false;
 	}
 
-	return ( this->GetDistanceToEnemy() > 128 && this->GetDistanceToEnemy() < 8192.0 ) || really;
+	return ( this->GetDistanceToEnemy() > 128.0 && this->GetDistanceToEnemy() < 8192.0 ) || really;
 }
