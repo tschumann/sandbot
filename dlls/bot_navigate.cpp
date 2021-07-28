@@ -553,20 +553,37 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       pBot->prev_waypoint_distance = 0.0;
 
 	  // if the current waypoint is the goal and it's a Day of Defeat capture point
-	  if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
-		  pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
+	  if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  UTIL_LogDPrintf( "stopping near waypoint\n" );
 		  pBot->SetSpeed( 0.0 );
-		  ((DODBot *)pBot)->bCapturing = true;
+		  pBot->SetIsCapturing( true );
 		  pBot->iGoalIndex = pBot->waypoint_goal;
 	  }
-	  else if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) &&
-		  pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
+	  else if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  UTIL_LogDPrintf( "moving away from waypoint\n" );
 		  pBot->SetSpeed( pEdict->v.maxspeed );
-		  ((DODBot *)pBot)->bCapturing = false;
+		  pBot->SetIsCapturing( false );
+	  }
+	  else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() )
+	  {
+		  if( waypoints[pBot->curr_waypoint_index].flags & W_FL_OP4_CAPTURE_POINT )
+		  {
+			  if( pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip( pBot->pEdict, pBot->waypoint_goal ) )
+			  {
+					UTIL_LogDPrintf( "stopping near waypoint\n" );
+					pBot->SetSpeed( 0.0 );
+					pBot->SetIsCapturing( true );
+					pBot->iGoalIndex = pBot->waypoint_goal;
+			  }
+			  else if( pBot->waypoint_goal == pBot->curr_waypoint_index &&!ShouldSkip( pBot->pEdict, pBot->waypoint_goal ) )
+			  {
+					UTIL_LogDPrintf( "moving away from waypoint\n" );
+					pBot->SetSpeed( pEdict->v.maxspeed );
+					pBot->SetIsCapturing( false );
+			  }
+		  }
 	  }
 
       // check if the waypoint is a door waypoint

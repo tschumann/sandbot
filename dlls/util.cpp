@@ -34,9 +34,6 @@
 #include <cctype>
 #endif // __linux__
 
-extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
-extern int num_teams;
-
 int gmsgTextMsg = 0;
 int gmsgSayText = 0;
 int gmsgShowMenu = 0;
@@ -268,7 +265,7 @@ int UTIL_GetClass(edict_t *pEntity)
 
 int UTIL_GetBotIndex(edict_t *pEdict)
 {
-   for (int index=0; index < MAX_PLAYERS; index++)
+   for (int index=0; index < Game::MAX_PLAYERS; index++)
    {
       if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {
@@ -284,7 +281,7 @@ bot_t *UTIL_GetBotPointer( const edict_t *pEdict )
 {
    int index;
 
-   for (index=0; index < MAX_PLAYERS; index++)
+   for (index=0; index < Game::MAX_PLAYERS; index++)
    {
       if (pBots && pBots[index] && pBots[index]->pEdict == pEdict)
       {
@@ -292,8 +289,10 @@ bot_t *UTIL_GetBotPointer( const edict_t *pEdict )
       }
    }
 
-   if (index < MAX_PLAYERS)
-      return (pBots[index]);
+   if (index < Game::MAX_PLAYERS)
+   {
+	   return (pBots[index]);
+   }
 
    return nullptr;  // return NULL if edict is not a bot
 }
@@ -609,7 +608,7 @@ Vector UTIL_GetOrigin( edict_t *pEdict )
 {
 	if( !strncmp( STRING(pEdict->v.classname), "func_", 5 ) )
 	{
-		return VecBModelOrigin(pEdict);
+		return VecBModelOrigin( pEdict );
 	}
 
 	return pEdict->v.origin;

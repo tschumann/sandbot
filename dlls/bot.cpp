@@ -20,11 +20,11 @@
 #include "h_export.h"
 
 bot_player_t *pBotData = nullptr;
-bot_t **pBots = nullptr; // [MAX_PLAYERS];
+bot_t **pBots = nullptr; // [Game::MAX_PLAYERS];
 
 bool b_observer_mode = false;
 
-bot_player_t g_valveBots[MAX_PLAYERS] =
+bot_player_t g_valveBots[Game::MAX_PLAYERS] =
 {
 	{"Kelly", "barney", false},
 	{"Ted", "gina", false},
@@ -60,7 +60,7 @@ bot_player_t g_valveBots[MAX_PLAYERS] =
 	{"Harry", "gina", false}
 };
 
-bot_player_t g_gearboxBots[MAX_PLAYERS] = 
+bot_player_t g_gearboxBots[Game::MAX_PLAYERS] =
 {
 	{"Randy", "barney", false},
 	{"Brian", "beret", false},
@@ -96,13 +96,13 @@ bot_player_t g_gearboxBots[MAX_PLAYERS] =
 	{"RichardC", "otis", false}
 };
 
-bot_player_t g_cstrikeBots[MAX_PLAYERS] = 
+bot_player_t g_cstrikeBots[Game::MAX_PLAYERS] =
 {
 	{"Minh", NULL, false},
 	{"Jesse", NULL, false}
 };
 
-bot_player_t g_dodBots[MAX_PLAYERS] = 
+bot_player_t g_dodBots[Game::MAX_PLAYERS] =
 {
 	{"Matt", NULL, false},		// mugsy
 	{"John", NULL, false},		// pickitup
@@ -138,7 +138,7 @@ bot_player_t g_dodBots[MAX_PLAYERS] =
 	{"Unknown8", NULL, false},	// Kamikazi
 };
 
-bot_player_t g_gunmanBots[MAX_PLAYERS] = 
+bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
 {
 	{"Herb", "bandit", false},		// BoneWolf
 	{"Steven", "general", false},	// Wipeoot
@@ -174,7 +174,7 @@ bot_player_t g_gunmanBots[MAX_PLAYERS] =
 	{"Robin", "general", false}
 };
 
-bot_player_t g_nsBots[MAX_PLAYERS] = 
+bot_player_t g_nsBots[Game::MAX_PLAYERS] =
 {
 	{"Charlie", NULL, false},
 	{"Jon", NULL, false},
@@ -210,7 +210,7 @@ bot_player_t g_nsBots[MAX_PLAYERS] =
 	{"Nick", NULL, false}
 };
 
-bot_player_t g_hungerBots[MAX_PLAYERS] =
+bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
 {
 	{"Bill", "civie", false},
 	{"Dave", "dave", false},
@@ -246,7 +246,7 @@ bot_player_t g_hungerBots[MAX_PLAYERS] =
 	{"Ben", "zork", false}
 };
 
-bot_player_t g_shipBots[MAX_PLAYERS] = 
+bot_player_t g_shipBots[Game::MAX_PLAYERS] =
 {
 	{"Chris", NULL, false},
 	{"Ailsa", NULL, false},
@@ -288,8 +288,6 @@ float pause_frequency[5] = {4, 7, 10, 15, 20};
 float pause_time[5][2] = {{0.2f, 0.5f}, {0.5f, 1.0f}, {0.7f, 1.3f}, {1.0f, 1.7f}, {1.2f, 2.0f}};
 
 // TheFatal's method for calculating the msecval
-extern int msecnum;
-extern float msecdel;
 extern float msecval;
 
 int GetBotCount()
@@ -335,7 +333,7 @@ void KickBot( const int iIndex )
 
 void KickAllBots()
 {
-	for( unsigned int index = 0; index < MAX_PLAYERS; index++ )
+	for( unsigned int index = 0; index < Game::MAX_PLAYERS; index++ )
 	{
 		KickBot( index );
 	}
@@ -345,14 +343,14 @@ void CleanupGameAndBots()
 {
 	if( pBotData )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBotData[i].bIsUsed = false;
 		}
 	}
 	if( pBots )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			delete pBots[i];
 			pBots[i] = nullptr;
@@ -493,7 +491,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		iIndex++;
 
 		// loop around
-		if( iIndex == MAX_PLAYERS )
+		if( iIndex == Game::MAX_PLAYERS )
 		{
 			iIndex = 0;
 		}
@@ -545,12 +543,12 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  pBotEdict->v.frags = 0;
 
       index = 0;
-	  while ((index < MAX_PLAYERS) && (pBots[index]->is_used))
+	  while ((index < Game::MAX_PLAYERS) && (pBots[index]->is_used))
 	  {
 		  index++;
 	  }
 
-      if (index == MAX_PLAYERS)
+      if (index == Game::MAX_PLAYERS)
       {
          ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Can't create bot!\n");
          return;
@@ -1812,6 +1810,9 @@ bot_t::bot_t()
 	// TODO: needed? already set in BotThink - not BotCreate?
 	this->name[0] = '\0';
 	this->pEdict = nullptr;
+
+	this->iGoalIndex = 0;
+	this->bCapturing = false;
 }
 
 bot_t::~bot_t()
@@ -1820,6 +1821,8 @@ bot_t::~bot_t()
 
 void bot_t::OnSpawn()
 {
+	this->iGoalIndex = 0;
+	this->bCapturing = false;
 }
 
 void bot_t::Join()
@@ -1859,6 +1862,33 @@ void bot_t::Think()
 {
 	// TODO: move all of BotThink into here eventually
 	this->PreThink();
+
+	// TODO: possibly this will trigger before the bot is touching the capture point? shouldn't
+	// though because bCapturing is only true when the bot is close enough to the waypoint
+	// if the bot is capturing, and is at a capture point, and it's a point that should be captured
+	if( this->IsCapturing() )
+	{
+		this->SetSpeed( 0.0 );
+
+		// TODO: this is very rough - probably something is set in pev if the bot is
+		// on or near a dod_control_point/trigger_ctfgeneric - should check if it's a brush entity...
+		if( DistanceToNearest( this->pEdict->v.origin, "dod_control_point" ) > 200.0 || DistanceToNearest( this->pEdict->v.origin, "trigger_ctfgeneric" ) > 200.0 )
+		{
+			UTIL_LogDPrintf( "too far from capture point while capturing; resetting\n" );
+			this->SetIsCapturing( false );
+			this->SetSpeed( this->GetMaxSpeed() );
+		}
+	}
+
+	// TODO: waypoint goal changes once it's capturing?
+	// if the current waypoint is a capture point and it is now captured
+	if( this->IsCapturing() && ShouldSkip( this->pEdict, this->iGoalIndex ) )
+	{
+		UTIL_LogDPrintf( "leaving waypoint\n" );
+		this->SetIsCapturing( false );
+		this->SetSpeed( this->GetMaxSpeed() );
+	}
+
 	this->PostThink();
 }
 
@@ -2268,7 +2298,7 @@ bool bot_t::IsDead()
 	return this->pEdict->v.health < 1 || this->pEdict->v.deadflag != DEAD_NO;
 }
 
-bool bot_t::IsUnderWater()
+bool bot_t::IsUnderWater() const
 {
 	return this->pEdict->v.waterlevel == 3;
 }
@@ -2276,6 +2306,11 @@ bool bot_t::IsUnderWater()
 bool bot_t::IsSniper()
 {
 	return false;
+}
+
+bool bot_t::IsCapturing() const
+{
+	return this->bCapturing;
 }
 
 void bot_t::UpdateSounds()
@@ -2332,7 +2367,7 @@ float bot_t::GetWaypointRadius()
 	return fRadius;
 }
 
-bool bot_t::BaseCanUseWeapon()
+bool bot_t::BaseCanUseWeapon() const
 {
 	return this->HasEnemy();
 }
@@ -2395,4 +2430,9 @@ bool bot_t::HasFlag() const
 bool bot_t::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	return false;
+}
+
+void bot_t::SetIsCapturing( const bool bIsCapturing )
+{
+	this->bCapturing = bIsCapturing;
 }

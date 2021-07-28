@@ -84,7 +84,7 @@ const bot_weapon_select_t valve_weapon_select[] = {
     100, TRUE, 70, 1, 1,
 	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL},
     /* terminator */
-    {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
+    {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
 const bot_weapon_select_t gearbox_weapon_select[] = {
@@ -152,7 +152,7 @@ const bot_weapon_select_t gearbox_weapon_select[] = {
 	 0.0f, 1200.0f, 0.0f, 1200.0f,
 	 100, TRUE, 70, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL},
 	/* terminator */
-	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
+	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
 const bot_weapon_select_t cs_weapon_select[] = {
@@ -169,7 +169,7 @@ const bot_weapon_select_t cs_weapon_select[] = {
 	 100, TRUE, 100, 1, 0,
 	 FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL},
 	/* terminator */
-	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
+	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
 const bot_weapon_select_t dod_weapon_select[] = {
@@ -239,7 +239,7 @@ const bot_weapon_select_t dod_weapon_select[] = {
 	 0.0f, 50.0f, 0.0f, 0.0f,
 	 100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MELEE},*/
 	/* terminator */
-	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
+	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
 const bot_weapon_select_t tfc_weapon_select[] = {
@@ -295,7 +295,7 @@ const bot_weapon_select_t tfc_weapon_select[] = {
 	 40.0f, 600.0f, 0.0f, 0.0f,
 	 100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f},
 	/* terminator */
-	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
+	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
 const bot_weapon_select_t gunman_weapon_select[] = {
@@ -336,7 +336,7 @@ const bot_weapon_select_t gunman_weapon_select[] = {
 	0, true, 100, 0, 0,
 	false, false, false, false, 0.0f, 0.0f, WEAPON_NONE},
 	/* terminator */
-    {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
+    {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
 // see AvHBasePlayerWeapon::mRange
@@ -425,7 +425,7 @@ const bot_weapon_select_t ns_weapon_select[] = {
 	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f},
 
     /* terminator */
-    {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
+    {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
 const bot_weapon_select_t hunger_weapon_select[] = {
@@ -497,18 +497,17 @@ const bot_weapon_select_t hunger_weapon_select[] = {
     100, TRUE, 70, 1, 1,
 	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f},
     /* terminator */
-    {0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
+    {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
 const bot_weapon_select_t ship_weapon_select[] = {
 	/* terminator */
-	{0, "", 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
+	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f}
 };
 
 edict_t *BotFindEnemy( bot_t *pBot )
 {
 	Vector vecEnd;
-	static bool flag=TRUE;
 	edict_t *pent = nullptr;
 	edict_t *pNewEnemy;
 	int i;

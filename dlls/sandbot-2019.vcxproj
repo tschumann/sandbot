@@ -76,6 +76,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -123,6 +124,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -169,9 +171,11 @@
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="foolsgoldsource.cpp" />
     <ClCompile Include="h_export_test.cpp" />
+    <ClCompile Include="pseudomod.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="util_test.cpp" />
     <ClCompile Include="waypoint.cpp" />
+    <ClCompile Include="waypoint_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
@@ -186,6 +190,7 @@
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="metamod.h" />
     <ClInclude Include="foolsgoldsource.h" />
+    <ClInclude Include="pseudomod.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />

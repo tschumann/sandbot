@@ -27,7 +27,6 @@ extern int debug_engine;
 extern globalvars_t  *gpGlobals;
 extern bool g_waypoint_on;
 extern bool g_auto_waypoint;
-extern bool g_path_waypoint;
 extern bool b_observer_mode;
 
 char g_argv[1024];
@@ -66,7 +65,7 @@ vector<CapturePoint> capturePoints;
 int num_flags = 0;  // for TFC
 int num_backpacks = 0;
 int iCapturePointCount = 0;
-BACKPACK_S backpacks[MAX_BACKPACKS];
+BACKPACK_S backpacks[TFCGame::MAX_BACKPACKS];
 char arg[256];
 
 float respawn_time = 0.0;
@@ -229,7 +228,7 @@ int DispatchSpawn( edict_t *pent )
 
 		num_backpacks = 0;
 
-		for (int index=0; index < MAX_BACKPACKS; index++)
+		for (int index=0; index < TFCGame::MAX_BACKPACKS; index++)
 		{
 			backpacks[index].edict = nullptr;
 			backpacks[index].armor = 0;
@@ -419,16 +418,16 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			// keep track of it
 			pent_trigger_ctfgeneric = pentKeyvalue;
 		}
-		// if it's a trigger_ctfgeneric and it's the team_no key
-		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "team_no" ) )
+		// if it's a trigger_ctfgeneric and it's the triggerstate key
+		if( pentKeyvalue == pent_trigger_ctfgeneric && !strcmp( pkvd->szKeyName, "triggerstate" ) )
 		{
+			// TODO: this isn't working - key/values are processed sequentially most likely so we're probably getting the triggerstate before the name and targetname
 			CapturePoint capturePoint;
-			ALERT( at_console, "Getting a trigger_ctfgeneric's details (team_no %d, targetname %s, target %s)\n", atoi( pkvd->szValue ), STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
-			// get the team_no value
-			capturePoint.iTeam = atoi( pkvd->szValue );
+			ALERT( at_console, "Getting a trigger_ctfgeneric's (targetname %s, target %s)\n", STRING(pentKeyvalue->v.globalname), STRING(pentKeyvalue->v.target) );
+			capturePoint.bHasTriggerState = true;
 			// get the name of the capture point
 			capturePoint.szName = STRING(pentKeyvalue->v.globalname);
-			// get the target (just points to a trigger_relay?)
+			// get the target
 			capturePoint.szTarget = STRING(pentKeyvalue->v.target);
 			capturePoint.pEdict = pentKeyvalue;
 			capturePoints.push_back( capturePoint );
@@ -536,7 +535,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 		// don't try to add bots for 60 seconds, give client time to get added
 		bot_check_time = gpGlobals->time + 60.0;
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			if( pBots[i]->is_used )  // count the number of bots in use
 				count++;
@@ -546,7 +545,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 		// then kick one of the bots off the server...
 		if( (count > min_bots) && (min_bots != -1) )
 		{
-			for( int i = 0; i < MAX_PLAYERS; i++ )
+			for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 			{
 				if( pBots[i]->is_used )  // is this slot used?
 				{
@@ -572,7 +571,7 @@ void ClientDisconnect( edict_t *pEntity )
 {
 	UTIL_LogDPrintf( "ClientDisconnect: pEntity=%x\n", pEntity );
 
-	for( int i = 0; i < MAX_PLAYERS; i++ )
+	for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 	{
 		if( pBots && pBots[i] && pBots[i]->pEdict == pEntity )
 		{
@@ -800,20 +799,7 @@ void ClientCommand( edict_t *pEntity )
       }
       else if (FStrEq(pcmd, "pathwaypoint"))
       {
-         if (FStrEq(arg1, "on"))
-         {
-            g_path_waypoint = TRUE;
-            g_waypoint_on = TRUE;  // turn this on just in case
-
-            ClientPrint(pEntity, HUD_PRINTNOTIFY, "pathwaypoint is ON\n");
-         }
-         else if (FStrEq(arg1, "off"))
-         {
-            g_path_waypoint = FALSE;
-
-            ClientPrint(pEntity, HUD_PRINTNOTIFY, "pathwaypoint is OFF\n");
-         }
-         else if (FStrEq(arg1, "create1"))
+         if (FStrEq(arg1, "create1"))
          {
             WaypointCreatePath(pEntity, 1);
          }
@@ -1022,7 +1008,7 @@ void ClientCommand( edict_t *pEntity )
 
 				if( pBot )
 				{
-					ALERT( at_console, "Capturing: %d\n", ((DODBot *)pBot)->bCapturing );
+					ALERT( at_console, "Capturing: %d\n", pBot->IsCapturing() );
 				}
 
 #if 0
@@ -1109,14 +1095,14 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
 	if( pBotData )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBotData[i].bIsUsed = false;
 		}
 	}
 	if( pBots )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			delete pBots[i];
 			pBots[i] = nullptr;
@@ -1124,13 +1110,13 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		pBots = nullptr;
 	}
 
-	pBots = new bot_t*[MAX_PLAYERS];
+	pBots = new bot_t*[Game::MAX_PLAYERS];
 
 	if( mod_id == VALVE_DLL )
 	{
 		pGame = std::make_unique<ValveGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new HalfLifeBot();
 		}
@@ -1139,7 +1125,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<GearboxGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new OpposingForceBot();
 		}
@@ -1148,7 +1134,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<DecayGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new HalfLifeBot();
 		}
@@ -1157,7 +1143,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<CStrikeGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new CStrikeBot();
 		}
@@ -1166,7 +1152,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<DODGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new DODBot();
 		}
@@ -1175,7 +1161,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<TFCGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new TFCBot();
 		}
@@ -1184,7 +1170,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<Game>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new GunmanBot();
 		}
@@ -1193,7 +1179,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<NSGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new NSBot();
 		}
@@ -1202,7 +1188,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<ShipGame>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new ShipBot();
 		}
@@ -1211,7 +1197,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	{
 		pGame = std::make_unique<Game>();
 
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new bot_t();
 		}
@@ -1293,7 +1279,7 @@ void StartFrame( void )
 		count = 0;
 
 		// mark the bots as needing to be respawned...
-		for (index = 0; index < MAX_PLAYERS; index++)
+		for (index = 0; index < Game::MAX_PLAYERS; index++)
 		{
 			if (count >= prev_num_bots)
 			{
@@ -1422,7 +1408,7 @@ void StartFrame( void )
 	}
 	else if( GetBotCount() > CvarGetValue( &bot_count ) )
 	{
-		for( int i = 0; i < MAX_PLAYERS; i++ )
+		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			if( pBots[i] && pBots[i]->is_used )
 			{

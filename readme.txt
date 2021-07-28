@@ -21,6 +21,16 @@ waypoint delete	Delete a waypoint
 waypoint save	Write waypoints to file
 waypoint info	Print what type of waypoint a waypoint is
 
+== Build instructions ==
+
+Windows
+	dlls/sandbot-2019.sln
+
+Linux
+	sudo apt-get install gcc gcc-multilib g++-multilib
+	cd dlls
+	make
+
 == Frequently Asked Questions ==
 
 Q. Can you add support for mod x?
@@ -34,11 +44,6 @@ A. It should work but I don't test it.
 
 Q. Can I make some waypoints?
 A. Yes, please do!
-
-Q. How do I build Sandbot?
-A. If you want to build it yourself, use a tagged release as the head of master can be unstable.
-   On Windows open dlls/sandbot-2019.sln with Visual Studio and compile it.
-   On Linux apt-get install gcc gcc-multilib g++-multilib (or equivalent) and run make inside of dlls/
 
 Q. How do I run the tests?
 A. In Visual Studio go to Tests -> Windows -> Test Explorer and in the run icon menu choose Run All.
@@ -56,10 +61,12 @@ v0.4.3 (??/??/??)
 - [All] Fixed cvars not being read correctly in Metamod.
 - [All] bot_skill and bot_count now get written to config.cfg
 - [All] Added GetEntityAPI2 support.
+- [All] Got rid of pathwaypoint on/off and replaced it with waypoint on/off.
 - [Windows] Fixed possible memory leaks.
 - [Windows] Updated compiler to Visual Studio 2019 (from Visual Studio 2017).
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.
 - [Linux] Updated compiler to gcc 8.3.0 (from gcc 6.3.0).
+- [Linux] Updated to compile with gcc 11.1.1 (thanks dannycolin@GitHub and mathieuf20@GitHub).
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
 - [Opposing Force] Bots can now use weapon_penguin.
 - [Natural Selection] Increased range at which marines will use weapon_machinegun and weapon_heavymachinegun.

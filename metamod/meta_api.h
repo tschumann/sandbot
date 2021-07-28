@@ -221,12 +221,4 @@ C_DLLEXPORT int GetEngineFunctions_Post(enginefuncs_t *pengfuncsFromEngine,
 #define MDLL_InconsistentFile			MDLL_FUNC->pfnInconsistentFile
 #define MDLL_AllowLagCompensation		MDLL_FUNC->pfnAllowLagCompensation
 
-// NEW API functions:
-#define MNEW_FUNC	gpGamedllFuncs->newapi_table
-
-#define MNEW_OnFreeEntPrivateData		MNEW_FUNC->pfnOnFreeEntPrivateData
-#define MNEW_GameShutdown				MNEW_FUNC->pfnGameShutdown
-#define MNEW_ShouldCollide				MNEW_FUNC->pfnShouldCollide
-#define MNEW_CvarValue                                  MNEW_FUNC->pfnCvarValue
-
 #endif /* META_API_H */

@@ -143,13 +143,8 @@ const int kGameStatusEnded = 2;
 const int kGameStatusGameTime = 3;
 const int kGameStatusUnspentLevels = 4;
 
-#define MAX_PLAYERS	32
-
-
 #define BOT_SKIN_LEN 32
 #define BOT_NAME_LEN 32
-
-#define MAX_BACKPACKS 100
 
 // Only one of these allowed per entity, stored in pev->iuser3.
 typedef enum
@@ -293,7 +288,7 @@ void CleanupGameAndBots();
 
 class bot_t;
 
-typedef bool (bot_t::*CanUseWeapon)(bool);
+typedef bool (bot_t::*CanUseWeapon)(bool) const;
 
 struct weapon_t
 {
@@ -351,8 +346,9 @@ public:
 	virtual int GetLightLevel() final;
 
 	virtual bool IsDead() final;
-	virtual bool IsUnderWater() final;
+	virtual bool IsUnderWater() const final;
 	virtual bool IsSniper();
+	virtual bool IsCapturing() const;
 
 	virtual void UpdateSounds();
 
@@ -360,13 +356,14 @@ public:
 	virtual int GetGoalType();
 	virtual float GetWaypointRadius();
 
-	virtual bool BaseCanUseWeapon();
+	virtual bool BaseCanUseWeapon() const;
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
 
 	virtual bool ShouldJumpAfterDeath();
 
 	virtual bool HasFlag() const;
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
+	virtual void SetIsCapturing( const bool bIsCapturing );
 
 	bool is_used;
 	int iBotDataIndex;
@@ -489,6 +486,7 @@ public:
 	float fUseDoorTime;
 
 	int iGoalIndex;
+	bool bCapturing;
 
 	bot_current_weapon_t current_weapon;  // one current weapon for each bot
 	int m_rgAmmo[MAX_AMMO_SLOTS];  // total ammo amounts (1 array for each bot)
@@ -515,13 +513,13 @@ class HalfLifeBot : public bot_t
 public:
 	HalfLifeBot();
 
-	virtual int GetPistol();
+	virtual int GetPistol() const;
 
-	virtual bool CanUseCrowbar( bool really );
-	virtual bool CanUseGlock( bool really );
-	virtual bool CanUseMP5Primary( bool really );
+	virtual bool CanUseCrowbar( bool really ) const;
+	virtual bool CanUseGlock( bool really ) const;
+	virtual bool CanUseMP5Primary( bool really ) const;
 
-	virtual bool CanUseEgon( bool really );
+	virtual bool CanUseEgon( bool really ) const;
 };
 
 class OpposingForceBot : public HalfLifeBot
@@ -565,9 +563,7 @@ class DODBot : public bot_t
 public:
 	DODBot();
 
-	virtual void OnSpawn();
 	virtual void Join();
-	virtual void Think();
 
 	virtual float GetSpeedToEnemy() const;
 	virtual void Reload();
@@ -583,8 +579,6 @@ public:
 	virtual int GetGoalType();
 
 	virtual bool ShouldCapturePoint( edict_t * pControlPoint );
-
-	bool bCapturing;
 
 	const static int TEAM_ALLIES = 1;
 	const static int TEAM_AXIS = 2;
@@ -657,22 +651,22 @@ public:
 
 	virtual int GetPistolMode();
 
-	virtual void UseGaussPistolPulse();
-	virtual void UseGaussPistolCharge();
-	virtual void UseGaussPistolRapid();
-	virtual void UseGaussPistolSniper();
+	virtual void UseGaussPistolPulse() const;
+	virtual void UseGaussPistolCharge() const;
+	virtual void UseGaussPistolRapid() const;
+	virtual void UseGaussPistolSniper() const;
 
-	virtual bool CanUseFists( bool really );
-	virtual bool CanUseGaussPistolPulse( bool really );
-	virtual bool CanUseGaussPistolCharge( bool really );
-	virtual bool CanUseGaussPistolRapid( bool really );
-	virtual bool CanUseShotgun( bool really );
-	virtual bool CanUseMinigun( bool really );
-	virtual bool CanUseBeamgun( bool really );
-	virtual bool CanUseChemgun( bool really );
-	virtual bool CanUseDML( bool really );
-	virtual bool CanUseDMLGrenade( bool really );
-	virtual bool CanUseAICore( bool really );
+	virtual bool CanUseFists( bool really ) const;
+	virtual bool CanUseGaussPistolPulse( bool really ) const;
+	virtual bool CanUseGaussPistolCharge( bool really ) const;
+	virtual bool CanUseGaussPistolRapid( bool really ) const;
+	virtual bool CanUseShotgun( bool really ) const;
+	virtual bool CanUseMinigun( bool really ) const;
+	virtual bool CanUseBeamgun( bool really ) const;
+	virtual bool CanUseChemgun( bool really ) const;
+	virtual bool CanUseDML( bool really ) const;
+	virtual bool CanUseDMLGrenade( bool really ) const;
+	virtual bool CanUseAICore( bool really ) const;
 
 	const static int PISTOL_PULSE = 1;
 	const static int PISTOL_CHARGE = 2;
@@ -851,10 +845,11 @@ typedef struct
 
 struct CapturePoint
 {
-	int iTeam;
+	// int iTeam;
 	const char* szName;
 	const char* szTarget;
 	edict_t* pEdict;
+	bool bHasTriggerState;
 };
 
 #define MAX_TEAMS 32
