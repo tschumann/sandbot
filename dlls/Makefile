@@ -35,7 +35,6 @@ OBJ = \
 	bot_hunger.o \
 	dll.o \
 	engine.o \
-	foolsgoldsource.o \
 	game.o \
 	h_export.o \
 	linkfunc.o \
