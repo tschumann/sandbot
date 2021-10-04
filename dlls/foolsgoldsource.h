@@ -19,6 +19,13 @@ using std::vector;
 
 namespace foolsgoldsource
 {
+	struct event_t
+	{
+		unsigned short iIndex;
+		string strEventFileName;
+		int iType;
+	};
+
 	class Engine
 	{
 	public:
@@ -43,6 +50,7 @@ namespace foolsgoldsource
 		vector<shared_ptr<edict_t>> edicts;
 		vector<string> models;
 		vector<string> sounds;
+		vector<event_t> events;
 		int iMaxEdicts;
 
 		// TODO: how does the engine track this?
@@ -109,6 +117,9 @@ namespace foolsgoldsource
 	void pfnGetGameDir( char *szGetGameDir );
 
 	int pfnIsDedicatedServer( void );
+
+	unsigned short pfnPrecacheEvent( int type, const char* psz );
+	void pfnPlaybackEvent( int flags, const edict_t* pInvoker, unsigned short eventindex, float delay, float* origin, float* angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
 
 	int pfnIsCareerMatch( void );
 

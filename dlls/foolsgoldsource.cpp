@@ -40,6 +40,8 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnServerPrint = pfnServerPrint;
 		this->engineFunctions.pfnGetGameDir = pfnGetGameDir;
 		this->engineFunctions.pfnIsDedicatedServer = pfnIsDedicatedServer;
+		this->engineFunctions.pfnPrecacheEvent = pfnPrecacheEvent;
+		this->engineFunctions.pfnPlaybackEvent = pfnPlaybackEvent;
 		this->engineFunctions.pfnIsCareerMatch = pfnIsCareerMatch;
 		this->engineFunctions.pfnQueryClientCvarValue = pfnQueryClientCvarValue;
 		this->engineFunctions.pfnQueryClientCvarValue2 = pfnQueryClientCvarValue2;
@@ -159,7 +161,7 @@ namespace foolsgoldsource
 
 	int pfnPrecacheModel(char* s)
 	{
-		printf("Precache %s\n", s);
+		printf("Precaching %s\n", s);
 
 		// TODO: store more than just a string
 		gEngine.models.push_back(string(s));
@@ -169,7 +171,7 @@ namespace foolsgoldsource
 
 	int pfnPrecacheSound(char* s)
 	{
-		printf("Precache %s\n", s);
+		printf("Precaching %s\n", s);
 
 		gEngine.sounds.push_back(string(s));
 
@@ -381,6 +383,38 @@ namespace foolsgoldsource
 	int pfnIsDedicatedServer( void )
 	{
 		return gEngine.GetIsDedicatedServer();
+	}
+
+	unsigned short pfnPrecacheEvent( int type, const char* psz )
+	{
+		printf("Precaching %s\n", psz);
+
+		event_t event;
+		event.iIndex = gEngine.events.size();
+		event.strEventFileName = string(psz);
+		event.iType = type;
+
+		gEngine.events.push_back(event);
+
+		return event.iIndex;
+	}
+
+	void pfnPlaybackEvent( int flags, const edict_t* pInvoker, unsigned short eventindex, float delay, float* origin, float* angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 )
+	{
+		bool bEventFound = false;
+
+		for (unsigned int i = 0; i < gEngine.events.size(); i++)
+		{
+			if (gEngine.events[i].iIndex == eventindex)
+			{
+				bEventFound = true;
+			}
+		}
+
+		if (!bEventFound)
+		{
+			// TODO: error out?
+		}
 	}
 
 	int pfnIsCareerMatch( void )
