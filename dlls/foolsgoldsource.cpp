@@ -390,7 +390,8 @@ namespace foolsgoldsource
 		printf("Precaching %s\n", psz);
 
 		event_t event;
-		event.iIndex = gEngine.events.size();
+		// down-cast so that it's a valid index - should never have too many events anyway
+		event.iIndex = (unsigned short)gEngine.events.size();
 		event.strEventFileName = string(psz);
 		event.iType = type;
 

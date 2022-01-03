@@ -510,7 +510,6 @@ edict_t *BotFindEnemy( bot_t *pBot )
 	Vector vecEnd;
 	edict_t *pent = nullptr;
 	edict_t *pNewEnemy;
-	int i;
 
 	edict_t *pEdict = pBot->pEdict;
 
@@ -575,7 +574,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
       nearestdistance = 2500;
 
       // search the world for players...
-      for (i = 1; i <= gpGlobals->maxClients; i++)
+      for( int i = 1; i <= gpGlobals->maxClients; i++ )
       {
          edict_t *pPlayer = INDEXENT(i);
 
