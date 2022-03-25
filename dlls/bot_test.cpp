@@ -15,8 +15,6 @@
 #include "foolsgoldsource.h"
 #include "test.h"
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-
 namespace tests
 {
 	TEST_CLASS(bot_test)

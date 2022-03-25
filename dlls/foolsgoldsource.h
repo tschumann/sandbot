@@ -96,6 +96,8 @@ namespace foolsgoldsource
 	edict_t* pfnEntitiesInPVS( edict_t* pplayer );
 
 	void pfnSetOrigin( edict_t* e, const float* rgflOrigin );
+	void pfnEmitSound( edict_t* entity, int channel, const char* sample, float volume, float attenuation, int fFlags, int pitch );
+	void pfnEmitAmbientSound( edict_t* entity, float* pos, const char* samp, float vol, float attenuation, int fFlags, int pitch );
 
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr );
 

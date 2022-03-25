@@ -29,6 +29,8 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnFindClientInPVS = pfnFindClientInPVS;
 		this->engineFunctions.pfnEntitiesInPVS = pfnEntitiesInPVS;
 		this->engineFunctions.pfnSetOrigin = pfnSetOrigin;
+		this->engineFunctions.pfnEmitSound = pfnEmitSound;
+		this->engineFunctions.pfnEmitAmbientSound = pfnEmitAmbientSound;
 		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
 		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
 		this->engineFunctions.pfnLightStyle = pfnLightStyle;
@@ -189,6 +191,16 @@ namespace foolsgoldsource
 		e->v.origin[0] = rgflOrigin[0];
 		e->v.origin[1] = rgflOrigin[1];
 		e->v.origin[2] = rgflOrigin[2];
+	}
+
+	void pfnEmitSound(edict_t* entity, int channel, const char* sample, float volume, float attenuation, int fFlags, int pitch)
+	{
+		// TODO: check if sound exists
+	}
+
+	void pfnEmitAmbientSound(edict_t* entity, float* pos, const char* samp, float vol, float attenuation, int fFlags, int pitch)
+	{
+		// TODO: check if sound exists
 	}
 
 	int pfnModelIndex(const char* m)

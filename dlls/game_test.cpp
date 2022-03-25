@@ -10,25 +10,22 @@
 
 #include "CppUnitTest.h"
 
-#include "h_export.h"
+#include "extdll.h"
+#include "bot.h"
+#include "game.h"
 #include "foolsgoldsource.h"
 #include "test.h"
-#include "wpt.h"
-#include "waypoint.h"
 
 namespace tests
 {
-	TEST_CLASS(waypoint_test)
+	TEST_CLASS(game_test)
 	{
 	public:
 
-		TEST_METHOD(TestWaypointInit)
+		TEST_METHOD(TestIsValidEdict)
 		{
-			WaypointInit();
-
-			for( int i = 0; i < MAX_WAYPOINTS; i++ ) {
-				//Assert::AreEqual( paths[i], nullptr );
-			}
+			std::unique_ptr<Game> pGame = std::make_unique<Game>();
+			Assert::IsFalse( pGame->IsValidEdict(nullptr) );
 		}
 	};
 }

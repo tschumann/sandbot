@@ -96,6 +96,9 @@
     <ClCompile Include="waypoint_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">
