@@ -46,7 +46,7 @@ Q. Can I make some waypoints?
 A. Yes, please do!
 
 Q. How do I run the tests?
-A. In Visual Studio go to Tests -> Windows -> Test Explorer and in the run icon menu choose Run All.
+A. powershell ./test.ps1
 
 Q. Can you fix Sandbot not working on my distro?
 A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.
