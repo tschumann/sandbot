@@ -13,6 +13,6 @@ New-Item -Path "dlls" -Name "run_tests" -ItemType "file" -Force
 Remove-Item dlls\run_tests
 
 # run the tests
-& "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" dlls\Release\sandbot.dll
+& "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" dlls\Release\sandbot.dll --logger:"console;verbosity=Normal"
 
 Pop-Location

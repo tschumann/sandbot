@@ -101,6 +101,8 @@ namespace foolsgoldsource
 
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr );
 
+	void pfnServerCommand( char* str );
+
 	void pfnParticleEffect( const float* org, const float* dir, float color, float count );
 	void pfnLightStyle( int style, char* val );
 

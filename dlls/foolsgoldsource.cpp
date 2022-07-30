@@ -32,6 +32,7 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnEmitSound = pfnEmitSound;
 		this->engineFunctions.pfnEmitAmbientSound = pfnEmitAmbientSound;
 		this->engineFunctions.pfnTraceSphere = pfnTraceSphere;
+		this->engineFunctions.pfnServerCommand = pfnServerCommand;
 		this->engineFunctions.pfnParticleEffect = pfnParticleEffect;
 		this->engineFunctions.pfnLightStyle = pfnLightStyle;
 		this->engineFunctions.pfnRandomLong = pfnRandomLong;
@@ -309,6 +310,11 @@ namespace foolsgoldsource
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr )
 	{
 		fprintf( stderr, "Not implemented\n" );
+	}
+
+	void pfnServerCommand( char* str )
+	{
+		// TODO: track commands
 	}
 
 	void pfnParticleEffect( const float* org, const float* dir, float color, float count )

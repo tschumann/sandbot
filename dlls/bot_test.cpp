@@ -34,5 +34,10 @@ namespace tests
 
 			Assert::AreEqual( GetBotCount(), 1 );
 		}
+
+		TEST_METHOD(TestKickBot)
+		{
+			KickBot( 1 );
+		}
 	};
 }
