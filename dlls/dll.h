@@ -9,6 +9,8 @@
 #ifndef DLL_H
 #define DLL_H
 
+extern DLL_FUNCTIONS other_gFunctionTable;
+
 // DLL prototypes (from engine\eiface.h)...
 void GameDLLInit( void );
 int DispatchSpawn( edict_t *pent );

@@ -39,8 +39,6 @@ globalvars_t  *gpGlobals;
 
 char g_szLibraryPath[64];
 
-extern DLL_FUNCTIONS other_gFunctionTable;
-
 #ifndef __linux__
 // required DLL entry point
 BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
@@ -506,14 +504,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 		return;
 	}
-
-	extern bot_player_t g_valveBots[];
-	extern bot_player_t g_gearboxBots[];
-	extern bot_player_t g_dodBots[];
-	extern bot_player_t g_gunmanBots[];
-	extern bot_player_t g_nsBots[];
-	extern bot_player_t g_hungerBots[];
-	extern bot_player_t g_shipBots[];
 
 	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
 	{

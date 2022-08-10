@@ -51,6 +51,8 @@ namespace foolsgoldsource
 		this->engineFunctions.pfnCheckParm = pfnCheckParm;
 		this->engineFunctions.pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
 
+		this->dllFunctions.pfnServerActivate = ServerActivate;
+
 		// install the engine functions and global variables
 		::g_engfuncs = this->engineFunctions;
 		::gpGlobals = &this->globalVariables;
@@ -63,7 +65,7 @@ namespace foolsgoldsource
 		this->iStringTableOffset = 1;
 
 		// TODO: is edict_t* 0 is worldspawn?
-		for (int i = 0; i <= this->globalVariables.maxClients; i++)
+		for( int i = 0; i <= this->globalVariables.maxClients; i++ )
 		{
 			// TODO: player spawning should happen later - and call one of the server-side callbacks?
 			shared_ptr<edict_t> edict = std::make_shared<edict_t>();
@@ -108,6 +110,16 @@ namespace foolsgoldsource
 	const globalvars_t Engine::GetServerGlobalVariables()
 	{
 		return this->globalVariables;
+	}
+
+	const DLL_FUNCTIONS Engine::GetDLLFunctions()
+	{
+		return this->dllFunctions;
+	}
+
+	const NEW_DLL_FUNCTIONS Engine::GetNewDLLFunctions()
+	{
+		return this->newDllFunctions;
 	}
 
 	const string Engine::GetGameDirectory()
@@ -314,7 +326,7 @@ namespace foolsgoldsource
 
 	void pfnServerCommand( char* str )
 	{
-		// TODO: track commands
+		gEngine.serverCommands.push_back( string(str) );
 	}
 
 	void pfnParticleEffect( const float* org, const float* dir, float color, float count )
@@ -468,5 +480,9 @@ namespace foolsgoldsource
 		}
 
 		return result;
+	}
+
+	void ServerActivate( edict_t* pEdictList, int edictCount, int clientMax )
+	{
 	}
 }

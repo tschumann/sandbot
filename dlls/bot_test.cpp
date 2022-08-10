@@ -12,6 +12,8 @@
 
 #include "h_export.h"
 #include "bot.h"
+#include "dll.h"
+#include "game.h"
 #include "foolsgoldsource.h"
 #include "test.h"
 
@@ -21,23 +23,61 @@ namespace tests
 	{
 	public:
 
-		TEST_METHOD(TestGetBotCountNoBots)
+		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			Assert::AreEqual( GetBotCount(), 0 );
+			CleanupGameAndBots();
+
+			mod_id = VALVE_DLL;
+			other_gFunctionTable = foolsgoldsource::gEngine.GetDLLFunctions();
+			ServerActivate( nullptr, 2048, 32 );
+			// TODO: should be set by calling GiveFnptrsToDll
+			pBotData = g_valveBots;
+
+			Assert::IsNotNull( pGame.get() );
+			Assert::IsNotNull( pBots );
 		}
 
-		TEST_METHOD(TestGetBotCountOneBot)
+		TEST_METHOD_CLEANUP(TearDown)
+		{
+			CleanupGameAndBots();
+		}
+
+		TEST_METHOD(TestGetBotCount_NoBots)
+		{
+			Assert::AreEqual( 0, GetBotCount() );
+		}
+
+		TEST_METHOD(TestGetBotCount_OneBot)
 		{
 			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
 
 			pPlayer->v.netname = ALLOC_STRING("test");
 
-			Assert::AreEqual( GetBotCount(), 1 );
+			Assert::AreEqual( 1, GetBotCount() );
+		}
+
+		TEST_METHOD(TestKickBot_NoBots)
+		{
+			CleanupGameAndBots();
+
+			KickBot( 1 );
 		}
 
 		TEST_METHOD(TestKickBot)
 		{
-			KickBot( 1 );
+			// TODO: should be set by calling BotCreate
+			pBots[0]->iBotDataIndex = 0;
+			pBots[0]->is_used = true;
+			strncpy(pBots[0]->name, "BotName", bot_t::BOT_NAME_MAX_LENGTH);
+
+			Assert::IsTrue( pBots[0]->is_used );
+			Assert::IsFalse( pBotData[pBots[0]->iBotDataIndex].bIsUsed );
+
+			KickBot( 0 );
+
+			Assert::IsFalse( pBots[0]->is_used );
+			Assert::IsFalse( pBotData[pBots[0]->iBotDataIndex].bIsUsed );
+			Assert::AreEqual("kick \"BotName\"\n", foolsgoldsource::gEngine.serverCommands[0].c_str());
 		}
 	};
 }

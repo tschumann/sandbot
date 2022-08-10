@@ -34,6 +34,8 @@ namespace foolsgoldsource
 
 		const enginefuncs_t GetServerEngineFunctions();
 		const globalvars_t GetServerGlobalVariables();
+		const DLL_FUNCTIONS GetDLLFunctions();
+		const NEW_DLL_FUNCTIONS GetNewDLLFunctions();
 
 		const string GetGameDirectory();
 		void SetGameDirectory( const string& strGameDir );
@@ -52,6 +54,7 @@ namespace foolsgoldsource
 		vector<string> sounds;
 		vector<event_t> events;
 		int iMaxEdicts;
+		vector<string> serverCommands;
 
 		// TODO: how does the engine track this?
 		unsigned int iStringTableOffset;
@@ -60,6 +63,8 @@ namespace foolsgoldsource
 	private:
 		enginefuncs_t engineFunctions;
 		globalvars_t globalVariables;
+		DLL_FUNCTIONS dllFunctions;
+		NEW_DLL_FUNCTIONS newDllFunctions;
 
 		string strGameDir;
 
@@ -75,6 +80,7 @@ namespace foolsgoldsource
 
 	extern Engine gEngine;
 
+	// enginefuncs_t
 	int pfnPrecacheModel( char* s );
 	int pfnPrecacheSound( char* s );
 	void pfnSetModel( edict_t* e, const char* m );
@@ -131,6 +137,9 @@ namespace foolsgoldsource
 	void pfnQueryClientCvarValue2( const edict_t* player, const char* cvarName, int requestID );
 	int pfnCheckParm( const char* pchCmdLineToken, char** ppnext );
 	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex );
+
+	// DLL_FUNCTIONS
+	void ServerActivate( edict_t* pEdictList, int edictCount, int clientMax );
 }
 
 #endif // _STUB_ENGINE_H_

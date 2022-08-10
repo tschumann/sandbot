@@ -21,6 +21,25 @@ namespace tests
 	{
 	public:
 
+		TEST_METHOD_INITIALIZE(SetUp)
+		{
+			CleanupGameAndBots();
+		}
+
+		TEST_METHOD(TestUTIL_GetBotIndex_NullBot)
+		{
+			int iIndex = UTIL_GetBotIndex(nullptr);
+
+			Assert::AreEqual( -1, iIndex );
+		}
+
+		TEST_METHOD(TestUTIL_UTIL_GetBotPointer_NullBot)
+		{
+			bot_t *pBot = UTIL_GetBotPointer(nullptr);
+
+			Assert::IsNull( pBot );
+		}
+
 		TEST_METHOD(TestUTIL_ToLower)
 		{
 			char szTest[16] = "TEST";
@@ -28,7 +47,7 @@ namespace tests
 
 			pTest = UTIL_ToLower(pTest);
 
-			Assert::AreEqual( pTest, "test" );
+			Assert::AreEqual( "test", pTest );
 		}
 
 		TEST_METHOD(TestIsValidEntity_NULL)
