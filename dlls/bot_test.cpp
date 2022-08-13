@@ -68,16 +68,17 @@ namespace tests
 			// TODO: should be set by calling BotCreate
 			pBots[0]->iBotDataIndex = 0;
 			pBots[0]->is_used = true;
-			strncpy(pBots[0]->name, "BotName", bot_t::BOT_NAME_MAX_LENGTH);
+			strncpy( pBots[0]->name, "BotName", bot_t::BOT_NAME_MAX_LENGTH );
 
-			Assert::IsTrue( pBots[0]->is_used );
-			Assert::IsFalse( pBotData[pBots[0]->iBotDataIndex].bIsUsed );
+			Assert::AreEqual( true, pBots[0]->is_used );
+			Assert::AreEqual( false, pBotData[pBots[0]->iBotDataIndex].bIsUsed );
 
 			KickBot( 0 );
 
-			Assert::IsFalse( pBots[0]->is_used );
-			Assert::IsFalse( pBotData[pBots[0]->iBotDataIndex].bIsUsed );
-			Assert::AreEqual("kick \"BotName\"\n", foolsgoldsource::gEngine.serverCommands[0].c_str());
+			Assert::AreEqual( false, pBots[0]->is_used );
+			Assert::AreEqual( false, pBotData[pBots[0]->iBotDataIndex].bIsUsed );
+			Assert::AreEqual( (size_t)1, foolsgoldsource::gEngine.serverCommands.size() );
+			Assert::AreEqual( "kick \"BotName\"\n", foolsgoldsource::gEngine.serverCommands[0].c_str() );
 		}
 	};
 }

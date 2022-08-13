@@ -27,7 +27,7 @@ namespace tests
 			WaypointInit();
 
 			for( int i = 0; i < MAX_WAYPOINTS; i++ ) {
-				//Assert::AreEqual( paths[i], nullptr );
+				Assert::IsNull( paths[i] );
 			}
 		}
 	};
