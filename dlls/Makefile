@@ -4,16 +4,13 @@
 
 CPP = g++
 
-# gcc preprocessor flags
-BASEFLAGS = 
-
-# gcc compiler flags - thanks RoboCop
+# gcc flags - thanks RoboCop
 OPTFLAGS = \
 		-m32 -Wall -Wextra \
 		-O2 -march=core2 -mfpmath=sse \
 		-fomit-frame-pointer -finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2
 
-CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
+CPPFLAGS = ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
 OBJ = \
 	bot.o \
@@ -43,7 +40,7 @@ OBJ = \
 .DEFAULT_GOAL := sandbot.so
 
 # if debug is requested add debug flags and build sandbot.so
-# could have debug: BASEFLAGS += -DDEBUG as well but that would
+# could have debug: OPTFLAGS += -DDEBUG as well but that would
 # mean the symbols are from a build that is different to release
 debug: OPTFLAGS += -g
 debug: sandbot.so
