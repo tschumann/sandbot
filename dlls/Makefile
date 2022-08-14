@@ -11,11 +11,7 @@ BASEFLAGS =
 OPTFLAGS = \
 		-m32 -Wall -Wextra \
 		-O2 -march=core2 -mfpmath=sse \
-		-fomit-frame-pointer -finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2 \
-		-Wno-write-strings \
-		-Wno-missing-field-initializers \
-		-Wno-unknown-pragmas \
-		-Wno-attributes
+		-fomit-frame-pointer -finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2
 
 CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
