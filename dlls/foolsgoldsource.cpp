@@ -59,7 +59,7 @@ namespace foolsgoldsource
 
 		this->globalVariables.maxClients = 32;
 		this->globalVariables.pStringBase = new char[Engine::iStringTableSize];
-		memset((char*)this->globalVariables.pStringBase, 0, Engine::iStringTableSize);
+		memset( const_cast<char*>(this->globalVariables.pStringBase), 0, Engine::iStringTableSize );
 		// start allocating at offset 1 so that checks against string_t with value 0 work
 		// TODO: is this how the engine works?
 		this->iStringTableOffset = 1;
@@ -70,7 +70,7 @@ namespace foolsgoldsource
 			// TODO: player spawning should happen later - and call one of the server-side callbacks?
 			shared_ptr<edict_t> edict = std::make_shared<edict_t>();
 			edict->free = 0;
-			edict->pvPrivateData = new char[1]; // TODO: should be CBasePlayer's data
+			edict->pvPrivateData = new (std::nothrow) char[1]; // TODO: should be CBasePlayer's data
 			edict->v.classname = ALLOC_STRING("player");
 			edict->v.netname = 0;
 			edict->v.flags = FL_CLIENT;
@@ -83,7 +83,7 @@ namespace foolsgoldsource
 		this->iMaxEdicts = 1024;
 	}
 
-	Engine::~Engine()
+	Engine::~Engine() noexcept
 	{
 		for( unsigned int i = 0; i < this->edicts.size(); i++ )
 		{
@@ -102,27 +102,27 @@ namespace foolsgoldsource
 		}
 	}
 
-	const enginefuncs_t Engine::GetServerEngineFunctions()
+	const enginefuncs_t Engine::GetServerEngineFunctions() const
 	{
 		return this->engineFunctions;
 	}
 
-	const globalvars_t Engine::GetServerGlobalVariables()
+	const globalvars_t Engine::GetServerGlobalVariables() const
 	{
 		return this->globalVariables;
 	}
 
-	const DLL_FUNCTIONS Engine::GetDLLFunctions()
+	const DLL_FUNCTIONS Engine::GetDLLFunctions() const
 	{
 		return this->dllFunctions;
 	}
 
-	const NEW_DLL_FUNCTIONS Engine::GetNewDLLFunctions()
+	const NEW_DLL_FUNCTIONS Engine::GetNewDLLFunctions() const
 	{
 		return this->newDllFunctions;
 	}
 
-	const string Engine::GetGameDirectory()
+	const string Engine::GetGameDirectory() const
 	{
 		return this->strGameDir;
 	}
@@ -132,7 +132,7 @@ namespace foolsgoldsource
 		this->strGameDir = strGameDir;
 	}
 
-	bool Engine::GetIsDedicatedServer()
+	bool Engine::GetIsDedicatedServer() const
 	{
 		return this->bIsDedicatedServer;
 	}
@@ -142,7 +142,7 @@ namespace foolsgoldsource
 		this->bIsDedicatedServer = bIsDedicatedServer;
 	}
 
-	bool Engine::GetIsCareerMatch()
+	bool Engine::GetIsCareerMatch() const
 	{
 		return this->bIsCareerMatch;
 	}
@@ -161,7 +161,7 @@ namespace foolsgoldsource
 	{
 		string lowerCased = str;
 
-		for (unsigned int i = 0; i < str.length(); i++)
+		for( unsigned int i = 0; i < str.length(); i++ )
 		{
 			// not ideal but this is how the engine would be doing it
 			lowerCased[i] = tolower(str[i]);

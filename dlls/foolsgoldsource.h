@@ -30,18 +30,18 @@ namespace foolsgoldsource
 	{
 	public:
 		Engine();
-		~Engine();
+		~Engine() noexcept;
 
-		const enginefuncs_t GetServerEngineFunctions();
-		const globalvars_t GetServerGlobalVariables();
-		const DLL_FUNCTIONS GetDLLFunctions();
-		const NEW_DLL_FUNCTIONS GetNewDLLFunctions();
+		const enginefuncs_t GetServerEngineFunctions() const;
+		const globalvars_t GetServerGlobalVariables() const;
+		const DLL_FUNCTIONS GetDLLFunctions() const;
+		const NEW_DLL_FUNCTIONS GetNewDLLFunctions() const;
 
-		const string GetGameDirectory();
+		const string GetGameDirectory() const;
 		void SetGameDirectory( const string& strGameDir );
-		bool GetIsDedicatedServer();
+		bool GetIsDedicatedServer() const;
 		void SetIsDedicatedServer( const bool bIsDedicatedServer );
-		bool GetIsCareerMatch();
+		bool GetIsCareerMatch() const;
 		void SetIsCareerMatch( const bool bIsCareerMatch);
 
 		void SetMaxClients( const unsigned int iMaxClients );
