@@ -1,8 +1,14 @@
+//=============================================================================
 //
-// Sandbot
+// Sandbot - GoldSource engine multiplayer bot
 //
-// (http://www.teamsandpit.com/)
+// Based on HPB_Bot by Jeffrey "botman" Broome
 //
+// http://www.teamsandpit.com/
+//
+// Notes: MetaMod code
+//
+//=============================================================================
 
 void METAMOD_RETURN( META_RES result );
 

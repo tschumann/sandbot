@@ -1,3 +1,13 @@
+//=============================================================================
+//
+// Fool's GoldSource - GoldSource engine mock
+//
+// http://www.teamsandpit.com/
+//
+// Notes: engine mock code
+//
+//=============================================================================
+
 #include "foolsgoldsource.h"
 
 extern globalvars_t* gpGlobals;

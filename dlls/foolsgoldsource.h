@@ -1,3 +1,13 @@
+//=============================================================================
+//
+// Fool's GoldSource - GoldSource engine mock
+//
+// http://www.teamsandpit.com/
+//
+// Notes: engine mock code
+//
+//=============================================================================
+
 #ifndef _STUB_ENGINE_H_
 #define _STUB_ENGINE_H_
 

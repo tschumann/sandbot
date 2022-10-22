@@ -1,3 +1,15 @@
+//=============================================================================
+//
+// Sandbot - GoldSource engine multiplayer bot
+//
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
+// http://www.teamsandpit.com/
+//
+// Notes: Gunman Chronicles specific bot code
+//
+//=============================================================================
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
