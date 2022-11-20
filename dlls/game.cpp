@@ -1,3 +1,15 @@
+//=============================================================================
+//
+// Sandbot - GoldSource engine multiplayer bot
+//
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
+// http://www.teamsandpit.com/
+//
+// Notes: game rules code
+//
+//=============================================================================
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -111,7 +123,8 @@ int Game::GetTeam( const edict_t *pEdict ) const
 		}
 	}
 
-	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t*>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
+	// TODO: does pfnGetInfoKeyBuffer modify the edict_t*?
+	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t*>(pEdict) );
 	strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
 
 	for (int index=0; index < num_teams; index++)
@@ -367,15 +380,13 @@ void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 
 int GearboxGame::GetTeam( const edict_t *pEdict ) const
 {
-	if( this->IsCTF() || !this->IsCapturePoint() )
+	if( this->IsCTF() || this->IsCapturePoint() )
 	{
-		// TODO: this seems to do the wrong thing...
-		char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t *>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
+		// TODO: does pfnGetInfoKeyBuffer modify the edict_t*?
+		char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t *>(pEdict) );
 		char szModelName[32];
 
 		strcpy( szModelName, g_engfuncs.pfnInfoKeyValue(infobuffer, "model") );
-
-		ALERT(at_console, "%s\n", szModelName);
 
 		if( !strcmp(szModelName, "ctf_barney") || !strcmp(szModelName, "cl_suit") || !strcmp(szModelName, "ctf_gina") ||
 			!strcmp(szModelName, "ctf_gordon") || !strcmp(szModelName, "otis") || !strcmp(szModelName, "ctf_scientist") )

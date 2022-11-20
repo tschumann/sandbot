@@ -1,3 +1,15 @@
+//=============================================================================
+//
+// Sandbot - GoldSource engine multiplayer bot
+//
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
+// http://www.teamsandpit.com/
+//
+// Notes: engine hooking code
+//
+//=============================================================================
+
 #ifndef _H_EXPORT_H_
 #define _H_EXPORT_H_
 

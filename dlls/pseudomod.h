@@ -1,8 +1,14 @@
+//=============================================================================
 //
-// pseudomod
+// Pseudo Mod - replacement for MetaMod
 //
-// (http://www.teamsandpit.com/)
+// Based on HPB_Bot by Jeffrey "botman" Broome
 //
+// http://www.teamsandpit.com/
+//
+// Notes:
+//
+//=============================================================================
 
 enum FUNCTION_USE
 {

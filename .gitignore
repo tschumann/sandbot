@@ -18,3 +18,4 @@ sandbot_windows_exports.txt
 
 linux_exports.txt
 sandbot_linux_exports.txt
+*.so

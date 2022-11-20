@@ -13,10 +13,20 @@
 #include "h_export.h"
 #include "foolsgoldsource.h"
 #include "test.h"
+//=============================================================================
+//
+// Sandbot - GoldSource engine multiplayer bot
+//
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
+// http://www.teamsandpit.com/
+//
+// Notes: waypointing test code
+//
+//=============================================================================
+
 #include "wpt.h"
 #include "waypoint.h"
-
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace tests
 {
@@ -29,7 +39,7 @@ namespace tests
 			WaypointInit();
 
 			for( int i = 0; i < MAX_WAYPOINTS; i++ ) {
-				//Assert::AreEqual( paths[i], nullptr );
+				Assert::IsNull( paths[i] );
 			}
 		}
 	};

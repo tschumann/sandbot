@@ -282,6 +282,14 @@ struct bot_player_t
 	bool bIsUsed;
 };
 
+extern bot_player_t g_valveBots[];
+extern bot_player_t g_gearboxBots[];
+extern bot_player_t g_dodBots[];
+extern bot_player_t g_gunmanBots[];
+extern bot_player_t g_nsBots[];
+extern bot_player_t g_hungerBots[];
+extern bot_player_t g_shipBots[];
+
 void KickBot( const int iIndex );
 void KickAllBots();
 void CleanupGameAndBots();
@@ -300,6 +308,8 @@ struct weapon_t
 class bot_t
 {
 public:
+	static constexpr int BOT_NAME_MAX_LENGTH = BOT_NAME_LEN + 1;
+
 	bot_t();
 	virtual ~bot_t();
 
@@ -371,7 +381,7 @@ public:
 	int index;
 	edict_t *pEdict;
 	bool bShouldInit;
-	char name[BOT_NAME_LEN+1];
+	char name[BOT_NAME_MAX_LENGTH];
 	char skin[BOT_SKIN_LEN+1];
 	int not_started;
 	int start_action;

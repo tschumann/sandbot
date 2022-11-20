@@ -2,9 +2,11 @@
 //
 // Sandbot - GoldSource engine multiplayer bot
 //
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
 // http://www.teamsandpit.com/
 //
-// Notes: this file must be included before waypoint.h
+// Notes: .wpt file format - this file must be included before waypoint.h
 //
 //=============================================================================
 

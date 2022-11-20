@@ -2,24 +2,26 @@
 //
 // Sandbot - GoldSource engine multiplayer bot
 //
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
 // http://www.teamsandpit.com/
 //
-// Notes:
+// Notes: test code
 //
 //=============================================================================
 
-#ifndef _TEST_H_
-#define _TEST_H_
+#ifndef __TEST_H__
+#define __TEST_H__
 
-// CppUnitTestFramework does something strange and breaks the engine's ability to load the .dll so stub it out when building for real
-// to run the tests, uncomment the following line
-// #define TEST
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#ifndef TEST
+// CppUnitTestFramework does something strange and breaks the engine's ability to load the .dll so stub it out when building normally
+// test.ps1 creates a file called run_tests so that during the test script this block is skipped and vstest can run the tests
+#if !__has_include("run_tests")
 
 #undef TEST_METHOD
 #define TEST_METHOD(methodName) static const void* test##methodName() { return nullptr; } void methodName()
 
-#endif // TEST
+#endif // !__has_include("run_tests")
 
-#endif // _TEST_H_
+#endif // __TEST_H__

@@ -1281,20 +1281,21 @@ void BotThink( bot_t *pBot )
    else
       pitch_degrees = 0.0;
 
-   // turn towards ideal_yaw by yaw_speed degrees
-   yaw_degrees = BotChangeYaw( pBot, pEdict->v.yaw_speed );
+	// turn towards ideal_yaw by yaw_speed degrees
+	yaw_degrees = BotChangeYaw( pBot, pEdict->v.yaw_speed );
 
-   if ((pitch_degrees >= pEdict->v.pitch_speed) || (yaw_degrees >= pEdict->v.yaw_speed))
-   {
+	if ((pitch_degrees >= pEdict->v.pitch_speed) || (yaw_degrees >= pEdict->v.yaw_speed))
+	{
 		// don't move while turning a lot
 		pBot->SetSpeed( 0.0 );
-   }
-   else if ((pitch_degrees >= 10) || (yaw_degrees >= 10))  // turning more than 10 degrees?
-   {
-      pBot->SetSpeed( pBot->GetSpeed() / 4.0 );  // slow down while turning
-   }
-   else  // else handle movement related actions...
-   {
+	}
+	else if ((pitch_degrees >= 10) || (yaw_degrees >= 10))  // turning more than 10 degrees?
+	{
+		// slow down while turning
+		pBot->SetSpeed( pBot->GetSpeed() / 4.0 );
+	}
+	else  // else handle movement related actions...
+	{
 		if( pBot->CanShoot() && pBot->ShouldSeekEnemy() )
 		{
 			// if it's CTF, prioritise looking for the flag

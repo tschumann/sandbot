@@ -2,9 +2,11 @@
 //
 // Sandbot - GoldSource engine multiplayer bot
 //
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
 // http://www.teamsandpit.com/
 //
-// Notes:
+// Notes: engine hooking test code
 //
 //=============================================================================
 
@@ -14,8 +16,6 @@
 #include "bot.h"
 #include "foolsgoldsource.h"
 #include "test.h"
-
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace tests
 {		

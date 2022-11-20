@@ -166,6 +166,7 @@
     <ClCompile Include="dll.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="game_test.cpp" />
     <ClCompile Include="h_export.cpp" />
     <ClCompile Include="linkfunc.cpp" />
     <ClCompile Include="meta_api.cpp" />

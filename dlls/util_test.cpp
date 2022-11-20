@@ -2,9 +2,11 @@
 //
 // Sandbot - GoldSource engine multiplayer bot
 //
+// Based on HPB_Bot by Jeffrey "botman" Broome
+//
 // http://www.teamsandpit.com/
 //
-// Notes:
+// Notes: utility test code
 //
 //=============================================================================
 
@@ -15,13 +17,30 @@
 #include "foolsgoldsource.h"
 #include "test.h"
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-
 namespace tests
 {
 	TEST_CLASS(util_test)
 	{
 	public:
+
+		TEST_METHOD_INITIALIZE(SetUp)
+		{
+			CleanupGameAndBots();
+		}
+
+		TEST_METHOD(TestUTIL_GetBotIndex_NullBot)
+		{
+			int iIndex = UTIL_GetBotIndex(nullptr);
+
+			Assert::AreEqual( -1, iIndex );
+		}
+
+		TEST_METHOD(TestUTIL_UTIL_GetBotPointer_NullBot)
+		{
+			bot_t *pBot = UTIL_GetBotPointer(nullptr);
+
+			Assert::IsNull( pBot );
+		}
 
 		TEST_METHOD(TestUTIL_ToLower)
 		{
@@ -30,13 +49,43 @@ namespace tests
 
 			pTest = UTIL_ToLower(pTest);
 
-			Assert::AreEqual( pTest, "test" );
+			Assert::AreEqual( "test", pTest );
+		}
+
+		TEST_METHOD(TestIsAlive_Dead)
+		{
+			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
+			pPlayer->v.deadflag = DEAD_DYING;
+			pPlayer->v.health = 0;
+			pPlayer->v.flags = 0;
+
+			Assert::AreEqual( false, IsAlive( pPlayer ) );
+		}
+
+		TEST_METHOD(TestIsAlive_Alive)
+		{
+			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
+			pPlayer->v.deadflag = DEAD_NO;
+			pPlayer->v.health = 100;
+			pPlayer->v.flags = 0;
+
+			Assert::AreEqual( true, IsAlive( pPlayer ) );
+		}
+
+		TEST_METHOD(TestIsAlive_NoTarget)
+		{
+			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
+			pPlayer->v.deadflag = DEAD_NO;
+			pPlayer->v.health = 100;
+			pPlayer->v.flags = FL_NOTARGET;
+
+			Assert::AreEqual( false, IsAlive( pPlayer ) );
 		}
 
 		TEST_METHOD(TestIsValidEntity_NULL)
 		{
-			Assert::IsFalse( IsValidEntity( nullptr ) );
-			Assert::IsFalse( IsValidEntity( NULL ) );
+			Assert::AreEqual( false, IsValidEntity( nullptr ) );
+			Assert::AreEqual( false, IsValidEntity( NULL ) );
 		}
 
 		TEST_METHOD(TestIsValidEntity_Free)
@@ -44,7 +93,7 @@ namespace tests
 			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
 			pPlayer->free = true;
 
-			Assert::IsFalse( IsValidEntity( pPlayer ));
+			Assert::AreEqual( false, IsValidEntity( pPlayer ));
 		}
 
 		TEST_METHOD(TestIsValidEntity_Kill)
@@ -52,7 +101,7 @@ namespace tests
 			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
 			pPlayer->v.flags &= FL_KILLME;
 
-			Assert::IsFalse( IsValidEntity( pPlayer ) );
+			Assert::AreEqual( false, IsValidEntity( pPlayer ) );
 		}
 
 		TEST_METHOD(Test_IsBuilt)
@@ -60,11 +109,11 @@ namespace tests
 			edict_t* pEdict = foolsgoldsource::gEngine.edicts[1].get();
 			pEdict->v.iuser4 |= MASK_BUILDABLE;
 
-			Assert::IsFalse( UTIL_IsBuilt( pEdict ) );
+			Assert::AreEqual( false, UTIL_IsBuilt( pEdict ) );
 
 			pEdict->v.iuser4 &= ~MASK_BUILDABLE;
 
-			Assert::IsTrue( UTIL_IsBuilt( pEdict ) );
+			Assert::AreEqual( true, UTIL_IsBuilt( pEdict ) );
 		}
 	};
 }

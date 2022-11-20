@@ -1,3 +1,13 @@
+//=============================================================================
+//
+// Fool's GoldSource - GoldSource engine mock
+//
+// http://www.teamsandpit.com/
+//
+// Notes: engine mock code
+//
+//=============================================================================
+
 #ifndef _STUB_ENGINE_H_
 #define _STUB_ENGINE_H_
 
@@ -19,20 +29,29 @@ using std::vector;
 
 namespace foolsgoldsource
 {
+	struct event_t
+	{
+		unsigned short iIndex;
+		string strEventFileName;
+		int iType;
+	};
+
 	class Engine
 	{
 	public:
 		Engine();
-		~Engine();
+		~Engine() noexcept;
 
-		const enginefuncs_t GetServerEngineFunctions();
-		const globalvars_t GetServerGlobalVariables();
+		const enginefuncs_t GetServerEngineFunctions() const;
+		const globalvars_t GetServerGlobalVariables() const;
+		const DLL_FUNCTIONS GetDLLFunctions() const;
+		const NEW_DLL_FUNCTIONS GetNewDLLFunctions() const;
 
-		const string GetGameDirectory();
+		const string GetGameDirectory() const;
 		void SetGameDirectory( const string& strGameDir );
-		bool GetIsDedicatedServer();
+		bool GetIsDedicatedServer() const;
 		void SetIsDedicatedServer( const bool bIsDedicatedServer );
-		bool GetIsCareerMatch();
+		bool GetIsCareerMatch() const;
 		void SetIsCareerMatch( const bool bIsCareerMatch);
 
 		void SetMaxClients( const unsigned int iMaxClients );
@@ -43,7 +62,9 @@ namespace foolsgoldsource
 		vector<shared_ptr<edict_t>> edicts;
 		vector<string> models;
 		vector<string> sounds;
+		vector<event_t> events;
 		int iMaxEdicts;
+		vector<string> serverCommands;
 
 		// TODO: how does the engine track this?
 		unsigned int iStringTableOffset;
@@ -52,6 +73,8 @@ namespace foolsgoldsource
 	private:
 		enginefuncs_t engineFunctions;
 		globalvars_t globalVariables;
+		DLL_FUNCTIONS dllFunctions;
+		NEW_DLL_FUNCTIONS newDllFunctions;
 
 		string strGameDir;
 
@@ -67,6 +90,7 @@ namespace foolsgoldsource
 
 	extern Engine gEngine;
 
+	// enginefuncs_t
 	int pfnPrecacheModel( char* s );
 	int pfnPrecacheSound( char* s );
 	void pfnSetModel( edict_t* e, const char* m );
@@ -88,8 +112,12 @@ namespace foolsgoldsource
 	edict_t* pfnEntitiesInPVS( edict_t* pplayer );
 
 	void pfnSetOrigin( edict_t* e, const float* rgflOrigin );
+	void pfnEmitSound( edict_t* entity, int channel, const char* sample, float volume, float attenuation, int fFlags, int pitch );
+	void pfnEmitAmbientSound( edict_t* entity, float* pos, const char* samp, float vol, float attenuation, int fFlags, int pitch );
 
 	void pfnTraceSphere( const float* v1, const float* v2, int fNoMonsters, float radius, edict_t* pentToSkip, TraceResult* ptr );
+
+	void pfnServerCommand( char* str );
 
 	void pfnParticleEffect( const float* org, const float* dir, float color, float count );
 	void pfnLightStyle( int style, char* val );
@@ -110,12 +138,18 @@ namespace foolsgoldsource
 
 	int pfnIsDedicatedServer( void );
 
+	unsigned short pfnPrecacheEvent( int type, const char* psz );
+	void pfnPlaybackEvent( int flags, const edict_t* pInvoker, unsigned short eventindex, float delay, float* origin, float* angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
+
 	int pfnIsCareerMatch( void );
 
 	void pfnQueryClientCvarValue( const edict_t* player, const char* cvarName );
 	void pfnQueryClientCvarValue2( const edict_t* player, const char* cvarName, int requestID );
 	int pfnCheckParm( const char* pchCmdLineToken, char** ppnext );
 	edict_t* pfnPEntityOfEntIndexAllEntities( int iEntIndex );
+
+	// DLL_FUNCTIONS
+	void ServerActivate( edict_t* pEdictList, int edictCount, int clientMax );
 }
 
 #endif // _STUB_ENGINE_H_
