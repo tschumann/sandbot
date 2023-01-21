@@ -1,0 +1,3 @@
+[submodule "foolsgoldsource"]
+	path = foolsgoldsource
+	url = https://github.com/tschumann/foolsgoldsource

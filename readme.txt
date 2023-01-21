@@ -23,6 +23,10 @@ waypoint info	Print what type of waypoint a waypoint is
 
 == Build instructions ==
 
+git clone https://github.com/tschumann/sandbot
+git submodule init
+git submodule update
+
 Windows
 	dlls/sandbot-2019.sln
 

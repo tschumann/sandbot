@@ -14,8 +14,8 @@
 
 #include "h_export.h"
 #include "bot.h"
-#include "foolsgoldsource.h"
-#include "test.h"
+#include "foolsgoldsource/foolsgoldsource.h"
+#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {

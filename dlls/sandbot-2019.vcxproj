@@ -149,6 +149,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp" />
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="bot_client.cpp" />
     <ClCompile Include="bot_combat.cpp" />
@@ -170,7 +171,6 @@
     <ClCompile Include="h_export.cpp" />
     <ClCompile Include="linkfunc.cpp" />
     <ClCompile Include="meta_api.cpp" />
-    <ClCompile Include="foolsgoldsource.cpp" />
     <ClCompile Include="h_export_test.cpp" />
     <ClCompile Include="pseudomod.cpp" />
     <ClCompile Include="util.cpp" />
@@ -179,6 +179,8 @@
     <ClCompile Include="waypoint_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\foolsgoldsource\foolsgoldsource.h" />
+    <ClInclude Include="..\foolsgoldsource\vscu_test.h" />
     <ClInclude Include="bot.h" />
     <ClInclude Include="bot_client.h" />
     <ClInclude Include="bot_func.h" />
@@ -190,9 +192,7 @@
     <ClInclude Include="h_export.h" />
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="metamod.h" />
-    <ClInclude Include="foolsgoldsource.h" />
     <ClInclude Include="pseudomod.h" />
-    <ClInclude Include="test.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="waypoint.h" />

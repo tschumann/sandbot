@@ -16,8 +16,8 @@
 #include "bot.h"
 #include "dll.h"
 #include "game.h"
-#include "foolsgoldsource.h"
-#include "test.h"
+#include "foolsgoldsource/foolsgoldsource.h"
+#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {

@@ -81,9 +81,6 @@
     <ClCompile Include="h_export_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="foolsgoldsource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -97,6 +94,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,13 +146,13 @@
     <ClInclude Include="wpt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="foolsgoldsource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pseudomod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\foolsgoldsource\foolsgoldsource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\foolsgoldsource\vscu_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,21 +2,6 @@
 //
 // Sandbot - GoldSource engine multiplayer bot
 //
-// http://www.teamsandpit.com/
-//
-// Notes:
-//
-//=============================================================================
-
-#include "CppUnitTest.h"
-
-#include "h_export.h"
-#include "foolsgoldsource.h"
-#include "test.h"
-//=============================================================================
-//
-// Sandbot - GoldSource engine multiplayer bot
-//
 // Based on HPB_Bot by Jeffrey "botman" Broome
 //
 // http://www.teamsandpit.com/
@@ -25,8 +10,13 @@
 //
 //=============================================================================
 
+#include "CppUnitTest.h"
+
+#include "h_export.h"
 #include "wpt.h"
 #include "waypoint.h"
+#include "foolsgoldsource/foolsgoldsource.h"
+#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
