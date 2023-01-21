@@ -3,7 +3,7 @@ Sandbot
 == About ==
 
 Name: Sandbot
-Description: A multiplayer bot for Half-Life, Half-Life Opposing Force (Deathmatch and Capture the Flag), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (there is work in progress support for Team Fortress Classic, Natural Selection (Classic) and The Ship). It is based off HPB_Bot by botman (see HPB_Bot_ReadMe.txt).
+Description: A multiplayer bot for Half-Life, Half-Life Opposing Force (Deathmatch and Capture the Flag), Day of Defeat (Territorial Control), Gunman Chronicles, Natural Selection (Combat) and They Hunger (there is work in progress support for Team Fortress Classic, Natural Selection (Classic) and The Ship) based off HPB_Bot by botman.
 Requirements: Steam versions of the supported games or mods.
 Installation: Copy the files into your Steam/steamapps/common/Half-Life directory
 
@@ -21,20 +21,6 @@ waypoint delete	Delete a waypoint
 waypoint save	Write waypoints to file
 waypoint info	Print what type of waypoint a waypoint is
 
-== Build instructions ==
-
-git clone https://github.com/tschumann/sandbot
-git submodule init
-git submodule update
-
-Windows
-	dlls/sandbot-2019.sln
-
-Linux
-	sudo apt-get install gcc gcc-multilib g++-multilib
-	cd dlls
-	make
-
 == Frequently Asked Questions ==
 
 Q. Can you add support for mod x?
@@ -48,9 +34,6 @@ A. It should work but I don't test it.
 
 Q. Can I make some waypoints?
 A. Yes, please do!
-
-Q. How do I run the tests?
-A. powershell ./test.ps1
 
 Q. Can you fix Sandbot not working on my distro?
 A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.
