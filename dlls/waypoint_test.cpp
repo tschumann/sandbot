@@ -28,7 +28,8 @@ namespace tests
 		{
 			WaypointInit();
 
-			for( int i = 0; i < MAX_WAYPOINTS; i++ ) {
+			for( int i = 0; i < MAX_WAYPOINTS; i++ )
+			{
 				Assert::IsNull( paths[i] );
 			}
 		}
