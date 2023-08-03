@@ -529,10 +529,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
       int clientIndex;
       int index;
 
-      if (IS_DEDICATED_SERVER())
-         printf("Creating bot...\n");
-      else if (pPlayer)
-         ClientPrint( pPlayer, HUD_PRINTNOTIFY, "Creating bot...\n");
+	  ALERT(at_console, "Creating bot...\n");
 
 	  // Make sure that when creating new bot, the previous one private data is freed
 	  if (pBotEdict->pvPrivateData != NULL)

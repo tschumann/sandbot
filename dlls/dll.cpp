@@ -68,6 +68,7 @@ int iCapturePointCount = 0;
 BACKPACK_S backpacks[TFCGame::MAX_BACKPACKS];
 char arg[256];
 
+// TODO: is this used for anything?
 float respawn_time = 0.0;
 bool spawn_time_reset = false;
 
@@ -1305,10 +1306,7 @@ void StartFrame( void )
 		}
 
 		// set the respawn time
-		if (IS_DEDICATED_SERVER())
-			respawn_time = gpGlobals->time + 5.0;
-		else
-			respawn_time = gpGlobals->time + 20.0;
+		respawn_time = gpGlobals->time + 5.0;
 
 		bot_check_time = gpGlobals->time + 30.0;
 	}

@@ -1645,8 +1645,7 @@ bool WaypointLoad(edict_t *pEntity)
 
 	UTIL_BuildFileName(filename, "maps", mapname);
 
-	if (IS_DEDICATED_SERVER())
-		printf("loading waypoint file: %s\n", filename);
+	ALERT(at_console, "loading waypoint file: %s\n", filename);
 
 	bfp = fopen(filename, "rb");
 
@@ -1662,8 +1661,7 @@ bool WaypointLoad(edict_t *pEntity)
 
       UTIL_BuildFileName(filename, "maps", mapname);
 
-      if (IS_DEDICATED_SERVER())
-         printf("loading waypoint file: %s\n", filename);
+	  ALERT(at_console, "loading waypoint file: %s\n", filename);
 
       bfp = fopen(filename, "rb");
    }
@@ -1764,8 +1762,7 @@ bool WaypointLoad(edict_t *pEntity)
          ClientPrint(pEntity, HUD_PRINTNOTIFY, msg);
       }
 
-      if (IS_DEDICATED_SERVER())
-         printf("waypoint file %s not found!\n", filename);
+	  ALERT(at_console, "waypoint file %s not found!\n", filename);
 
       return FALSE;
    }
