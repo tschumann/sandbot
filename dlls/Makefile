@@ -7,7 +7,7 @@ CPP = g++
 # gcc flags - thanks RoboCop
 OPTFLAGS = \
 		-m32 -Wall -Wextra \
-		-O2 -march=core2 -mfpmath=sse \
+		-O2 -std=c++14 -march=core2 -mfpmath=sse \
 		-fomit-frame-pointer -finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2
 
 CPPFLAGS = ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
