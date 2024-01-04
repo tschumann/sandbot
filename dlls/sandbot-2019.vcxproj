@@ -176,7 +176,6 @@
     <ClCompile Include="linkfunc.cpp" />
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="h_export_test.cpp" />
-    <ClCompile Include="pseudomod.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="util_test.cpp" />
     <ClCompile Include="waypoint.cpp" />
@@ -196,7 +195,6 @@
     <ClInclude Include="h_export.h" />
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="metamod.h" />
-    <ClInclude Include="pseudomod.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="waypoint.h" />

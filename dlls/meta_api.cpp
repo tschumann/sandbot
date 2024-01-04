@@ -13,11 +13,6 @@
 #include "cbase.h"
 #include "metamod.h"
 
-void METAMOD_RETURN( META_RES result )
-{
-	RETURN_META(result);
-}
-
 // Loaded as metamod plugin?
 bool g_bIsMMPlugin = false;
 

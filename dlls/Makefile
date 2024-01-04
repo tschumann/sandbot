@@ -32,7 +32,6 @@ OBJ = \
 	h_export.o \
 	linkfunc.o \
 	meta_api.o \
-	pseudomod.o \
 	util.o \
 	waypoint.o
 

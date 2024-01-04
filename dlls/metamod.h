@@ -6,11 +6,15 @@
 //
 // http://www.teamsandpit.com/
 //
-// Notes: MetaMod code
+// Notes: Wrappers for MetaMod macros to that we have functions.
+// Todo: What was this fixing?
 //
 //=============================================================================
 
-void METAMOD_RETURN( META_RES result );
+inline void METAMOD_RETURN( META_RES result )
+{
+	RETURN_META(result);
+}
 
 template <class T> T METAMOD_RETURN_VALUE( META_RES result, T value )
 {
