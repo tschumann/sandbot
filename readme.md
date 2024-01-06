@@ -93,3 +93,9 @@ git tag -a v0.x -m "Sandbot v0.x"
 
 On Windows copy dlls/Release/vc141.pdb and dlls/Release/sandbot.pdb to release/symbols/
 On Linux run `make`, git add the .so files, `make symbols` then git add the .so.debug file.
+
+
+License
+-------
+
+GPL v2 because MetaMod is GPL v2.
