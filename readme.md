@@ -1,6 +1,7 @@
 Sandbot
 =======
-Sandbot is a GoldSource engine bot based off HPB_Bot by botman (see hpb_bot/ReadMe.txt).
+
+Sandbot is a GoldSource engine bot based off HPB_Bot by botman (see `docs/ReadMe.txt`), specifically HPB bot template version 4 (`hpb_bot_template_4.zip`) with navigation code from HPB bot version 4 (`hpb_bot_plugin.zip`).
 
 
 Building
