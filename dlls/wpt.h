@@ -6,7 +6,9 @@
 //
 // http://www.teamsandpit.com/
 //
-// Notes: .wpt file format - this file must be included before waypoint.h
+// Notes:
+//  - .wpt file format - this file must be included before waypoint.h
+//  - don't use preprocessor macros for the symbols as they get namespaced in sandbot-wptgen
 //
 //=============================================================================
 
@@ -20,7 +22,7 @@ typedef unsigned __int64 uint64_t;
 #include <stdint.h>
 #endif
 
-#define WAYPOINT_HEADER "Sandbot"
+const char WAYPOINT_HEADER[8] = "Sandbot";
 const int WAYPOINT_VERSION = 1;
 
 // defines for waypoint flags field (32 bits are available)
@@ -94,5 +96,19 @@ typedef struct path_s {
    int16_t index[MAX_PATH_INDEX]; // indexes of waypoints (index -1 means not used)
    struct path_s *next; // link to next structure
 } path_t;
+
+// only supported in newer versions of C++ (which Visual Studio doesn't say it supports, but is only supported by
+// Visual Studio 2010 onwards: https://msdn.microsoft.com/en-us/library/dd293588.aspx)
+#if (_MSC_VER >= 1600) || (__cplusplus >= 201103L)
+// compiler-specific packing sucks - some day it should all be 0 packing but I don't want to recreate the waypoint files
+static_assert(sizeof(waypoint_t) == 24, "waypoint_t should be 24 bytes");
+static_assert(sizeof(Vector) == 12, "Vector should be 12 bytes");
+static_assert(offsetof(waypoint_t, origin) == 8, "origin should be 8 bytes into waypoint_t");
+
+static_assert(sizeof(path_t) == 12, "path_t should be 12 bytes");
+static_assert(offsetof(path_t, next) == 8, "next should be 8 bytes into PATH");
+#else
+#warning No checking of waypoint structure layouts - there may be problems
+#endif
 
 #endif // _WPT_H_
