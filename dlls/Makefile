@@ -5,10 +5,12 @@
 CPP = g++
 
 # gcc flags - thanks RoboCop
+# TODO: linux should be defined along with __linux__ in gcc but it isn't?
 OPTFLAGS = \
 		-m32 -Wall -Wextra \
 		-O2 -std=c++14 -march=core2 -mfpmath=sse \
-		-fomit-frame-pointer -finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2
+		-fomit-frame-pointer -finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2 \
+		-Dlinux
 
 CPPFLAGS = ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
 
@@ -52,11 +54,11 @@ symbols:
 # build sandbot.so
 sandbot.so: ${OBJ}
 	${CPP} -m32 -fPIC -shared -o $@ ${OBJ}
-	-cp $@ ../symbols/
-	-cp $@ ../sandbot/half-life/valve/dlls/
-	-cp $@ ../sandbot/half-life/gearbox/dlls/
-	-cp $@ ../sandbot/half-life/dod/dlls/
-	# -cp $@ ../sandbot/half-life/ns/dlls/
+	-cp $@ ../release/symbols/
+	-cp $@ ../release/sandbot/half-life/valve/dlls/
+	-cp $@ ../release/sandbot/half-life/gearbox/dlls/
+	-cp $@ ../release/sandbot/half-life/dod/dlls/
+	# -cp $@ ../release/sandbot/half-life/ns/dlls/
 	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
 # clean up build files
