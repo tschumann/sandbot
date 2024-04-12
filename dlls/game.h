@@ -13,9 +13,29 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+enum class GameId
+{
+	UNKNOWN = 0,
+	VALVE,
+	BSHIFT,
+	GEARBOX,
+	DECAY,
+	CSTRIKE,
+	CZERO,
+	CZEROR,
+	DOD,
+	TFC,
+	REWOLF,
+	SVENCOOP,
+	NS,
+	HUNGER,
+	SHIP
+};
+
 class Game
 {
 public:
+	Game( GameId gameId );
 	virtual ~Game();
 
 	virtual void Cleanup();
@@ -35,17 +55,24 @@ public:
 	virtual bool IsGunmanChronicles() const;
 
 	const static int MAX_PLAYERS = 32;
+
+protected:
+	GameId gameId;
 };
 
 class ValveGame : public Game
 {
 public:
+	ValveGame( GameId gameId );
+
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 };
 
 class GearboxGame : public Game
 {
 public:
+	GearboxGame( GameId gameId );
+
 	virtual void Cleanup()
 	{
 		extern vector<CapturePoint> capturePoints;
@@ -89,6 +116,8 @@ public:
 class DecayGame : public Game
 {
 public:
+	DecayGame( GameId gameId );
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;
@@ -108,6 +137,8 @@ public:
 class CStrikeGame : public Game
 {
 public:
+	CStrikeGame( GameId gameId );
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;
@@ -129,6 +160,8 @@ public:
 class DODGame : public Game
 {
 public:
+	DODGame( GameId gameId );
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;
@@ -161,6 +194,8 @@ public:
 class TFCGame : public Game
 {
 public:
+	TFCGame( GameId gameId );
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;
@@ -184,6 +219,8 @@ public:
 class NSGame : public Game
 {
 public:
+	NSGame( GameId gameId );
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;
@@ -243,6 +280,8 @@ private:
 class ShipGame : public Game
 {
 public:
+	ShipGame( GameId gameId );
+
 	virtual bool UseToOpenDoor() const
 	{
 		return true;

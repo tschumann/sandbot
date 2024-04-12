@@ -19,6 +19,10 @@
 #include "wpt.h"
 #include "waypoint.h"
 
+Game::Game( GameId gameId ) : gameId( gameId )
+{
+}
+
 Game::~Game()
 {
 }
@@ -151,6 +155,10 @@ void Game::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 bool Game::UseToOpenDoor() const
 {
 	return false;
+}
+
+ValveGame::ValveGame( GameId gameId ) : Game( gameId )
+{
 }
 
 void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
@@ -378,6 +386,10 @@ void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 	}
 }
 
+GearboxGame::GearboxGame( GameId gameId ) : Game( gameId )
+{
+}
+
 int GearboxGame::GetTeam( const edict_t *pEdict ) const
 {
 	if( this->IsCTF() || this->IsCapturePoint() )
@@ -407,6 +419,14 @@ int GearboxGame::GetTeam( const edict_t *pEdict ) const
 	return Game::GetTeam( pEdict );
 }
 
+DecayGame::DecayGame( GameId gameId ) : Game( gameId )
+{
+}
+
+CStrikeGame::CStrikeGame( GameId gameId ) : Game( gameId )
+{
+}
+
 int CStrikeGame::GetTeam( const edict_t *pEdict ) const
 {
 	char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t*>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
@@ -429,9 +449,17 @@ int CStrikeGame::GetTeam( const edict_t *pEdict ) const
 	return 0;
 }
 
+DODGame::DODGame( GameId gameId ) : Game( gameId )
+{
+}
+
 int DODGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;
+}
+
+TFCGame::TFCGame( GameId gameId ) : Game( gameId )
+{
 }
 
 int TFCGame::GetTeam( const edict_t *pEdict ) const
@@ -439,7 +467,15 @@ int TFCGame::GetTeam( const edict_t *pEdict ) const
 	return pEdict->v.team - 1;
 }
 
+NSGame::NSGame( GameId gameId ) : Game( gameId )
+{
+}
+
 int NSGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;
+}
+
+ShipGame::ShipGame( GameId gameId ) : Game( gameId )
+{
 }
