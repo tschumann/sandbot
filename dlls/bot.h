@@ -278,7 +278,7 @@ typedef struct
 struct bot_player_t
 {
 	char szName[32];
-	char szModel[16];
+	char szPlayerModel[16];
 	bool bIsUsed;
 };
 

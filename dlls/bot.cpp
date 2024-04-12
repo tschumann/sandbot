@@ -98,44 +98,44 @@ bot_player_t g_gearboxBots[Game::MAX_PLAYERS] =
 
 bot_player_t g_cstrikeBots[Game::MAX_PLAYERS] =
 {
-	{"Minh", NULL, false},
-	{"Jesse", NULL, false}
+	{"Minh", "", false},
+	{"Jesse", "", false}
 };
 
 bot_player_t g_dodBots[Game::MAX_PLAYERS] =
 {
-	{"Matt", NULL, false},		// mugsy
-	{"John", NULL, false},		// pickitup
-	{"Kelly", NULL, false},		// thunder weenie
-	{"Tim", NULL, false},		// Waldo
-	{"Jake", NULL, false},		// molotov_billy
-	{"Travis", NULL, false},	// agent-0
-	{"Magnus", NULL, false},	// Insta
-	{"Davide", NULL, false},	// Chow_Yun_Fat
-	{"Iikka", NULL, false},		// Fingers
-	{"Joel", NULL, false},		// c0w
-	{"Chris", NULL, false},		// Narby
-	{"Svante", NULL, false},	// xerent
-	{"Arjan", NULL, false},		// IR
-	{"Wes", NULL, false},		// FuzzDad
-	{"Brian", NULL, false},		// Arcturus
-	{"ChrisS", NULL, false},	// Unreal
-	{"Arttu", NULL, false},		// skdr
-	{"Jeremy", NULL, false},	// Izuno
-	{"Patrick", NULL, false},	// Mojo
-	{"Mike", NULL, false},		// MikeZilla
-	{"David", NULL, false},		// Zaphod
-	{"Jeff", NULL, false},		// ViciouS
-	{"Michael", NULL, false},	// Dim Reaper
-	{"MichaelG", NULL, false},	// Sector-Effector
-	{"Sean", NULL, false},
-	{"Unknown1", NULL, false},	// Panzergrenadier
-	{"Unknown3", NULL, false},	// Kommie
-	{"Unknown4", NULL, false},	// H&K - Sean?
-	{"Unknown5", NULL, false},	// lovemeister
-	{"Unknown6", NULL, false},	// Masako
-	{"Unknown7", NULL, false},	// DasJuden
-	{"Unknown8", NULL, false},	// Kamikazi
+	{"Matt", "", false},		// mugsy
+	{"John", "", false},		// pickitup
+	{"Kelly", "", false},		// thunder weenie
+	{"Tim", "", false},		// Waldo
+	{"Jake", "", false},		// molotov_billy
+	{"Travis", "", false},	// agent-0
+	{"Magnus", "", false},	// Insta
+	{"Davide", "", false},	// Chow_Yun_Fat
+	{"Iikka", "", false},		// Fingers
+	{"Joel", "", false},		// c0w
+	{"Chris", "", false},		// Narby
+	{"Svante", "", false},	// xerent
+	{"Arjan", "", false},		// IR
+	{"Wes", "", false},		// FuzzDad
+	{"Brian", "", false},		// Arcturus
+	{"ChrisS", "", false},	// Unreal
+	{"Arttu", "", false},		// skdr
+	{"Jeremy", "", false},	// Izuno
+	{"Patrick", "", false},	// Mojo
+	{"Mike", "", false},		// MikeZilla
+	{"David", "", false},		// Zaphod
+	{"Jeff", "", false},		// ViciouS
+	{"Michael", "", false},	// Dim Reaper
+	{"MichaelG", "", false},	// Sector-Effector
+	{"Sean", "", false},
+	{"Unknown1", "", false},	// Panzergrenadier
+	{"Unknown3", "", false},	// Kommie
+	{"Unknown4", "", false},	// H&K - Sean?
+	{"Unknown5", "", false},	// lovemeister
+	{"Unknown6", "", false},	// Masako
+	{"Unknown7", "", false},	// DasJuden
+	{"Unknown8", "", false},	// Kamikazi
 };
 
 bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
@@ -176,38 +176,38 @@ bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
 
 bot_player_t g_nsBots[Game::MAX_PLAYERS] =
 {
-	{"Charlie", NULL, false},
-	{"Jon", NULL, false},
-	{"Joel", NULL, false},
-	{"David", NULL, false},
-	{"Harry", NULL, false},
-	{"Petter", NULL, false},
-	{"Jim", NULL, false},
-	{"Jason", NULL, false},
-	{"Cory", NULL, false},
-	{"Josh", NULL, false},
-	{"Mike", NULL, false},
-	{"Jeff", NULL, false},
-	{"Alex", NULL, false},
-	{"Phil", NULL, false},
-	{"Florian", NULL, false},
-	{"Karl", NULL, false},
-	{"Joe", NULL, false},
-	{"Max", NULL, false},
-	{"Kevin", NULL, false},
-	{"Ned", NULL, false},
-	{"Guy", NULL, false},
-	{"Spencer", NULL, false},
-	{"Tom", NULL, false},
-	{"Joseph", NULL, false},
-	{"Ozgur", NULL, false},
-	{"Jeremy", NULL, false},
-	{"Hugo", NULL, false},
-	{"Lani", NULL, false},
-	{"Oliver", NULL, false},
-	{"Emmanuel", NULL, false},
-	{"Matt", NULL, false},
-	{"Nick", NULL, false}
+	{"Charlie", "", false},
+	{"Jon", "", false},
+	{"Joel", "", false},
+	{"David", "", false},
+	{"Harry", "", false},
+	{"Petter", "", false},
+	{"Jim", "", false},
+	{"Jason", "", false},
+	{"Cory", "", false},
+	{"Josh", "", false},
+	{"Mike", "", false},
+	{"Jeff", "", false},
+	{"Alex", "", false},
+	{"Phil", "", false},
+	{"Florian", "", false},
+	{"Karl", "", false},
+	{"Joe", "", false},
+	{"Max", "", false},
+	{"Kevin", "", false},
+	{"Ned", "", false},
+	{"Guy", "", false},
+	{"Spencer", "", false},
+	{"Tom", "", false},
+	{"Joseph", "", false},
+	{"Ozgur", "", false},
+	{"Jeremy", "", false},
+	{"Hugo", "", false},
+	{"Lani", "", false},
+	{"Oliver", "", false},
+	{"Emmanuel", "", false},
+	{"Matt", "", false},
+	{"Nick", "", false}
 };
 
 bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
@@ -248,38 +248,38 @@ bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
 
 bot_player_t g_shipBots[Game::MAX_PLAYERS] =
 {
-	{"Chris", NULL, false},
-	{"Ailsa", NULL, false},
-	{"Ed", NULL, false},
-	{"Simon", NULL, false},
-	{"Jason", NULL, false},
-	{"Neil", NULL, false},
-	{"Andy", NULL, false},
-	{"David", NULL, false},
-	{"Jock", NULL, false},
-	{"Gayle", NULL, false},
-	{"Debbie", NULL, false},
-	{"Mike", NULL, false},
-	{"Nick", NULL, false},
-	{"Mark", NULL, false},
-	{"Dorota", NULL, false},
-	{"Jonathon", NULL, false},
-	{"Julian", NULL, false},
-	{"Richard", NULL, false},
-	{"Duncan", NULL, false},
-	{"Rebecca", NULL, false},
-	{"Andrea", NULL, false},
-	{"Julie", NULL, false},
-	{"Glen", NULL, false},
-	{"Ellis", NULL, false},
-	{"Edward", NULL, false},
-	{"Alek", NULL, false},
-	{"Casey", NULL, false},
-	{"Suzie", NULL, false},
-	{"Caro", NULL, false},
-	{"Reanne", NULL, false},
-	{"Lucy", NULL, false},
-	{"Toby", NULL, false}
+	{"Chris", "", false},
+	{"Ailsa", "", false},
+	{"Ed", "", false},
+	{"Simon", "", false},
+	{"Jason", "", false},
+	{"Neil", "", false},
+	{"Andy", "", false},
+	{"David", "", false},
+	{"Jock", "", false},
+	{"Gayle", "", false},
+	{"Debbie", "", false},
+	{"Mike", "", false},
+	{"Nick", "", false},
+	{"Mark", "", false},
+	{"Dorota", "", false},
+	{"Jonathon", "", false},
+	{"Julian", "", false},
+	{"Richard", "", false},
+	{"Duncan", "", false},
+	{"Rebecca", "", false},
+	{"Andrea", "", false},
+	{"Julie", "", false},
+	{"Glen", "", false},
+	{"Ellis", "", false},
+	{"Edward", "", false},
+	{"Alek", "", false},
+	{"Casey", "", false},
+	{"Suzie", "", false},
+	{"Caro", "", false},
+	{"Reanne", "", false},
+	{"Lucy", "", false},
+	{"Toby", "", false}
 };
 
 // how often (out of 1000 times) the bot will pause, based on bot skill
@@ -567,7 +567,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  {
 		  char szColour[4];
 
-		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szModel );
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szPlayerModel );
 		  // the engine supports this but not all modes have customisable player models - set it anyway
 		  sprintf( szColour, "%d", RANDOM_LONG(0, 255) );
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "topcolor", szColour );
@@ -616,9 +616,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		pBot->name[0] = 0;  // name not set by server yet
 		pBot->bot_money = 0;
 
-		if( pBotData[iIndex].szModel )
+		if( strcmp( pBotData[iIndex].szPlayerModel, "" ) != 0 )
 		{
-			strcpy( pBot->skin, pBotData[iIndex].szModel );
+			strcpy( pBot->skin, pBotData[iIndex].szPlayerModel );
 		}
 		else
 		{
