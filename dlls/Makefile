@@ -30,6 +30,13 @@ OBJ = \
 	dll.o \
 	engine.o \
 	game.o \
+	game_halflife.o \
+	game_opposingforce.o \
+	game_dayofdefeat.o \
+	game_teamfortressclassic.o \
+	game_gunmanchronicles.o \
+	game_naturalselection.o \
+	game_theship.o \
 	h_export.o \
 	linkfunc.o \
 	meta_api.o \

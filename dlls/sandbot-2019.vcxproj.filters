@@ -93,6 +93,27 @@
     <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_halflife.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_dayofdefeat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_gunmanchronicles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_naturalselection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_opposingforce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_teamfortressclassic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_theship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">
@@ -144,6 +165,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\foolsgoldsource\vscu_test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_halflife.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_dayofdefeat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_gunmanchronicles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_naturalselection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_opposingforce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_teamfortressclassic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_theship.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

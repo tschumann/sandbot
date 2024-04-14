@@ -26,7 +26,7 @@ namespace tests
 
 		TEST_METHOD(TestIsValidEdict)
 		{
-			std::unique_ptr<Game> pGame = std::make_unique<Game>(GameId::VALVE);
+			std::unique_ptr<Game> pGame = std::make_unique<Game>(GameId::GAME_VALVE);
 			Assert::AreEqual( false, pGame->IsValidEdict( nullptr ) );
 		}
 	};

@@ -20,6 +20,8 @@
 
 #include "bot.h"
 #include "game.h"
+#include "game_teamfortressclassic.h"
+#include "game_naturalselection.h"
 #include "wpt.h"
 #include "waypoint.h"
 

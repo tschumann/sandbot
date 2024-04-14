@@ -14,6 +14,13 @@
 #include "bot.h"
 #include "bot_func.h"
 #include "game.h"
+#include "game_halflife.h"
+#include "game_opposingforce.h"
+#include "game_dayofdefeat.h"
+#include "game_teamfortressclassic.h"
+#include "game_gunmanchronicles.h"
+#include "game_naturalselection.h"
+#include "game_theship.h"
 #include "wpt.h"
 #include "waypoint.h"
 
@@ -1115,7 +1122,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 	if( mod_id == VALVE_DLL )
 	{
-		pGame = std::make_unique<ValveGame>(GameId::VALVE);
+		pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1124,7 +1131,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == GEARBOX_DLL )
 	{
-		pGame = std::make_unique<GearboxGame>(GameId::GEARBOX);
+		pGame = std::make_unique<GearboxGame>(GameId::GAME_GEARBOX);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1133,7 +1140,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == DOD_DLL )
 	{
-		pGame = std::make_unique<DODGame>(GameId::DOD);
+		pGame = std::make_unique<DODGame>(GameId::GAME_DOD);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1142,7 +1149,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == TFC_DLL )
 	{
-		pGame = std::make_unique<TFCGame>(GameId::TFC);
+		pGame = std::make_unique<TFCGame>(GameId::GAME_TFC);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1151,7 +1158,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == REWOLF_DLL )
 	{
-		pGame = std::make_unique<Game>(GameId::REWOLF);
+		pGame = std::make_unique<Game>(GameId::GAME_REWOLF);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1160,7 +1167,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == NS_DLL )
 	{
-		pGame = std::make_unique<NSGame>(GameId::NS);
+		pGame = std::make_unique<NSGame>(GameId::GAME_NS);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1169,7 +1176,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else if( mod_id == SHIP_DLL )
 	{
-		pGame = std::make_unique<ShipGame>(GameId::SHIP);
+		pGame = std::make_unique<ShipGame>(GameId::GAME_SHIP);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
@@ -1178,7 +1185,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	}
 	else
 	{
-		pGame = std::make_unique<Game>(GameId::UNKNOWN);
+		pGame = std::make_unique<Game>(GameId::GAME_UNKNOWN);
 
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
