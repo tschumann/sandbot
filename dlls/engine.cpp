@@ -206,21 +206,6 @@ void pfnChangePitch(edict_t* ent)
 
 edict_t* pfnFindEntityByString(edict_t *pEdictStartSearchAfter, const char *pszField, const char *pszValue)
 {
-	if (mod_id == CSTRIKE_DLL)
-	{
-		// new round in CS 1.5
-		if (strcmp ("info_map_parameters", pszValue) == 0)
-		{
-			for (int bot_index = 0; bot_index < Game::MAX_PLAYERS; bot_index++)
-			{
-				bot_t *pBot = pBots[bot_index];
-
-				if (pBot->is_used)
-					BotSpawnInit (pBot); // reset bots for new round
-			}
-		}
-	}
-
 	if( g_bIsMMPlugin )
 		return METAMOD_RETURN_VALUE( MRES_IGNORED, nullptr );
 
@@ -564,27 +549,6 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Gearbox_ScreenFade;
         }
-        else if (mod_id == CSTRIKE_DLL)
-        {
-           if (msg_type == message_VGUI)
-              botMsgFunction = BotClient_CS_VGUI;
-           else if (msg_type == message_ShowMenu)
-              botMsgFunction = BotClient_CS_ShowMenu;
-           else if (msg_type == message_WeaponList)
-              botMsgFunction = BotClient_CS_WeaponList;
-           else if (msg_type == message_CurWeapon)
-              botMsgFunction = BotClient_CS_CurrentWeapon;
-           else if (msg_type == message_AmmoX)
-              botMsgFunction = BotClient_CS_AmmoX;
-           else if (msg_type == message_AmmoPickup)
-              botMsgFunction = BotClient_CS_AmmoPickup;
-           else if (msg_type == message_Damage)
-              botMsgFunction = BotClient_CS_Damage;
-           else if (msg_type == message_Money)
-              botMsgFunction = BotClient_CS_Money;
-           else if (msg_type == message_ScreenFade)
-              botMsgFunction = BotClient_CS_ScreenFade;
-        }
 		else if (mod_id == DOD_DLL)
         {
            if (msg_type == message_VGUI)
@@ -694,11 +658,6 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_TFC_DeathMsg;
      }
-     else if (mod_id == CSTRIKE_DLL)
-     {
-        if (msg_type == message_DeathMsg)
-           botMsgFunction = BotClient_CS_DeathMsg;
-     }
      else if (mod_id == GEARBOX_DLL)
      {
         if (msg_type == message_DeathMsg)
@@ -763,13 +722,6 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_TFC_WeaponList;
-     }
-     else if (mod_id == CSTRIKE_DLL)
-     {
-        if (msg_type == message_WeaponList)
-           botMsgFunction = BotClient_CS_WeaponList;
-        else if (msg_type == message_HLTV)
-           botMsgFunction = BotClient_CS_HLTV;
      }
      else if (mod_id == GEARBOX_DLL)
      {
@@ -1165,31 +1117,6 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
 	}
-	else if( mod_id == CSTRIKE_DLL )
-	{
-		if (strcmp(pszName, "VGUIMenu") == 0)
-			message_VGUI = msg;
-		else if (strcmp(pszName, "ShowMenu") == 0)
-			message_ShowMenu = msg;
-		else if (strcmp(pszName, "WeaponList") == 0)
-			message_WeaponList = msg;
-		else if (strcmp(pszName, "CurWeapon") == 0)
-			message_CurWeapon = msg;
-		else if (strcmp(pszName, "AmmoX") == 0)
-			message_AmmoX = msg;
-		else if (strcmp(pszName, "AmmoPickup") == 0)
-			message_AmmoPickup = msg;
-		else if (strcmp(pszName, "Damage") == 0)
-			message_Damage = msg;
-		else if (strcmp(pszName, "Money") == 0)
-			message_Money = msg;
-		else if (strcmp(pszName, "DeathMsg") == 0)
-			message_DeathMsg = msg;
-		else if (strcmp(pszName, "ScreenFade") == 0)
-			message_ScreenFade = msg;
-		else if (strcmp(pszName, "HLTV") == 0)
-			message_HLTV = msg;
-	}
 	else if( mod_id == DOD_DLL )
 	{
 		if (strcmp(pszName, "VGUIMenu") == 0)
@@ -1555,7 +1482,7 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 	UTIL_LogTPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
 	// TODO: NS_DLL and TFC_DLL too? different classes have different speeds
-	if( mod_id == CSTRIKE_DLL || mod_id == DOD_DLL )
+	if( mod_id == DOD_DLL )
 	{
 		bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
 

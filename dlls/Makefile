@@ -21,7 +21,6 @@ OBJ = \
 	bot_navigate.o \
 	bot_halflife.o \
 	bot_opposingforce.o \
-	bot_cstrike.o \
 	bot_dod.o \
 	bot_tfc.o \
 	bot_gunman.o \

@@ -1131,24 +1131,6 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 			pBots[i] = new OpposingForceBot();
 		}
 	}
-	else if( mod_id == DECAY_DLL )
-	{
-		pGame = std::make_unique<DecayGame>(GameId::DECAY);
-
-		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
-		{
-			pBots[i] = new HalfLifeBot();
-		}
-	}
-	else if( mod_id == CSTRIKE_DLL || mod_id == CZERO_DLL )
-	{
-		pGame = std::make_unique<CStrikeGame>(GameId::CSTRIKE);
-
-		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
-		{
-			pBots[i] = new CStrikeBot();
-		}
-	}
 	else if( mod_id == DOD_DLL )
 	{
 		pGame = std::make_unique<DODGame>(GameId::DOD);

@@ -419,36 +419,6 @@ int GearboxGame::GetTeam( const edict_t *pEdict ) const
 	return Game::GetTeam( pEdict );
 }
 
-DecayGame::DecayGame( GameId gameId ) : Game( gameId )
-{
-}
-
-CStrikeGame::CStrikeGame( GameId gameId ) : Game( gameId )
-{
-}
-
-int CStrikeGame::GetTeam( const edict_t *pEdict ) const
-{
-	char *infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( const_cast<edict_t*>(pEdict) ); // does pfnGetInfoKeyBuffer modify the edict_t*?
-	char szModelName[32];
-
-	strcpy(szModelName, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
-
-	if( !strcmp(szModelName, "terror") || !strcmp(szModelName, "arab") ||! strcmp(szModelName, "leet") ||
-		!strcmp(szModelName, "arctic") || !strcmp(szModelName, "guerilla") )
-	{
-		return 0;
-	}
-	else if( !strcmp(szModelName, "urban") || !strcmp(szModelName, "gsg9") || !strcmp(szModelName, "sas") ||
-		!strcmp(szModelName, "gign") || !strcmp(szModelName, "vip") )
-	{
-		return 1;
-	}
-
-	// unknown team
-	return 0;
-}
-
 DODGame::DODGame( GameId gameId ) : Game( gameId )
 {
 }

@@ -24,9 +24,6 @@
     <ClCompile Include="bot_combat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot_cstrike.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot_dod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

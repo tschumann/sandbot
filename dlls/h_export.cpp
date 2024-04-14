@@ -265,25 +265,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
-	else if( !strcmp( pGameDir, "bshift" ) )
-	{
-		mod_id = BSHIFT_DLL;
-
-#ifndef __linux__
-		szLibraryPath = "bshift/dlls/hl.dll";
-#else
-		szLibraryPath = "bshift/dlls/bshift.so";
-#endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
-	}
 	else if( !strcmp( pGameDir, "gearbox" ) )
 	{
 		mod_id = GEARBOX_DLL;
@@ -292,82 +273,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		szLibraryPath = "gearbox/dlls/opfor.dll";
 #else
 		szLibraryPath = "gearbox/dlls/opfor.so";
-#endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
-	}
-	else if( !strcmp( pGameDir, "decay" ) )
-	{
-		mod_id = DECAY_DLL;
-
-#ifndef __linux__
-		szLibraryPath = "decay/dlls/decay.dll";
-#else
-		szLibraryPath = "decay/dlls/decay_i386.so";
-#endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
-	}
-	else if( !strcmp( pGameDir, "cstrike" ) )
-	{
-		mod_id = CSTRIKE_DLL;
-
-#ifndef __linux__
-		szLibraryPath = "cstrike/dlls/mp.dll";
-#else
-		szLibraryPath = "cstrike/dlls/cs.so";
-#endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
-	}
-	else if( !strcmp( pGameDir, "czero" ) )
-	{
-		mod_id = CZERO_DLL;
-
-#ifndef __linux__
-		szLibraryPath = "czero/dlls/mp.dll";
-#else
-		szLibraryPath = "czero/dlls/cs.so";
-#endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
-	}
-	else if( !strcmp( pGameDir, "czeror" ) )
-	{
-		mod_id = CZEROR_DLL;
-
-#ifndef __linux__
-		szLibraryPath = "czeror/dlls/cz.dll";
-#else
-		szLibraryPath = "czeror/dlls/cz.so";
 #endif
 
 		if( !g_bIsMMPlugin )

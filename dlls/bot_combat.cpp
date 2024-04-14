@@ -155,23 +155,6 @@ const bot_weapon_select_t gearbox_weapon_select[] = {
 	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
 };
 
-const bot_weapon_select_t cs_weapon_select[] = {
-	{CS_WEAPON_KNIFE, "weapon_knife", 0.3f, 0.0f,
-	 0.0f, 50.0f, 0.0f, 0.0f,
-	 100, TRUE, 100, 0, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MELEE},
-	{CS_WEAPON_USP, "weapon_usp", 0.3f, 0.2f,
-	 0.0f, 1200.0f, 0.0f, 1200.0f,
-	 100, TRUE, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL},
-	{CS_WEAPON_GLOCK18, "weapon_glock18", 0.3f, 0.2f,
-	 0.0f, 1200.0f, 0.0f, 1200.0f,
-	 100, TRUE, 100, 1, 0,
-	 FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL},
-	/* terminator */
-	{0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
-};
-
 const bot_weapon_select_t dod_weapon_select[] = {
 	{DOD_WEAPON_GARAND, "weapon_garand", 0.3f, 0.0f,
 	 0.0f, 2000.0f, 0.0f, 0.0f,
@@ -662,10 +645,6 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 	else if (mod_id == GEARBOX_DLL)
 	{
 		pSelect = &gearbox_weapon_select[0];
-	}
-	else if (mod_id == CSTRIKE_DLL)
-	{
-		pSelect = &cs_weapon_select[0];
 	}
 	else if (mod_id == DOD_DLL)
 	{

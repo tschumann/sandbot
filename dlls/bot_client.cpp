@@ -36,18 +36,6 @@ void BotClient_TFC_VGUI(void *p, int bot_index)
 		pBots[bot_index]->start_action = MSG_TFC_CLASS_SELECT;
 }
 
-
-// This message is sent when the Counter-Strike VGUI menu is displayed.
-void BotClient_CS_VGUI(void *p, int bot_index)
-{
-   if ((*(int *)p) == 2)  // is it a team select menu?
-      pBots[bot_index]->start_action = MSG_CS_TEAM_SELECT;
-   else if ((*(int *)p) == 26)  // is is a terrorist model select menu?
-      pBots[bot_index]->start_action = MSG_CS_T_SELECT;
-   else if ((*(int *)p) == 27)  // is is a counter-terrorist model select menu?
-      pBots[bot_index]->start_action = MSG_CS_CT_SELECT;
-}
-
 // This message is sent when the Day of Defeat VGUI menu is displayed.
 void BotClient_DOD_VGUI(void *p, int bot_index)
 {
@@ -57,33 +45,6 @@ void BotClient_DOD_VGUI(void *p, int bot_index)
 		pBots[bot_index]->start_action = MSG_DOD_ALLIED_SELECT;
 	else if ((*(int *)p) == 13)  // is is an axis class select menu?
 		pBots[bot_index]->start_action = MSG_DOD_AXIS_SELECT;
-}
-
-// This message is sent when a menu is being displayed in Counter-Strike.
-void BotClient_CS_ShowMenu(void *p, int bot_index)
-{
-   static int state = 0;   // current state machine state
-
-   if (state < 3)
-   {
-      state++;  // ignore first 3 fields of message
-      return;
-   }
-
-   if (strcmp((char *)p, "#Team_Select") == 0)  // team select menu?
-   {
-      pBots[bot_index]->start_action = MSG_CS_TEAM_SELECT;
-   }
-   else if (strcmp((char *)p, "#Terrorist_Select") == 0)  // T model select?
-   {
-      pBots[bot_index]->start_action = MSG_CS_T_SELECT;
-   }
-   else if (strcmp((char *)p, "#CT_Select") == 0)  // CT model select menu?
-   {
-      pBots[bot_index]->start_action = MSG_CS_CT_SELECT;
-   }
-
-   state = 0;  // reset state machine
 }
 
 
@@ -159,12 +120,6 @@ void BotClient_Valve_WeaponList(void *p, int bot_index)
 }
 
 void BotClient_Gearbox_WeaponList(void *p, int bot_index)
-{
-	// this is just like the Valve Weapon List message
-	BotClient_Valve_WeaponList(p, bot_index);
-}
-
-void BotClient_CS_WeaponList(void *p, int bot_index)
 {
 	// this is just like the Valve Weapon List message
 	BotClient_Valve_WeaponList(p, bot_index);
@@ -492,12 +447,6 @@ void BotClient_Gearbox_AmmoX(void *p, int bot_index)
 	BotClient_Valve_AmmoX(p, bot_index);
 }
 
-void BotClient_CS_AmmoX(void *p, int bot_index)
-{
-	// this is just like the Valve AmmoX message
-	BotClient_Valve_AmmoX(p, bot_index);
-}
-
 void BotClient_TFC_AmmoX(void *p, int bot_index)
 {
 	// this is just like the Valve AmmoX message
@@ -562,12 +511,6 @@ void BotClient_Valve_AmmoPickup(void *p, int bot_index)
 }
 
 void BotClient_Gearbox_AmmoPickup(void *p, int bot_index)
-{
-	// this is just like the Valve Ammo Pickup message
-	BotClient_Valve_AmmoPickup(p, bot_index);
-}
-
-void BotClient_CS_AmmoPickup(void *p, int bot_index)
 {
 	// this is just like the Valve Ammo Pickup message
 	BotClient_Valve_AmmoPickup(p, bot_index);
@@ -677,12 +620,6 @@ void BotClient_Gearbox_Damage(void *p, int bot_index)
 	BotClient_Valve_Damage(p, bot_index);
 }
 
-void BotClient_CS_Damage(void *p, int bot_index)
-{
-	// this is just like the Valve Battery message
-	BotClient_Valve_Damage(p, bot_index);
-}
-
 void BotClient_TFC_Damage(void *p, int bot_index)
 {
 	// this is just like the Valve Battery message
@@ -712,25 +649,6 @@ void BotClient_Ship_Damage(void *p, int bot_index)
 	// this is just like the Valve Battery message
 	BotClient_Valve_Damage(p, bot_index);
 }
-
-
-// This message gets sent when the bots money ammount changes (for CS)
-void BotClient_CS_Money(void *p, int bot_index)
-{
-	static int state = 0;	// current state machine state
-
-	if (state == 0)
-	{
-		state++;
-
-		pBots[bot_index]->bot_money = *(int *)p;	// amount of money
-	}
-	else
-	{
-		state = 0;  // ingore this field
-	}
-}
-
 
 // This message gets sent when the bots get killed
 void BotClient_Valve_DeathMsg(void *p, int bot_index)
@@ -777,12 +695,6 @@ void BotClient_Valve_DeathMsg(void *p, int bot_index)
 }
 
 void BotClient_Gearbox_DeathMsg(void *p, int bot_index)
-{
-	// this is just like the Valve DeathMsg message
-	BotClient_Valve_DeathMsg(p, bot_index);
-}
-
-void BotClient_CS_DeathMsg(void *p, int bot_index)
 {
 	// this is just like the Valve DeathMsg message
 	BotClient_Valve_DeathMsg(p, bot_index);
@@ -854,12 +766,6 @@ void BotClient_Gearbox_ScreenFade(void *p, int bot_index)
 	BotClient_Valve_ScreenFade(p, bot_index);
 }
 
-void BotClient_CS_ScreenFade(void *p, int bot_index)
-{
-	// this is just like the Valve ScreenFade message
-	BotClient_Valve_ScreenFade(p, bot_index);
-}
-
 void BotClient_TFC_ScreenFade(void *p, int bot_index)
 {
 	// this is just like the Valve ScreenFade message
@@ -888,30 +794,6 @@ void BotClient_Ship_ScreenFade(void *p, int bot_index)
 {
 	// this is just like the Valve ScreenFade message
 	BotClient_Valve_ScreenFade(p, bot_index);
-}
-
-void BotClient_CS_HLTV(void *p, int bot_index)
-{
-   static int state = 0;   // current state machine state
-   static int players;
-   int index;
-
-   if (state == 0)
-   {
-      players = *(int *) p;
-   }
-   else if (state == 1)
-   {
-      // new round in CS 1.6
-      if ((players == 0) && (*(int *) p == 0))
-      {
-         for (index = 0; index < Game::MAX_PLAYERS; index++)
-         {
-            if (pBots[index]->is_used)
-               BotSpawnInit (pBots[index]); // reset bots for new round
-         }
-      }
-   }
 }
 
 void BotClient_NS_CountDown( void *p, int bot_index )

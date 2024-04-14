@@ -113,50 +113,6 @@ public:
 	virtual int GetTeam( const edict_t *pEdict ) const;
 };
 
-class DecayGame : public Game
-{
-public:
-	DecayGame( GameId gameId );
-
-	virtual bool IsTeamPlay() const
-	{
-		return true;
-	}
-
-	virtual bool IsDeathmatch() const
-	{
-		return false;
-	}
-
-	virtual bool CanChoosePlayerModel() const
-	{
-		return false;
-	}
-};
-
-class CStrikeGame : public Game
-{
-public:
-	CStrikeGame( GameId gameId );
-
-	virtual bool IsTeamPlay() const
-	{
-		return true;
-	}
-
-	virtual bool IsDeathmatch() const
-	{
-		return false;
-	}
-
-	virtual bool CanChoosePlayerModel() const
-	{
-		return false;
-	}
-
-	virtual int GetTeam( const edict_t *pEdict ) const;
-};
-
 class DODGame : public Game
 {
 public:

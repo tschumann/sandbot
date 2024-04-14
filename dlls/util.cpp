@@ -474,29 +474,9 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 	{
 		strcpy(filename, "valve/");
 	}
-	else if (mod_id == BSHIFT_DLL)
-	{
-		strcpy(filename, "bshift/");
-	}
 	else if (mod_id == GEARBOX_DLL)
 	{
 		strcpy(filename, "gearbox/");
-	}
-	else if (mod_id == DECAY_DLL)
-	{
-		strcpy(filename, "decay/");
-	}
-	else if (mod_id == CSTRIKE_DLL)
-	{
-		strcpy(filename, "cstrike/");
-	}
-	else if (mod_id == CZERO_DLL)
-	{
-		strcpy(filename, "czero/");
-	}
-	else if (mod_id == CZEROR_DLL)
-	{
-		strcpy(filename, "czeror/");
 	}
 	else if (mod_id == DOD_DLL)
 	{

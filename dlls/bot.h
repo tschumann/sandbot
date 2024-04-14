@@ -69,12 +69,7 @@ extern bool g_bIsMMPlugin;
 
 // define constants used to identify the MOD we are playing...
 #define VALVE_DLL		1 // NOTE: also defined in Visual Studio project
-#define BSHIFT_DLL		2
 #define GEARBOX_DLL		3
-#define DECAY_DLL		4
-#define CSTRIKE_DLL		5
-#define CZERO_DLL		6
-#define CZEROR_DLL		7
 #define DOD_DLL			8
 #define TFC_DLL			9
 #define REWOLF_DLL		10
@@ -106,12 +101,6 @@ const char *GetArg( const char *command, int arg_number );
 #define MSG_TFC_IDLE          1
 #define MSG_TFC_TEAM_SELECT   2
 #define MSG_TFC_CLASS_SELECT  3
-
-// game start messages for CS...
-#define MSG_CS_IDLE         1
-#define MSG_CS_TEAM_SELECT  2
-#define MSG_CS_CT_SELECT    3
-#define MSG_CS_T_SELECT     4
 
 #define MSG_DOD_IDLE			1
 #define MSG_DOD_TEAM_SELECT		2

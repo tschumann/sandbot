@@ -580,20 +580,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", "" );
 	  }
 
-      if (mod_id == CSTRIKE_DLL)
-      {
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "rate", "3500.000000");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "cl_updaterate", "20");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "cl_lw", "1");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "cl_lc", "1");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "tracker", "0");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "cl_dlmax", "128");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "lefthand", "1");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "friends", "0");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "dm", "0");
-         SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "ah", "1");
-      }
-
       MDLL_ClientConnect( pBotEdict, pBotData[iIndex].szName, "127.0.0.1", ptr );
 
       // Pieter van Dijk - use instead of DispatchSpawn() - Hip Hip Hurray!
@@ -631,8 +617,6 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 		if (mod_id == TFC_DLL)
 			pBot->start_action = MSG_TFC_IDLE;
-		else if (mod_id == CSTRIKE_DLL)
-			pBot->start_action = MSG_CS_IDLE;
 		else if (mod_id == DOD_DLL)
 			pBot->start_action = MSG_DOD_IDLE;
 		else if ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint()))
@@ -719,7 +703,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-	  if ((mod_id == TFC_DLL) || (mod_id == CSTRIKE_DLL) || ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint())))
+	  if ((mod_id == TFC_DLL) || ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint())))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
          {
