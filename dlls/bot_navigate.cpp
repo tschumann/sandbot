@@ -365,7 +365,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 	}
 
    // check if a goal item exists...
-   if (mod_id == TFC_DLL)
+   if (pGame->IsTeamFortressClassic())
    {
 		bool success = ((TFCBot *)pBot)->FindFlag();
 
@@ -374,7 +374,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			return true;
 		}
    }
-   else if ((mod_id == GEARBOX_DLL) && pGame->IsCTF())
+   else if (pGame->IsOpposingForce() && pGame->IsCTF())
    {
 	   bool success = ((OpposingForceBot *)pBot)->FindFlag();
 
@@ -383,7 +383,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 			return true;
 		}
    }
-   else if( mod_id == NS_DLL )
+   else if(pGame->IsNaturalSelection())
    {
 	   if( !pBot->HasEnemy() )
 	   {
@@ -553,20 +553,20 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
       pBot->prev_waypoint_distance = 0.0;
 
 	  // if the current waypoint is the goal and it's a Day of Defeat capture point
-	  if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
+	  if (pGame->IsDayOfDefeat() && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index && !ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  UTIL_LogDPrintf( "stopping near waypoint\n" );
 		  pBot->SetSpeed( 0.0 );
 		  pBot->SetIsCapturing( true );
 		  pBot->iGoalIndex = pBot->waypoint_goal;
 	  }
-	  else if (mod_id == DOD_DLL && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
+	  else if (pGame->IsDayOfDefeat() && (waypoints[pBot->curr_waypoint_index].flags & W_FL_DOD_CAP) && pBot->waypoint_goal == pBot->curr_waypoint_index && ShouldSkip(pBot->pEdict, pBot->waypoint_goal))
 	  {
 		  UTIL_LogDPrintf( "moving away from waypoint\n" );
 		  pBot->SetSpeed( pEdict->v.maxspeed );
 		  pBot->SetIsCapturing( false );
 	  }
-	  else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() )
+	  else if(pGame->IsOpposingForce() && pGame->IsCapturePoint() )
 	  {
 		  if( waypoints[pBot->curr_waypoint_index].flags & W_FL_OP4_CAPTURE_POINT )
 		  {
@@ -649,7 +649,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
             return TRUE;
          }
 
-		 if (mod_id == TFC_DLL)
+		 if (pGame->IsTeamFortressClassic())
 		 {
 			 // see if this waypoint is a sentry gun waypoint...
 			 if ((waypoints[pBot->curr_waypoint_index].flags & W_FL_TFC_SENTRYGUN) && (pEdict->v.playerclass == TFCBot::CLASS_ENGINEER))
@@ -819,7 +819,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
                pBot->weapon_points[0] = pBot->waypoint_goal;
             }
          }
-         else if (mod_id == TFC_DLL)
+         else if (pGame->IsTeamFortressClassic())
          {
             if (((TFCBot *)pBot)->IsEngineer() && ((TFCBot *)pBot)->ShouldBuild())
             {
@@ -835,7 +835,7 @@ bool BotHeadTowardWaypoint( bot_t *pBot )
 				}
             }
          }
-			else if( ( mod_id == GEARBOX_DLL && pGame->IsCTF() ) || mod_id == DOD_DLL || mod_id == NS_DLL )
+			else if( (pGame->IsOpposingForce() && pGame->IsCTF() ) || pGame->IsDayOfDefeat() || pGame->IsNaturalSelection())
 			{
 				index = WaypointFindNearestGoal(pEdict, pBot->curr_waypoint_index, team, pBot->GetGoalType());
 

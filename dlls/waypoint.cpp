@@ -556,7 +556,7 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 		return false;
 	}
 
-	if( mod_id == GEARBOX_DLL && pGame->IsCTF() )
+	if(pGame->IsOpposingForce() && pGame->IsCTF() )
 	{
 		if( waypoints[index].flags == W_FL_FLAG )
 		{
@@ -605,7 +605,7 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 			}
 		}
 	}
-	else if( mod_id == GEARBOX_DLL && pGame->IsCapturePoint() && (waypoints[index].flags == W_FL_OP4_CAPTURE_POINT) )
+	else if(pGame->IsOpposingForce() && pGame->IsCapturePoint() && (waypoints[index].flags == W_FL_OP4_CAPTURE_POINT) )
 	{
 		edict_t *pNearestCapturePoint = FindNearestTriggerCtfGeneric(waypoints[index].origin, "trigger_ctfgeneric");
 
@@ -625,7 +625,7 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 			return true;
 		}
 	}
-	else if( mod_id == DOD_DLL && waypoints[index].flags == W_FL_DOD_CAP )
+	else if(pGame->IsDayOfDefeat() && waypoints[index].flags == W_FL_DOD_CAP )
 	{
 		edict_t *pNearestControlPoint = FindNearest(waypoints[index].origin, "dod_control_point");
 
@@ -641,7 +641,7 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 			return true;
 		}
 	}
-	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_HIVE )
+	else if(pGame->IsNaturalSelection() && waypoints[index].flags == W_FL_NS_HIVE )
 	{
 		edict_t *pNearestHive = FindNearest( waypoints[index].origin, "team_hive" );
 
@@ -650,7 +650,7 @@ bool ShouldSkip( const edict_t *pPlayer, int index )
 			return true;
 		}
 	}
-	else if( mod_id == NS_DLL && waypoints[index].flags == W_FL_NS_RESNODE && ((NSGame *)pGame.get())->IsClassic() )
+	else if(pGame->IsNaturalSelection() && waypoints[index].flags == W_FL_NS_RESNODE && ((NSGame *)pGame.get())->IsClassic() )
 	{
 		if( ((NSBot *)pBot)->IsMarine() )
 		{
@@ -1145,7 +1145,7 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
             }
          }
 
-         if (mod_id == TFC_DLL)
+         if (pGame->IsTeamFortressClassic())
          {
             for (int bck_index=0; bck_index < num_backpacks; bck_index++)
             {
@@ -1254,7 +1254,7 @@ void WaypointSearchItems( edict_t *pEntity, const Vector& origin, int wpt_index 
 		}
    }
 
-   if ((mod_id == TFC_DLL) && (tfc_backpack_index != -1))  // found a TFC backpack
+   if (pGame->IsTeamFortressClassic() && (tfc_backpack_index != -1))  // found a TFC backpack
    {
       if (backpacks[tfc_backpack_index].health)
       {
@@ -1771,7 +1771,7 @@ void WaypointSave()
 	strcpy(header.filetype, WAYPOINT_HEADER);
 
 	header.waypoint_file_version = WAYPOINT_VERSION;
-	header.waypoint_file_flags = mod_id;
+	header.waypoint_file_flags = 0;
 	header.number_of_waypoints = num_waypoints;
 
 	memset(header.mapname, 0, sizeof(header.mapname));

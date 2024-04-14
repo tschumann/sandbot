@@ -13,6 +13,14 @@
 
 #include "bot.h"
 #include "game.h"
+#include "game_halflife.h"
+#include "game_opposingforce.h"
+#include "game_dayofdefeat.h"
+#include "game_teamfortressclassic.h"
+#include "game_gunmanchronicles.h"
+#include "game_naturalselection.h"
+#include "game_theship.h"
+#include "game_theyhunger.h"
 #include "engine.h"
 #include "dll.h"
 #include "linkfunc.h"
@@ -248,7 +256,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	if( !strcmp( pGameDir, "valve" ) )
 	{
-		mod_id = VALVE_DLL;
+		pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 
 #ifndef __linux__
 		szLibraryPath = "valve/dlls/hl.dll";
@@ -267,7 +275,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "gearbox" ) )
 	{
-		mod_id = GEARBOX_DLL;
+		pGame = std::make_unique<GearboxGame>(GameId::GAME_GEARBOX);
 
 #ifndef __linux__
 		szLibraryPath = "gearbox/dlls/opfor.dll";
@@ -286,7 +294,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "dod" ) )
 	{
-		mod_id = DOD_DLL;
+		pGame = std::make_unique<DODGame>(GameId::GAME_DOD);
 
 #ifndef __linux__
 		szLibraryPath = "dod/dlls/dod.dll";
@@ -305,7 +313,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "tfc" ) )
 	{
-		mod_id = TFC_DLL;
+		pGame = std::make_unique<TFCGame>(GameId::GAME_TFC);
 
 #ifndef __linux__
 		szLibraryPath = "tfc/dlls/tfc.dll";
@@ -324,7 +332,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "rewolf" ) )
 	{
-		mod_id = REWOLF_DLL;
+		pGame = std::make_unique<RewolfGame>(GameId::GAME_REWOLF);
 
 #ifndef __linux__
 		szLibraryPath = "rewolf/dlls/gunman.dll";
@@ -343,7 +351,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "hunger" ) )
 	{
-		mod_id = HUNGER_DLL;
+		pGame = std::make_unique<HungerGame>(GameId::GAME_HUNGER);
 
 #ifndef __linux__
 		szLibraryPath = "hunger/dlls/einar.dll";
@@ -362,7 +370,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "ns") )
 	{
-		mod_id = NS_DLL;
+		pGame = std::make_unique<NSGame>(GameId::GAME_NS);
 
 #ifndef __linux__
 		szLibraryPath = "ns/dlls/ns.dll";
@@ -381,7 +389,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	}
 	else if( !strcmp( pGameDir, "ship" ) )
 	{
-		mod_id = SHIP_DLL;
+		pGame = std::make_unique<ShipGame>(GameId::GAME_SHIP);
 
 #ifndef __linux__
 		szLibraryPath = "ship/dlls/ship.dll";
@@ -399,8 +407,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		}
 	}
 
-	pengfuncsFromEngine->pfnAlertMessage( at_console, "Determined mod_id %d and szLibraryPath %s\n", mod_id, szLibraryPath );
-
 	strncpy( g_szLibraryPath, szLibraryPath, strlen( szLibraryPath ) );
 
 	if( !g_bIsMMPlugin && h_Library == nullptr )
@@ -410,31 +416,33 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 		return;
 	}
 
-	if( mod_id == VALVE_DLL || mod_id == TFC_DLL )
+	pengfuncsFromEngine->pfnAlertMessage(at_console, "Determined game from szLibraryPath %s\n", szLibraryPath);
+
+	if(pGame->IsHalfLife() || pGame->IsTeamFortressClassic())
 	{
 		pBotData = g_valveBots;
 	}
-	else if( mod_id == GEARBOX_DLL )
+	else if(pGame->IsOpposingForce())
 	{
 		pBotData = g_gearboxBots;
 	}
-	else if( mod_id == DOD_DLL )
+	else if(pGame->IsDayOfDefeat())
 	{
 		pBotData = g_dodBots;
 	}
-	else if( mod_id == REWOLF_DLL )
+	else if(pGame->IsGunmanChronicles())
 	{
 		pBotData = g_gunmanBots;
 	}
-	else if( mod_id == NS_DLL )
+	else if(pGame->IsNaturalSelection())
 	{
 		pBotData = g_nsBots;
 	}
-	else if( mod_id == HUNGER_DLL )
+	else if(pGame->IsTheyHunger())
 	{
 		pBotData = g_hungerBots;
 	}
-	else if( mod_id == SHIP_DLL )
+	else if(pGame->IsTheShip())
 	{
 		pBotData = g_shipBots;
 	}

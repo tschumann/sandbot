@@ -67,17 +67,6 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 
 extern bool g_bIsMMPlugin;
 
-// define constants used to identify the MOD we are playing...
-#define VALVE_DLL		1 // NOTE: also defined in Visual Studio project
-#define GEARBOX_DLL		3
-#define DOD_DLL			8
-#define TFC_DLL			9
-#define REWOLF_DLL		10
-
-#define NS_DLL			20
-#define HUNGER_DLL		21
-#define SHIP_DLL		22
-
 int GetBotCount();
 
 void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... );

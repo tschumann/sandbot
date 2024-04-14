@@ -15,10 +15,8 @@
 
 enum class GameId
 {
-	GAME_UNKNOWN = 0,
 	GAME_VALVE,
 	GAME_GEARBOX,
-	GAME_DECAY,
 	GAME_DOD,
 	GAME_TFC,
 	GAME_DMC,
@@ -55,7 +53,14 @@ public:
 	virtual bool UseToOpenDoor() const;
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
+	virtual bool IsHalfLife() const;
+	virtual bool IsOpposingForce() const;
+	virtual bool IsDayOfDefeat() const;
+	virtual bool IsTeamFortressClassic() const;
 	virtual bool IsGunmanChronicles() const;
+	virtual bool IsNaturalSelection() const;
+	virtual bool IsTheShip() const;
+	virtual bool IsTheyHunger() const;
 
 	const static int MAX_PLAYERS = 32;
 
@@ -65,8 +70,6 @@ protected:
 private:
 	Game() {};
 };
-
-extern int mod_id;
 
 extern std::unique_ptr<Game> pGame;
 

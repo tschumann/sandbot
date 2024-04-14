@@ -29,7 +29,7 @@ namespace tests
 		{
 			CleanupGameAndBots();
 
-			mod_id = VALVE_DLL;
+			pGame = std::make_unique<Game>(GameId::GAME_VALVE);
 			other_gFunctionTable = foolsgoldsource::gEngine.GetDLLFunctions();
 			ServerActivate( nullptr, 2048, 32 );
 			// TODO: should be set by calling GiveFnptrsToDll

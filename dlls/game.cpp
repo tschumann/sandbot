@@ -140,9 +140,44 @@ int Game::GetTeam( const edict_t *pEdict ) const
 	return 0;
 }
 
+bool Game::IsHalfLife() const
+{
+	return gameId == GameId::GAME_VALVE;
+}
+
+bool Game::IsOpposingForce() const
+{
+	return gameId == GameId::GAME_GEARBOX;
+}
+
+bool Game::IsDayOfDefeat() const
+{
+	return gameId == GameId::GAME_DOD;
+}
+
+bool Game::IsTeamFortressClassic() const
+{
+	return gameId == GameId::GAME_TFC;
+}
+
 bool Game::IsGunmanChronicles() const
 {
-	return mod_id == REWOLF_DLL;
+	return gameId == GameId::GAME_REWOLF;
+}
+
+bool Game::IsNaturalSelection() const
+{
+	return gameId == GameId::GAME_NS;
+}
+
+bool Game::IsTheShip() const
+{
+	return gameId == GameId::GAME_SHIP;
+}
+
+bool Game::IsTheyHunger() const
+{
+	return gameId == GameId::GAME_HUNGER;
 }
 
 void Game::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
@@ -156,3 +191,5 @@ bool Game::UseToOpenDoor() const
 {
 	return false;
 }
+
+std::unique_ptr<Game> pGame;

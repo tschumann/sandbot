@@ -48,7 +48,7 @@ static FILE *fp;
 
 const char *AssetRemap( const char *szPath )
 {
-	if( mod_id == REWOLF_DLL )
+	if(pGame->IsGunmanChronicles())
 	{
 		// this seems to be precached but not used
 		if( !strcmp(szPath, "sprites/glow_aicore_no.spr") )
@@ -56,7 +56,7 @@ const char *AssetRemap( const char *szPath )
 			return "sprites/glow_beamgun_no.spr";
 		}
 	}
-	else if( mod_id == SHIP_DLL )
+	else if(pGame->IsTheShip())
 	{
 		// it's unclear where these invalid model names come from
 		// they cause crashes when developer > 0
@@ -423,7 +423,7 @@ void pfnGetAimVector(edict_t* ent, float speed, float *rgflReturn)
 void pfnServerCommand(char* str)
 {
 	// Natural Selection 3.2 forces these every frame
-	if( mod_id == NS_DLL && !strncmp(str, "sv_airmove", strlen("sv_airmove")) && !strncmp(str, "sv_airaccelerate", strlen("sv_airaccelerate")) )
+	if(pGame->IsNaturalSelection() && !strncmp(str, "sv_airmove", strlen("sv_airmove")) && !strncmp(str, "sv_airaccelerate", strlen("sv_airaccelerate")) )
 	{
 		UTIL_LogDPrintf("pfnServerCommand: str=%s\n", str);
 	}
@@ -517,7 +517,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
         botMsgEndFunction = NULL;  // no msg end function until known otherwise
         botMsgIndex = index;       // index of bot receiving message
 
-        if (mod_id == VALVE_DLL)
+        if (pGame->IsHalfLife())
         {
            if (msg_type == message_WeaponList)
               botMsgFunction = BotClient_Valve_WeaponList;
@@ -532,7 +532,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Valve_ScreenFade;
         }
-		else if (mod_id == GEARBOX_DLL)
+		else if (pGame->IsOpposingForce())
         {
            if (msg_type == message_VGUI)
               botMsgFunction = BotClient_Gearbox_VGUI;
@@ -549,7 +549,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Gearbox_ScreenFade;
         }
-		else if (mod_id == DOD_DLL)
+		else if (pGame->IsDayOfDefeat())
         {
            if (msg_type == message_VGUI)
               botMsgFunction = BotClient_DOD_VGUI;
@@ -564,7 +564,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_Damage)
               botMsgFunction = BotClient_Valve_Damage;
         }
-		else if (mod_id == TFC_DLL)
+		else if (pGame->IsTeamFortressClassic())
         {
            if (msg_type == message_VGUI)
               botMsgFunction = BotClient_TFC_VGUI;
@@ -581,7 +581,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_TFC_ScreenFade;
         }
-		else if (mod_id == REWOLF_DLL)
+		else if (pGame->IsGunmanChronicles())
         {
            if (msg_type == message_WeaponList)
               botMsgFunction = BotClient_Gunman_WeaponList;
@@ -596,7 +596,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Gunman_ScreenFade;
         }
-		else if (mod_id == HUNGER_DLL)
+		else if (pGame->IsTheyHunger())
         {
            if (msg_type == message_WeaponList)
               botMsgFunction = BotClient_Hunger_WeaponList;
@@ -611,7 +611,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Hunger_ScreenFade;
         }
-		else if (mod_id == SHIP_DLL)
+		else if (pGame->IsTheShip())
         {
            if (msg_type == message_WeaponList)
               botMsgFunction = BotClient_Ship_WeaponList;
@@ -626,7 +626,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
            else if (msg_type == message_ScreenFade)
               botMsgFunction = BotClient_Ship_ScreenFade;
         }
-		else if (mod_id == NS_DLL)
+		else if (pGame->IsNaturalSelection())
         {
            if (msg_type == message_WeaponList)
               botMsgFunction = BotClient_NS_WeaponList;
@@ -648,27 +648,27 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      botMsgFunction = NULL;  // no msg function until known otherwise
      botMsgIndex = -1;       // index of bot receiving message (none)
 
-     if (mod_id == VALVE_DLL)
+     if (pGame->IsHalfLife())
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_Valve_DeathMsg;
      }
-     else if (mod_id == TFC_DLL)
+     else if (pGame->IsTeamFortressClassic())
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_TFC_DeathMsg;
      }
-     else if (mod_id == GEARBOX_DLL)
+     else if (pGame->IsOpposingForce())
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_Gearbox_DeathMsg;
      }
-	 else if (mod_id == REWOLF_DLL)
+	 else if (pGame->IsGunmanChronicles())
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_Gunman_DeathMsg;
      }
-	 else if (mod_id == NS_DLL)
+	 else if (pGame->IsNaturalSelection())
      {
         if (msg_type == message_DeathMsg)
 		{
@@ -683,12 +683,12 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
 			botMsgFunction = BotClient_NS_GameStatus;
 		}
      }
-	 else if (mod_id == HUNGER_DLL)
+	 else if (pGame->IsTheyHunger())
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_Hunger_DeathMsg;
      }
-	 else if (mod_id == SHIP_DLL)
+	 else if (pGame->IsTheShip())
      {
         if (msg_type == message_DeathMsg)
 		{
@@ -708,42 +708,42 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      botMsgFunction = NULL;  // no msg function until known otherwise
      botMsgIndex = -1;       // index of bot receiving message (none)
 
-     if (mod_id == VALVE_DLL)
+     if (pGame->IsHalfLife())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_Valve_WeaponList;
      }
-	 else if (mod_id == DOD_DLL)
+	 else if (pGame->IsDayOfDefeat())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_TFC_WeaponList;
      }
-     else if (mod_id == TFC_DLL)
+     else if (pGame->IsTeamFortressClassic())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_TFC_WeaponList;
      }
-     else if (mod_id == GEARBOX_DLL)
+     else if (pGame->IsOpposingForce())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_Gearbox_WeaponList;
      }
-	 else if (mod_id == REWOLF_DLL)
+	 else if (pGame->IsGunmanChronicles())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_Gunman_WeaponList;
      }
-	 else if (mod_id == NS_DLL)
+	 else if (pGame->IsNaturalSelection())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_NS_WeaponList;
      }
-	 else if (mod_id == HUNGER_DLL)
+	 else if (pGame->IsTheyHunger())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_Hunger_WeaponList;
      }
-	 else if (mod_id == SHIP_DLL)
+	 else if (pGame->IsTheShip())
      {
         if (msg_type == message_WeaponList)
 		{
@@ -1081,7 +1081,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 
 	UTIL_LogDPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d\n", pszName, iSize, msg);
 
-	if( mod_id == VALVE_DLL )
+	if(pGame->IsHalfLife())
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;
@@ -1098,7 +1098,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
 	}
-	else if( mod_id == GEARBOX_DLL )
+	else if(pGame->IsOpposingForce())
 	{
 		if (strcmp(pszName, "VGUIMenu") == 0)
 			message_VGUI = msg;
@@ -1117,7 +1117,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
 	}
-	else if( mod_id == DOD_DLL )
+	else if(pGame->IsDayOfDefeat())
 	{
 		if (strcmp(pszName, "VGUIMenu") == 0)
 			message_VGUI = msg;
@@ -1140,7 +1140,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "HLTV") == 0)
 			message_HLTV = msg;
 	}
-	else if( mod_id == TFC_DLL )
+	else if(pGame->IsTeamFortressClassic())
 	{
 		if (strcmp(pszName, "VGUIMenu") == 0)
 			message_VGUI = msg;
@@ -1159,7 +1159,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
 	}
-	else if( mod_id == REWOLF_DLL )
+	else if(pGame->IsGunmanChronicles())
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;
@@ -1176,7 +1176,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
 	}
-	else if( mod_id == NS_DLL )
+	else if(pGame->IsNaturalSelection())
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;
@@ -1201,7 +1201,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 			gmsgGameStatus = msg;
 		}
 	}
-	if( mod_id == HUNGER_DLL )
+	if(pGame->IsTheyHunger())
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;
@@ -1218,7 +1218,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 		else if (strcmp(pszName, "ScreenFade") == 0)
 			message_ScreenFade = msg;
 	}
-	if( mod_id == SHIP_DLL )
+	if(pGame->IsTheShip())
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;
@@ -1481,8 +1481,8 @@ void pfnSetClientMaxspeed(const edict_t *pEdict, float fNewMaxspeed)
 {
 	UTIL_LogTPrintf("pfnSetClientMaxspeed: pEdict=%x fNewMaxSpeed=%f\n", pEdict, fNewMaxspeed);
 
-	// TODO: NS_DLL and TFC_DLL too? different classes have different speeds
-	if( mod_id == DOD_DLL )
+	// TODO: Natural Selection and Team Fortress Classic too? different classes have different speeds
+	if(pGame->IsDayOfDefeat())
 	{
 		bot_t *pBot = UTIL_GetBotPointer((edict_t *)pEdict);
 

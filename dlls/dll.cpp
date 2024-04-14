@@ -41,7 +41,6 @@ char g_argv[1024];
 DLL_FUNCTIONS other_gFunctionTable;
 DLL_GLOBAL const Vector g_vecZero = Vector(0,0,0);
 
-int mod_id = 0;
 int m_spriteTexture = 0;
 bool isFakeClientCommand = false;
 int fake_arg_count;
@@ -83,8 +82,6 @@ bool bBaseLinesCreated = false;
 bool bServerActivated = false;
 bool bCanAddBots = false;
 
-std::unique_ptr<Game> pGame;
-
 // TheFatal's method for calculating the msecval
 int msecnum;
 float msecdel;
@@ -118,48 +115,48 @@ char *show_menu_1 = {"Waypoint Tags\n\n1. Team Specific\n2. Wait for Lift\n3. Do
 char *show_menu_2 = {"Waypoint Tags\n\n1. Team 1\n2. Team 2\n3. Team 3\n4. Team 4\n5. CANCEL"};
 char *show_menu_3 = {"Waypoint Tags\n\n1. Flag Location\n2. Flag Goal Location\n\n5. CANCEL"};
 
-int GetModId()
-{
-	return mod_id;
-}
-
 void GameDLLInit( void )
 {
 	// do this before CVAR_REGISTER because changing string after registration causes Z_Free: freed a pointer without ZONEID
-	switch( mod_id )
+	if (pGame->IsHalfLife())
 	{
-	case VALVE_DLL:
 		bot_count.string = "11";
 		bot_count.value = 11;
-		break;
-	case GEARBOX_DLL:
+	}
+	else if (pGame->IsOpposingForce())
+	{
 		bot_count.string = "11";
 		bot_count.value = 11;
-		break;
-	case DOD_DLL:
+	}
+	else if (pGame->IsDayOfDefeat())
+	{
+		bot_count.string = "11";
+		bot_count.value = 11;
+	}
+	else if (pGame->IsTeamFortressClassic())
+	{
 		bot_count.string = "15";
 		bot_count.value = 15;
-		break;
-	case TFC_DLL:
-		bot_count.string = "15";
-		bot_count.value = 15;
-		break;
-	case REWOLF_DLL:
+	}
+	else if (pGame->IsGunmanChronicles())
+	{
 		bot_count.string = "11";
 		bot_count.value = 11;
-		break;
-	case NS_DLL:
+	}
+	else if (pGame->IsNaturalSelection())
+	{
 		bot_count.string = "15";
 		bot_count.value = 15;
-		break;
-	case HUNGER_DLL:
-		bot_count.string = "11";
-		bot_count.value = 11;
-		break;
-	case SHIP_DLL:
+	}
+	else if (pGame->IsTheShip())
+	{
 		bot_count.string = "7";
 		bot_count.value = 7;
-		break;
+	}
+	else if (pGame->IsTheyHunger())
+	{
+		bot_count.string = "11";
+		bot_count.value = 11;
 	}
 
 	CVAR_REGISTER(&sv_airmove);
@@ -320,7 +317,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
    static edict_t *temp_pent;
    static int flag_index;
 
-   if (mod_id == TFC_DLL)
+   if (pGame->IsTeamFortressClassic())
    {
       if (pentKeyvalue == pent_info_tfdetect)
       {
@@ -409,7 +406,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
          }
       }
    }
-	else if( mod_id == GEARBOX_DLL )
+	else if(pGame->IsOpposingForce())
 	{
 		if( pent_info_ctfdetect == nullptr )
 		{
@@ -441,7 +438,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 			capturePoints.push_back( capturePoint );
 		}
 	}
-	else if( mod_id == DOD_DLL )
+	else if(pGame->IsDayOfDefeat())
 	{
 		if( pkvd->szClassName && !strcmp(pkvd->szClassName, "info_doddetect") && !strcmp(pkvd->szKeyName, "detect_allies_country") )
 		{
@@ -978,10 +975,10 @@ void ClientCommand( edict_t *pEntity )
 			ALERT( at_console, "Model: %s\n", STRING(player->v.model) );
 			ALERT( at_console, "Friction: %f\n", player->v.friction );
 
-			if( mod_id == VALVE_DLL )
+			if(pGame->IsHalfLife())
 			{
 			}
-			else if( mod_id == GEARBOX_DLL )
+			else if(pGame->IsOpposingForce())
 			{
 				if (UTIL_GetTeam(player) == OpposingForceBot::TEAM_BLACK_MESA)
 				{
@@ -1003,7 +1000,7 @@ void ClientCommand( edict_t *pEntity )
 					}
 				}
 			}
-			else if( mod_id == DOD_DLL )
+			else if(pGame->IsDayOfDefeat())
 			{
 				if( player->v.team == DODBot::TEAM_ALLIES )
 				{
@@ -1029,7 +1026,7 @@ void ClientCommand( edict_t *pEntity )
 				}
 #endif
 			}
-			else if( mod_id == NS_DLL )
+			else if(pGame->IsNaturalSelection())
 			{
 				extern float UTIL_GetExperience( edict_t *player );
 
@@ -1120,76 +1117,60 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 	pBots = new bot_t*[Game::MAX_PLAYERS];
 
-	if( mod_id == VALVE_DLL )
+	if(pGame->IsHalfLife())
 	{
-		pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
-
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new HalfLifeBot();
 		}
 	}
-	else if( mod_id == GEARBOX_DLL )
+	else if(pGame->IsOpposingForce())
 	{
-		pGame = std::make_unique<GearboxGame>(GameId::GAME_GEARBOX);
-
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new OpposingForceBot();
 		}
 	}
-	else if( mod_id == DOD_DLL )
+	else if(pGame->IsDayOfDefeat())
 	{
-		pGame = std::make_unique<DODGame>(GameId::GAME_DOD);
-
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new DODBot();
 		}
 	}
-	else if( mod_id == TFC_DLL )
+	else if(pGame->IsTeamFortressClassic())
 	{
-		pGame = std::make_unique<TFCGame>(GameId::GAME_TFC);
-
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new TFCBot();
 		}
 	}
-	else if( mod_id == REWOLF_DLL )
+	else if(pGame->IsGunmanChronicles())
 	{
-		pGame = std::make_unique<Game>(GameId::GAME_REWOLF);
-
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new GunmanBot();
 		}
 	}
-	else if( mod_id == NS_DLL )
+	else if(pGame->IsNaturalSelection())
 	{
-		pGame = std::make_unique<NSGame>(GameId::GAME_NS);
-
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new NSBot();
 		}
 	}
-	else if( mod_id == SHIP_DLL )
+	else if (pGame->IsTheyHunger())
 	{
-		pGame = std::make_unique<ShipGame>(GameId::GAME_SHIP);
-
+		for (int i = 0; i < Game::MAX_PLAYERS; i++)
+		{
+			pBots[i] = new bot_t();
+		}
+	}
+	else if(pGame->IsTheShip())
+	{
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new ShipBot();
-		}
-	}
-	else
-	{
-		pGame = std::make_unique<Game>(GameId::GAME_UNKNOWN);
-
-		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
-		{
-			pBots[i] = new bot_t();
 		}
 	}
 
@@ -1243,7 +1224,7 @@ void StartFrame( void )
 
 	if (!g_bInGame)
 	{
-		if (mod_id == NS_DLL)
+		if (pGame->IsNaturalSelection())
 		{
 			// if the Countdown message has been sent, make a note of the time
 			if (g_iCountDown && !g_fCountDownTime)

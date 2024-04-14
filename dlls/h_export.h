@@ -23,8 +23,6 @@ extern HINSTANCE h_Library;
 extern void *h_Library;
 #endif
 
-extern int GetModId();
-
 #ifndef __linux__
 extern void WINAPI GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals);
 #else

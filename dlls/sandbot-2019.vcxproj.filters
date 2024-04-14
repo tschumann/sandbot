@@ -114,6 +114,9 @@
     <ClCompile Include="game_theship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_theyhunger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">
@@ -186,6 +189,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_theship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_theyhunger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

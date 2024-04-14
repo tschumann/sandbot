@@ -37,6 +37,7 @@ OBJ = \
 	game_gunmanchronicles.o \
 	game_naturalselection.o \
 	game_theship.o \
+	game_theyhunger.o \
 	h_export.o \
 	linkfunc.o \
 	meta_api.o \

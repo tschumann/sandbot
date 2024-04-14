@@ -253,7 +253,7 @@ int UTIL_GetClass(edict_t *pEntity)
 	infobuffer = (*g_engfuncs.pfnGetInfoKeyBuffer)( pEntity );
 	strcpy(model_name, (g_engfuncs.pfnInfoKeyValue(infobuffer, "model")));
 
-	if( mod_id == NS_DLL )
+	if(pGame->IsNaturalSelection())
 	{
 		// see AvHUser3
 		return pEntity->v.iuser3;
@@ -470,19 +470,19 @@ void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, 
 
 void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 {
-	if (mod_id == VALVE_DLL)
+	if (pGame->IsHalfLife())
 	{
 		strcpy(filename, "valve/");
 	}
-	else if (mod_id == GEARBOX_DLL)
+	else if (pGame->IsOpposingForce())
 	{
 		strcpy(filename, "gearbox/");
 	}
-	else if (mod_id == DOD_DLL)
+	else if (pGame->IsDayOfDefeat())
 	{
 		strcpy(filename, "dod/");
 	}
-	else if (mod_id == TFC_DLL)
+	else if (pGame->IsTeamFortressClassic())
 	{
 		strcpy(filename, "tfc/");
 	}
@@ -490,15 +490,15 @@ void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 	{
 		strcpy(filename, "rewolf/");
 	}
-	else if (mod_id == NS_DLL)
+	else if (pGame->IsNaturalSelection())
 	{
 		strcpy(filename, "ns/");
 	}
-	else if (mod_id == HUNGER_DLL)
+	else if (pGame->IsTheyHunger())
 	{
 		strcpy(filename, "hunger/");
 	}
-	else if (mod_id == SHIP_DLL)
+	else if (pGame->IsTheShip())
 	{
 		strcpy(filename, "ship/");
 	}

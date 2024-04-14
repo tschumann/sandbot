@@ -14,6 +14,7 @@
 
 #include "h_export.h"
 #include "bot.h"
+#include "game.h"
 #include "foolsgoldsource/foolsgoldsource.h"
 #include "foolsgoldsource/vscu_test.h"
 
@@ -32,7 +33,7 @@ namespace tests
 
 			GiveFnptrsToDll( &engineFunctions, &globalVariables );
 
-			Assert::AreEqual( GetModId(), VALVE_DLL );
+			Assert::IsTrue(pGame->IsHalfLife());
 		}
 
 		TEST_METHOD(TestGiveFnptrsToDllOpfor)
@@ -44,7 +45,7 @@ namespace tests
 
 			GiveFnptrsToDll(&engineFunctions, &globalVariables);
 
-			Assert::AreEqual( GetModId(), GEARBOX_DLL );
+			Assert::IsTrue(pGame->IsOpposingForce());
 		}
 	};
 }

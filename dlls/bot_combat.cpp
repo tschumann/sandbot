@@ -546,7 +546,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 	pNewEnemy = nullptr;
 	float nearestdistance = 1000.0f;
 
-	if( mod_id == TFC_DLL )
+	if(pGame->IsTeamFortressClassic())
 	{
 		pNewEnemy = ((TFCBot *)pBot)->FindEnemy();
 	}
@@ -598,7 +598,7 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		// keep track of when we last saw an enemy
 		pBot->f_bot_see_enemy_time = gpGlobals->time;
 	}
-	else if( mod_id == NS_DLL )
+	else if(pGame->IsNaturalSelection())
 	{
 		pNewEnemy = ((NSBot *)pBot)->FindEnemy();
 	}
@@ -638,19 +638,19 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 	// how far away is the enemy?
 	float distance = v_enemy.Length();
 
-	if (mod_id == VALVE_DLL)
+	if (pGame->IsHalfLife())
 	{
 		pSelect = &valve_weapon_select[0];
 	}
-	else if (mod_id == GEARBOX_DLL)
+	else if (pGame->IsOpposingForce())
 	{
 		pSelect = &gearbox_weapon_select[0];
 	}
-	else if (mod_id == DOD_DLL)
+	else if (pGame->IsDayOfDefeat())
 	{
 		pSelect = &dod_weapon_select[0];
 	}
-	else if (mod_id == TFC_DLL)
+	else if (pGame->IsTeamFortressClassic())
 	{
 		pSelect = &tfc_weapon_select[0];
 	}
@@ -658,15 +658,15 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 	{
 		pSelect = &gunman_weapon_select[0];
 	}
-	else if (mod_id == NS_DLL)
+	else if (pGame->IsNaturalSelection())
 	{
 		pSelect = &ns_weapon_select[0];
 	}
-	else if (mod_id == HUNGER_DLL)
+	else if (pGame->IsTheyHunger())
 	{
 		pSelect = &hunger_weapon_select[0];
 	}
-	else if (mod_id == SHIP_DLL)
+	else if (pGame->IsTheShip())
 	{
 		pSelect = &ship_weapon_select[0];
 	}
@@ -915,7 +915,7 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 			UTIL_SelectItem(pEdict, pSelect[select_index].weapon_name);
 		}
 
-         if (mod_id == TFC_DLL)
+         if (pGame->IsTeamFortressClassic())
          {
             if (iId == TF_WEAPON_SNIPERRIFLE)
             {

@@ -615,13 +615,13 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 		pBot->not_started = 1;  // hasn't joined game yet
 
-		if (mod_id == TFC_DLL)
+		if (pGame->IsTeamFortressClassic())
 			pBot->start_action = MSG_TFC_IDLE;
-		else if (mod_id == DOD_DLL)
+		else if (pGame->IsDayOfDefeat())
 			pBot->start_action = MSG_DOD_IDLE;
-		else if ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint()))
+		else if (pGame->IsOpposingForce() && (pGame->IsCTF() || pGame->IsCapturePoint()))
 			pBot->start_action = MSG_OPFOR_IDLE;
-		else if (mod_id == NS_DLL && start_action != 0)
+		else if (pGame->IsNaturalSelection() && start_action != 0)
 		{
 			pBot->start_action = start_action;
 		}
@@ -644,7 +644,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		pBot->bot_team = -1;
 		pBot->bot_class = -1;
 
-		if( mod_id == NS_DLL )
+		if(pGame->IsNaturalSelection())
 		{
 			// decide randomly which class to become
 			((NSBot *)pBot)->ChooseDesiredClass();
@@ -652,7 +652,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 
 	  	if( arg1 && (*arg1 != 0) )
 		{
-			if( mod_id == DOD_DLL )
+			if(pGame->IsDayOfDefeat())
 			{
 				if( !strcmp(arg1, "allies") )
 				{
@@ -667,7 +667,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 					ALERT( at_error, "Unknown team name %s\n", arg1 );
 				}
 			}
-			else if( mod_id == NS_DLL )
+			else if(pGame->IsNaturalSelection())
 			{
 				if( !strcmp(arg1, "alien") )
 				{
@@ -686,7 +686,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		if( arg2 && (*arg2 != 0) )
 		{
 			// TODO: expand this
-			if( mod_id == DOD_DLL )
+			if(pGame->IsDayOfDefeat())
 			{
 				if( !strcmp(arg2, "bazooka") )
 				{
@@ -703,7 +703,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			}
 		}
 
-	  if ((mod_id == TFC_DLL) || ((mod_id == GEARBOX_DLL) && (pGame->IsCTF() || pGame->IsCapturePoint())))
+	  if (pGame->IsTeamFortressClassic() || (pGame->IsOpposingForce() && (pGame->IsCTF() || pGame->IsCapturePoint())))
       {
          if ((arg1 != NULL) && (arg1[0] != 0))
          {
@@ -940,7 +940,7 @@ void BotFindItem( bot_t *pBot )
                         pBot->bUseDoor = FALSE;
                     }
                 }
-				else if( mod_id == NS_DLL )
+				else if(pGame->IsNaturalSelection())
 				{
 					// check if the entity is a resource node and the player is a gorge
 					if( ((NSBot *)pBot)->IsAlien() && ((NSBot *)pBot)->IsGorge() && !strcmp( "func_resource", item_name ) )
@@ -1095,7 +1095,7 @@ void BotFindItem( bot_t *pBot )
             {
             }
 
-			if (mod_id == NS_DLL)
+			if (pGame->IsNaturalSelection())
 			{
 				can_pickup = pBot->CanUseItem( pent );
 			}
@@ -1174,7 +1174,7 @@ void BotThink( bot_t *pBot )
 
    // this forces the bot to attempt to join a team each frame - it's easier than trying to
    // handle the conditional messages and work out how long until it's possible to rejoin
-   if( mod_id == NS_DLL && ((NSBot *)pBot)->IsInReadyRoom() )
+   if(pGame->IsNaturalSelection() && ((NSBot *)pBot)->IsInReadyRoom() )
    {
 	   pBot->not_started = true;
    }
@@ -1455,7 +1455,7 @@ void BotThink( bot_t *pBot )
 
          else
          {
-			 if( mod_id == NS_DLL )
+			 if(pGame->IsNaturalSelection())
 			 {
 				 if( ((NSBot *)pBot)->IsMarine() )
 				{
@@ -1686,7 +1686,7 @@ void BotThink( bot_t *pBot )
 
             // should the bot pause for a while here?
             // (don't pause on ladders or while being "used"...
-            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->GetSkill()]) && (pEdict->v.movetype != MOVETYPE_FLY) && (pBot->pBotUser == NULL) && mod_id != NS_DLL )
+            if ((RANDOM_LONG(1, 1000) <= pause_frequency[pBot->GetSkill()]) && (pEdict->v.movetype != MOVETYPE_FLY) && (pBot->pBotUser == NULL) && !pGame->IsNaturalSelection())
             {
                // set the time that the bot will stop "pausing"
                pBot->f_pause_time = gpGlobals->time + RANDOM_FLOAT(pause_time[pBot->GetSkill()][0], pause_time[pBot->GetSkill()][1]);

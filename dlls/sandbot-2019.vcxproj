@@ -178,6 +178,7 @@
     <ClCompile Include="game_teamfortressclassic.cpp" />
     <ClCompile Include="game_test.cpp" />
     <ClCompile Include="game_theship.cpp" />
+    <ClCompile Include="game_theyhunger.cpp" />
     <ClCompile Include="h_export.cpp" />
     <ClCompile Include="linkfunc.cpp" />
     <ClCompile Include="meta_api.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="game_opposingforce.h" />
     <ClInclude Include="game_teamfortressclassic.h" />
     <ClInclude Include="game_theship.h" />
+    <ClInclude Include="game_theyhunger.h" />
     <ClInclude Include="h_export.h" />
     <ClInclude Include="linkfunc.h" />
     <ClInclude Include="metamod.h" />
