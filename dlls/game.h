@@ -15,6 +15,7 @@
 
 enum class GameId
 {
+	GAME_UNKNOWN = 0,
 	GAME_VALVE,
 	GAME_GEARBOX,
 	GAME_DOD,
@@ -65,10 +66,10 @@ public:
 	const static int MAX_PLAYERS = 32;
 
 protected:
-	GameId gameId;
+	const GameId gameId;
 
 private:
-	Game() {};
+	Game() : gameId(GameId::GAME_UNKNOWN) {};
 };
 
 extern std::unique_ptr<Game> pGame;
