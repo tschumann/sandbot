@@ -33,23 +33,28 @@ typedef struct
 	// int iPrimaryAmmoIndex;
 	// int iSecondaryAmmoIndex;
 	int flags;
+	int iCustomisationId;
+	char szCustomisationCommand[16];
+	bool bIsDefaultCustomisation;
 } bot_weapon_select_t;
+
+const int NO_CUSTOMISATION = -1;
 
 #define NO_SUCH_WEAPON -1
 
 #define WEAPON_NONE 0
 #define WEAPON_MELEE 1
 #define WEAPON_PISTOL 2
-#define WEAPON_SHOTGUN 4
-#define WEAPON_MACHINEGUN 8
-#define WEAPON_RIFLE 16
-#define WEAPON_SNIPER 32
-#define WEAPON_ROCKETLAUNCHER 64
-#define WEAPON_ENERGY 128  
-#define WEAPON_ORGANIC 256
-#define WEAPON_GRENADE 512
-#define WEAPON_CHEMICAL 1024
-// #define WEAPON_OTHER 2048
+#define WEAPON_RANGEDPISTOL 4
+#define WEAPON_SHOTGUN 8
+#define WEAPON_MACHINEGUN 16
+#define WEAPON_RIFLE 32
+#define WEAPON_SNIPER 64
+#define WEAPON_ROCKETLAUNCHER 128
+#define WEAPON_ENERGY 256
+#define WEAPON_ORGANIC 512
+#define WEAPON_GRENADE 1024
+#define WEAPON_CHEMICAL 2048
 
 // weapon ID values for Half-Life
 #define VALVE_WEAPON_CROWBAR		1

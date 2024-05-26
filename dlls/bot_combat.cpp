@@ -18,18 +18,6 @@
 extern bot_weapon_t weapon_defs[MAX_WEAPONS];
 extern bool b_observer_mode;
 
-extern cvar_t bot_use_melee;
-extern cvar_t bot_use_pistol;
-extern cvar_t bot_use_shotgun;
-extern cvar_t bot_use_machinegun;
-extern cvar_t bot_use_rifle;
-extern cvar_t bot_use_sniper;
-extern cvar_t bot_use_rocketlauncher;
-extern cvar_t bot_use_energy;
-extern cvar_t bot_use_organic;
-extern cvar_t bot_use_grenade;
-extern cvar_t bot_use_chemical;
-
 // weapons are stored in priority order, most desired weapon should be at
 // the start of the array and least desired should be at the end
 // presumably the no ammo ones are at the top so they can always be selected
@@ -285,41 +273,45 @@ const bot_weapon_select_t gunman_weapon_select[] = {
 	{GUNMAN_WEAPON_DMLGRENADE, "weapon_dmlgrenade", 1.0f, 0.0f,
 	250.0f, 750.0f, 0.0f, 0.0f,
 	30, true, 100, 1, 0,
-	false, false, false, false, 0.0f, 0.0f, WEAPON_GRENADE},
+	false, false, false, false, 0.0f, 0.0f, WEAPON_GRENADE, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_BEAMGUN, "weapon_beamgun", 0.0f, 0.0f,
 	0.0f, 500.0f, 0.0f, 0.0f,
 	100, false, 100, 1, 0,
-	true, false, false, false, 0.0f, 0.0f, WEAPON_ENERGY},
+	true, false, false, false, 0.0f, 0.0f, WEAPON_ENERGY, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_MINIGUN, "weapon_minigun", 0.1f, 0.0f,
 	0.0f, 1024.0f, 0.0f, 0.0f,
 	100, true, 100, 1, 0,
-	true, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MACHINEGUN},
+	true, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MACHINEGUN, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_SHOTGUN, "weapon_shotgun", 0.75f, 0.0f,
 	0.0f, 150.0f, 0.0f, 0.0f,
-    100, true, 100, 2, 0,
-	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_SHOTGUN},
+	100, true, 100, 2, 0,
+	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_SHOTGUN, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_CHEMGUN, "weapon_chemgun", 1.0f, 0.0f,
 	100.0f, 400.0f, 0.0f, 0.0f,
 	100, true, 100, 2, 0,
-	false, false, false, false, 0.0f, 0.0f, WEAPON_CHEMICAL},
+	false, false, false, false, 0.0f, 0.0f, WEAPON_CHEMICAL, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_DML, "weapon_dml", 1.5f, 0.0f,
 	250.0f, 9999.0f, 0.0f, 0.0f,
 	100, true, 100, 1, 0,
-	false, false, false, false, 0.0f, 0.0f, WEAPON_ROCKETLAUNCHER},
+	false, false, false, false, 0.0f, 0.0f, WEAPON_ROCKETLAUNCHER, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.0f, 0.0f,
 	0.0f, 1024.0f, 0.0f, 0.0f,
-    100, true, 100, 1, 0,
-	true, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL},
+	100, true, 100, 1, 0,
+	true, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_RANGEDPISTOL, GunmanBot::PISTOL_PULSE, "cust_11", true},
+	{GUNMAN_WEAPON_GAUSSPISTOL, "weapon_gausspistol", 0.0f, 0.0f,
+	0.0f, 1024.0f, 0.0f, 0.0f,
+	100, true, 100, 1, 0,
+	true, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_PISTOL, GunmanBot::PISTOL_RAPID, "cust_13", false},
 	{GUNMAN_WEAPON_FISTS, "weapon_fists", 0.3f, 0.0f,
 	0.0f, 32.0, 0.0f, 0.0f,
     100, true, 100, 0, 0,
-	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MELEE},
+	FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_MELEE, NO_CUSTOMISATION},
 	{GUNMAN_WEAPON_AICORE, "weapon_aicore", 0.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f,
 	0, true, 100, 0, 0,
-	false, false, false, false, 0.0f, 0.0f, WEAPON_NONE},
+	false, false, false, false, 0.0f, 0.0f, WEAPON_NONE, NO_CUSTOMISATION},
 	/* terminator */
-    {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE}
+    {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE, NO_CUSTOMISATION}
 };
 
 // see AvHBasePlayerWeapon::mRange
@@ -770,6 +762,14 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 			continue;
 		}
 
+		// if it's a ranged pistol and ranged pistols have been disabled for bots
+		if ((pSelect[select_index].flags & WEAPON_RANGEDPISTOL) && CvarGetValue(&bot_use_rangedpistol) < 1)
+		{
+			// skip to next weapon
+			select_index++;
+			continue;
+		}
+
 		// if it's a shotgun and shotguns have been disabled for bots
 		if( (pSelect[select_index].flags & WEAPON_SHOTGUN) && CvarGetValue( &bot_use_shotgun ) < 1 )
 		{
@@ -847,7 +847,7 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
         {
 			select_index++;  // skip to next weapon
 			continue;
-        }   
+        }
 
 #if 0
          // is the bot NOT skilled enough to use this weapon?
@@ -908,6 +908,13 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
             select_index++;  // skip to next weapon
             continue;
          }
+
+		 if (pGame->HasWeaponCustomisation() && pSelect[select_index].iCustomisationId != NO_CUSTOMISATION)
+		 {
+			 FakeClientCommand(pEdict, pSelect[select_index].szCustomisationCommand);
+		 }
+
+		 // NOTE: at this point a weapon has been selected and the function will terminate one way or the other
 
         // select this weapon if it isn't already selected
         if (pBot->current_weapon.iId != iId)

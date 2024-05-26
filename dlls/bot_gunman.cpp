@@ -119,7 +119,11 @@ void GunmanBot::UseGaussPistolRapid() const
 
 void GunmanBot::UseGaussPistolSniper() const
 {
-	FakeClientCommand( this->pEdict, "cust_14" );
+	// add a failsafe check
+	if (CvarGetValue(&bot_use_sniper) >= 1)
+	{
+		FakeClientCommand(this->pEdict, "cust_14");
+	}
 }
 
 bool GunmanBot::CanUseFists( bool really ) const

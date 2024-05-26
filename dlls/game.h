@@ -52,6 +52,7 @@ public:
 	virtual bool CanChoosePlayerModel() const;
 	virtual int GetTeam( const edict_t *pEdict ) const;
 	virtual bool UseToOpenDoor() const;
+	virtual bool HasWeaponCustomisation() const;
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
 	virtual bool IsHalfLife() const;

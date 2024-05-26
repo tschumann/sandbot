@@ -157,8 +157,10 @@
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="bot_client.cpp" />
     <ClCompile Include="bot_combat.cpp" />
+    <ClCompile Include="bot_combat_test.cpp" />
     <ClCompile Include="bot_dod.cpp" />
     <ClCompile Include="bot_gunman.cpp" />
+    <ClCompile Include="bot_gunman_test.cpp" />
     <ClCompile Include="bot_halflife.cpp" />
     <ClCompile Include="bot_hunger.cpp" />
     <ClCompile Include="bot_navigate.cpp" />

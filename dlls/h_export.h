@@ -15,7 +15,11 @@
 
 #include "extdll.h"
 
+#include "meta_api.h"
+
 extern globalvars_t* gpGlobals;
+
+extern gamedll_funcs_t gGameDLLFunc;
 
 #ifndef __linux__
 extern HINSTANCE h_Library;

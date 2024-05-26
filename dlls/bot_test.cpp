@@ -27,10 +27,12 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
+			foolsgoldsource::gEngine.Reset();
+
 			CleanupGameAndBots();
 
 			pGame = std::make_unique<Game>(GameId::GAME_VALVE);
-			other_gFunctionTable = foolsgoldsource::gEngine.GetDLLFunctions();
+			other_gFunctionTable = *foolsgoldsource::gEngine.GetDLLFunctions();
 			ServerActivate( nullptr, 2048, 32 );
 			// TODO: should be set by calling GiveFnptrsToDll
 			pBotData = g_valveBots;
@@ -79,8 +81,8 @@ namespace tests
 
 			Assert::AreEqual( false, pBots[0]->is_used );
 			Assert::AreEqual( false, pBotData[pBots[0]->iBotDataIndex].bIsUsed );
-			Assert::AreEqual( (size_t)1, foolsgoldsource::gEngine.serverCommands.size() );
-			Assert::AreEqual( "kick \"BotName\"\n", foolsgoldsource::gEngine.serverCommands[0].c_str() );
+			Assert::AreEqual( (size_t)1, foolsgoldsource::gEngine.executedServerCommands.size() );
+			Assert::AreEqual( "kick \"BotName\"\n", foolsgoldsource::gEngine.executedServerCommands.back().c_str() );
 		}
 	};
 }

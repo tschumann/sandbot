@@ -192,4 +192,9 @@ bool Game::UseToOpenDoor() const
 	return false;
 }
 
+bool Game::HasWeaponCustomisation() const
+{
+	return false;
+}
+
 std::unique_ptr<Game> pGame;

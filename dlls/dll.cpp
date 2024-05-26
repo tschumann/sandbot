@@ -96,6 +96,7 @@ cvar_t bot_shoot = {"bot_shoot", "1"};
 
 cvar_t bot_use_melee = {"bot_use_melee", "1", 0, 1.0f};
 cvar_t bot_use_pistol = {"bot_use_pistol", "1", 0, 1.0f};
+cvar_t bot_use_rangedpistol = { "bot_use_rangedpistol", "1", 0, 1.0f };
 cvar_t bot_use_shotgun = {"bot_use_shotgun", "1", 0, 1.0f};
 cvar_t bot_use_machinegun = {"bot_use_machinegun", "1", 0, 1.0f};
 cvar_t bot_use_rifle = {"bot_use_rifle", "1", 0, 1.0f};
@@ -167,6 +168,7 @@ void GameDLLInit( void )
 
 	CVAR_REGISTER(&bot_use_melee);
 	CVAR_REGISTER(&bot_use_pistol);
+	CVAR_REGISTER(&bot_use_rangedpistol);
 	CVAR_REGISTER(&bot_use_shotgun);
 	CVAR_REGISTER(&bot_use_machinegun);
 	CVAR_REGISTER(&bot_use_rifle);

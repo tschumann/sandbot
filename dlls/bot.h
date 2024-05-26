@@ -28,6 +28,19 @@ using std::min;
 
 extern cvar_t bot_log_level;
 
+extern cvar_t bot_use_melee;
+extern cvar_t bot_use_pistol;
+extern cvar_t bot_use_rangedpistol;
+extern cvar_t bot_use_shotgun;
+extern cvar_t bot_use_machinegun;
+extern cvar_t bot_use_rifle;
+extern cvar_t bot_use_sniper;
+extern cvar_t bot_use_rocketlauncher;
+extern cvar_t bot_use_energy;
+extern cvar_t bot_use_organic;
+extern cvar_t bot_use_grenade;
+extern cvar_t bot_use_chemical;
+
 const int iBotLogLevelDebug = 2;
 const int iBotLogLevelTrace = 3;
 

@@ -26,6 +26,8 @@ public:
 	RewolfGame(RewolfGame&&) = delete;
 	RewolfGame& operator=(const RewolfGame other) = delete;
 	RewolfGame& operator=(RewolfGame&& other) = delete;
+
+	virtual bool HasWeaponCustomisation() const;
 };
 
 #endif // __GAME_GUNMANCHRONICLES_H__

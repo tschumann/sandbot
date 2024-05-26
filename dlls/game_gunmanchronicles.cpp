@@ -15,3 +15,8 @@
 RewolfGame::RewolfGame(GameId gameId) : Game(gameId)
 {
 }
+
+bool RewolfGame::HasWeaponCustomisation() const
+{
+	return true;
+}
