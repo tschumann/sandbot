@@ -50,7 +50,7 @@ v0.4.3 (??/??/??)
 - [All] Added GetEntityAPI2 support.
 - [All] Got rid of pathwaypoint on/off and replaced it with waypoint on/off.
 - [Windows] Fixed possible memory leaks.
-- [Windows] Updated compiler to Visual Studio 2019 (from Visual Studio 2017).
+- [Windows] Updated compiler to Visual Studio 2022 (from Visual Studio 2017, then Visual Studio 2019).
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.
 - [Linux] Updated compiler to gcc 9.3.0 (from gcc 6.3.0).
 - [Linux] Updated to compile with gcc 11.1.1 (thanks dannycolin@GitHub and mathieuf20@GitHub).

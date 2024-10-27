@@ -14,7 +14,7 @@ git submodule update
 
 ### Windows
 
-Open dlls/sandbot-2019.sln
+Open `dlls/sandbot.sln`
 
 ### Linux
 
@@ -27,8 +27,10 @@ make
 
 Running tests
 -------------
+
+From Powershell:
 ```
-powershell ./test.ps1
+./test.ps1
 ```
 
 
