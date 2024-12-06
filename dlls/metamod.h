@@ -6,15 +6,10 @@
 //
 // http://www.teamsandpit.com/
 //
-// Notes: Wrappers for MetaMod macros to that we have functions.
-// Todo: What was this fixing?
+// Notes: Wrappers for MetaMod macros so that we have functions.
+// Todo: What was this fixing? Get rid of this?
 //
 //=============================================================================
-
-inline void METAMOD_RETURN( META_RES result )
-{
-	RETURN_META(result);
-}
 
 template <class T> T METAMOD_RETURN_VALUE( META_RES result, T value )
 {
