@@ -1341,7 +1341,7 @@ void WaypointAdd(edict_t *pEntity, int flags = 0)
    {
 	   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 255, 0, 0);
    }
-   else if( waypoints[index].flags & 2097152 )
+   else if( waypoints[index].flags & W_FL_NS_COMMAND_CHAIR )
    {
 	   WaypointDrawBeam(pEntity, start, end, 30, 0, 0, 0, 0, 255, 0);
    }
