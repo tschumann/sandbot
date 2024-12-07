@@ -54,6 +54,7 @@ std::unique_ptr<DWORD[]> pFunctionAddresses;
 std::unique_ptr<DWORD[]> pNameAddresses;
 
 // https://blog.kowalczyk.info/articles/pefileformat.html has a lot of useful information
+// TODO: this might need to be reworked as there is no .edata segment in hl.dll any more
 void LoadExtraExports()
 {
 	IMAGE_DOS_HEADER sDOSHeader;
@@ -78,7 +79,7 @@ void LoadExtraExports()
 	// read the DOS header
 	fread( &sDOSHeader, sizeof(IMAGE_DOS_HEADER), 1, pFile );
 	// go to the PE header
-	fseek(pFile, sDOSHeader.e_lfanew, SEEK_SET );
+	fseek( pFile, sDOSHeader.e_lfanew, SEEK_SET );
 	// reader the NT signature
 	fread( &iNTSignature, sizeof(iNTSignature), 1, pFile );
 	// read the PE header
@@ -88,6 +89,8 @@ void LoadExtraExports()
 
 	iedataOffset = sOptionalHeader.DataDirectory[0].VirtualAddress;
 	iedataDelta = 0;
+
+	bool exportDataFound = false;
 
 	// TODO: read into sHeader instead of creating a fake sHeader for IMAGE_FIRST_SECTION
 	IMAGE_NT_HEADERS32 sHeader;
@@ -105,6 +108,7 @@ void LoadExtraExports()
 		{
 			iedataOffset = pSectionHeader->PointerToRawData;
 			iedataDelta = pSectionHeader->VirtualAddress - pSectionHeader->PointerToRawData;
+			exportDataFound = true;
 			break;
 		}
 		else
@@ -112,6 +116,13 @@ void LoadExtraExports()
 			// try the next one
 			pSectionHeader++;
 		}
+	}
+
+	if( exportDataFound == false )
+	{
+		ALERT( at_error, "No .edata section found\n" );
+
+		return;
 	}
 
 	fseek( pFile, iedataOffset, SEEK_SET );
