@@ -2046,7 +2046,15 @@ void WaypointPrintInfo(edict_t *pEntity)
 		ClientPrint(pEntity, HUD_PRINTNOTIFY, "There is a flag near this waypoint\n");
 
 		edict_t *pFlag = FindNearest(waypoints[index].origin, "item_ctfflag");
-		ALERT( at_console, "item_ctfflag with body %d, skin %d\n", pFlag->v.body, pFlag->v.skin );
+
+        if (pFlag)
+        {
+            ALERT(at_console, "item_ctfflag with body %d, skin %d\n", pFlag->v.body, pFlag->v.skin);
+        }
+        else
+        {
+            ALERT(at_console, "Not a item_ctfflag but has W_FL_FLAG\n");
+        }
 	}
 
 	if( flags & W_FL_FLAG_GOAL )
