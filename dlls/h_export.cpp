@@ -266,15 +266,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "valve/dlls/hl.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "gearbox" ) )
 	{
@@ -285,15 +276,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "gearbox/dlls/opfor.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "dod" ) )
 	{
@@ -304,15 +286,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "dod/dlls/dod.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "tfc" ) )
 	{
@@ -323,15 +296,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "tfc/dlls/tfc.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "dmc" ) )
 	{
@@ -342,15 +306,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "dmc/dlls/dmc.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "ricochet" ) )
 	{
@@ -361,15 +316,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "ricochet/dlls/ricochet.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "rewolf" ) )
 	{
@@ -380,15 +326,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = nullptr;
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = nullptr;
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "svencoop" ) )
 	{
@@ -399,15 +336,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "svencoop/dlls/server.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "hunger" ) )
 	{
@@ -418,15 +346,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = nullptr;
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = nullptr;
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "ns") )
 	{
@@ -437,15 +356,6 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "ns/dlls/ns_i386.so";
 #endif
-
-		if( !g_bIsMMPlugin )
-		{
-#ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
-#else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
-#endif
-		}
 	}
 	else if( !strcmp( pGameDir, "ship" ) )
 	{
@@ -456,15 +366,15 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #else
 		szLibraryPath = "ship/dlls/ship_i386.so";
 #endif
+	}
 
-		if( !g_bIsMMPlugin )
-		{
+	if( !g_bIsMMPlugin )
+	{
 #ifndef __linux__
-			h_Library = LoadLibrary( szLibraryPath );
+		h_Library = LoadLibrary( szLibraryPath );
 #else
-			h_Library = dlopen( szLibraryPath, RTLD_NOW );
+		h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
-		}
 	}
 
 	strncpy( g_szLibraryPath, szLibraryPath, strlen( szLibraryPath ) );
