@@ -1,3 +1,6 @@
 [submodule "foolsgoldsource"]
 	path = foolsgoldsource
 	url = https://github.com/tschumann/foolsgoldsource
+[submodule "metamod-p"]
+	path = metamod-p
+	url = https://github.com/Bots-United/metamod-p

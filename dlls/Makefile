@@ -5,14 +5,12 @@
 CPP = g++
 
 # gcc flags - thanks RoboCop
-# TODO: linux should be defined along with __linux__ in gcc but it isn't?
 OPTFLAGS = \
 		-m32 -Wall -Wextra \
 		-O2 -std=c++14 -march=core2 -mfpmath=sse \
-		-finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2 \
-		-Dlinux
+		-finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2
 
-CPPFLAGS = ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod
+CPPFLAGS = ${OPTFLAGS} -lstdc++ -lm -I../dlls -I../engine -I../common -I../pm_shared -I../metamod-p/metamod
 
 OBJ = \
 	bot.o \
