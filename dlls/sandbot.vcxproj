@@ -173,10 +173,13 @@
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_dayofdefeat.cpp" />
+    <ClCompile Include="game_deathmatchclassic.cpp" />
     <ClCompile Include="game_gunmanchronicles.cpp" />
     <ClCompile Include="game_halflife.cpp" />
     <ClCompile Include="game_naturalselection.cpp" />
     <ClCompile Include="game_opposingforce.cpp" />
+    <ClCompile Include="game_ricochet.cpp" />
+    <ClCompile Include="game_svencoop.cpp" />
     <ClCompile Include="game_teamfortressclassic.cpp" />
     <ClCompile Include="game_test.cpp" />
     <ClCompile Include="game_theship.cpp" />
@@ -202,10 +205,13 @@
     <ClInclude Include="extdll.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game_dayofdefeat.h" />
+    <ClInclude Include="game_deathmatchclassic.h" />
     <ClInclude Include="game_gunmanchronicles.h" />
     <ClInclude Include="game_halflife.h" />
     <ClInclude Include="game_naturalselection.h" />
     <ClInclude Include="game_opposingforce.h" />
+    <ClInclude Include="game_ricochet.h" />
+    <ClInclude Include="game_svencoop.h" />
     <ClInclude Include="game_teamfortressclassic.h" />
     <ClInclude Include="game_theship.h" />
     <ClInclude Include="game_theyhunger.h" />

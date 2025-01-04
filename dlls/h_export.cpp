@@ -17,7 +17,10 @@
 #include "game_opposingforce.h"
 #include "game_dayofdefeat.h"
 #include "game_teamfortressclassic.h"
+#include "game_deathmatchclassic.h"
+#include "game_ricochet.h"
 #include "game_gunmanchronicles.h"
+#include "game_svencoop.h"
 #include "game_naturalselection.h"
 #include "game_theship.h"
 #include "game_theyhunger.h"
@@ -330,6 +333,44 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 		}
 	}
+	else if( !strcmp( pGameDir, "dmc" ) )
+	{
+		pGame = std::make_unique<DeathmatchClassicGame>(GameId::GAME_DMC);
+
+#ifndef __linux__
+		szLibraryPath = "dmc/dlls/dmc.dll";
+#else
+		szLibraryPath = "dmc/dlls/dmc.so";
+#endif
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( szLibraryPath );
+#else
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
+#endif
+		}
+	}
+	else if( !strcmp( pGameDir, "ricochet" ) )
+	{
+		pGame = std::make_unique<RicochetGame>(GameId::GAME_RICOCHET);
+
+#ifndef __linux__
+		szLibraryPath = "ricochet/dlls/mp.dll";
+#else
+		szLibraryPath = "ricochet/dlls/ricochet.so";
+#endif
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( szLibraryPath );
+#else
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
+#endif
+		}
+	}
 	else if( !strcmp( pGameDir, "rewolf" ) )
 	{
 		pGame = std::make_unique<RewolfGame>(GameId::GAME_REWOLF);
@@ -346,6 +387,25 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 			h_Library = LoadLibrary( szLibraryPath );
 #else
 			h_Library = nullptr;
+#endif
+		}
+	}
+	else if( !strcmp( pGameDir, "svencoop" ) )
+	{
+		pGame = std::make_unique<SvenCoopGame>(GameId::GAME_SVENCOOP);
+
+#ifndef __linux__
+		szLibraryPath = "svencoop/dlls/server.dll";
+#else
+		szLibraryPath = "svencoop/dlls/server.so";
+#endif
+
+		if( !g_bIsMMPlugin )
+		{
+#ifndef __linux__
+			h_Library = LoadLibrary( szLibraryPath );
+#else
+			h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
 		}
 	}

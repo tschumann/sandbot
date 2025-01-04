@@ -123,6 +123,15 @@
     <ClCompile Include="bot_gunman_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_deathmatchclassic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_ricochet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_svencoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h">
@@ -198,6 +207,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_theyhunger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_deathmatchclassic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_ricochet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_svencoop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

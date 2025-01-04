@@ -34,7 +34,10 @@ OBJ = \
 	game_opposingforce.o \
 	game_dayofdefeat.o \
 	game_teamfortressclassic.o \
+	game_deathmatchclassic.o \
+	game_ricochet.o \
 	game_gunmanchronicles.o \
+	game_svencoop.o \
 	game_naturalselection.o \
 	game_theship.o \
 	game_theyhunger.o \
