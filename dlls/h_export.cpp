@@ -10,6 +10,7 @@
 #include "h_export.h"
 #include "meta_api.h"
 #include "cbase.h"
+#include "interface.h"
 
 #include "bot.h"
 #include "game.h"
@@ -428,6 +429,18 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	// give the engine functions to the other DLL...
 	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))(pengfuncsFromEngine, pGlobals);
+
+	// TODO: is this right? we won't want to Sys_LoadModule as we want to use the existing library that we're talking to, but why so many types that all look the same?
+	CreateInterfaceFn factory = Sys_GetFactory( (HINTERFACEMODULE)h_Library );
+
+	if( factory != NULL )
+	{
+		ALERT( at_console, "Got factory from library\n" );
+	}
+	else
+	{
+		ALERT( at_warning, "Unable to get factory from library\n" );
+	}
 
 	// finished, interfacing from gamedll to engine complete
 	return;

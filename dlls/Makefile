@@ -43,7 +43,8 @@ OBJ = \
 	linkfunc.o \
 	meta_api.o \
 	util.o \
-	waypoint.o
+	waypoint.o \
+	interface.o
 
 # by default build sandbot.so in release mode
 .DEFAULT_GOAL := sandbot.so

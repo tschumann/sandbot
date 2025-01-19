@@ -153,6 +153,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\interface.cpp" />
     <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp" />
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="bot_client.cpp" />
