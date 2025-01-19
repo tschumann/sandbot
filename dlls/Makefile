@@ -44,7 +44,7 @@ OBJ = \
 	meta_api.o \
 	util.o \
 	waypoint.o \
-	interface.o
+	../common/interface.o
 
 # by default build sandbot.so in release mode
 .DEFAULT_GOAL := sandbot.so
