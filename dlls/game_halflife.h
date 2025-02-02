@@ -26,7 +26,6 @@ public:
 	ValveGame(ValveGame&&) = delete;
 	ValveGame& operator=(const ValveGame other) = delete;
 	ValveGame& operator=(ValveGame&& other) = delete;
-	virtual ~ValveGame();
 
 	virtual bool CanChoosePlayerModel() const
 	{

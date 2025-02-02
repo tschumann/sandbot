@@ -16,10 +16,6 @@ ValveGame::ValveGame( GameId gameId ) : Game( gameId )
 {
 }
 
-ValveGame::~ValveGame()
-{
-}
-
 void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 {
 	// TODO: does GameUI.dll localise these names?
