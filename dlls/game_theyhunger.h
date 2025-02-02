@@ -26,6 +26,11 @@ public:
 	HungerGame(HungerGame&&) = delete;
 	HungerGame& operator=(const HungerGame other) = delete;
 	HungerGame& operator=(HungerGame&& other) = delete;
+
+	virtual bool CanChoosePlayerModel() const
+	{
+		return true;
+	}
 };
 
 #endif // __GAME_THEYHUNGER_H__

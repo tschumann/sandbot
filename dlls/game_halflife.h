@@ -28,6 +28,11 @@ public:
 	ValveGame& operator=(ValveGame&& other) = delete;
 	virtual ~ValveGame();
 
+	virtual bool CanChoosePlayerModel() const
+	{
+		return true;
+	}
+
 	virtual void GetSaveGameComment(char* pBuffer, int iMaxLength) const;
 };
 

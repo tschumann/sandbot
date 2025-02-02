@@ -27,6 +27,11 @@ public:
 	ShipGame& operator=(const ShipGame other) = delete;
 	ShipGame& operator=(ShipGame&& other) = delete;
 
+	virtual bool CanChoosePlayerModel() const
+	{
+		return false;
+	}
+
 	virtual bool UseToOpenDoor() const
 	{
 		return true;

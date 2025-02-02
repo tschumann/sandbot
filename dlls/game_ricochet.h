@@ -26,6 +26,11 @@ public:
 	RicochetGame(RicochetGame&&) = delete;
 	RicochetGame& operator=(const RicochetGame other) = delete;
 	RicochetGame& operator=(RicochetGame&& other) = delete;
+
+	virtual bool CanChoosePlayerModel() const
+	{
+		return true;
+	}
 };
 
 #endif // __GAME_RICOCHET_H__

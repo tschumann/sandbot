@@ -83,11 +83,6 @@ bool Game::IsValidEdict( const edict_t *pEdict ) const
 	return IsValidEntity( pEdict );
 }
 
-bool Game::CanChoosePlayerModel() const
-{
-	return true;
-}
-
 int Game::GetTeam( const edict_t *pEdict ) const
 {
 	extern char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];

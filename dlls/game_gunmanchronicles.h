@@ -27,6 +27,11 @@ public:
 	RewolfGame& operator=(const RewolfGame other) = delete;
 	RewolfGame& operator=(RewolfGame&& other) = delete;
 
+	virtual bool CanChoosePlayerModel() const
+	{
+		return true;
+	}
+
 	virtual bool HasWeaponCustomisation() const;
 };
 

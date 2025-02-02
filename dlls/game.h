@@ -30,6 +30,8 @@ enum class GameId
 	GAME_SHIP
 };
 
+// derive this class to add support for other games
+// TODO: make more of these methods abstract - this should really be an interface and if games are similar they can inherit from each other
 class Game
 {
 public:
@@ -49,12 +51,13 @@ public:
 	virtual bool IsCapturePoint() const;
 	virtual unsigned int BotsOnTeam( const int team ) const;
 	virtual bool IsValidEdict( const edict_t *pEdict ) const;
-	virtual bool CanChoosePlayerModel() const;
+	virtual bool CanChoosePlayerModel() const = 0;
 	virtual int GetTeam( const edict_t *pEdict ) const;
 	virtual bool UseToOpenDoor() const;
 	virtual bool HasWeaponCustomisation() const;
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
+	// TODO: get rid of these - all logic should come from the game class not if statements throughout the code
 	virtual bool IsHalfLife() const;
 	virtual bool IsOpposingForce() const;
 	virtual bool IsDayOfDefeat() const;

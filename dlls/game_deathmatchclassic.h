@@ -26,6 +26,11 @@ public:
 	DeathmatchClassicGame(DeathmatchClassicGame&&) = delete;
 	DeathmatchClassicGame& operator=(const DeathmatchClassicGame other) = delete;
 	DeathmatchClassicGame& operator=(DeathmatchClassicGame&& other) = delete;
+
+	virtual bool CanChoosePlayerModel() const
+	{
+		return true;
+	}
 };
 
 #endif // __GAME_DEATHMATCHCLASSIC_H__

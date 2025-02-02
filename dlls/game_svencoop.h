@@ -26,6 +26,11 @@ public:
 	SvenCoopGame(SvenCoopGame&&) = delete;
 	SvenCoopGame& operator=(const SvenCoopGame other) = delete;
 	SvenCoopGame& operator=(SvenCoopGame&& other) = delete;
+
+	virtual bool CanChoosePlayerModel() const
+	{
+		return true;
+	}
 };
 
 #endif // __GAME_SVENCOOP_H__

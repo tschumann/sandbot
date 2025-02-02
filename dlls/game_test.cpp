@@ -14,7 +14,7 @@
 
 #include "extdll.h"
 #include "bot.h"
-#include "game.h"
+#include "game_halflife.h"
 #include "foolsgoldsource/foolsgoldsource.h"
 #include "foolsgoldsource/vscu_test.h"
 
@@ -26,7 +26,7 @@ namespace tests
 
 		TEST_METHOD(TestIsValidEdict)
 		{
-			std::unique_ptr<Game> pGame = std::make_unique<Game>(GameId::GAME_VALVE);
+			std::unique_ptr<Game> pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 			Assert::AreEqual( false, pGame->IsValidEdict( nullptr ) );
 		}
 	};
