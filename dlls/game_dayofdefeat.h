@@ -27,6 +27,8 @@ public:
 	DODGame& operator=(const DODGame other) = delete;
 	DODGame& operator=(DODGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;

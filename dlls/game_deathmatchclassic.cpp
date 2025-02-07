@@ -15,3 +15,8 @@
 DeathmatchClassicGame::DeathmatchClassicGame(GameId gameId) : Game(gameId)
 {
 }
+
+const char* DeathmatchClassicGame::GetGameDir() const
+{
+	return "dmc";
+}

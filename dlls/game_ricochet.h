@@ -27,6 +27,8 @@ public:
 	RicochetGame& operator=(const RicochetGame other) = delete;
 	RicochetGame& operator=(RicochetGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return true;

@@ -31,7 +31,7 @@ enum class GameId
 };
 
 // derive this class to add support for other games
-// TODO: make more of these methods abstract - this should really be an interface and if games are similar they can inherit from each other
+// TODO: make more of these methods abstract - this should really be a mostly abstract class with generic functionality
 class Game
 {
 public:
@@ -41,6 +41,8 @@ public:
 	Game& operator=(const Game other) = delete;
 	Game& operator=(Game&& other) = delete;
 	virtual ~Game();
+
+	virtual const char* GetGameDir() const = 0;
 
 	virtual void Cleanup();
 	virtual int GetMaxPlayers() const;

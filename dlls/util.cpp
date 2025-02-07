@@ -470,43 +470,8 @@ void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, 
 
 void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 {
-	if (pGame->IsHalfLife())
-	{
-		strcpy(filename, "valve/");
-	}
-	else if (pGame->IsOpposingForce())
-	{
-		strcpy(filename, "gearbox/");
-	}
-	else if (pGame->IsDayOfDefeat())
-	{
-		strcpy(filename, "dod/");
-	}
-	else if (pGame->IsTeamFortressClassic())
-	{
-		strcpy(filename, "tfc/");
-	}
-	else if (pGame->IsGunmanChronicles())
-	{
-		strcpy(filename, "rewolf/");
-	}
-	else if (pGame->IsNaturalSelection())
-	{
-		strcpy(filename, "ns/");
-	}
-	else if (pGame->IsTheyHunger())
-	{
-		strcpy(filename, "hunger/");
-	}
-	else if (pGame->IsTheShip())
-	{
-		strcpy(filename, "ship/");
-	}
-	else
-	{
-		filename[0] = 0;
-		return;
-	}
+	strcpy(filename, pGame->GetGameDir());
+	strcpy(filename, "/");
 
 	if( arg1 && (*arg1) && (arg2) && (*arg2) )
 	{

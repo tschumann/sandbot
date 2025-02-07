@@ -27,6 +27,8 @@ public:
 	DeathmatchClassicGame& operator=(const DeathmatchClassicGame other) = delete;
 	DeathmatchClassicGame& operator=(DeathmatchClassicGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return true;

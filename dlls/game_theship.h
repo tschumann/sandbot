@@ -27,6 +27,8 @@ public:
 	ShipGame& operator=(const ShipGame other) = delete;
 	ShipGame& operator=(ShipGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return false;

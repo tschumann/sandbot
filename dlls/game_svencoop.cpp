@@ -15,3 +15,8 @@
 SvenCoopGame::SvenCoopGame(GameId gameId) : Game(gameId)
 {
 }
+
+const char* SvenCoopGame::GetGameDir() const
+{
+	return "svencoop";
+}

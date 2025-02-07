@@ -27,6 +27,8 @@ public:
 	ValveGame& operator=(const ValveGame other) = delete;
 	ValveGame& operator=(ValveGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return true;

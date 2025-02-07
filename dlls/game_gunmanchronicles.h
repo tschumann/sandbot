@@ -27,6 +27,8 @@ public:
 	RewolfGame& operator=(const RewolfGame other) = delete;
 	RewolfGame& operator=(RewolfGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return true;

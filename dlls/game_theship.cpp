@@ -15,3 +15,8 @@
 ShipGame::ShipGame( GameId gameId ) : Game( gameId )
 {
 }
+
+const char* ShipGame::GetGameDir() const
+{
+	return "ship";
+}

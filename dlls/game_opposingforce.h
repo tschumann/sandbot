@@ -27,6 +27,8 @@ public:
 	GearboxGame& operator=(const GearboxGame other) = delete;
 	GearboxGame& operator=(GearboxGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual void Cleanup()
 	{
 		extern vector<CapturePoint> capturePoints;

@@ -27,6 +27,8 @@ public:
 	NSGame& operator=(const NSGame other) = delete;
 	NSGame& operator=(NSGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;

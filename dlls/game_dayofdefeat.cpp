@@ -16,6 +16,11 @@ DODGame::DODGame( GameId gameId ) : Game( gameId )
 {
 }
 
+const char *DODGame::GetGameDir() const
+{
+	return "dod";
+}
+
 int DODGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;

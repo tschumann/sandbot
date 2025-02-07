@@ -16,6 +16,11 @@ NSGame::NSGame( GameId gameId ) : Game( gameId )
 {
 }
 
+const char* NSGame::GetGameDir() const
+{
+	return "ns";
+}
+
 int NSGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;

@@ -15,3 +15,8 @@
 HungerGame::HungerGame(GameId gameId) : Game(gameId)
 {
 }
+
+const char* HungerGame::GetGameDir() const
+{
+	return "hunger";
+}

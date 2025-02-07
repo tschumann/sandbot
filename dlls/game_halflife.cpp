@@ -16,6 +16,11 @@ ValveGame::ValveGame( GameId gameId ) : Game( gameId )
 {
 }
 
+const char* ValveGame::GetGameDir() const
+{
+	return "valve";
+}
+
 void ValveGame::GetSaveGameComment( char *pBuffer, int iMaxLength ) const
 {
 	// TODO: does GameUI.dll localise these names?

@@ -16,6 +16,11 @@ GearboxGame::GearboxGame( GameId gameId ) : Game( gameId )
 {
 }
 
+const char* GearboxGame::GetGameDir() const
+{
+	return "gearbox";
+}
+
 int GearboxGame::GetTeam( const edict_t *pEdict ) const
 {
 	if( this->IsCTF() || this->IsCapturePoint() )

@@ -27,6 +27,8 @@ public:
 	SvenCoopGame& operator=(const SvenCoopGame other) = delete;
 	SvenCoopGame& operator=(SvenCoopGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return true;

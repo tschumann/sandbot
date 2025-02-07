@@ -27,6 +27,8 @@ public:
 	HungerGame& operator=(const HungerGame other) = delete;
 	HungerGame& operator=(HungerGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool CanChoosePlayerModel() const
 	{
 		return true;

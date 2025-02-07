@@ -16,6 +16,11 @@ TFCGame::TFCGame( GameId gameId ) : Game( gameId )
 {
 }
 
+const char* TFCGame::GetGameDir() const
+{
+	return "tfc";
+}
+
 int TFCGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team - 1;

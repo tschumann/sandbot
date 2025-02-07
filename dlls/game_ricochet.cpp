@@ -15,3 +15,8 @@
 RicochetGame::RicochetGame(GameId gameId) : Game(gameId)
 {
 }
+
+const char* RicochetGame::GetGameDir() const
+{
+	return "ricochet";
+}

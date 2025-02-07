@@ -27,6 +27,8 @@ public:
 	TFCGame& operator=(const TFCGame other) = delete;
 	TFCGame& operator=(TFCGame&& other) = delete;
 
+	virtual const char* GetGameDir() const;
+
 	virtual bool IsTeamPlay() const
 	{
 		return true;
