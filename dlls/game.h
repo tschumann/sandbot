@@ -13,6 +13,8 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "bot_weapons.h"
+
 enum class GameId
 {
 	GAME_UNKNOWN = 0,
@@ -56,6 +58,9 @@ public:
 	virtual bool CanChoosePlayerModel() const = 0;
 	virtual int GetTeam( const edict_t *pEdict ) const;
 	virtual bool UseToOpenDoor() const;
+	virtual bot_weapon_select_t GetWeapons() const;
+	virtual bot_player_t GetBotProfiles() const;
+	virtual int GetInitialBotCount() const;
 	virtual bool HasWeaponCustomisation() const;
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
