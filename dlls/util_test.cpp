@@ -14,6 +14,8 @@
 
 #include "h_export.h"
 #include "bot.h"
+#include "game.h"
+#include "game_halflife.h"
 #include "foolsgoldsource/foolsgoldsource.h"
 #include "foolsgoldsource/vscu_test.h"
 
@@ -26,6 +28,8 @@ namespace tests
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
 			CleanupGameAndBots();
+
+			pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 		}
 
 		TEST_METHOD(TestUTIL_GetBotIndex_NullBot)
@@ -50,6 +54,23 @@ namespace tests
 			pTest = UTIL_ToLower(pTest);
 
 			Assert::AreEqual( "test", pTest );
+		}
+
+		TEST_METHOD(TestUTIL_BuildFileName)
+		{
+			char szPath[256] = "";
+
+			UTIL_BuildFileName(szPath, "maps", "map.bsp");
+
+			Assert::AreEqual( "valve/maps/map.bsp", szPath );
+
+			UTIL_BuildFileName(szPath, "maps", nullptr);
+
+			Assert::AreEqual( "valve/maps", szPath );
+
+			UTIL_BuildFileName(szPath, nullptr, nullptr);
+
+			Assert::AreEqual( "valve/", szPath );
 		}
 
 		TEST_METHOD(TestIsAlive_Dead)

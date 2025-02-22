@@ -471,7 +471,7 @@ void UTIL_ShowMenu( edict_t *pEdict, int slots, int displaytime, bool needmore, 
 void UTIL_BuildFileName(char *filename, char *arg1, char *arg2)
 {
 	strcpy(filename, pGame->GetGameDir());
-	strcpy(filename, "/");
+	strcat(filename, "/");
 
 	if( arg1 && (*arg1) && (arg2) && (*arg2) )
 	{
