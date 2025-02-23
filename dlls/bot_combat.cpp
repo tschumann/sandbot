@@ -314,6 +314,27 @@ const bot_weapon_select_t gunman_weapon_select[] = {
     {0, "", 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0f, 0.0f, WEAPON_NONE, NO_CUSTOMISATION}
 };
 
+bot_weapon_select_t dmc_weapon_select[] = {
+   {DMC_WEAPON_AXE, "weapon_axe", 2, 0.0, 50.0, 0.0, 0.0,
+	100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_LIGHTNING, "weapon_lightning", 5, 30.0, 1500.0, 0.0, 0.0,
+	100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_ROCKET1, "weapon_rocket1", 5, 150.0, 1000.0, 0.0, 0.0,
+	100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_SUPERNAIL, "weapon_supernail", 5, 50.0, 400.0, 0.0, 0.0,
+	100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_DOUBLESHOTGUN, "weapon_doubleshotgun", 5, 50.0, 250.0, 0.0, 0.0,
+	100, TRUE, 100, 2, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_GRENADE1, "weapon_grenade1", 5, 200.0, 800.0, 0.0, 0.0,
+	100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_NAILGUN, "weapon_nailgun", 5, 50.0, 400.0, 0.0, 0.0,
+	100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
+   {DMC_WEAPON_SHOTGUN, "weapon_shotgun", 5, 0.0, 250.0, 0.0, 0.0,
+	100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
+	/* terminator */
+	{0, "", 0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
+};
+
 // see AvHBasePlayerWeapon::mRange
 const bot_weapon_select_t ns_weapon_select[] = {
     {NS_WEAPON_GRENADE, "weapon_grenade", 1.0f, 0.0f,

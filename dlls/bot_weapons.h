@@ -203,6 +203,16 @@ const int NO_CUSTOMISATION = -1;
 #define GUNMAN_WEAPON_MINIGUN		28
 #define GUNMAN_WEAPON_GAUSSPISTOL	30
 
+// weapon ID values for Deathmatch Classic
+#define DMC_WEAPON_AXE            1
+#define DMC_WEAPON_SHOTGUN        2
+#define DMC_WEAPON_DOUBLESHOTGUN  4
+#define DMC_WEAPON_NAILGUN        8
+#define DMC_WEAPON_SUPERNAIL     16
+#define DMC_WEAPON_GRENADE1      32
+#define DMC_WEAPON_ROCKET1       64
+#define DMC_WEAPON_LIGHTNING    128
+
 // weapon ID values for Natural Selection
 #define NS_WEAPON_CLAWS				1
 #define NS_WEAPON_SPIT				2
