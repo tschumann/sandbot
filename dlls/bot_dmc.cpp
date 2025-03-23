@@ -24,3 +24,9 @@
 DMCBot::DMCBot()
 {
 }
+
+void DMCBot::Join()
+{
+	this->not_started = 0;
+	// FakeClientCommand(pEdict, "_firstspawn");
+}

@@ -642,6 +642,8 @@ class DMCBot : public HalfLifeBot
 {
 public:
 	DMCBot();
+
+	virtual void Join();
 };
 
 class GunmanBot : public bot_t

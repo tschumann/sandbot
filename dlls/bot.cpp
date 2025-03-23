@@ -626,8 +626,9 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 			pBot->start_action = start_action;
 		}
 		else
+		{
 			pBot->start_action = 0;  // not needed for non-team MODs
-
+		}
 
 		BotSpawnInit(pBot);
 
@@ -644,6 +645,10 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 		pBot->bot_team = -1;
 		pBot->bot_class = -1;
 
+		if (pGame->IsDeathmatchClassic())
+		{
+			// FakeClientCommand(pBot->pEdict, "_firstspawn");
+		}
 		if(pGame->IsNaturalSelection())
 		{
 			// decide randomly which class to become
