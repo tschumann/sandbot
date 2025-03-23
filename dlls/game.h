@@ -58,9 +58,9 @@ public:
 	virtual bool CanChoosePlayerModel() const = 0;
 	virtual int GetTeam( const edict_t *pEdict ) const;
 	virtual bool UseToOpenDoor() const;
-	virtual bot_weapon_select_t GetWeapons() const;
-	virtual bot_player_t GetBotProfiles() const;
-	virtual int GetInitialBotCount() const;
+	// virtual bot_weapon_select_t GetWeapons() const;
+	// virtual bot_player_t GetBotProfiles() const;
+	// virtual int GetInitialBotCount() const;
 	virtual bool HasWeaponCustomisation() const;
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;
 
@@ -69,6 +69,7 @@ public:
 	virtual bool IsOpposingForce() const;
 	virtual bool IsDayOfDefeat() const;
 	virtual bool IsTeamFortressClassic() const;
+	virtual bool IsDeathmatchClassic() const;
 	virtual bool IsGunmanChronicles() const;
 	virtual bool IsNaturalSelection() const;
 	virtual bool IsTheShip() const;

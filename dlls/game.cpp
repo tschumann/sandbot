@@ -155,6 +155,11 @@ bool Game::IsTeamFortressClassic() const
 	return gameId == GameId::GAME_TFC;
 }
 
+bool Game::IsDeathmatchClassic() const
+{
+	return gameId == GameId::GAME_DMC;
+}
+
 bool Game::IsGunmanChronicles() const
 {
 	return gameId == GameId::GAME_REWOLF;

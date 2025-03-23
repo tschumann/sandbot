@@ -139,6 +139,11 @@ void GameDLLInit( void )
 		bot_count.string = "15";
 		bot_count.value = 15;
 	}
+	else if (pGame->IsDeathmatchClassic())
+	{
+		bot_count.string = "11";
+		bot_count.value = 11;
+	}
 	else if (pGame->IsGunmanChronicles())
 	{
 		bot_count.string = "11";
@@ -1145,6 +1150,13 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
 			pBots[i] = new TFCBot();
+		}
+	}
+	else if (pGame->IsDeathmatchClassic())
+	{
+		for (int i = 0; i < Game::MAX_PLAYERS; i++)
+		{
+			pBots[i] = new DMCBot();
 		}
 	}
 	else if(pGame->IsGunmanChronicles())

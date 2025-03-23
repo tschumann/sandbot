@@ -21,6 +21,7 @@ OBJ = \
 	bot_opposingforce.o \
 	bot_dod.o \
 	bot_tfc.o \
+	bot_dmc.o \
 	bot_gunman.o \
 	bot_ns.o \
 	bot_ship.o \

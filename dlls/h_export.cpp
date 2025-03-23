@@ -389,7 +389,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	pengfuncsFromEngine->pfnAlertMessage(at_console, "Determined game from szLibraryPath %s\n", szLibraryPath);
 
-	if(pGame->IsHalfLife() || pGame->IsTeamFortressClassic())
+	if(pGame->IsHalfLife() || pGame->IsTeamFortressClassic() || pGame->IsDeathmatchClassic())
 	{
 		pBotData = g_valveBots;
 	}

@@ -667,6 +667,10 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 	{
 		pSelect = &tfc_weapon_select[0];
 	}
+	else if (pGame->IsDeathmatchClassic())
+	{
+		pSelect = &dmc_weapon_select[0];
+	}
 	else if (pGame->IsGunmanChronicles())
 	{
 		pSelect = &gunman_weapon_select[0];

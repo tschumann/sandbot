@@ -517,7 +517,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
         botMsgEndFunction = NULL;  // no msg end function until known otherwise
         botMsgIndex = index;       // index of bot receiving message
 
-        if (pGame->IsHalfLife())
+        if (pGame->IsHalfLife() || pGame->IsDeathmatchClassic())
         {
            if (msg_type == message_WeaponList)
               botMsgFunction = BotClient_Valve_WeaponList;
@@ -648,7 +648,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      botMsgFunction = NULL;  // no msg function until known otherwise
      botMsgIndex = -1;       // index of bot receiving message (none)
 
-     if (pGame->IsHalfLife())
+     if (pGame->IsHalfLife() || pGame->IsDeathmatchClassic())
      {
         if (msg_type == message_DeathMsg)
            botMsgFunction = BotClient_Valve_DeathMsg;
@@ -708,7 +708,7 @@ void pfnMessageBegin(int msg_dest, int msg_type, const float *pOrigin, edict_t *
      botMsgFunction = NULL;  // no msg function until known otherwise
      botMsgIndex = -1;       // index of bot receiving message (none)
 
-     if (pGame->IsHalfLife())
+     if (pGame->IsHalfLife() || pGame->IsDeathmatchClassic())
      {
         if (msg_type == message_WeaponList)
            botMsgFunction = BotClient_Valve_WeaponList;
@@ -1081,7 +1081,7 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 
 	UTIL_LogDPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d\n", pszName, iSize, msg);
 
-	if(pGame->IsHalfLife())
+	if(pGame->IsHalfLife() || pGame->IsDeathmatchClassic())
 	{
 		if (strcmp(pszName, "WeaponList") == 0)
 			message_WeaponList = msg;

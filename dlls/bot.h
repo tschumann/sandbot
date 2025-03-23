@@ -638,6 +638,12 @@ public:
 	const static int TEAM_GREEN = 0x6E64;
 };
 
+class DMCBot : public HalfLifeBot
+{
+public:
+	DMCBot();
+};
+
 class GunmanBot : public bot_t
 {
 public:
