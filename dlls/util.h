@@ -390,4 +390,6 @@ bool UTIL_IsBuilt( const edict_t *pent );
 float CvarGetValue( const cvar_t *pCvar );
 const char *CvarGetString( const cvar_t *pCvar );
 
+bool ShouldLogFunction();
+
 #endif // UTIL_H

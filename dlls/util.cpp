@@ -615,3 +615,12 @@ const char *CvarGetString( const cvar_t *pCvar )
 		return pCvar->string;
 	}
 }
+
+bool ShouldLogFunction()
+{
+#ifdef _DEBUG
+	return true;
+#else
+	return false;
+#endif // DEBUG
+}

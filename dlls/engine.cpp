@@ -1079,7 +1079,10 @@ int pfnRegUserMsg(const char *pszName, int iSize)
 {
 	int msg = (*g_engfuncs.pfnRegUserMsg)(pszName, iSize);
 
-	UTIL_LogDPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d\n", pszName, iSize, msg);
+	if (ShouldLogFunction())
+	{
+		UTIL_LogPrintf("pfnRegUserMsg: pszName=%s iSize=%d msg=%d\n", pszName, iSize, msg);
+	}
 
 	if(pGame->IsHalfLife() || pGame->IsDeathmatchClassic())
 	{
