@@ -502,10 +502,10 @@ edict_t *FindNearestTriggerCtfGeneric( const Vector point, const char *szClassna
 
 	while( (pent = UTIL_FindEntityByClassname( pent, szClassname )) != nullptr)
 	{
-		// skip trigger_ctfgeneric with a targetname/without a triggerstate
+		// skip trigger_ctfgeneric with a targetname (which implies no triggerstate)
 		if( !strcmp( szClassname, "trigger_ctfgeneric" ) && strlen( STRING(pent->v.targetname) ) > 0 )
 		{
-			ALERT( at_console, "Skipping %s as it probably doesn't have a triggerstate attribute\n", STRING(pent->v.targetname) );
+			// ALERT( at_console, "Skipping %s as it probably doesn't have a triggerstate attribute\n", STRING(pent->v.targetname) );
 			continue;
 		}
 

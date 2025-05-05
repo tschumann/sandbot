@@ -237,7 +237,7 @@ bool OpposingForceBot::FindFlag()
 bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	// there are 16 trigger_ctfgeneric entities in op4cp_park (8 pairs of entities, 4 pairs per team)
-	// 8 are to do with scoring (?), 8 are to with displaying who owns the capture point (?) - these have a triggerstate attribute
+	// 8 are to do with scoring (?), 8 are to do with displaying who owns the capture point (?) - these have a triggerstate attribute
 	// those with a triggerstate attribute have a target that is an env_render which displays if that team has the point?
 	// pev->skin or pev->body should have the team name but doesn't - only one type might have this?
 
@@ -252,6 +252,7 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 	{
 		if( !strcmp( STRING(pEntity->v.classname), "env_render" ) )
 		{
+			// TODO: should look at targetname rather than globalname here? nothing is getting printed right now
 			ALERT( at_console, "Found an env_render with name %s for %s\n", STRING(pEntity->v.globalname), STRING(pControlPoint->v.globalname) );
 
 			// if the entity is visible and it's Black Mesa
