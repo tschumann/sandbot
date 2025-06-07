@@ -72,7 +72,10 @@ extern "C" EXPORT int GetEngineFunctions( enginefuncs_t *pengfuncsFromEngine, in
 	if( g_bIsMMPlugin )
 		memset( pengfuncsFromEngine, 0, sizeof( enginefuncs_t ) );
 
-	pengfuncsFromEngine->pfnAlertMessage( at_console, "Hooked GetEngineFunctions\n" );
+	if( !g_bIsMMPlugin )
+	{
+		pengfuncsFromEngine->pfnAlertMessage(at_console, "Hooked GetEngineFunctions\n");
+	}
 
 	// and now we need to pass engine functions table to the game DLL (in fact it's our own
 	// functions we are passing here, but the game DLL won't notice)...
