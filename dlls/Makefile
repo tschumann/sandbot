@@ -68,8 +68,7 @@ sandbot.so: ${OBJ}
 	-cp $@ ../release/symbols/
 	-cp $@ ../release/sandbot/half-life/valve/dlls/
 	-cp $@ ../release/sandbot/half-life/gearbox/dlls/
-	-cp $@ ../release/sandbot/half-life/dod/dlls/
-	# -cp $@ ../release/sandbot/half-life/ns/dlls/
+	# NOTE: uncomment to test locally
 	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
 # clean up build files
