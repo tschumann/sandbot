@@ -1941,6 +1941,16 @@ bool bot_t::CanHeal() const
 	return false;
 }
 
+bool bot_t::ShouldTargetPlayers() const
+{
+	return true;
+}
+
+bool bot_t::ShouldTargetMonsters() const
+{
+	return false;
+}
+
 edict_t *bot_t::FindEnemyToHeal()
 {
 	edict_t *pNewEnemy = nullptr;

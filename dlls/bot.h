@@ -317,6 +317,8 @@ public:
 
 	virtual bool HasEnemy() const;
 	virtual bool ShouldSeekEnemy() const;
+	virtual bool ShouldTargetPlayers() const;
+	virtual bool ShouldTargetMonsters() const;
 	virtual bool CanHeal() const;
 	virtual edict_t *FindEnemyToHeal();
 	virtual bool IsValidEnemy( const edict_t *pEnemy );
