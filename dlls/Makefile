@@ -23,6 +23,7 @@ OBJ = \
 	bot_tfc.o \
 	bot_dmc.o \
 	bot_gunman.o \
+	bot_svencoop.o \
 	bot_ns.o \
 	bot_ship.o \
 	bot_hunger.o \

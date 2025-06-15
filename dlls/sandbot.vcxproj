@@ -169,6 +169,7 @@
     <ClCompile Include="bot_ns.cpp" />
     <ClCompile Include="bot_opposingforce.cpp" />
     <ClCompile Include="bot_ship.cpp" />
+    <ClCompile Include="bot_svencoop.cpp" />
     <ClCompile Include="bot_test.cpp" />
     <ClCompile Include="bot_tfc.cpp" />
     <ClCompile Include="dll.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="bot.h" />
     <ClInclude Include="bot_client.h" />
     <ClInclude Include="bot_func.h" />
+    <ClInclude Include="bot_svencoop.h" />
     <ClInclude Include="bot_weapons.h" />
     <ClInclude Include="cdll_dll.h" />
     <ClInclude Include="enginecallback.h" />
