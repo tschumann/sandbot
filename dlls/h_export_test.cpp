@@ -23,7 +23,38 @@ namespace tests
 	TEST_CLASS(h_export_test)
 	{
 	public:
-		
+
+		TEST_METHOD_INITIALIZE(SetUp)
+		{
+			foolsgoldsource::gEngine.Reset();
+
+			g_bIsMMPlugin = false;
+		}
+
+		TEST_METHOD(TestGetEngineFunctionsWithoutMetamod)
+		{
+			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
+
+			int iInterfaceVersion = 140;
+
+			int iResult = GetEngineFunctions( &engineFunctions, &iInterfaceVersion );
+
+			Assert::IsTrue( iResult );
+		}
+
+		TEST_METHOD(TestGetEngineFunctionsWithMetamod)
+		{
+			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
+
+			int iInterfaceVersion = 140;
+
+			g_bIsMMPlugin = true;
+
+			int iResult = GetEngineFunctions( &engineFunctions, &iInterfaceVersion );
+
+			Assert::IsTrue( iResult );
+		}
+
 		TEST_METHOD(TestGiveFnptrsToDllValve)
 		{
 			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
