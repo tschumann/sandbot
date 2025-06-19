@@ -564,39 +564,42 @@ edict_t *BotFindEnemy( bot_t *pBot )
 		pNewEnemy = ((TFCBot *)pBot)->FindEnemy();
 	}
 
-   // look for an enemy from players
-   if (pNewEnemy == nullptr)
-   {
-      nearestdistance = 2500;
+	// look for an enemy from players
+	if (pNewEnemy == nullptr)
+	{
+		nearestdistance = 2500;
 
-      // search the world for players...
-      for( int i = 1; i <= gpGlobals->maxClients; i++ )
-      {
-         edict_t *pPlayer = INDEXENT(i);
+		if (pBot->ShouldTargetPlayers())
+		{
+			// search the world for players...
+			for( int i = 1; i <= gpGlobals->maxClients; i++ )
+			{
+				edict_t *pPlayer = INDEXENT(i);
 
-         // skip invalid players
-         if( pGame->IsValidEdict( pPlayer ) && pBot->IsValidEnemy( pPlayer ) )
-         {
-            if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
-               continue;
+				// skip invalid players
+				if( pGame->IsValidEdict( pPlayer ) && pBot->IsValidEnemy( pPlayer ) )
+				{
+					if ((b_observer_mode) && !(pPlayer->v.flags & FL_FAKECLIENT))
+					continue;
 
-            vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
+					vecEnd = pPlayer->v.origin + pPlayer->v.view_ofs;
 
-            // see if bot can see the player...
-            if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
-            {
-               float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
-               if (distance < nearestdistance)
-               {
-                  nearestdistance = distance;
-                  pNewEnemy = pPlayer;
+					// see if bot can see the player...
+					if (FInViewCone( &vecEnd, pEdict ) && FVisible( vecEnd, pEdict ))
+					{
+						float distance = (pPlayer->v.origin - pEdict->v.origin).Length();
+						if (distance < nearestdistance)
+						{
+							nearestdistance = distance;
+							pNewEnemy = pPlayer;
 
-                  pBot->pBotUser = NULL;  // don't follow user when enemy found
-               }
-            }
-         }
-      }
-   }
+							pBot->pBotUser = NULL;  // don't follow user when enemy found
+						}
+					}
+				}
+			}
+		}
+	}
 
 	if (pNewEnemy)
 	{
