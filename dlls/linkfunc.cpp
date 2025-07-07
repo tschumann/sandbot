@@ -93,7 +93,7 @@ void LoadExtraExports()
 	bool exportDataFound = false;
 
 	// TODO: read into sHeader instead of creating a fake sHeader for IMAGE_FIRST_SECTION
-	IMAGE_NT_HEADERS32 sHeader;
+	IMAGE_NT_HEADERS sHeader;
 	sHeader.Signature = iNTSignature;
 	sHeader.FileHeader = sPEHeader;
 	sHeader.OptionalHeader = sOptionalHeader;
