@@ -372,10 +372,13 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 #endif
 	}
 
+	int iError = 0;
+
 	if( !g_bIsMMPlugin )
 	{
 #ifndef __linux__
 		h_Library = LoadLibrary( szLibraryPath );
+		iError = GetLastError();
 #else
 		h_Library = dlopen( szLibraryPath, RTLD_NOW );
 #endif
@@ -383,43 +386,20 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	strncpy( g_szLibraryPath, szLibraryPath, strlen( szLibraryPath ) );
 
-	if( !g_bIsMMPlugin && h_Library == nullptr )
+	if( h_Library == nullptr )
 	{
-		ALERT( at_error, "Library not found or not supported!\n" );
+		// TODO: this is because the function pointers haven't been copied across (and in this case haven't been found at all) - log this to a file if through metamod
+		if( !g_bIsMMPlugin )
+		{
+			ALERT( at_error, "Library not found or not supported (%s) - error %d!\n", pGameDir, iError );
+		}
 
 		return;
 	}
 
 	pengfuncsFromEngine->pfnAlertMessage(at_console, "Determined game from szLibraryPath %s\n", szLibraryPath);
 
-	if(pGame->IsHalfLife() || pGame->IsTeamFortressClassic() || pGame->IsDeathmatchClassic())
-	{
-		pBotData = g_valveBots;
-	}
-	else if(pGame->IsOpposingForce())
-	{
-		pBotData = g_gearboxBots;
-	}
-	else if(pGame->IsDayOfDefeat())
-	{
-		pBotData = g_dodBots;
-	}
-	else if(pGame->IsGunmanChronicles())
-	{
-		pBotData = g_gunmanBots;
-	}
-	else if(pGame->IsNaturalSelection())
-	{
-		pBotData = g_nsBots;
-	}
-	else if(pGame->IsTheyHunger())
-	{
-		pBotData = g_hungerBots;
-	}
-	else if(pGame->IsTheShip())
-	{
-		pBotData = g_shipBots;
-	}
+	InitBots();
 
 	LoadExtraExports();
 

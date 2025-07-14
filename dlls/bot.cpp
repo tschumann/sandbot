@@ -290,6 +290,38 @@ float pause_time[5][2] = {{0.2f, 0.5f}, {0.5f, 1.0f}, {0.7f, 1.3f}, {1.0f, 1.7f}
 // TheFatal's method for calculating the msecval
 extern float msecval;
 
+void InitBots()
+{
+	if (pGame->IsHalfLife() || pGame->IsTeamFortressClassic() || pGame->IsDeathmatchClassic())
+	{
+		pBotData = g_valveBots;
+	}
+	else if (pGame->IsOpposingForce())
+	{
+		pBotData = g_gearboxBots;
+	}
+	else if (pGame->IsDayOfDefeat())
+	{
+		pBotData = g_dodBots;
+	}
+	else if (pGame->IsGunmanChronicles())
+	{
+		pBotData = g_gunmanBots;
+	}
+	else if (pGame->IsNaturalSelection())
+	{
+		pBotData = g_nsBots;
+	}
+	else if (pGame->IsTheyHunger())
+	{
+		pBotData = g_hungerBots;
+	}
+	else if (pGame->IsTheShip())
+	{
+		pBotData = g_shipBots;
+	}
+}
+
 int GetBotCount()
 {
 	int count = 0;

@@ -11,6 +11,8 @@
 
 #include "bot.h"
 #include "cbase.h"
+#include "game.h"
+#include "linkfunc.h"
 #include "metamod.h"
 
 // Loaded as metamod plugin?
@@ -148,6 +150,12 @@ extern "C" EXPORT int Meta_Attach( PLUG_LOADTIME now, META_FUNCTIONS *pFunctionT
 	gpGamedllFuncs = pGamedllFuncs;
 
 	memcpy( &other_gFunctionTable, pGamedllFuncs->dllapi_table, sizeof( DLL_FUNCTIONS ) );
+
+	extern std::unique_ptr<Game> pGame;
+
+	InitBots();
+
+	LoadExtraExports();
 
 	return TRUE;
 }

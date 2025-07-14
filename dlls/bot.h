@@ -281,6 +281,7 @@ extern bot_player_t g_nsBots[];
 extern bot_player_t g_hungerBots[];
 extern bot_player_t g_shipBots[];
 
+void InitBots();
 void KickBot( const int iIndex );
 void KickAllBots();
 void CleanupGameAndBots();
