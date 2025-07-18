@@ -14,7 +14,7 @@ git submodule update --recursive
 
 ### Windows
 
-Open `dlls/sandbot.sln`
+Open `sandbot.sln`
 
 ### Linux
 

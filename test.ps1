@@ -8,11 +8,11 @@ Push-Location $wd
 # create dlls/run_tests so that test.h enables test code
 New-Item -Path "dlls" -Name "run_tests.hxx" -ItemType "file" -Force
 # build the solution
-MSBuild.exe /t:Build /p:Configuration=Release "dlls\sandbot.sln"
+MSBuild.exe /t:Build /p:Platform=x86 /p:Configuration=Release "sandbot.sln"
 # remove dlls/run_tests.hxx so that subsequent work doesn't get messed up by its presence
 Remove-Item dlls\run_tests.hxx
 
 # run the tests
-vstest.console.exe dlls\Release\sandbot.dll --logger:"console;verbosity=Normal"
+vstest.console.exe Release\sandbot.dll --logger:"console;verbosity=Normal"
 
 Pop-Location

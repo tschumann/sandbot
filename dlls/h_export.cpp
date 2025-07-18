@@ -377,7 +377,7 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 	if( !g_bIsMMPlugin )
 	{
 #ifndef __linux__
-		h_Library = LoadLibrary( szLibraryPath );
+		h_Library = LoadLibrary( (const char *)szLibraryPath );
 		iError = GetLastError();
 #else
 		h_Library = dlopen( szLibraryPath, RTLD_NOW );

@@ -1,6 +1,12 @@
 
+Debug/*
+Release/*
+x64/
+.vs/
+
 dlls/Debug/*
 dlls/Release/*
+dlls/x64/
 dlls/.vs
 
 *.ncb

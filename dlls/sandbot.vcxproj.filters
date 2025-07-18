@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{76728a12-b25f-40d2-b6db-77fa4ebfd856}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat;for;f90</Extensions>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{8c06360f-b15c-462c-92b4-e0d5b8134bce}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{19b67708-588c-4bc6-996f-cd060ecef238}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,10 +24,19 @@
     <ClCompile Include="bot_combat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bot_combat_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot_dmc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="bot_dod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot_gunman.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot_gunman_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot_halflife.cpp">
@@ -48,6 +57,12 @@
     <ClCompile Include="bot_ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bot_svencoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="bot_tfc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,7 +72,49 @@
     <ClCompile Include="engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_dayofdefeat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_deathmatchclassic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_gunmanchronicles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_halflife.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_naturalselection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_opposingforce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_ricochet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_svencoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_teamfortressclassic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_theship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_theyhunger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="h_export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="h_export_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="linkfunc.cpp">
@@ -69,80 +126,29 @@
     <ClCompile Include="util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="waypoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="h_export_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="util_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="waypoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="waypoint_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_test.cpp">
+    <ClCompile Include="..\common\interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_halflife.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_dayofdefeat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_gunmanchronicles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_naturalselection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_opposingforce.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_teamfortressclassic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_theship.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_theyhunger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot_combat_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot_gunman_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_deathmatchclassic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_ricochet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_svencoop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\common\interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot_dmc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot_svencoop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="activity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="basemonster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="bot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -152,10 +158,22 @@
     <ClInclude Include="bot_func.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bot_svencoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="bot_weapons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cdll_dll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="enginecallback.h">
@@ -164,49 +182,31 @@
     <ClInclude Include="extdll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="waypoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="linkfunc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="h_export.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metamod.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="wpt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\foolsgoldsource\foolsgoldsource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\foolsgoldsource\vscu_test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game_halflife.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_dayofdefeat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game_deathmatchclassic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="game_gunmanchronicles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_halflife.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_naturalselection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_opposingforce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_ricochet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_svencoop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_teamfortressclassic.h">
@@ -218,16 +218,34 @@
     <ClInclude Include="game_theyhunger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game_deathmatchclassic.h">
+    <ClInclude Include="h_export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game_ricochet.h">
+    <ClInclude Include="linkfunc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game_svencoop.h">
+    <ClInclude Include="metamod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot_svencoop.h">
+    <ClInclude Include="monsterevent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="saverestore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="schedule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="waypoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wpt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
