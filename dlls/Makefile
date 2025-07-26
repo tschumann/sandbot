@@ -65,9 +65,9 @@ symbols:
 # build sandbot.so
 sandbot.so: ${OBJ}
 	${CPP} -m32 -fPIC -shared -o $@ ${OBJ}
-	-cp $@ ../release/symbols/
-	-cp $@ ../release/sandbot/half-life/valve/dlls/
-	-cp $@ ../release/sandbot/half-life/gearbox/dlls/
+	-cp $@ ../output/symbols/
+	-cp $@ ../output/sandbot/half-life/valve/dlls/
+	-cp $@ ../output/sandbot/half-life/gearbox/dlls/
 	# NOTE: uncomment to test locally
 	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
