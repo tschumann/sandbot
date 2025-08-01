@@ -55,7 +55,7 @@ namespace tests
 			Assert::IsTrue( iResult );
 		}
 
-		TEST_METHOD(TestGiveFnptrsToDllValve)
+		TEST_METHOD(TestGiveFnptrsToDllValveWithoutMetaMod)
 		{
 			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
 			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();
@@ -67,14 +67,28 @@ namespace tests
 			Assert::IsTrue(pGame->IsHalfLife());
 		}
 
-		TEST_METHOD(TestGiveFnptrsToDllOpfor)
+		TEST_METHOD(TestGiveFnptrsToDllValveWithMetaMod)
+		{
+			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
+			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();
+
+			foolsgoldsource::gEngine.SetGameDirectory("valve");
+
+			g_bIsMMPlugin = true;
+
+			GiveFnptrsToDll( &engineFunctions, &globalVariables );
+
+			Assert::IsTrue(pGame->IsHalfLife());
+		}
+
+		TEST_METHOD(TestGiveFnptrsToDllOpforWithoutMetaMod)
 		{
 			enginefuncs_t engineFunctions = foolsgoldsource::gEngine.GetServerEngineFunctions();
 			globalvars_t globalVariables = foolsgoldsource::gEngine.GetServerGlobalVariables();
 
 			foolsgoldsource::gEngine.SetGameDirectory( "gearbox" );
 
-			GiveFnptrsToDll(&engineFunctions, &globalVariables);
+			GiveFnptrsToDll( &engineFunctions, &globalVariables );
 
 			Assert::IsTrue(pGame->IsOpposingForce());
 		}

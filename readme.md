@@ -28,7 +28,7 @@ make
 Running tests
 -------------
 
-From Powershell:
+From Developer Powershell for VS:
 ```
 ./test.ps1
 ```
