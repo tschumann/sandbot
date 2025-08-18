@@ -35,9 +35,9 @@ plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
 	"Sandbot",		// name
 	"0.4.3",		// version
-	"2018/04/21",	// date
+	"2025/08/18",	// date
 	"Team Sandpit",	// author
-	"http://www.teamsandpit.com/",	// url
+	"https://www.teamsandpit.com/",	// url
 	"SANDBOT",	// logtag, all caps please
 	PT_STARTUP,	// (when) loadable
 	PT_NEVER,	// (when) unloadable

@@ -38,12 +38,15 @@ A. Yes, please do!
 Q. Can you fix Sandbot not working on my distro?
 A. Unless it's a fairly recent version of Ubuntu, probably not - it's enough work keeping it running on two platforms. Recompiling on your distro should hopefully sort it out - let someone know if it won't compile.
 
+Q. Why no Linux builds?
+A. Not enough time to test them - if there are issues let someone know.
+
 Q. I get an error on Linux: "LoadLibrary failed on sandbot.so: ./libstdc++.so.6: version `CXXABI_1.3.9' not found"
 A. Steam and SteamCMD both come packaged with older version of libstdc++ - move this version out of the way so Sandbot can load the version you've installed with your distro's package manager.
 
 == Changelog ==
 
-v0.4.3 (??/??/??)
+v0.4.3 (19/08/25)
 - [All] Fixed bot_skill 5 not working.
 - [All] Fixed cvars not being read correctly in Metamod.
 - [All] bot_skill and bot_count now get written to config.cfg
