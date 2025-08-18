@@ -49,7 +49,8 @@ v0.4.3 (??/??/??)
 - [All] bot_skill and bot_count now get written to config.cfg
 - [All] Added GetEntityAPI2 support.
 - [All] Got rid of pathwaypoint on/off and replaced it with waypoint on/off.
-- [All] Updated MetaMod.
+- [All] Updated Metamod.
+- [All] Fixed possible crash when using Half-Life 25th anniversary.
 - [Windows] Fixed possible memory leaks.
 - [Windows] Updated compiler to Visual Studio 2022 (from Visual Studio 2017, then Visual Studio 2019).
 - [Linux] Updated gcc's minimum architecture to Intel Core 2.
@@ -57,6 +58,7 @@ v0.4.3 (??/??/??)
 - [Linux] Updated to compile with gcc 11.1.1 (thanks dannycolin@GitHub and mathieuf20@GitHub).
 - [Opposing Force] Added waypoints for op4cp_park, op4ctf_blackmesa, op4ctf_omen and op4ctf_orange (thanks RoboCop).
 - [Opposing Force] Bots can now use weapon_penguin.
+- [Opposing Force] Bots can play capture point maps.
 - [Natural Selection] Increased range at which marines will use weapon_machinegun and weapon_heavymachinegun.
 
 v0.4.2 (21/04/18)

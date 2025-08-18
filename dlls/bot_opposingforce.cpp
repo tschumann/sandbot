@@ -236,104 +236,16 @@ bool OpposingForceBot::FindFlag()
 
 bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
+	// op4cp_ maps are a little confusing
 	// there are 16 trigger_ctfgeneric entities in op4cp_park (8 pairs of entities, 4 pairs per team)
 	// 8 are to do with scoring (?), 8 are to do with displaying who owns the capture point (?) - these have a triggerstate attribute
 	// those with a triggerstate attribute have a target that points to two env_render entities - these target func_walls entities and make them visible/invisible
+	// using the above, it should be possible to figure out which capture teams are owned by who
+	// that said, on op4cp_park nat least, it seems like points are captured by being near a capture point for 30 or so seconds, not for actually capturing the point
+	// so bots could seek to capture all opposing team's points, but it's easiest to just try and capture and hold the nearest point
+	// this can be expanded on in future when bots in team games have some sort of role (e.g. attack vs protect vs support) so attack bots can capture anything while protect/support can stay with already held ones
+	// see commit ce3bc6dd0412e1a54259fe740c04c58deb59315b for not quite working but close to what it should be logic
 
-	// what happens - the trigger_ctfgeneric with a triggerstate attribute controls the rendering of who owns the capture point
-	// it will target (among other things) two env_render entities - their target names will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
-	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
-
-	edict_t* pEntity = nullptr;
-	edict_t* pBlackMesaEnvRender = nullptr;
-	edict_t* pOpposingForceEnvRender = nullptr;
-
-	// look at each entity that is targeted by this trigger_ctfgeneric
-	while( (pEntity = UTIL_FindEntityByString( pEntity, "targetname", STRING(pControlPoint->v.target) ) ) != nullptr )
-	{
-		// if it's an env_render
-		if( !strcmp( STRING(pEntity->v.classname), "env_render" ) && STRING(pEntity->v.target) )
-		{
-			// find one for each team
-			if( strstr(STRING(pEntity->v.target), "_bm_") != nullptr )
-			{
-				pBlackMesaEnvRender = pEntity;
-				continue;
-			}
-			else if( strstr(STRING(pEntity->v.target), "_op_") != nullptr )
-			{
-				pOpposingForceEnvRender = pEntity;
-				continue;
-			}
-		}
-	}
-
-	pEntity = nullptr;
-
-	if (pBlackMesaEnvRender != nullptr)
-	{
-		while ((pEntity = UTIL_FindEntityByString(pEntity, "targetname", STRING(pBlackMesaEnvRender->v.target))) != nullptr)
-		{
-			// if it's an env_render
-			if (!strcmp(STRING(pEntity->v.classname), "func_wall") && STRING(pEntity->v.target))
-			{
-				ALERT(at_console, "found pBlackMesaEnvRender func_wall with %d\n", pEntity->v.rendermode);
-				if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
-				{
-					return true;
-				}
-				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
-				{
-					return false;
-				}
-				else if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
-				{
-					return false;
-				}
-				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
-				{
-					return true;
-				}
-			}
-		}
-	}
-	else
-	{
-		ALERT( at_error, "pBlackMesaEnvRender not found\n" );
-	}
-
-	if (pOpposingForceEnvRender != nullptr)
-	{
-		while ((pEntity = UTIL_FindEntityByString(pEntity, "targetname", STRING(pOpposingForceEnvRender->v.target))) != nullptr)
-		{
-			// if it's an env_render
-			if (!strcmp(STRING(pEntity->v.classname), "func_wall") && STRING(pEntity->v.target))
-			{
-				ALERT(at_console, "found pOpposingForceEnvRender func_wall with %d\n", pEntity->v.rendermode);
-				if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
-				{
-					return true;
-				}
-				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
-				{
-					return false;
-				}
-				else if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
-				{
-					return false;
-				}
-				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
-				{
-					return true;
-				}
-			}
-		}
-	}
-	else
-	{
-		ALERT(at_error, "pOpposingForceEnvRender not found\n");
-	}
-
-	return false;
+	return true;
 }
 
