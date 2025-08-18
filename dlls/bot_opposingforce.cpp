@@ -238,46 +238,100 @@ bool OpposingForceBot::ShouldCapturePoint( edict_t * pControlPoint )
 {
 	// there are 16 trigger_ctfgeneric entities in op4cp_park (8 pairs of entities, 4 pairs per team)
 	// 8 are to do with scoring (?), 8 are to do with displaying who owns the capture point (?) - these have a triggerstate attribute
-	// those with a triggerstate attribute have a target that is an env_render which displays if that team has the point?
-	// pev->skin or pev->body should have the team name but doesn't - only one type might have this?
+	// those with a triggerstate attribute have a target that points to two env_render entities - these target func_walls entities and make them visible/invisible
 
 	// what happens - the trigger_ctfgeneric with a triggerstate attribute controls the rendering of who owns the capture point
 	// it will target (among other things) two env_render entities - their target names will contain _bm_ or _op_ and a renderamt of 255 to show or renderamt of 0 to hide
 	// if the _bm_ env_render has renderamt of 255 then it probably means that Black Mesa owns that entity
 
 	edict_t* pEntity = nullptr;
+	edict_t* pBlackMesaEnvRender = nullptr;
+	edict_t* pOpposingForceEnvRender = nullptr;
 
 	// look at each entity that is targeted by this trigger_ctfgeneric
 	while( (pEntity = UTIL_FindEntityByString( pEntity, "targetname", STRING(pControlPoint->v.target) ) ) != nullptr )
 	{
-		if( !strcmp( STRING(pEntity->v.classname), "env_render" ) )
+		// if it's an env_render
+		if( !strcmp( STRING(pEntity->v.classname), "env_render" ) && STRING(pEntity->v.target) )
 		{
-			// TODO: should look at targetname rather than globalname here? nothing is getting printed right now
-			ALERT( at_console, "Found an env_render with name %s for %s\n", STRING(pEntity->v.globalname), STRING(pControlPoint->v.globalname) );
-
-			// if the entity is visible and it's Black Mesa
-			if( pEntity->v.renderamt == 255 && strstr( STRING(pEntity->v.target), "_bm_" ) )
+			// find one for each team
+			if( strstr(STRING(pEntity->v.target), "_bm_") != nullptr )
 			{
-				// capture it if this is an Opposing Force player
-				return pGame->GetTeam( this->pEdict ) == OpposingForceBot::TEAM_OPPOSING_FORCE;
+				pBlackMesaEnvRender = pEntity;
+				continue;
 			}
-			// if the entity is visible and it's Opposing Force
-			else if( pEntity->v.renderamt == 255 && strstr( STRING(pEntity->v.target), "_op_" ) )
+			else if( strstr(STRING(pEntity->v.target), "_op_") != nullptr )
 			{
-				// capture it if this is a Black Mesa player
-				return pGame->GetTeam( this->pEdict ) == OpposingForceBot::TEAM_BLACK_MESA;
-			}
-			// if the entity is invisible
-			else if( pEntity->v.renderamt == 0 )
-			{
-				// TODO: does this mean no one has captured it yet?
-				return true;
-			}
-			else
-			{
-				ALERT( at_error, "Cannot work out whether to capture a trigger_ctfgeneric or not: renderamt is %d and target is %s\n", pEntity->v.renderamt, STRING(pEntity->v.target) );
+				pOpposingForceEnvRender = pEntity;
+				continue;
 			}
 		}
+	}
+
+	pEntity = nullptr;
+
+	if (pBlackMesaEnvRender != nullptr)
+	{
+		while ((pEntity = UTIL_FindEntityByString(pEntity, "targetname", STRING(pBlackMesaEnvRender->v.target))) != nullptr)
+		{
+			// if it's an env_render
+			if (!strcmp(STRING(pEntity->v.classname), "func_wall") && STRING(pEntity->v.target))
+			{
+				ALERT(at_console, "found pBlackMesaEnvRender func_wall with %d\n", pEntity->v.rendermode);
+				if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
+				{
+					return true;
+				}
+				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
+				{
+					return false;
+				}
+				else if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
+				{
+					return false;
+				}
+				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	else
+	{
+		ALERT( at_error, "pBlackMesaEnvRender not found\n" );
+	}
+
+	if (pOpposingForceEnvRender != nullptr)
+	{
+		while ((pEntity = UTIL_FindEntityByString(pEntity, "targetname", STRING(pOpposingForceEnvRender->v.target))) != nullptr)
+		{
+			// if it's an env_render
+			if (!strcmp(STRING(pEntity->v.classname), "func_wall") && STRING(pEntity->v.target))
+			{
+				ALERT(at_console, "found pOpposingForceEnvRender func_wall with %d\n", pEntity->v.rendermode);
+				if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
+				{
+					return true;
+				}
+				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_OPPOSING_FORCE)
+				{
+					return false;
+				}
+				else if (pEntity->v.rendermode == kRenderTransAlpha && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
+				{
+					return false;
+				}
+				else if (pEntity->v.rendermode == kRenderTransColor && pGame->GetTeam(this->pEdict) == OpposingForceBot::TEAM_BLACK_MESA)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	else
+	{
+		ALERT(at_error, "pOpposingForceEnvRender not found\n");
 	}
 
 	return false;
