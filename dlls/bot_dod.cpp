@@ -14,7 +14,7 @@
 #include "util.h"
 #include "cbase.h"
 
-#include "bot.h"
+#include "bot_dod.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
 #include "game_dayofdefeat.h"

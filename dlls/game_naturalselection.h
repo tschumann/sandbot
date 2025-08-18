@@ -15,7 +15,7 @@
 
 #include "extdll.h"
 
-#include "bot.h"
+#include "bot_ns.h"
 #include "game.h"
 
 class NSGame : public Game

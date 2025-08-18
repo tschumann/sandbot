@@ -14,7 +14,7 @@
 #include "util.h"
 #include "cbase.h"
 
-#include "bot.h"
+#include "bot_ns.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
 #include "game_naturalselection.h"

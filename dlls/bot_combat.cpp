@@ -11,6 +11,9 @@
 #include "cbase.h"
 
 #include "bot.h"
+#include "bot_gunman.h"
+#include "bot_ns.h"
+#include "bot_tfc.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
 #include "game.h"

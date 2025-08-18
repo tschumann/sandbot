@@ -13,7 +13,7 @@
 #include "CppUnitTest.h"
 
 #include "extdll.h"
-#include "bot.h"
+#include "bot_gunman.h"
 #include "bot_func.h"
 #include "game.h"
 #include "h_export.h"

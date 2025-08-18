@@ -11,6 +11,8 @@
 #include "cbase.h"
 
 #include "bot.h"
+#include "bot_dod.h"
+#include "bot_ns.h"
 #include "bot_func.h"
 #include "game.h"
 #include "wpt.h"

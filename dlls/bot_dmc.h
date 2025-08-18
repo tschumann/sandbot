@@ -10,23 +10,19 @@
 //
 //=============================================================================
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#ifndef __BOT_DMC_H__
+#define __BOT_DMC_H__
 
-#include "bot_dmc.h"
-#include "bot_func.h"
-#include "bot_weapons.h"
-#include "game_deathmatchclassic.h"
-#include "wpt.h"
-#include "waypoint.h"
+#include "bot.h"
+#include "bot_halflife.h"
+#include "game.h"
 
-DMCBot::DMCBot()
+class DMCBot : public HalfLifeBot
 {
-}
+public:
+	DMCBot();
 
-void DMCBot::Join()
-{
-	this->not_started = 0;
-	// FakeClientCommand(pEdict, "_firstspawn");
-}
+	virtual void Join();
+};
+
+#endif // __BOT_DMC_H__

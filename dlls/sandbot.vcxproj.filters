@@ -248,5 +248,35 @@
     <ClInclude Include="wpt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bot_cstrike.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_dmc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_dod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_gunman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_halflife.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_hunger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_ns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_opposingforce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_ship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_tfc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,25 +6,24 @@
 //
 // http://www.teamsandpit.com/
 //
-// Notes: They Hunger specific bot code
+// Notes: Counter-Strike specific bot code
 //
 //=============================================================================
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#ifndef __BOT_CSTRIKE_H__
+#define __BOT_CSTRIKE_H__
 
-#include "bot_hunger.h"
-#include "bot_func.h"
-#include "bot_weapons.h"
-#include "wpt.h"
-#include "waypoint.h"
+#include "bot.h"
+#include "game.h"
 
-HungerBot::HungerBot()
+class CStrikeBot : public bot_t
 {
-}
+public:
+	CStrikeBot();
 
-int HungerBot::GetPistol()
-{
-	return VALVE_WEAPON_GLOCK;
-}
+	virtual void Join();
+
+	virtual float GetMaxSpeed() const;
+};
+
+#endif // __BOT_CSTRIKE_H__

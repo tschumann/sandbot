@@ -15,7 +15,7 @@
 
 #include "extdll.h"
 
-#include "bot.h"
+#include "bot_opposingforce.h"
 #include "game.h"
 
 class GearboxGame : public Game

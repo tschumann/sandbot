@@ -19,6 +19,8 @@
 #include "cbase.h"
 
 #include "bot.h"
+#include "bot_ns.h"
+#include "bot_opposingforce.h"
 #include "game.h"
 #include "game_teamfortressclassic.h"
 #include "game_naturalselection.h"

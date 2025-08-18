@@ -11,6 +11,7 @@
 #include "cbase.h"
 
 #include "bot.h"
+#include "bot_ship.h"
 #include "bot_func.h"
 #include "bot_client.h"
 #include "bot_weapons.h"

@@ -10,21 +10,18 @@
 //
 //=============================================================================
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#ifndef __BOT_HUNGER_H__
+#define __BOT_HUNGER_H__
 
-#include "bot_hunger.h"
-#include "bot_func.h"
-#include "bot_weapons.h"
-#include "wpt.h"
-#include "waypoint.h"
+#include "bot_halflife.h"
+#include "game.h"
 
-HungerBot::HungerBot()
+class HungerBot : public HalfLifeBot
 {
-}
+public:
+	HungerBot();
 
-int HungerBot::GetPistol()
-{
-	return VALVE_WEAPON_GLOCK;
-}
+	virtual int GetPistol();
+};
+
+#endif // __BOT_HUNGER_H__
