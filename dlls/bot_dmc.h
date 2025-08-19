@@ -23,6 +23,8 @@ public:
 	DMCBot();
 
 	virtual void Join();
+
+	virtual bool HasWeapon( int iWeaponId ) const;
 };
 
 #endif // __BOT_DMC_H__

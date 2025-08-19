@@ -318,21 +318,21 @@ const bot_weapon_select_t gunman_weapon_select[] = {
 };
 
 bot_weapon_select_t dmc_weapon_select[] = {
-   {DMC_WEAPON_AXE, "weapon_axe", 0.0, 50.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_AXE, "weapon_axe", 0.0, 0.0, 0.0, 50.0, 0.0, 0.0,
 	100, TRUE, 100, 0, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_LIGHTNING, "weapon_lightning", 30.0, 1500.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_LIGHTNING, "weapon_lightning", 0.0, 0.0, 30.0, 1500.0, 0.0, 0.0,
 	100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_ROCKET1, "weapon_rocket1", 150.0, 1000.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_ROCKET1, "weapon_rocket1", 0.0, 0.0, 150.0, 1000.0, 0.0, 0.0,
 	100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_SUPERNAIL, "weapon_supernail", 50.0, 400.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_SUPERNAIL, "weapon_supernail", 0.0, 0.0, 50.0, 400.0, 0.0, 0.0,
 	100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_DOUBLESHOTGUN, "weapon_doubleshotgun", 50.0, 250.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_DOUBLESHOTGUN, "weapon_doubleshotgun", 0.0, 0.0, 50.0, 250.0, 0.0, 0.0,
 	100, TRUE, 100, 2, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_GRENADE1, "weapon_grenade1", 200.0, 800.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_GRENADE1, "weapon_grenade1", 0.0, 0.0, 200.0, 800.0, 0.0, 0.0,
 	100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_NAILGUN, "weapon_nailgun", 50.0, 400.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_NAILGUN, "weapon_nailgun", 0.0, 0.0, 50.0, 400.0, 0.0, 0.0,
 	100, TRUE, 100, 1, 0, TRUE, FALSE, FALSE, FALSE, 0.0, 0.0},
-   {DMC_WEAPON_SHOTGUN, "weapon_shotgun", 0.0, 250.0, 0.0, 0.0, 0.0, 0.0,
+   {DMC_WEAPON_SHOTGUN, "weapon_shotgun", 0.0, 0.0, 0.0, 250.0, 0.0, 0.0,
 	100, TRUE, 100, 1, 0, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0},
 	/* terminator */
 	{0, "", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, TRUE, 0, 1, 1, FALSE, FALSE, FALSE, FALSE, 0.0, 0.0}
@@ -874,7 +874,7 @@ bool BotFireWeapon( const Vector& v_enemy, bot_t *pBot, int weapon_choice)
 		}
 
         // is the bot NOT carrying this weapon?
-        if( !( pEdict->v.weapons & (1 << pSelect[select_index].iId) ) )
+        if( !pBot->HasWeapon( pSelect[select_index].iId ) )
         {
 			select_index++;  // skip to next weapon
 			continue;

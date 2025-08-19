@@ -360,6 +360,7 @@ public:
 	virtual int GetGoalType();
 	virtual float GetWaypointRadius();
 
+	virtual bool HasWeapon( int iWeaponId ) const;
 	virtual bool BaseCanUseWeapon() const;
 	virtual std::vector<weapon_t> GetUsableWeapons( bool strict );
 

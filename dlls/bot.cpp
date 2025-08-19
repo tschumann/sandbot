@@ -17,7 +17,6 @@
 #include "game.h"
 #include "wpt.h"
 #include "waypoint.h"
-#include "wpt.h"
 #include "bot_weapons.h"
 #include "h_export.h"
 
@@ -1233,6 +1232,13 @@ void BotThink( bot_t *pBot )
       pBot->f_bot_spawn_time = gpGlobals->time;
    }
 
+   if (pBot->f_bot_spawn_time + 1.0f > gpGlobals->time && pGame->IsDeathmatchClassic())
+   {
+	   ALERT(at_console, "here\n");
+	   FakeClientCommand(pEdict, "kill");
+	   FakeClientCommand(pEdict, "_firstspawn");
+   }
+
    is_idle = FALSE;
 
    if (pBot->blinded_time > gpGlobals->time)
@@ -2398,6 +2404,11 @@ float bot_t::GetWaypointRadius()
 	return fRadius;
 }
 
+bool bot_t::HasWeapon( int iWeaponId ) const
+{
+	return this->pEdict->v.weapons & (1 << iWeaponId);
+}
+
 bool bot_t::BaseCanUseWeapon() const
 {
 	return this->HasEnemy();
@@ -2414,7 +2425,7 @@ std::vector<weapon_t> bot_t::GetUsableWeapons( bool strict )
 		CanUseWeapon pfnCanUseWeapon = weapon.pfnCanUseWeapon;
 
 		// check if the bot actually has the weapon
-		if(!(this->pEdict->v.weapons & (1<<weapon.iWeaponId)))
+		if( !this->HasWeapon( weapon.iWeaponId ) )
 		{
 			continue;
 		}

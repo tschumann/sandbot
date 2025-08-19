@@ -28,5 +28,14 @@ DMCBot::DMCBot()
 void DMCBot::Join()
 {
 	this->not_started = 0;
-	// FakeClientCommand(pEdict, "_firstspawn");
+	// g_engfuncs.pfnClientCommand(pEdict, "_firstspawn");
+	//this->pEdict->v.effects &= ~EF_NODRAW;
+	//this->pEdict->v.solid = SOLID_SLIDEBOX;
+	//this->pEdict->v.takedamage = DAMAGE_AIM;
+	//this->pEdict->v.movetype = MOVETYPE_WALK;
+}
+
+bool DMCBot::HasWeapon( int iWeaponId ) const
+{
+	return this->pEdict->v.weapons & iWeaponId;
 }
