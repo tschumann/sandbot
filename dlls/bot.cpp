@@ -293,7 +293,7 @@ extern float msecval;
 
 void InitBots()
 {
-	if (pGame->IsHalfLife() || pGame->IsTeamFortressClassic() || pGame->IsDeathmatchClassic())
+	if (pGame->IsHalfLife() || pGame->IsTeamFortressClassic() || pGame->IsDeathmatchClassic() || pGame->IsSvenCoop())
 	{
 		pBotData = g_valveBots;
 	}

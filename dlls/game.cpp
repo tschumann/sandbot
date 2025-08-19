@@ -165,6 +165,11 @@ bool Game::IsGunmanChronicles() const
 	return gameId == GameId::GAME_REWOLF;
 }
 
+bool Game::IsSvenCoop() const
+{
+	return gameId == GameId::GAME_SVENCOOP;
+}
+
 bool Game::IsNaturalSelection() const
 {
 	return gameId == GameId::GAME_NS;

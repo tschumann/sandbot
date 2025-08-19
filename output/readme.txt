@@ -46,6 +46,9 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 
 == Changelog ==
 
+v0.5 (??/??/??)
+- [Sven Coop] Bots now spawn.
+
 v0.4.3.1 (19/08/25)
 - [Windows] Updated shipped version of Metamod which doesn't crash.
 

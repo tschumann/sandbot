@@ -13,6 +13,8 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include <memory>
+
 #include "bot_weapons.h"
 
 enum class GameId
@@ -71,6 +73,7 @@ public:
 	virtual bool IsTeamFortressClassic() const;
 	virtual bool IsDeathmatchClassic() const;
 	virtual bool IsGunmanChronicles() const;
+	virtual bool IsSvenCoop() const;
 	virtual bool IsNaturalSelection() const;
 	virtual bool IsTheShip() const;
 	virtual bool IsTheyHunger() const;

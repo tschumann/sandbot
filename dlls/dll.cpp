@@ -1176,6 +1176,13 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 			pBots[i] = new GunmanBot();
 		}
 	}
+	else if (pGame->IsSvenCoop())
+	{
+		for (int i = 0; i < Game::MAX_PLAYERS; i++)
+		{
+			pBots[i] = new SvenCoopBot();
+		}
+	}
 	else if(pGame->IsNaturalSelection())
 	{
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
