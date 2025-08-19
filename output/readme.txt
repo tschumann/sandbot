@@ -141,7 +141,7 @@ v0.2 (18/06/16)
 - [Natural Selection] Added better combat mode play.
 - [Gunman Chronicles] Gauss pistol rate of fire slightly.
 - Started using new bot framework (which brings Linux support with it).
-- Added some documenation.
+- Added some documentation.
 
 v0.1 (02/05/16)
 - Initial release (after more than 5 years of being untouched and unreleased).
@@ -149,7 +149,7 @@ v0.1 (02/05/16)
 == End User License Agreement ==
 
 The developer of this software is in no way responsible for anything that happens as a result of using this software.
-This software is provided as-is and with no warranty of any kind, and no guarentees are made or implied.
+This software is provided as-is and with no warranty of any kind, and no guarantees are made or implied.
 Also you cannot now or ever take any legal action against the developer of this software for anything.
 You do not have the right to re-use or modify any part of this modification.
 You may not use the software if you do not agree to these terms.

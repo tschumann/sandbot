@@ -36,7 +36,7 @@ From Developer Powershell for VS:
 
 Debugging
 ---------
-gdb -s sandbot.so.debug -e sandbot.so to load Sandbot into gdb with debug symbols (if you "info functions" you'll get a per-file breakdown whereas if you do the same with gdb -e sandbot.so you won't).
+`gdb -s sandbot.so.debug -e sandbot.so` to load Sandbot into gdb with debug symbols (if you "info functions" you'll get a per-file breakdown whereas if you do the same with `gdb -e sandbot.so` you won't).
 
 ### Core dumps on Ubuntu
 
@@ -83,9 +83,9 @@ gdb -s ~/Documents/sandbot/symbols/sandbot.so.debug -e ~/.steam/steam/steamapps/
 TODO: figure out loading sandbot symbols into gdb
 
 
-MetaMod
+Metamod
 -------
-Change gamedll to addons/metamod/dlls/metamod.dll to test MetaMod. sandbot.dll should go in the same directory (but change the path in plugins.ini so it points to the top level dlls/ directory).
+Modify `liblist.gam` to test Metamod.
 
 
 Releasing
@@ -94,7 +94,7 @@ Releasing
 git tag -a v0.x -m "Sandbot v0.x"
 ```
 
-On Windows copy dlls/Release/vc141.pdb and dlls/Release/sandbot.pdb to release/symbols/
+On Windows copy `dlls/Release/vc143.pdb` and `Release/sandbot.pdb` to `output/symbols/`
 On Linux run `make`, git add the .so files, `make symbols` then git add the .so.debug file.
 
 
