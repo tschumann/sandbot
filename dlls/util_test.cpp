@@ -120,7 +120,7 @@ namespace tests
 		TEST_METHOD(TestIsValidEntity_Kill)
 		{
 			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
-			pPlayer->v.flags &= FL_KILLME;
+			pPlayer->v.flags |= FL_KILLME;
 
 			Assert::AreEqual( false, IsValidEntity( pPlayer ) );
 		}
