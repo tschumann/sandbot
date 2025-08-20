@@ -6,6 +6,7 @@ Sandbot is a GoldSource engine bot based off HPB_Bot by botman (see `docs/ReadMe
 
 Building
 --------
+
 ```
 git clone https://github.com/tschumann/sandbot
 git submodule init
@@ -36,6 +37,7 @@ From Developer Powershell for VS:
 
 Debugging
 ---------
+
 `gdb -s sandbot.so.debug -e sandbot.so` to load Sandbot into gdb with debug symbols (if you "info functions" you'll get a per-file breakdown whereas if you do the same with `gdb -e sandbot.so` you won't).
 
 ### Core dumps on Ubuntu
@@ -85,16 +87,17 @@ TODO: figure out loading sandbot symbols into gdb
 
 Metamod
 -------
+
 Modify `liblist.gam` to test Metamod.
 
 
 Releasing
 ---------
+
 ```
 git tag -a v0.x -m "Sandbot v0.x"
 ```
 
-On Windows copy `dlls/Release/vc143.pdb` and `Release/sandbot.pdb` to `output/symbols/`
 On Linux run `make`, git add the .so files, `make symbols` then git add the .so.debug file.
 
 

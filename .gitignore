@@ -19,6 +19,8 @@ dlls/*.debug
 
 *~
 
+release.zip
+
 windows_exports.txt
 sandbot_windows_exports.txt
 
