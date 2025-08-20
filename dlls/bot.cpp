@@ -2196,13 +2196,27 @@ Vector bot_t::GetPointToShootAt() const
 
 void bot_t::Reload()
 {
-	// TODO: override in subclasses and say something in chat or whatever
 	pEdict->v.button |= IN_RELOAD;
+
+	if( this->ShouldAnnounceReload() )
+	{
+		this->AnnounceReload();
+	}
 }
 
 bool bot_t::ShouldReload() const
 {
 	return true;
+}
+
+void bot_t::AnnounceReload() const
+{
+	UTIL_HostSay( this->pEdict, TRUE, "reloading" );
+}
+
+bool bot_t::ShouldAnnounceReload() const
+{
+	return pGame->IsTeamPlay() && !this->HasEnemy();
 }
 
 bool bot_t::CanShoot() const

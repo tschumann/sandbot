@@ -154,13 +154,6 @@ float DODBot::GetSpeedToEnemy() const
 	return fSpeed;
 }
 
-void DODBot::Reload()
-{
-	bot_t::Reload();
-
-	UTIL_HostSay( this->pEdict, TRUE, "reloading" );
-}
-
 bool DODBot::IsSniping() const
 {
 	// TODO: work out the weapon ids for the sniper rifles

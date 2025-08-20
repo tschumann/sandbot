@@ -33,7 +33,6 @@ public:
 
 	virtual void Reset();
 	virtual float GetAimSpread() const;
-	virtual void Reload();
 	virtual bool ShouldReload() const;
 
 	virtual int GetGoalType();

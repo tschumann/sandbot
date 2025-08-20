@@ -24,7 +24,6 @@ public:
 	virtual void Join();
 
 	virtual float GetSpeedToEnemy() const;
-	virtual void Reload();
 
 	virtual bool IsSniping() const;
 

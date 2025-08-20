@@ -330,6 +330,8 @@ public:
 	virtual Vector GetPointToShootAt() const;
 	virtual void Reload();
 	virtual bool ShouldReload() const;
+	virtual void AnnounceReload() const;
+	virtual bool ShouldAnnounceReload() const;
 
 	virtual bool CanShoot() const;
 	virtual int GetPistol() const;

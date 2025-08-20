@@ -263,17 +263,6 @@ float NSBot::GetAimSpread() const
 	return fSpread;
 }
 
-void NSBot::Reload()
-{
-	bot_t::Reload();
-
-	// only marines should be reloading, but check anyway
-	if( this->IsMarine() )
-	{
-		UTIL_HostSay(this->pEdict, TRUE, "reloading");
-	}
-}
-
 bool NSBot::ShouldReload() const
 {
 	if( this->IsAlien() )
