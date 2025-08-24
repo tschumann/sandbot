@@ -48,6 +48,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 
 v0.5 (??/??/??)
 - [All] Bots no longer announce reloading if they have an enemy.
+- [Windows] Use SSE2 instructions.
 - [Sven Coop] Bots now spawn.
 
 v0.4.3.1 (19/08/25)
