@@ -67,19 +67,16 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 }
 #endif
 
+/// <summary>
+/// Metamod calls this functions so we can override what is in pengfuncsFromEngine - we can't do
+/// this in GiveFnptrsToDll because it seems like with Metamod we don't actually pass pengfuncsFromEngine
+/// to the downstream game .dll (Metamod itself takes care of that).
+/// </summary>
+/// <param name="pengfuncsFromEngine"></param>
+/// <param name="interfaceVersion"></param>
+/// <returns></returns>
 extern "C" EXPORT int GetEngineFunctions( enginefuncs_t *pengfuncsFromEngine, int *interfaceVersion )
 {
-	if( g_bIsMMPlugin )
-		memset( pengfuncsFromEngine, 0, sizeof( enginefuncs_t ) );
-
-	if( !g_bIsMMPlugin )
-	{
-		pengfuncsFromEngine->pfnAlertMessage(at_console, "Hooked GetEngineFunctions\n");
-	}
-
-	// and now we need to pass engine functions table to the game DLL (in fact it's our own
-	// functions we are passing here, but the game DLL won't notice)...
-
 	pengfuncsFromEngine->pfnPrecacheModel = pfnPrecacheModel;
 	pengfuncsFromEngine->pfnPrecacheSound = pfnPrecacheSound;
 	pengfuncsFromEngine->pfnSetModel = pfnSetModel;
@@ -141,6 +138,9 @@ extern "C" EXPORT int GetEngineFunctions( enginefuncs_t *pengfuncsFromEngine, in
 	pengfuncsFromEngine->pfnCVarGetString = pfnCVarGetString;
 	pengfuncsFromEngine->pfnCVarSetFloat = pfnCVarSetFloat;
 	pengfuncsFromEngine->pfnCVarSetString = pfnCVarSetString;
+	// NOTE: we don't bother hooking these functions as there's nothing worthwhile to do when hooking them
+	// pengfuncsFromEngine->pfnAlertMessage = pengfuncsFromEngine->pfnAlertMessage;
+	// pengfuncsFromEngine->pfnEngineFprintf = pengfuncsFromEngine->pfnEngineFprintf;
 	pengfuncsFromEngine->pfnPvAllocEntPrivateData = pfnPvAllocEntPrivateData;
 	pengfuncsFromEngine->pfnPvEntPrivateData = pfnPvEntPrivateData;
 	pengfuncsFromEngine->pfnFreeEntPrivateData = pfnFreeEntPrivateData;
@@ -233,8 +233,11 @@ extern "C" EXPORT int GetEngineFunctions( enginefuncs_t *pengfuncsFromEngine, in
 	pengfuncsFromEngine->ProcessTutorMessageDecayBuffer = pfnProcessTutorMessageDecayBuffer;
 	pengfuncsFromEngine->ConstructTutorMessageDecayBuffer = pfnConstructTutorMessageDecayBuffer;
 	pengfuncsFromEngine->ResetTutorMessageDecayData = pfnResetTutorMessageDecayData;
-
-	// no overrides for the last few because there's no need
+	pengfuncsFromEngine->pfnQueryClientCvarValue = pfnQueryClientCvarValue;
+	pengfuncsFromEngine->pfnQueryClientCvarValue2 = pfnQueryClientCvarValue2;
+	pengfuncsFromEngine->pfnCheckParm = pfnCheckParm;
+	// NOTE: omit this one because it causes Metamod to crash - mismatch in sizes of enginefuncs_t maybe? Metamod has extra_functions at the end of enginefuncs_t so that shouldn't be it
+	// pengfuncsFromEngine->pfnPEntityOfEntIndexAllEntities = pfnPEntityOfEntIndexAllEntities;
 
 	return TRUE;
 }
@@ -403,12 +406,12 @@ extern "C" void GiveFnptrsToDll( enginefuncs_t* pengfuncsFromEngine, globalvars_
 
 	LoadExtraExports();
 
+	GetEngineFunctions(pengfuncsFromEngine, nullptr);
+
 	if( g_bIsMMPlugin )
 	{
 		return;
 	}
-
-	GetEngineFunctions( pengfuncsFromEngine, nullptr );
 
 	// give the engine functions to the other DLL...
 	(*(GIVEFNPTRSTODLL)GetProcAddress( h_Library, "GiveFnptrsToDll" ))(pengfuncsFromEngine, pGlobals);

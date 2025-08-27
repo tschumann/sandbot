@@ -168,5 +168,11 @@ void pfnProcessTutorMessageDecayBuffer(int *buffer, int bufferLength);
 void pfnConstructTutorMessageDecayBuffer(int *buffer, int bufferLength);
 void pfnResetTutorMessageDecayData( void );
 
-#endif // ENGINE_H
+void pfnQueryClientCvarValue(const edict_t* player, const char* cvarName);
+void pfnQueryClientCvarValue2(const edict_t* player, const char* cvarName, int requestID);
 
+int pfnCheckParm(const char* pchCmdLineToken, char** ppnext);
+
+edict_t* pfnPEntityOfEntIndexAllEntities(int iEntIndex);
+
+#endif // ENGINE_H

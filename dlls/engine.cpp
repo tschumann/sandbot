@@ -1955,3 +1955,35 @@ void pfnResetTutorMessageDecayData( void )
 
 	(*g_engfuncs.ResetTutorMessageDecayData)();
 }
+
+void pfnQueryClientCvarValue(const edict_t* player, const char* cvarName)
+{
+	if (g_bIsMMPlugin)
+		RETURN_META( MRES_IGNORED );
+
+	(*g_engfuncs.pfnQueryClientCvarValue)(player, cvarName);
+}
+
+void pfnQueryClientCvarValue2(const edict_t* player, const char* cvarName, int requestID)
+{
+	if (g_bIsMMPlugin)
+		RETURN_META( MRES_IGNORED );
+
+	(*g_engfuncs.pfnQueryClientCvarValue2)(player, cvarName, requestID);
+}
+
+int pfnCheckParm(const char* pchCmdLineToken, char** ppnext)
+{
+	if (g_bIsMMPlugin)
+		RETURN_META_VALUE( MRES_IGNORED, 0 );
+
+	return (*g_engfuncs.pfnCheckParm)(pchCmdLineToken, ppnext);
+}
+
+edict_t* pfnPEntityOfEntIndexAllEntities(int iEntIndex)
+{
+	if (g_bIsMMPlugin)
+		RETURN_META_VALUE( MRES_IGNORED, nullptr );
+
+	return (*g_engfuncs.pfnPEntityOfEntIndexAllEntities)(iEntIndex);
+}
