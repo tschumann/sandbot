@@ -233,6 +233,7 @@ extern "C" EXPORT int GetEngineFunctions( enginefuncs_t *pengfuncsFromEngine, in
 	pengfuncsFromEngine->ProcessTutorMessageDecayBuffer = pfnProcessTutorMessageDecayBuffer;
 	pengfuncsFromEngine->ConstructTutorMessageDecayBuffer = pfnConstructTutorMessageDecayBuffer;
 	pengfuncsFromEngine->ResetTutorMessageDecayData = pfnResetTutorMessageDecayData;
+	// NOTE: really avoid doing anything but hooking/passing through with the below - they're recent additions to the engine and not all mod .dll files (including Metamod) will know about them
 	pengfuncsFromEngine->pfnQueryClientCvarValue = pfnQueryClientCvarValue;
 	pengfuncsFromEngine->pfnQueryClientCvarValue2 = pfnQueryClientCvarValue2;
 	pengfuncsFromEngine->pfnCheckParm = pfnCheckParm;

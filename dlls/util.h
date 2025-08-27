@@ -142,14 +142,8 @@ inline entvars_t* VARS(EOFFSET eoffset)				{ return VARS(ENT(eoffset)); }
 inline int	  ENTINDEX(edict_t *pEdict)			{ return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
 inline edict_t* INDEXENT( int iEdictNum )
 {
-	if (pGame->IsSvenCoop())
-	{
-		return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum);
-	}
-	else
-	{
-		return (*g_engfuncs.pfnPEntityOfEntIndexAllEntities)(iEdictNum);
-	}
+	// NOTE: ideally would use pfnPEntityOfEntIndexAllEntities but given it's relatively new, support with Metamod is patchy at best
+	return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum);
 }
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent ) {
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ENT(ent));
