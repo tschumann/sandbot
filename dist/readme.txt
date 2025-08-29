@@ -66,6 +66,7 @@ v0.5 (??/??/??)
 - [All] Updated documentation with all cvars.
 - [Metamod] Fixed crash with Release builds of Metamod-p.
 - [Windows] Use SSE2 instructions.
+- [Linux] Updated compiler to gcc 13.3.0
 - [Sven Coop] Bots now spawn.
 
 v0.4.3.1 (19/08/25)
