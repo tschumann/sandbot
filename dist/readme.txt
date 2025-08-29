@@ -64,6 +64,7 @@ v0.5 (??/??/??)
 - [All] Bots no longer announce reloading if they have an enemy.
 - [All] Use pfnPEntityOfEntIndex instead of pfnPEntityOfEntIndexAllEntities for better support with all mods.
 - [All] Updated documentation with all cvars.
+- [All] Fixed bot_count causing bots to be constantly kicked and re-added if no real players were in the game.
 - [Metamod] Fixed crash with Release builds of Metamod-p.
 - [Metamod] Return to shipping metamod-p 1.21.0.37
 - [Windows] Use SSE2 instructions.

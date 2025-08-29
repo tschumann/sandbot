@@ -331,12 +331,9 @@ int GetBotCount()
 	{
 		edict_t *pPlayer = INDEXENT(i);
 
-		if( pPlayer && !pPlayer->free )
+		if( IsValidEntity(pPlayer) && FBitSet(pPlayer->v.flags, FL_FAKECLIENT) )
 		{
-			if( FBitSet(pPlayer->v.flags, FL_CLIENT) && IsValidEntity( pPlayer ) )
-			{
-				count++;
-			}
+			count++;
 		}
 	}
 

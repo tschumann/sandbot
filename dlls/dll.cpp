@@ -1401,11 +1401,15 @@ void StartFrame( void )
 		bBaseLinesCreated = false;
 	}
 
-	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < CvarGetValue( &bot_count ) )
+	// NOTE: get it as an int here becase CvarGetValue returns a float and it gets compared with an int below
+	int iDesiredBotCount = (int)CvarGetValue(&bot_count);
+
+	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < iDesiredBotCount )
 	{
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
-	else if( GetBotCount() > CvarGetValue( &bot_count ) )
+	// TODO: this check is definitely wrong - we're allowing one extra bot, but it's because there's some instability (constant kicking and re-adding) if bot count is desired count - maybe a bot takes multiple frames to properly initialise?
+	else if( GetBotCount() > iDesiredBotCount + 1 )
 	{
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
