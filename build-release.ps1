@@ -6,20 +6,22 @@ $wd = Split-Path $scriptpath
 Push-Location $wd
 
 # build Sandbot
-MSBuild.exe /t:Build /p:Platform=x86 /p:Configuration=Debug "sandbot.sln"
+MSBuild.exe /t:Build /p:Platform=x86 /p:Configuration=Release "sandbot.sln"
+
+# TODO: copy sandbot.dll across to dist\sandbot\
 
 Copy-Item -Path dlls\Release\vc143.pdb -Destination dist\symbols\
 Copy-Item -Path Release\sandbot.pdb -Destination dist\symbols\
 
-# build metamod-p - Release crashes for some reason
-MSBuild.exe /t:Build /p:Configuration=Debug "metamod-p\metamod\metamod.sln"
+# NOTE: ship metamod-p 1.21.0.37 for now
+# MSBuild.exe /t:Build /p:Configuration=Release "metamod-p\metamod\metamod.sln"
 
-Copy-Item -Path metamod-p\metamod\Debug\metamod.dll -Destination dist\sandbot\Half-Life\dod\addons\metamod\dlls\
-Copy-Item -Path metamod-p\metamod\Debug\metamod.dll -Destination dist\sandbot\Half-Life\gearbox\addons\metamod\dlls\
-Copy-Item -Path metamod-p\metamod\Debug\metamod.dll -Destination dist\sandbot\Half-Life\Hunger\addons\metamod\dlls\
-Copy-Item -Path metamod-p\metamod\Debug\metamod.dll -Destination dist\sandbot\Half-Life\ns\addons\metamod\dlls\
-Copy-Item -Path metamod-p\metamod\Debug\metamod.dll -Destination dist\sandbot\Half-Life\rewolf\addons\metamod\dlls\
-Copy-Item -Path metamod-p\metamod\Debug\metamod.dll -Destination dist\sandbot\Half-Life\valve\addons\metamod\dlls\
+# Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\dod\addons\metamod\dlls\
+# Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\gearbox\addons\metamod\dlls\
+# Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\Hunger\addons\metamod\dlls\
+# Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\ns\addons\metamod\dlls\
+# Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\rewolf\addons\metamod\dlls\
+# Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\valve\addons\metamod\dlls\
 
 Remove-Item release.zip -Force
 

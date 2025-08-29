@@ -65,6 +65,7 @@ v0.5 (??/??/??)
 - [All] Use pfnPEntityOfEntIndex instead of pfnPEntityOfEntIndexAllEntities for better support with all mods.
 - [All] Updated documentation with all cvars.
 - [Metamod] Fixed crash with Release builds of Metamod-p.
+- [Metamod] Return to shipping metamod-p 1.21.0.37
 - [Windows] Use SSE2 instructions.
 - [Linux] Updated compiler to gcc 13.3.0
 - [Sven Coop] Bots now spawn.
