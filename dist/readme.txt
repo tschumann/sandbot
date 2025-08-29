@@ -12,14 +12,28 @@ Sandbot should work with Metamod-P for all games and mods but has been found to 
 
 == Usage ==
 
-addbot		Add a bot to the server
-		In Day of Defeat you can addbot allies or addbot axis
-		In Natural Selection you can addbot alien or addbot marine
-bot_skill [1-5]	Set the bot skill level (1 is highest skill)
-waypoint add	Add a waypoint
-waypoint delete	Delete a waypoint
-waypoint save	Write waypoints to file
-waypoint info	Print what type of waypoint a waypoint is
+addbot							Add a bot to the server
+								In Day of Defeat you can addbot allies or addbot axis
+								In Natural Selection you can addbot alien or addbot marine
+bot_count						How many bots to have in a game
+bot_shoot [0|1]					Whether bots will seek out enemies
+bot_skill [1-5]					Set the bot skill level (1 is highest skill)
+bot_use_melee [0|1]				Whether bots can use melee weapons
+bot_use_pistol [0|1]			Whether bots can use pistols
+bot_use_rangedpistol [0|1]		Whether bots can use long-range pistols
+bot_use_shotgun [0|1]			Whether bots can use shotguns
+bot_use_machinegun [0|1]		Whether bots can use machine guns
+bot_use_rifle [0|1]				Whether bots can use rifles
+bot_use_sniper [0|1]			Whether bots can use sniping weapons
+bot_use_rocketlauncher [0|1]	Whether bots can use rocket launchers
+bot_use_energy [0|1]			Whether bots can use energy weapons
+bot_use_organic [0|1]			Whether bots can use organic weapons
+bot_use_grenade [0|1]			Whether bots can use grenads
+bot_use_chemical [0|1]			Whether bots can use chemical weapons
+waypoint add					Add a waypoint
+waypoint delete					Delete a waypoint
+waypoint save					Write waypoints to file
+waypoint info					Print what type of waypoint a waypoint is
 
 == Frequently Asked Questions ==
 
@@ -49,6 +63,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 v0.5 (??/??/??)
 - [All] Bots no longer announce reloading if they have an enemy.
 - [All] Use pfnPEntityOfEntIndex instead of pfnPEntityOfEntIndexAllEntities for better support with all mods.
+- [All] Updated documentation with all cvars.
 - [Metamod] Fixed crash with Release builds of Metamod-p.
 - [Windows] Use SSE2 instructions.
 - [Sven Coop] Bots now spawn.
