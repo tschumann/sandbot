@@ -57,6 +57,7 @@ namespace tests
 			edict_t* pPlayer = foolsgoldsource::gEngine.edicts[1].get();
 
 			pPlayer->v.netname = ALLOC_STRING("test");
+			pPlayer->v.flags |= FL_FAKECLIENT;
 
 			Assert::AreEqual( 1, GetBotCount() );
 		}

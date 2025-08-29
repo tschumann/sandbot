@@ -382,8 +382,11 @@ void CleanupGameAndBots()
 	{
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{
-			delete pBots[i];
-			pBots[i] = nullptr;
+			if (pBots[i])
+			{
+				delete pBots[i];
+				pBots[i] = nullptr;
+			}
 		}
 		pBots = nullptr;
 	}

@@ -1115,24 +1115,14 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
-	if( pBotData )
-	{
-		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
-		{
-			pBotData[i].bIsUsed = false;
-		}
-	}
-	if( pBots )
-	{
-		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
-		{
-			delete pBots[i];
-			pBots[i] = nullptr;
-		}
-		pBots = nullptr;
-	}
+	CleanupGameAndBots();
 
 	pBots = new bot_t*[Game::MAX_PLAYERS];
+
+	for (int i = 0; i < Game::MAX_PLAYERS; i++)
+	{
+		pBots[i] = nullptr;
+	}
 
 	if(pGame->IsHalfLife())
 	{
