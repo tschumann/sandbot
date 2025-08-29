@@ -1,3 +1,8 @@
+Set-StrictMode -Version 3.0
+
+$ErrorActionPreference = "Stop"
+$PSNativeCommandUserErrorActionPerference = $true
+
 # get the location of this file
 $scriptpath = $MyInvocation.MyCommand.Path
 # get the directory path to this file
@@ -23,7 +28,10 @@ Copy-Item -Path Release\sandbot.pdb -Destination dist\symbols\
 # Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\rewolf\addons\metamod\dlls\
 # Copy-Item -Path metamod-p\metamod\Release\metamod.dll -Destination dist\sandbot\Half-Life\valve\addons\metamod\dlls\
 
-Remove-Item release.zip -Force
+If (Test-Path "release.zip")
+{
+	Remove-Item release.zip -Force
+}
 
 $compress = @{
 	Path = "dist\readme.txt", "dist\sandbot\Half-Life"

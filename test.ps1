@@ -1,3 +1,8 @@
+Set-StrictMode -Version 3.0
+
+$ErrorActionPreference = "Stop"
+$PSNativeCommandUserErrorActionPerference = $true
+
 # get the location of this file
 $scriptpath = $MyInvocation.MyCommand.Path
 # get the directory path to this file
