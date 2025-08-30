@@ -10,15 +10,10 @@
 //
 //=============================================================================
 
-#include "CppUnitTest.h"
-
-#include "extdll.h"
+#include "base_test.h"
 #include "bot_gunman.h"
 #include "bot_func.h"
 #include "game.h"
-#include "h_export.h"
-#include "foolsgoldsource/foolsgoldsource.h"
-#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
@@ -28,13 +23,7 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			foolsgoldsource::gEngine.Reset();
-
-			g_bIsMMPlugin = false;
-
-			const DLL_FUNCTIONS *dllFunctions = foolsgoldsource::gEngine.GetDLLFunctions();
-			gGameDLLFunc.dllapi_table = const_cast<DLL_FUNCTIONS *>(dllFunctions);
-			gpGamedllFuncs = &gGameDLLFunc;
+			Initialise();
 		}
 
 		TEST_METHOD(TestUseGaussPistolSniper_NotAllowed)

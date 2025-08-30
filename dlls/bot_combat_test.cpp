@@ -10,17 +10,11 @@
 //
 //=============================================================================
 
-#include "CppUnitTest.h"
-
-#include "extdll.h"
+#include "base_test.h"
 #include "bot_gunman.h"
 #include "bot_func.h"
 #include "bot_weapons.h"
-#include "dll.h"
 #include "game_gunmanchronicles.h"
-#include "h_export.h"
-#include "foolsgoldsource/foolsgoldsource.h"
-#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
@@ -30,30 +24,9 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			foolsgoldsource::gEngine.Reset();
-
-			CleanUpBots();
-
-			g_bIsMMPlugin = false;
-
-			const DLL_FUNCTIONS* dllFunctions = foolsgoldsource::gEngine.GetDLLFunctions();
-			gGameDLLFunc.dllapi_table = const_cast<DLL_FUNCTIONS*>(dllFunctions);
-			gpGamedllFuncs = &gGameDLLFunc;
+			Initialise();
 
 			pGame = std::make_unique<RewolfGame>(GameId::GAME_REWOLF);
-
-			bot_use_melee.value = 1;
-			bot_use_pistol.value = 1;
-			bot_use_rangedpistol.value = 1;
-			bot_use_shotgun.value = 1;
-			bot_use_machinegun.value = 1;
-			bot_use_rifle.value = 1;
-			bot_use_sniper.value = 1;
-			bot_use_rocketlauncher.value = 1;
-			bot_use_energy.value = 1;
-			bot_use_organic.value = 1;
-			bot_use_grenade.value = 1;
-			bot_use_chemical.value = 1;
 		}
 
 		TEST_METHOD(TestBotFireWeapon_GaussPistol)

@@ -10,14 +10,9 @@
 //
 //=============================================================================
 
-#include "CppUnitTest.h"
-
-#include "h_export.h"
+#include "base_test.h"
 #include "bot.h"
-#include "game.h"
 #include "game_halflife.h"
-#include "foolsgoldsource/foolsgoldsource.h"
-#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
@@ -27,7 +22,7 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			CleanUpBots();
+			Initialise();
 
 			pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 		}

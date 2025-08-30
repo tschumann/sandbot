@@ -6,28 +6,21 @@
 //
 // http://www.teamsandpit.com/
 //
-// Notes: waypointing test code
+// Notes: common test code
 //
 //=============================================================================
 
-#include "base_test.h"
-#include "wpt.h"
-#include "waypoint.h"
+#ifndef __BASE_TEST__
+#define __BASE_TEST__
+
+#include "CppUnitTest.h"
+
+#include "foolsgoldsource/foolsgoldsource.h"
+#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
-	TEST_CLASS(waypoint_test)
-	{
-	public:
-
-		TEST_METHOD(TestWaypointInit)
-		{
-			WaypointInit();
-
-			for( int i = 0; i < MAX_WAYPOINTS; i++ )
-			{
-				Assert::IsNull( paths[i] );
-			}
-		}
-	};
+	void Initialise();
 }
+
+#endif // __BASE_TEST__

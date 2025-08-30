@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\common\interface.cpp" />
     <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp" />
+    <ClCompile Include="base_test.cpp" />
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="bot_client.cpp" />
     <ClCompile Include="bot_combat.cpp" />
@@ -65,6 +66,7 @@
   <ItemGroup>
     <ClInclude Include="activity.h" />
     <ClInclude Include="basemonster.h" />
+    <ClInclude Include="base_test.h" />
     <ClInclude Include="bot.h" />
     <ClInclude Include="bot_client.h" />
     <ClInclude Include="bot_cstrike.h" />

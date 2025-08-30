@@ -62,6 +62,7 @@ Note that Steam games don't seem to generate core dumps, but rather generates br
 Steam generates minidumps at `/tmp/dumps/`
 
 ### Debugging minidumps
+
 Clone and build Google Breakpad:
 ```
 git clone https://github.com/google/breakpad

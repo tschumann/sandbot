@@ -10,14 +10,11 @@
 //
 //=============================================================================
 
-#include "CppUnitTest.h"
-
+#include "base_test.h"
 #include "h_export.h"
 #include "bot.h"
 #include "dll.h"
 #include "game_halflife.h"
-#include "foolsgoldsource/foolsgoldsource.h"
-#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
@@ -27,25 +24,19 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			foolsgoldsource::gEngine.Reset();
-
-			CleanUpBots();
+			Initialise();
 
 			pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
-			other_gFunctionTable = *foolsgoldsource::gEngine.GetDLLFunctions();
+
 			ServerActivate( nullptr, 2048, 32 );
 			// TODO: should be set by calling GiveFnptrsToDll
 			pBotData = g_valveBots;
-
-			Assert::IsNotNull( pGame.get() );
-			Assert::IsNotNull( pBots );
 		}
 
-		// TODO: failing? due to test order maybe?
-		// TEST_METHOD(TestGetBotCount_NoBots)
-		// {
-		// 	Assert::AreEqual( 0, GetBotCount() );
-		// }
+		TEST_METHOD(TestGetBotCount_NoBots)
+		{
+			Assert::AreEqual( 0, GetBotCount() );
+		}
 
 		TEST_METHOD(TestGetBotCount_OneBot)
 		{

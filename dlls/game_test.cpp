@@ -10,13 +10,9 @@
 //
 //=============================================================================
 
-#include "CppUnitTest.h"
-
-#include "extdll.h"
+#include "base_test.h"
 #include "bot.h"
 #include "game_halflife.h"
-#include "foolsgoldsource/foolsgoldsource.h"
-#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {
@@ -24,9 +20,15 @@ namespace tests
 	{
 	public:
 
+		TEST_METHOD_INITIALIZE(SetUp)
+		{
+			Initialise();
+
+			pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
+		}
+
 		TEST_METHOD(TestIsValidEdict)
 		{
-			std::unique_ptr<Game> pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 			Assert::AreEqual( false, pGame->IsValidEdict( nullptr ) );
 		}
 	};

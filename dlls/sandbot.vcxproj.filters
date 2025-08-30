@@ -141,6 +141,9 @@
     <ClCompile Include="..\foolsgoldsource\foolsgoldsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="base_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="activity.h">
@@ -276,6 +279,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot_tfc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

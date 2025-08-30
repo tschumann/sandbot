@@ -10,13 +10,10 @@
 //
 //=============================================================================
 
-#include "CppUnitTest.h"
-
+#include "base_test.h"
 #include "h_export.h"
 #include "bot.h"
 #include "game.h"
-#include "foolsgoldsource/foolsgoldsource.h"
-#include "foolsgoldsource/vscu_test.h"
 
 namespace tests
 {		
@@ -26,9 +23,7 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			foolsgoldsource::gEngine.Reset();
-
-			g_bIsMMPlugin = false;
+			Initialise();
 		}
 
 		TEST_METHOD(TestGetEngineFunctionsWithoutMetamod)
