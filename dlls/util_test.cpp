@@ -27,7 +27,7 @@ namespace tests
 
 		TEST_METHOD_INITIALIZE(SetUp)
 		{
-			CleanupGameAndBots();
+			CleanUpBots();
 
 			pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 		}

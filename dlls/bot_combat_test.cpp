@@ -32,7 +32,7 @@ namespace tests
 		{
 			foolsgoldsource::gEngine.Reset();
 
-			CleanupGameAndBots();
+			CleanUpBots();
 
 			g_bIsMMPlugin = false;
 

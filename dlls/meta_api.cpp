@@ -180,8 +180,8 @@ extern "C" EXPORT int Meta_Detach( PLUG_LOADTIME now, PL_UNLOAD_REASON reason )
 	extern void KickAllBots();
 	KickAllBots();
 
-	extern void CleanupGameAndBots();
-	CleanupGameAndBots();
+	extern void CleanUpBots();
+	CleanUpBots();
 
 	return TRUE; // returning TRUE enables metamod to unload this plugin
 }

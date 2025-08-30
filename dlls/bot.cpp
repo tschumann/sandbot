@@ -340,6 +340,21 @@ int GetBotCount()
 	return count;
 }
 
+int GetUsedBotCount()
+{
+	int count = 0;
+
+	for (unsigned int i = 0; i < Game::MAX_PLAYERS; i++)
+	{
+		if (pBotData[i].bIsUsed)
+		{
+			count++;
+		}
+	}
+
+	return count;
+}
+
 void KickBot( const int iIndex )
 {
 	// if the slot is in use
@@ -369,7 +384,7 @@ void KickAllBots()
 	}
 }
 
-void CleanupGameAndBots()
+void CleanUpBots()
 {
 	if( pBotData )
 	{

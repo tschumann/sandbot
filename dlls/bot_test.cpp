@@ -29,7 +29,7 @@ namespace tests
 		{
 			foolsgoldsource::gEngine.Reset();
 
-			CleanupGameAndBots();
+			CleanUpBots();
 
 			pGame = std::make_unique<ValveGame>(GameId::GAME_VALVE);
 			other_gFunctionTable = *foolsgoldsource::gEngine.GetDLLFunctions();
@@ -39,11 +39,6 @@ namespace tests
 
 			Assert::IsNotNull( pGame.get() );
 			Assert::IsNotNull( pBots );
-		}
-
-		TEST_METHOD_CLEANUP(TearDown)
-		{
-			CleanupGameAndBots();
 		}
 
 		// TODO: failing? due to test order maybe?
@@ -62,9 +57,21 @@ namespace tests
 			Assert::AreEqual( 1, GetBotCount() );
 		}
 
+		TEST_METHOD(TestGetUsedBotCount_NoBots)
+		{
+			Assert::AreEqual(0, GetUsedBotCount());
+		}
+
+		TEST_METHOD(TestGetUsedBotCount_OneBot)
+		{
+			pBotData[0].bIsUsed = true;
+
+			Assert::AreEqual(1, GetUsedBotCount());
+		}
+
 		TEST_METHOD(TestKickBot_NoBots)
 		{
-			CleanupGameAndBots();
+			CleanUpBots();
 
 			KickBot( 1 );
 		}

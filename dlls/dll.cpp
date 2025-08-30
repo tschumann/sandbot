@@ -1115,7 +1115,7 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
-	CleanupGameAndBots();
+	CleanUpBots();
 
 	pBots = new bot_t*[Game::MAX_PLAYERS];
 
@@ -1208,7 +1208,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 
 void ServerDeactivate( void )
 {
-	CleanupGameAndBots();
+	CleanUpBots();
 
 	if( g_bIsMMPlugin )
 		RETURN_META( MRES_IGNORED );
@@ -1392,14 +1392,14 @@ void StartFrame( void )
 	}
 
 	// NOTE: get it as an int here becase CvarGetValue returns a float and it gets compared with an int below
+	// NOTE: ideally we'd use GetBotCount but the value it returns fluctuates periodically for some reason
 	int iDesiredBotCount = (int)CvarGetValue(&bot_count);
 
-	if( pGame->CanAddBots() && bCanAddBots && GetBotCount() < iDesiredBotCount )
+	if( pGame->CanAddBots() && bCanAddBots && GetUsedBotCount() < iDesiredBotCount )
 	{
 		BotCreate( NULL, NULL, NULL, NULL, NULL );
 	}
-	// TODO: this check is definitely wrong - we're allowing one extra bot, but it's because there's some instability (constant kicking and re-adding) if bot count is desired count - maybe a bot takes multiple frames to properly initialise?
-	else if( GetBotCount() > iDesiredBotCount + 1 )
+	else if(GetUsedBotCount() > iDesiredBotCount )
 	{
 		for( int i = 0; i < Game::MAX_PLAYERS; i++ )
 		{

@@ -81,6 +81,7 @@ typedef void (*LINK_ENTITY_FUNC)(entvars_t *);
 extern bool g_bIsMMPlugin;
 
 int GetBotCount();
+int GetUsedBotCount();
 
 void FakeClientCommand( edict_t * pFakeClient, const char *fmt, ... );
 const char *GetArg( const char *command, int arg_number );
@@ -284,7 +285,7 @@ extern bot_player_t g_shipBots[];
 void InitBots();
 void KickBot( const int iIndex );
 void KickAllBots();
-void CleanupGameAndBots();
+void CleanUpBots();
 
 class bot_t;
 
