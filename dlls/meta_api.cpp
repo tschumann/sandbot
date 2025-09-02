@@ -35,7 +35,7 @@ plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
 	"Sandbot",		// name
 	"0.5",		// version
-	"2025/08/18",	// date
+	"2025/09/02",	// date
 	"Team Sandpit",	// author
 	"https://www.teamsandpit.com/",	// url
 	"SANDBOT",	// logtag, all caps please
@@ -150,8 +150,6 @@ extern "C" EXPORT int Meta_Attach( PLUG_LOADTIME now, META_FUNCTIONS *pFunctionT
 	gpGamedllFuncs = pGamedllFuncs;
 
 	memcpy( &other_gFunctionTable, pGamedllFuncs->dllapi_table, sizeof( DLL_FUNCTIONS ) );
-
-	extern std::unique_ptr<Game> pGame;
 
 	InitBots();
 
