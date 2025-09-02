@@ -6,7 +6,7 @@ CPP = g++
 
 # gcc flags - thanks RoboCop
 OPTFLAGS = \
-		-m32 -Wall -Wextra \
+		-m32 -Wall -Wextra -Wno-unknown-pragmas \
 		-O2 -std=c++14 -march=core2 -mfpmath=sse \
 		-finline-functions -falign-loops=2 -falign-jumps=2 -falign-functions=2
 
@@ -65,9 +65,9 @@ symbols:
 # build sandbot.so
 sandbot.so: ${OBJ}
 	${CPP} -m32 -fPIC -shared -o $@ ${OBJ}
-	-cp $@ ../output/symbols/
-	-cp $@ ../output/sandbot/half-life/valve/dlls/
-	-cp $@ ../output/sandbot/half-life/gearbox/dlls/
+	-cp $@ ../dist/symbols/
+	-cp $@ ../dist/sandbot/Half-Life/valve/dlls/
+	-cp $@ ../dist/sandbot/Half-Life/gearbox/dlls/
 	# NOTE: uncomment to test locally
 	# cp -f $@ /home/$$USER/.local/share/steam/steamapps/half-life/valve/dlls
 
