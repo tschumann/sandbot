@@ -60,7 +60,7 @@ A. Steam and SteamCMD both come packaged with older version of libstdc++ - move 
 
 == Changelog ==
 
-v0.5 (??/??/??)
+v0.5 (02/09/25)
 - [All] Bots no longer announce reloading if they have an enemy.
 - [All] Use pfnPEntityOfEntIndex instead of pfnPEntityOfEntIndexAllEntities for better support with all mods.
 - [All] Updated documentation with all cvars.
