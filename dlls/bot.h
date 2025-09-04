@@ -269,8 +269,8 @@ typedef struct
 
 struct bot_player_t
 {
-	char szName[32];
-	char szPlayerModel[16];
+	const char szName[32];
+	const char szPlayerModel[16];
 	bool bIsUsed;
 };
 
@@ -293,9 +293,9 @@ typedef bool (bot_t::*CanUseWeapon)(bool) const;
 
 struct weapon_t
 {
-	int iWeaponId;
+	const int iWeaponId;
 	const char *szWeaponName;
-	CanUseWeapon pfnCanUseWeapon;
+	const CanUseWeapon pfnCanUseWeapon;
 };
 
 class bot_t

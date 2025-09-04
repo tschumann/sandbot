@@ -11,31 +11,29 @@
 
 typedef struct
 {
-	int iId;  // the weapon ID value
-	char weapon_name[64];  // name of the weapon when selecting it
-	float fPrimaryRate;			// primary rate of fire
-	float fSecondaryRate;		// secondary rate of fire
-	float primary_min_distance;    // 0 = no minimum
-	float primary_max_distance;    // 9999 = no maximum
-	float secondary_min_distance; // 0 = no minimum
-	float secondary_max_distance; // 9999 = no maximum
-	int use_percent;    // times out of 100 to use this weapon when available
+	const int iId;  // the weapon ID value
+	const char weapon_name[64];  // name of the weapon when selecting it
+	const float fPrimaryRate;			// primary rate of fire
+	const float fSecondaryRate;		// secondary rate of fire
+	const float primary_min_distance;    // 0 = no minimum
+	const float primary_max_distance;    // 9999 = no maximum
+	const float secondary_min_distance; // 0 = no minimum
+	const float secondary_max_distance; // 9999 = no maximum
+	const int use_percent;    // times out of 100 to use this weapon when available
 	bool can_use_underwater;      // can use this weapon underwater
-	int primary_fire_percent;    // times out of 100 to use primary fire
-	int min_primary_ammo;         // minimum ammout of primary ammo needed to fire
-	int min_secondary_ammo;      // minimum ammout of seconday ammo needed to fire
-	bool primary_fire_hold;        // hold down primary fire button to use?
-	bool secondary_fire_hold;     // hold down secondary fire button to use?
-	bool primary_fire_charge;     // charge weapon using primary fire?
-	bool secondary_fire_charge;  // charge weapon using secondary fire?
-	float primary_charge_delay;    // time to charge weapon
-	float secondary_charge_delay; // time to charge weapon
-	// int iPrimaryAmmoIndex;
-	// int iSecondaryAmmoIndex;
-	int flags;
-	int iCustomisationId;
-	char szCustomisationCommand[16];
-	bool bIsDefaultCustomisation;
+	const int primary_fire_percent;    // times out of 100 to use primary fire
+	const int min_primary_ammo;         // minimum ammout of primary ammo needed to fire
+	const int min_secondary_ammo;      // minimum ammout of seconday ammo needed to fire
+	const bool primary_fire_hold;        // hold down primary fire button to use?
+	const bool secondary_fire_hold;     // hold down secondary fire button to use?
+	const bool primary_fire_charge;     // charge weapon using primary fire?
+	const bool secondary_fire_charge;  // charge weapon using secondary fire?
+	const float primary_charge_delay;    // time to charge weapon
+	const float secondary_charge_delay; // time to charge weapon
+	const int flags;
+	const int iCustomisationId;
+	const char szCustomisationCommand[16];
+	const bool bIsDefaultCustomisation;
 } bot_weapon_select_t;
 
 const int NO_CUSTOMISATION = -1;

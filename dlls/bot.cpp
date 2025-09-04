@@ -615,7 +615,7 @@ void BotCreate( edict_t *pPlayer, const char *arg1, const char *arg2, const char
 	  {
 		  char szColour[4];
 
-		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", pBotData[iIndex].szPlayerModel );
+		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "model", const_cast<char *>(pBotData[iIndex].szPlayerModel) );
 		  // the engine supports this but not all modes have customisable player models - set it anyway
 		  sprintf( szColour, "%d", RANDOM_LONG(0, 255) );
 		  SET_CLIENT_KEY_VALUE( clientIndex, infobuffer, "topcolor", szColour );
