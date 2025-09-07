@@ -25,3 +25,8 @@ int NSGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;
 }
+
+Game::bot_player_t* NSGame::GetBotProfiles() const
+{
+	return g_nsBots;
+}

@@ -20,3 +20,8 @@ const char* SvenCoopGame::GetGameDir() const
 {
 	return "svencoop";
 }
+
+Game::bot_player_t* SvenCoopGame::GetBotProfiles() const
+{
+	return g_valveBots;
+}

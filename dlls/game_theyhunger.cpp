@@ -20,3 +20,8 @@ const char* HungerGame::GetGameDir() const
 {
 	return "hunger";
 }
+
+Game::bot_player_t* HungerGame::GetBotProfiles() const
+{
+	return g_hungerBots;
+}

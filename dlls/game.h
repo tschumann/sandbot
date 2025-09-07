@@ -39,6 +39,14 @@ enum class GameId
 class Game
 {
 public:
+	// TODO: needs to be within the class, otherwise the compiler thinks the type is undefined in the declaration of GetBotProfiles for some reason?
+	struct bot_player_t
+	{
+		const char szName[32];
+		const char szPlayerModel[16];
+		bool bIsUsed;
+	};
+
 	Game( GameId gameId );
 	Game(const Game&) = delete;
 	Game(Game&&) = delete;
@@ -61,7 +69,7 @@ public:
 	virtual int GetTeam( const edict_t *pEdict ) const;
 	virtual bool UseToOpenDoor() const;
 	// virtual bot_weapon_select_t GetWeapons() const;
-	// virtual bot_player_t GetBotProfiles() const;
+	virtual bot_player_t* GetBotProfiles() const = 0;
 	// virtual int GetInitialBotCount() const;
 	virtual bool HasWeaponCustomisation() const;
 	virtual void GetSaveGameComment( char *pBuffer, int iMaxLength ) const;

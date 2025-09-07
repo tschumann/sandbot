@@ -33,6 +33,8 @@ public:
 	{
 		return true;
 	}
+
+	virtual bot_player_t* GetBotProfiles() const;
 };
 
 #endif // __GAME_THEYHUNGER_H__

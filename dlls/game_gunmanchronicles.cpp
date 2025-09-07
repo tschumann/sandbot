@@ -21,6 +21,11 @@ const char* RewolfGame::GetGameDir() const
 	return "rewolf";
 }
 
+Game::bot_player_t* RewolfGame::GetBotProfiles() const
+{
+	return g_gunmanBots;
+}
+
 bool RewolfGame::HasWeaponCustomisation() const
 {
 	return true;

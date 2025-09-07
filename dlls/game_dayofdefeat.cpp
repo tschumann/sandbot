@@ -25,3 +25,8 @@ int DODGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team;
 }
+
+Game::bot_player_t* DODGame::GetBotProfiles() const
+{
+	return g_dodBots;
+}

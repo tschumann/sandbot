@@ -20,3 +20,8 @@ const char* ShipGame::GetGameDir() const
 {
 	return "ship";
 }
+
+Game::bot_player_t* ShipGame::GetBotProfiles() const
+{
+	return g_shipBots;
+}

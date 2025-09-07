@@ -44,6 +44,8 @@ public:
 		return false;
 	}
 
+	virtual bot_player_t* GetBotProfiles() const;
+
 	virtual bool AreAlliesBritish() const
 	{
 		extern int g_iAlliesCountry;

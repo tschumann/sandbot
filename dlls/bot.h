@@ -267,20 +267,13 @@ typedef struct
 	int  iAmmo2;  // amount of ammo in secondary reserve
 } bot_current_weapon_t;
 
-struct bot_player_t
-{
-	const char szName[32];
-	const char szPlayerModel[16];
-	bool bIsUsed;
-};
-
-extern bot_player_t g_valveBots[];
-extern bot_player_t g_gearboxBots[];
-extern bot_player_t g_dodBots[];
-extern bot_player_t g_gunmanBots[];
-extern bot_player_t g_nsBots[];
-extern bot_player_t g_hungerBots[];
-extern bot_player_t g_shipBots[];
+extern Game::bot_player_t g_valveBots[];
+extern Game::bot_player_t g_gearboxBots[];
+extern Game::bot_player_t g_dodBots[];
+extern Game::bot_player_t g_gunmanBots[];
+extern Game::bot_player_t g_nsBots[];
+extern Game::bot_player_t g_hungerBots[];
+extern Game::bot_player_t g_shipBots[];
 
 void InitBots();
 void KickBot( const int iIndex );
@@ -517,7 +510,7 @@ protected:
 };
 
 extern bot_t **pBots;
-extern bot_player_t* pBotData;
+extern Game::bot_player_t* pBotData;
 
 typedef struct
 {

@@ -20,3 +20,8 @@ const char* DeathmatchClassicGame::GetGameDir() const
 {
 	return "dmc";
 }
+
+Game::bot_player_t* DeathmatchClassicGame::GetBotProfiles() const
+{
+	return g_valveBots;
+}

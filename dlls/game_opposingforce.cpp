@@ -49,3 +49,8 @@ int GearboxGame::GetTeam( const edict_t *pEdict ) const
 	// use default deathmatch behaviour
 	return Game::GetTeam( pEdict );
 }
+
+Game::bot_player_t* GearboxGame::GetBotProfiles() const
+{
+	return g_gearboxBots;
+}

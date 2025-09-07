@@ -34,6 +34,8 @@ public:
 		return true;
 	}
 
+	virtual bot_player_t* GetBotProfiles() const;
+
 	virtual bool HasWeaponCustomisation() const;
 };
 

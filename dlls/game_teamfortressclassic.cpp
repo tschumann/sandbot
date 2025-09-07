@@ -25,3 +25,8 @@ int TFCGame::GetTeam( const edict_t *pEdict ) const
 {
 	return pEdict->v.team - 1;
 }
+
+Game::bot_player_t* TFCGame::GetBotProfiles() const
+{
+	return g_valveBots;
+}

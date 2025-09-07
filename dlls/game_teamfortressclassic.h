@@ -46,6 +46,8 @@ public:
 
 	virtual int GetTeam( const edict_t *pEdict ) const;
 
+	virtual bot_player_t* GetBotProfiles() const;
+
 	const static int MAX_BACKPACKS = 100;
 };
 

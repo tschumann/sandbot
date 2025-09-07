@@ -67,6 +67,8 @@ public:
 	}
 
 	virtual int GetTeam( const edict_t *pEdict ) const;
+
+	virtual bot_player_t* GetBotProfiles() const;
 };
 
 #endif // __GAME_OPPOSINGFORCE_H__

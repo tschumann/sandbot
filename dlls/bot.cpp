@@ -20,12 +20,12 @@
 #include "bot_weapons.h"
 #include "h_export.h"
 
-bot_player_t *pBotData = nullptr;
+Game::bot_player_t *pBotData = nullptr;
 bot_t **pBots = nullptr; // [Game::MAX_PLAYERS];
 
 bool b_observer_mode = false;
 
-bot_player_t g_valveBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_valveBots[Game::MAX_PLAYERS] =
 {
 	{"Kelly", "barney", false},
 	{"Ted", "gina", false},
@@ -61,7 +61,7 @@ bot_player_t g_valveBots[Game::MAX_PLAYERS] =
 	{"Harry", "gina", false}
 };
 
-bot_player_t g_gearboxBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_gearboxBots[Game::MAX_PLAYERS] =
 {
 	{"Randy", "barney", false},
 	{"Brian", "beret", false},
@@ -97,13 +97,13 @@ bot_player_t g_gearboxBots[Game::MAX_PLAYERS] =
 	{"RichardC", "otis", false}
 };
 
-bot_player_t g_cstrikeBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_cstrikeBots[Game::MAX_PLAYERS] =
 {
 	{"Minh", "", false},
 	{"Jesse", "", false}
 };
 
-bot_player_t g_dodBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_dodBots[Game::MAX_PLAYERS] =
 {
 	{"Matt", "", false},		// mugsy
 	{"John", "", false},		// pickitup
@@ -139,7 +139,7 @@ bot_player_t g_dodBots[Game::MAX_PLAYERS] =
 	{"Unknown8", "", false},	// Kamikazi
 };
 
-bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
 {
 	{"Herb", "bandit", false},		// BoneWolf
 	{"Steven", "general", false},	// Wipeoot
@@ -175,7 +175,7 @@ bot_player_t g_gunmanBots[Game::MAX_PLAYERS] =
 	{"Robin", "general", false}
 };
 
-bot_player_t g_nsBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_nsBots[Game::MAX_PLAYERS] =
 {
 	{"Charlie", "", false},
 	{"Jon", "", false},
@@ -211,7 +211,7 @@ bot_player_t g_nsBots[Game::MAX_PLAYERS] =
 	{"Nick", "", false}
 };
 
-bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
 {
 	{"Bill", "civie", false},
 	{"Dave", "dave", false},
@@ -247,7 +247,7 @@ bot_player_t g_hungerBots[Game::MAX_PLAYERS] =
 	{"Ben", "zork", false}
 };
 
-bot_player_t g_shipBots[Game::MAX_PLAYERS] =
+Game::bot_player_t g_shipBots[Game::MAX_PLAYERS] =
 {
 	{"Chris", "", false},
 	{"Ailsa", "", false},

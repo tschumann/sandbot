@@ -20,3 +20,8 @@ const char* RicochetGame::GetGameDir() const
 {
 	return "ricochet";
 }
+
+Game::bot_player_t* RicochetGame::GetBotProfiles() const
+{
+	return g_valveBots;
+}
